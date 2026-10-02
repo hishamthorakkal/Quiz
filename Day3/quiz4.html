@@ -29,28 +29,29 @@ h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-
 </div>
 <script>
 const quiz=[{"num": 46, "level": "Integrated", "question": "A 29-week infant on day 12 has a central line, TPN, recurrent apnea, platelets 62,000/µL and glucose 210 mg/dL. CXR is unchanged. Which diagnosis should move high on the differential?", "options": ["LOS/CLABSI", "TTN", "Physiologic jaundice", "Isolated RDS progression"], "answer": 0, "explanation": "Day-12 NICU infant with line/TPN, apnea, thrombocytopenia and hyperglycemia strongly suggests LOS/CLABSI.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}, {"num": 47, "level": "Integrated", "question": "A 38-week infant at 18 h has tachypnea. CXR suggests TTN. Maternal history is reassuring, infant is well perfused and oxygen need is falling. Best strategy?", "options": ["Clinical reassessment; infection probability is lower if rapid improvement continues", "Mandatory 14-day antibiotics", "Immediate LP in every case", "Diagnose sepsis from tachypnea alone"], "answer": 0, "explanation": "Rapidly improving TTN-like illness with reassuring maternal history lowers infection probability; continue reassessment.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}, {"num": 48, "level": "Integrated", "question": "A 4-day-old infant has seizures, shock and CSF suggestive of bacterial meningitis. Which management priority is correct?", "options": ["Stabilization + prompt meningitis-appropriate antibiotics + supportive neurocritical care", "Wait for MRI before antibiotics", "Treat only seizures", "Stop antibiotics if blood culture is negative"], "answer": 0, "explanation": "Shock + seizures + meningitic CSF requires immediate stabilization, appropriate antibiotics and neurocritical supportive care.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}, {"num": 49, "level": "Integrated", "question": "A 24-day-old ex-preterm infant has candidemia. Which general principle is most important beyond antifungal selection?", "options": ["Evaluate/remove implicated intravascular devices and assess dissemination according to protocol", "Leave all lines regardless of source", "Treat as TTN", "No follow-up cultures"], "answer": 0, "explanation": "Candidemia management includes device/source control and evaluation for dissemination per neonatal protocol.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}, {"num": 50, "level": "Integrated", "question": "A neonate treated empirically for EOS has sterile cultures at 42 h, normal serial examinations, normalizing inflammatory markers and no focal infection. What is the best overall decision?", "options": ["Continue to 7 days because antibiotics were started", "Stop empiric antibiotics and continue clinical observation", "Add vancomycin", "Perform LP solely because therapy is being stopped"], "answer": 1, "explanation": "Sterile cultures, reassuring serial exams and no focal infection support stopping empiric antibiotics by 36–48 h.", "pearl": "Clinical trajectory and microbiology outweigh isolated screening-test abnormalities.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}];
-let idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],startedAt=new Date();
+let queue=quiz.map((_,i)=>i),idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],skipped=new Set(),startedAt=new Date();
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
 function render(){
- const q=quiz[idx];
- document.getElementById('progress').style.width=`${(idx/quiz.length)*100}%`;
- document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})`;
+ idx=queue[0];const q=quiz[idx];
+ document.getElementById('progress').style.width=`${(answers.length/quiz.length)*100}%`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
  document.getElementById('score').textContent=`Score: ${score}`;
  document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
  document.getElementById('card').innerHTML=`
- <div class="badge">${esc(q.level)}</div>
+ <div class="badge">${esc(q.level)}</div>${skipped.has(idx)?' <div class="badge" style="background:var(--amberbg);color:var(--amber)">Skipped earlier — answer now</div>':''}
  <div class="q">Q${q.num}. ${esc(q.question)}</div>
  ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
  <div id="feedback" class="feedback"></div>
- <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button><button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
+ <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button>${queue.length>1?'<button class="secondary" id="skipBtn" onclick="skipQuestion()">Skip for Now</button>':''}<button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
  checked=false;
 }
 function mainAction(){if(!checked)submitAnswer();else next();}
+function skipQuestion(){if(checked||queue.length<2)return;skipped.add(idx);queue.push(queue.shift());render();}
 function submitAnswer(){
  const selected=document.querySelector('input[name="answer"]:checked');
  if(!selected){alert('Please select an answer first.');return;}
  const q=quiz[idx],chosen=Number(selected.value),correct=chosen===q.answer;
- checked=true;if(correct){score+=4;correctCount++;}else{score-=1;wrongCount++;}
+ checked=true;skipped.delete(idx);const sb=document.getElementById('skipBtn');if(sb)sb.remove();if(correct){score+=4;correctCount++;}else{score-=1;wrongCount++;}
  answers.push({...q,chosen,correct});
  document.querySelectorAll('input[name="answer"]').forEach(x=>x.disabled=true);
  document.getElementById(`opt-${q.answer}`).classList.add('correct');
@@ -58,10 +59,11 @@ function submitAnswer(){
  const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
  fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>`;
  document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
- document.getElementById('mainBtn').textContent=idx===quiz.length-1?'Finish Quiz':'Next Question';
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
+ document.getElementById('mainBtn').textContent=queue.length===1?'Finish Quiz':skipped.has(queue[1])?'Next (Skipped) Question':'Next Question';
 }
-function next(){if(idx<quiz.length-1){idx++;render();}else showSummary(false);}
-function finishEarly(){if(confirm(`Finish now? You have attempted ${answers.length} question(s).`))showSummary(true);}
+function next(){queue.shift();if(queue.length)render();else showSummary(false);}
+function finishEarly(){const left=quiz.length-answers.length;if(confirm(`Finish now? You have attempted ${answers.length} question(s).${left?` ${left} unanswered question(s)${skipped.size?` (including ${skipped.size} skipped)`:''} will score 0.`:''}`))showSummary(true);}
 function fileTimestamp(){
  const d=new Date(), p=n=>String(n).padStart(2,'0');
  return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
@@ -84,10 +86,10 @@ function printPDF(){
  const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
 }
 function showSummary(early){
- document.getElementById('progress').style.width='100%';
+ document.getElementById('progress').style.width='100%';answers.sort((a,b)=>a.num-b.num);
  const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
  document.getElementById('counter').textContent='Completed';
- document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 4 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.</p>
+ document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 4 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.${skipped.size?` Skipped and not answered: ${skipped.size}.`:''}</p>
  <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
  <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
  ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
