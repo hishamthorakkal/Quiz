@@ -62,6 +62,13 @@ function submitAnswer(){
 }
 function next(){if(idx<quiz.length-1){idx++;render();}else showSummary(false);}
 function finishEarly(){if(confirm(`Finish now? You have attempted ${answers.length} question(s).`))showSummary(true);}
+function fileTimestamp(){
+ const d=new Date(), p=n=>String(n).padStart(2,'0');
+ return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+function reportBaseName(){
+ return `Day4_QuizSet3_Q31-45_${fileTimestamp()}_Wrong_Answers`;
+}
 function duration(){const s=Math.round((new Date()-startedAt)/1000);return `${Math.floor(s/60)}m ${s%60}s`;}
 function reportBody(){
  const wrong=answers.filter(a=>!a.correct);let s=`<h1>Day 4 Quiz 3 — Wrong Answer Report</h1><p><b>Questions:</b> 31–45</p><p><b>Score:</b> ${score} / ${answers.length*4} &nbsp; <b>Correct:</b> ${correctCount} &nbsp; <b>Wrong:</b> ${wrongCount}</p>`;
@@ -71,10 +78,10 @@ function reportBody(){
 }
 function downloadWord(){
  const blob=new Blob([`<!doctype html><html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial">${reportBody()}</body></html>`],{type:'application/msword'});
- const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='Day4_Quiz3_Wrong_Answers.doc';a.click();URL.revokeObjectURL(u);
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=reportBaseName()+'.doc';a.click();URL.revokeObjectURL(u);
 }
 function printPDF(){
- const w=window.open('','_blank');w.document.write(`<!doctype html><html><head><title>Wrong Answer Report</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+ const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
 }
 function showSummary(early){
  document.getElementById('progress').style.width='100%';
