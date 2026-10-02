@@ -42,7 +42,7 @@ function render(){
  <div class="q">Q${q.num}. ${esc(q.question)}</div>
  ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
  <div id="feedback" class="feedback"></div>
- <div class="actions"><a class="btn secondary" href="index.html">Home</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button><button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
+ <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button><button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
  checked=false;
 }
 function mainAction(){if(!checked)submitAnswer();else next();}
@@ -91,7 +91,7 @@ function showSummary(early){
  <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
  <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
  ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
- <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Menu</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
+ <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
 }
 render();
 </script></body></html>
