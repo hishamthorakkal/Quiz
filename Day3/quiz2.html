@@ -85,9 +85,17 @@ function downloadWord(){
 function printPDF(){
  const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
 }
+let notified=false;
+function notifyResult(attempted,max,pct,early){
+ if(notified)return;notified=true;
+ const msg=[`Total questions: ${quiz.length}`,`Attempted: ${attempted}`,`Score: ${score} / ${max}`,`Correct: ${correctCount}`,`Wrong: ${wrongCount}`,`Skipped (unanswered): ${skipped.size}`,`Not reached: ${quiz.length-attempted-skipped.size}`,`Percentage: ${pct}%`,`Time: ${duration()}`].join('\n');
+ const title=`${document.title}${early?' (finished early)':''}`;
+ fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=memo`,{method:'POST',body:msg}).catch(()=>{});
+}
 function showSummary(early){
  document.getElementById('progress').style.width='100%';answers.sort((a,b)=>a.num-b.num);
  const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
+ notifyResult(attempted,max,pct,early);
  document.getElementById('counter').textContent='Completed';
  document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 2 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.${skipped.size?` Skipped and not answered: ${skipped.size}.`:''}</p>
  <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
