@@ -1,0 +1,90 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Day 4 Quiz 1 — Q1–Q15</title><style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;--red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
+h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}.progress{height:100%;background:var(--blue);transition:.25s}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
+.q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}.option{display:block;border:1.5px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;cursor:pointer;background:#fff}
+.option:hover{border-color:#9db6ea;background:#f8fbff}.option.correct{border-color:var(--green);background:var(--greenbg);color:#14532d;font-weight:650}.option.wrong{border-color:var(--red);background:var(--redbg);color:#7f1d1d;font-weight:650}
+.option input{margin-right:10px;transform:scale(1.15)}.feedback{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}
+.feedback.correct{display:block;background:var(--greenbg);border:1px solid #86efac;color:#14532d}.feedback.wrong{display:block;background:var(--redbg);border:1px solid #fca5a5;color:#7f1d1d}
+.explain{margin-top:10px;background:#f8fafc;border-left:4px solid #94a3b8;padding:12px;border-radius:7px;color:#273449}.pearl{margin-top:10px;background:var(--amberbg);color:var(--amber);padding:11px;border-radius:8px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}button,.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block}
+.primary{background:var(--blue);color:#fff}.primary:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}.stat strong{display:block;font-size:24px}
+.wrongitem{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:14px;margin:12px 0;line-height:1.5}.good{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;margin-top:14px}
+.homegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.quizcard{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}.quizcard h2{margin:0 0 7px;font-size:19px}.small{font-size:13px;color:var(--muted)}
+@media(max-width:650px){.stats,.homegrid{grid-template-columns:1fr}.q{font-size:18px}}
+</style></head>
+<body><div class="wrap">
+<h1>Day 4 — Quiz 1</h1>
+<div class="sub">Questions 1–15 · 15 MCQs · +4 correct / −1 wrong</div>
+<div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
+<div class="topline"><span id="counter"></span><span id="score"></span><span id="counts"></span></div>
+<div class="card" id="card"></div>
+</div>
+<script>
+const quiz=[{"num": 1, "level": "Basic", "question": "Which infant meets the definition of ELBW?", "options": ["980 g at birth", "1180 g at birth", "1480 g at birth", "2480 g at birth"], "answer": 0, "explanation": "ELBW is birth weight <1000 g regardless of gestational age.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 2, "level": "Basic", "question": "Which definition is correct?", "options": ["Very preterm = <34 weeks", "Extremely preterm = <32 weeks", "ELBW = <1500 g", "Very preterm = <32 weeks"], "answer": 3, "explanation": "Very preterm means <32 weeks; extremely preterm means <28 weeks.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 3, "level": "Basic", "question": "A conventional clinical definition of apnea of prematurity includes:", "options": ["Only pauses ≥30 s with cyanosis", "Any desaturation without a respiratory pause", "Breathing pause ≥20 s, or a shorter pause with bradycardia/desaturation", "Any pause ≥10 s regardless of physiology"], "answer": 2, "explanation": "AOP is conventionally a pause ≥20 s or a shorter pause with important bradycardia/desaturation/cyanosis/pallor.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 4, "level": "Basic", "question": "The usual caffeine citrate loading dose for AOP is:", "options": ["40 mg/kg routinely", "20 mg/kg", "10 mg/kg", "5 mg/kg"], "answer": 1, "explanation": "The standard caffeine citrate loading dose is 20 mg/kg.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 5, "level": "Basic", "question": "Which heat-loss mechanism is particularly important immediately after birth in an extremely preterm infant with wet, immature skin?", "options": ["Conduction", "Radiation only", "Convection only", "Evaporation"], "answer": 3, "explanation": "Extremely preterm wet skin loses large amounts of heat by evaporation.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 6, "level": "Basic", "question": "WHO currently recommends KMC for preterm/LBW infants:", "options": ["Only after oxygen is discontinued", "Only when incubators are unavailable", "As routine care, started as soon as possible after birth", "Only after weight exceeds 1800 g"], "answer": 2, "explanation": "WHO recommends KMC routinely for preterm/LBW infants and initiation as soon as possible after birth.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 7, "level": "Basic", "question": "Which is VLBW?", "options": ["Birth weight <2500 g", "Birth weight <1500 g", "Birth weight <1800 g", "Birth weight <2000 g"], "answer": 1, "explanation": "VLBW is <1500 g.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 8, "level": "Basic", "question": "A practical normal temperature range for discharge thermal stability is:", "options": ["36.5–37.5°C", "35.5–36.5°C", "37.5–38.5°C", "34.5–35.5°C"], "answer": 0, "explanation": "Thermal stability is generally maintained around 36.5–37.5°C.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 9, "level": "Conceptual", "question": "Why does cold stress increase metabolic instability in a preterm infant?", "options": ["It increases brown-fat stores immediately", "It reduces insensible water loss and energy expenditure", "Non-shivering thermogenesis raises oxygen and glucose consumption", "It suppresses all catecholamine release and lowers oxygen use"], "answer": 2, "explanation": "Cold stress activates non-shivering thermogenesis, raising oxygen and glucose consumption.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 10, "level": "Conceptual", "question": "Why is an ELBW infant prone to high insensible water loss?", "options": ["Low minute ventilation alone", "Thin immature skin with high permeability and large surface-area-to-mass ratio", "High renal concentrating ability", "Thick keratinized epidermis"], "answer": 1, "explanation": "Immature permeable skin and large surface area drive insensible water loss.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 11, "level": "Conceptual", "question": "Mixed apnea is best described as:", "options": ["A central pause combined sequentially with upper-airway obstruction", "Simultaneous tachypnea and bradycardia", "Obstruction without any preceding or following central component", "Apnea caused only by sepsis"], "answer": 0, "explanation": "Mixed apnea combines central and obstructive components and is common in preterm infants.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 12, "level": "Conceptual", "question": "Why can CPAP reduce obstructive/mixed apnea?", "options": ["It directly antagonizes adenosine receptors", "It eliminates all central respiratory pauses", "It increases sleep-related airway collapse", "It provides distending pressure that helps maintain upper-airway patency and FRC"], "answer": 3, "explanation": "CPAP splints the upper airway and maintains FRC, reducing obstructive/mixed events.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 13, "level": "Conceptual", "question": "Why is a 24-hour observation after stopping caffeine potentially insufficient before discharge?", "options": ["Caffeine causes delayed sepsis after 48 hours", "Caffeine has a long half-life in preterm infants, so recurrence can emerge after drug effect wanes", "Caffeine is cleared completely within 2 hours", "Apnea can never recur after 24 hours"], "answer": 1, "explanation": "Because caffeine clears slowly, events can recur after residual drug effect wanes; hence longer observation is needed.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 14, "level": "Conceptual", "question": "Which statement best distinguishes LBW from SGA?", "options": ["LBW is an absolute weight category; SGA compares weight with gestational-age expectations", "They are synonymous", "SGA is defined only by weight <2500 g", "LBW requires gestation <37 weeks"], "answer": 0, "explanation": "LBW is absolute weight; SGA is weight relative to gestational age.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}, {"num": 15, "level": "Conceptual", "question": "Why does hypothermia worsen respiratory status in a very preterm infant?", "options": ["It directly increases surfactant synthesis", "It decreases oxygen consumption", "It always lowers PaCO2", "Increased metabolic oxygen demand can aggravate hypoxemia and acidosis"], "answer": 3, "explanation": "Hypothermia raises metabolic demand and can worsen oxygenation, glucose use and acidosis.", "pearl": "Know the exact definition/physiology because higher-order questions build on it.", "why": "Tests a foundational discriminator used repeatedly in neonatal decision questions."}];
+let idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],startedAt=new Date();
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function render(){
+ const q=quiz[idx];
+ document.getElementById('progress').style.width=`${(idx/quiz.length)*100}%`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})`;
+ document.getElementById('score').textContent=`Score: ${score}`;
+ document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('card').innerHTML=`
+ <div class="badge">${esc(q.level)}</div>
+ <div class="q">Q${q.num}. ${esc(q.question)}</div>
+ ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
+ <div id="feedback" class="feedback"></div>
+ <div class="actions"><a class="btn secondary" href="index.html">Home</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button><button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
+ checked=false;
+}
+function mainAction(){if(!checked)submitAnswer();else next();}
+function submitAnswer(){
+ const selected=document.querySelector('input[name="answer"]:checked');
+ if(!selected){alert('Please select an answer first.');return;}
+ const q=quiz[idx],chosen=Number(selected.value),correct=chosen===q.answer;
+ checked=true;if(correct){score+=4;correctCount++;}else{score-=1;wrongCount++;}
+ answers.push({...q,chosen,correct});
+ document.querySelectorAll('input[name="answer"]').forEach(x=>x.disabled=true);
+ document.getElementById(`opt-${q.answer}`).classList.add('correct');
+ if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
+ const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
+ fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>`;
+ document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('mainBtn').textContent=idx===quiz.length-1?'Finish Quiz':'Next Question';
+}
+function next(){if(idx<quiz.length-1){idx++;render();}else showSummary(false);}
+function finishEarly(){if(confirm(`Finish now? You have attempted ${answers.length} question(s).`))showSummary(true);}
+function duration(){const s=Math.round((new Date()-startedAt)/1000);return `${Math.floor(s/60)}m ${s%60}s`;}
+function reportBody(){
+ const wrong=answers.filter(a=>!a.correct);let s=`<h1>Day 4 Quiz 1 — Wrong Answer Report</h1><p><b>Questions:</b> 1–15</p><p><b>Score:</b> ${score} / ${answers.length*4} &nbsp; <b>Correct:</b> ${correctCount} &nbsp; <b>Wrong:</b> ${wrongCount}</p>`;
+ if(!wrong.length)s+='<p>No wrong answers.</p>';
+ wrong.forEach((a,n)=>s+=`<hr><h2>${n+1}. Q${a.num}. ${esc(a.question)}</h2><p><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}</p><p><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}</p><p><b>Explanation:</b> ${esc(a.explanation)}</p><p><b>Exam pearl:</b> ${esc(a.pearl||'')}</p>`);
+ return s;
+}
+function downloadWord(){
+ const blob=new Blob([`<!doctype html><html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial">${reportBody()}</body></html>`],{type:'application/msword'});
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='Day4_Quiz1_Wrong_Answers.doc';a.click();URL.revokeObjectURL(u);
+}
+function printPDF(){
+ const w=window.open('','_blank');w.document.write(`<!doctype html><html><head><title>Wrong Answer Report</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+}
+function showSummary(early){
+ document.getElementById('progress').style.width='100%';
+ const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
+ document.getElementById('counter').textContent='Completed';
+ document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 1 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of 15 questions.</p>
+ <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
+ <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
+ ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
+ <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Menu</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
+}
+render();
+</script></body></html>
