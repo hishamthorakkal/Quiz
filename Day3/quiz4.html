@@ -1,0 +1,97 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Day 3 Quiz 4 — Q46–Q50</title><style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;--red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
+h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}.progress{height:100%;background:var(--blue);transition:.25s}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
+.q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}.option{display:block;border:1.5px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;cursor:pointer;background:#fff}
+.option:hover{border-color:#9db6ea;background:#f8fbff}.option.correct{border-color:var(--green);background:var(--greenbg);color:#14532d;font-weight:650}.option.wrong{border-color:var(--red);background:var(--redbg);color:#7f1d1d;font-weight:650}
+.option input{margin-right:10px;transform:scale(1.15)}.feedback{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}
+.feedback.correct{display:block;background:var(--greenbg);border:1px solid #86efac;color:#14532d}.feedback.wrong{display:block;background:var(--redbg);border:1px solid #fca5a5;color:#7f1d1d}
+.explain{margin-top:10px;background:#f8fafc;border-left:4px solid #94a3b8;padding:12px;border-radius:7px;color:#273449}.pearl{margin-top:10px;background:var(--amberbg);color:var(--amber);padding:11px;border-radius:8px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}button,.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block}
+.primary{background:var(--blue);color:#fff}.primary:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}.stat strong{display:block;font-size:24px}
+.wrongitem{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:14px;margin:12px 0;line-height:1.5}.good{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;margin-top:14px}
+.homegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.quizcard{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}.quizcard h2{margin:0 0 7px;font-size:19px}.small{font-size:13px;color:var(--muted)}
+@media(max-width:650px){.stats,.homegrid{grid-template-columns:1fr}.q{font-size:18px}}
+</style></head>
+<body><div class="wrap">
+<h1>Day 3 — Quiz 4</h1>
+<div class="sub">Questions 46–50 · 5 MCQs · +4 correct / −1 wrong</div>
+<div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
+<div class="topline"><span id="counter"></span><span id="score"></span><span id="counts"></span></div>
+<div class="card" id="card"></div>
+</div>
+<script>
+const quiz=[{"num": 46, "level": "Integrated", "question": "A 29-week infant on day 12 has a central line, TPN, recurrent apnea, platelets 62,000/µL and glucose 210 mg/dL. CXR is unchanged. Which diagnosis should move high on the differential?", "options": ["LOS/CLABSI", "TTN", "Physiologic jaundice", "Isolated RDS progression"], "answer": 0, "explanation": "Day-12 NICU infant with line/TPN, apnea, thrombocytopenia and hyperglycemia strongly suggests LOS/CLABSI.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}, {"num": 47, "level": "Integrated", "question": "A 38-week infant at 18 h has tachypnea. CXR suggests TTN. Maternal history is reassuring, infant is well perfused and oxygen need is falling. Best strategy?", "options": ["Clinical reassessment; infection probability is lower if rapid improvement continues", "Mandatory 14-day antibiotics", "Immediate LP in every case", "Diagnose sepsis from tachypnea alone"], "answer": 0, "explanation": "Rapidly improving TTN-like illness with reassuring maternal history lowers infection probability; continue reassessment.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}, {"num": 48, "level": "Integrated", "question": "A 4-day-old infant has seizures, shock and CSF suggestive of bacterial meningitis. Which management priority is correct?", "options": ["Stabilization + prompt meningitis-appropriate antibiotics + supportive neurocritical care", "Wait for MRI before antibiotics", "Treat only seizures", "Stop antibiotics if blood culture is negative"], "answer": 0, "explanation": "Shock + seizures + meningitic CSF requires immediate stabilization, appropriate antibiotics and neurocritical supportive care.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}, {"num": 49, "level": "Integrated", "question": "A 24-day-old ex-preterm infant has candidemia. Which general principle is most important beyond antifungal selection?", "options": ["Evaluate/remove implicated intravascular devices and assess dissemination according to protocol", "Leave all lines regardless of source", "Treat as TTN", "No follow-up cultures"], "answer": 0, "explanation": "Candidemia management includes device/source control and evaluation for dissemination per neonatal protocol.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}, {"num": 50, "level": "Integrated", "question": "A neonate treated empirically for EOS has sterile cultures at 42 h, normal serial examinations, normalizing inflammatory markers and no focal infection. What is the best overall decision?", "options": ["Continue to 7 days because antibiotics were started", "Stop empiric antibiotics and continue clinical observation", "Add vancomycin", "Perform LP solely because therapy is being stopped"], "answer": 1, "explanation": "Sterile cultures, reassuring serial exams and no focal infection support stopping empiric antibiotics by 36–48 h.", "pearl": "Clinical trajectory and microbiology outweigh isolated screening-test abnormalities.", "why": "This tests rank-differentiating integration of neonatal epidemiology, diagnostics and management."}];
+let idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],startedAt=new Date();
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function render(){
+ const q=quiz[idx];
+ document.getElementById('progress').style.width=`${(idx/quiz.length)*100}%`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})`;
+ document.getElementById('score').textContent=`Score: ${score}`;
+ document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('card').innerHTML=`
+ <div class="badge">${esc(q.level)}</div>
+ <div class="q">Q${q.num}. ${esc(q.question)}</div>
+ ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
+ <div id="feedback" class="feedback"></div>
+ <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button><button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
+ checked=false;
+}
+function mainAction(){if(!checked)submitAnswer();else next();}
+function submitAnswer(){
+ const selected=document.querySelector('input[name="answer"]:checked');
+ if(!selected){alert('Please select an answer first.');return;}
+ const q=quiz[idx],chosen=Number(selected.value),correct=chosen===q.answer;
+ checked=true;if(correct){score+=4;correctCount++;}else{score-=1;wrongCount++;}
+ answers.push({...q,chosen,correct});
+ document.querySelectorAll('input[name="answer"]').forEach(x=>x.disabled=true);
+ document.getElementById(`opt-${q.answer}`).classList.add('correct');
+ if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
+ const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
+ fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>`;
+ document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('mainBtn').textContent=idx===quiz.length-1?'Finish Quiz':'Next Question';
+}
+function next(){if(idx<quiz.length-1){idx++;render();}else showSummary(false);}
+function finishEarly(){if(confirm(`Finish now? You have attempted ${answers.length} question(s).`))showSummary(true);}
+function fileTimestamp(){
+ const d=new Date(), p=n=>String(n).padStart(2,'0');
+ return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+function reportBaseName(){
+ return `Day3_QuizSet4_Q46-50_${fileTimestamp()}_Wrong_Answers`;
+}
+function duration(){const s=Math.round((new Date()-startedAt)/1000);return `${Math.floor(s/60)}m ${s%60}s`;}
+function reportBody(){
+ const wrong=answers.filter(a=>!a.correct);let s=`<h1>Day 3 Quiz 4 — Wrong Answer Report</h1><p><b>Questions:</b> 46–50</p><p><b>Score:</b> ${score} / ${answers.length*4} &nbsp; <b>Correct:</b> ${correctCount} &nbsp; <b>Wrong:</b> ${wrongCount}</p>`;
+ if(!wrong.length)s+='<p>No wrong answers.</p>';
+ wrong.forEach((a,n)=>s+=`<hr><h2>${n+1}. Q${a.num}. ${esc(a.question)}</h2><p><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}</p><p><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}</p><p><b>Explanation:</b> ${esc(a.explanation)}</p><p><b>Exam pearl:</b> ${esc(a.pearl||'')}</p>`);
+ return s;
+}
+function downloadWord(){
+ const blob=new Blob([`<!doctype html><html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial">${reportBody()}</body></html>`],{type:'application/msword'});
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=reportBaseName()+'.doc';a.click();URL.revokeObjectURL(u);
+}
+function printPDF(){
+ const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+}
+function showSummary(early){
+ document.getElementById('progress').style.width='100%';
+ const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
+ document.getElementById('counter').textContent='Completed';
+ document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 4 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.</p>
+ <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
+ <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
+ ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
+ <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
+}
+render();
+</script></body></html>

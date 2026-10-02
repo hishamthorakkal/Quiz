@@ -1,0 +1,97 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Day 3 Quiz 1 — Q1–Q15</title><style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;--red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
+h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}.progress{height:100%;background:var(--blue);transition:.25s}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
+.q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}.option{display:block;border:1.5px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;cursor:pointer;background:#fff}
+.option:hover{border-color:#9db6ea;background:#f8fbff}.option.correct{border-color:var(--green);background:var(--greenbg);color:#14532d;font-weight:650}.option.wrong{border-color:var(--red);background:var(--redbg);color:#7f1d1d;font-weight:650}
+.option input{margin-right:10px;transform:scale(1.15)}.feedback{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}
+.feedback.correct{display:block;background:var(--greenbg);border:1px solid #86efac;color:#14532d}.feedback.wrong{display:block;background:var(--redbg);border:1px solid #fca5a5;color:#7f1d1d}
+.explain{margin-top:10px;background:#f8fafc;border-left:4px solid #94a3b8;padding:12px;border-radius:7px;color:#273449}.pearl{margin-top:10px;background:var(--amberbg);color:var(--amber);padding:11px;border-radius:8px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}button,.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block}
+.primary{background:var(--blue);color:#fff}.primary:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}.stat strong{display:block;font-size:24px}
+.wrongitem{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:14px;margin:12px 0;line-height:1.5}.good{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;margin-top:14px}
+.homegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.quizcard{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}.quizcard h2{margin:0 0 7px;font-size:19px}.small{font-size:13px;color:var(--muted)}
+@media(max-width:650px){.stats,.homegrid{grid-template-columns:1fr}.q{font-size:18px}}
+</style></head>
+<body><div class="wrap">
+<h1>Day 3 — Quiz 1</h1>
+<div class="sub">Questions 1–15 · 15 MCQs · +4 correct / −1 wrong</div>
+<div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
+<div class="topline"><span id="counter"></span><span id="score"></span><span id="counts"></span></div>
+<div class="card" id="card"></div>
+</div>
+<script>
+const quiz=[{"num": 1, "level": "Basic", "question": "The diagnostic standard for bacteremic early-onset neonatal sepsis is:", "options": ["CRP", "Blood culture", "CBC", "Procalcitonin"], "answer": 1, "explanation": "Blood culture is the microbiologic diagnostic standard for bacteremic EOS.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 2, "level": "Basic", "question": "A classic empiric regimen for most suspected EOS is:", "options": ["Ampicillin + gentamicin", "Ceftriaxone alone", "Vancomycin alone", "Meropenem alone"], "answer": 0, "explanation": "Ampicillin plus gentamicin covers classic EOS organisms while supporting stewardship.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 3, "level": "Basic", "question": "Prolonged rupture of membranes classically refers to:", "options": ["≥6 h", "≥12 h", "≥18 h", "≥36 h"], "answer": 2, "explanation": "≥18 h is the classic prolonged-ROM threshold used in many exam frameworks.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 4, "level": "Basic", "question": "A preferred blood volume for a single neonatal blood culture bottle is approximately:", "options": ["0.1 mL", "0.3 mL", "1 mL", "5 mL"], "answer": 2, "explanation": "About 1 mL improves detection of low-level bacteremia in a single pediatric bottle.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 5, "level": "Basic", "question": "Which test is generally NOT part of routine EOS evaluation in the first 72 h?", "options": ["Blood culture", "Urine culture", "Clinical examination", "Consideration of CSF when indicated"], "answer": 1, "explanation": "Urine culture is not routinely indicated in initial EOS evaluation <72 h; it matters more in LOS.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 6, "level": "Concept", "question": "Why can a single early CRP be falsely reassuring?", "options": ["CRP always rises before symptoms", "CRP may not rise immediately after infection begins", "CRP is specific only for viruses", "CRP is unaffected by inflammation"], "answer": 1, "explanation": "CRP has delayed kinetics; a very early normal value cannot rule out infection.", "pearl": "Clinical trajectory and microbiology outweigh isolated screening-test abnormalities.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 7, "level": "Concept", "question": "Why is a single elevated procalcitonin difficult to interpret in the first day of life?", "options": ["Physiologic postnatal rise can occur", "It is never elevated in bacterial infection", "It is produced only by the placenta", "It is always lower in sepsis"], "answer": 0, "explanation": "PCT has a physiologic postnatal rise during roughly the first 24–36 h.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 8, "level": "Concept", "question": "Which statement about CBC indices is most accurate?", "options": ["A normal CBC excludes EOS", "CBC alone can diagnose EOS", "Extreme abnormalities may alter probability but CBC has limited sensitivity", "Platelets are always normal in sepsis"], "answer": 2, "explanation": "CBC indices have limited sensitivity; extreme abnormalities may shift probability but do not diagnose/exclude sepsis alone.", "pearl": "Clinical trajectory and microbiology outweigh isolated screening-test abnormalities.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 9, "level": "Concept", "question": "Why is prematurity a major sepsis risk factor?", "options": ["Only because of lower body temperature", "Immature immunity plus greater exposure to invasive care/perinatal complications", "Because preterm infants cannot develop fever", "Because maternal antibiotics do not cross placenta"], "answer": 1, "explanation": "Prematurity combines immune immaturity with perinatal and invasive-care exposures.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 10, "level": "Concept", "question": "Why should routine broad-spectrum cephalosporin exposure be minimized in uncomplicated EOS?", "options": ["It has no Gram-negative activity", "Stewardship and resistance/ecologic concerns; narrower regimens are usually adequate", "It cannot enter blood", "It always causes meningitis"], "answer": 1, "explanation": "Routine unnecessary broad-spectrum cephalosporin use promotes resistance/ecologic harm and is usually unnecessary for standard EOS.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 11, "level": "Concept", "question": "Which statement best describes inflammatory markers?", "options": ["They replace cultures", "Serial trends can support decisions, but isolated values are not diagnostic", "One elevated CRP proves sepsis", "One normal PCT proves no sepsis"], "answer": 1, "explanation": "Inflammatory markers are adjuncts; serial trends are more useful than isolated values.", "pearl": "Clinical trajectory and microbiology outweigh isolated screening-test abnormalities.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 12, "level": "Concept", "question": "Why is urine culture more important in LOS than EOS?", "options": ["UTI becomes a more relevant source after the immediate perinatal period", "Urine is sterile after 72 h", "Blood culture is useless in LOS", "EOS is always viral"], "answer": 0, "explanation": "UTI is a more relevant source in late-onset illness than immediate perinatal EOS.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 13, "level": "Concept", "question": "A neonate with suspected meningitis is in shock. The best principle is:", "options": ["LP before any treatment regardless of instability", "Stabilize and start antibiotics; LP when safe", "Never perform LP", "Wait for CRP before antibiotics"], "answer": 1, "explanation": "Shock stabilization and antibiotics take priority; LP follows when safe.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 14, "level": "Clinical", "question": "A 31-week infant is born after 24 h ROM and maternal fever. At 1 h the infant has apnea and poor perfusion. Best next step?", "options": ["Observe for 24 h without tests", "Blood culture + prompt empiric antibiotics after immediate stabilization", "CRP only", "EOS calculator only"], "answer": 1, "explanation": "This preterm symptomatic infant has high EOS risk and requires culture plus prompt empiric treatment.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}, {"num": 15, "level": "Clinical", "question": "A 39-week well infant has a maternal EOS risk factor but remains asymptomatic. Which approach is reasonable in an appropriate setting?", "options": ["Automatic 7-day antibiotics", "Structured risk assessment/serial physical examination", "Ignore all maternal history", "Routine LP"], "answer": 1, "explanation": "Well term infants can be managed using structured risk assessment/serial examinations in appropriate settings.", "pearl": "Identify the decision-changing clue rather than treating every abnormality as equally important.", "why": "This is a high-frequency stewardship/diagnostic reasoning principle."}];
+let idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],startedAt=new Date();
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function render(){
+ const q=quiz[idx];
+ document.getElementById('progress').style.width=`${(idx/quiz.length)*100}%`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})`;
+ document.getElementById('score').textContent=`Score: ${score}`;
+ document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('card').innerHTML=`
+ <div class="badge">${esc(q.level)}</div>
+ <div class="q">Q${q.num}. ${esc(q.question)}</div>
+ ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
+ <div id="feedback" class="feedback"></div>
+ <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button><button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
+ checked=false;
+}
+function mainAction(){if(!checked)submitAnswer();else next();}
+function submitAnswer(){
+ const selected=document.querySelector('input[name="answer"]:checked');
+ if(!selected){alert('Please select an answer first.');return;}
+ const q=quiz[idx],chosen=Number(selected.value),correct=chosen===q.answer;
+ checked=true;if(correct){score+=4;correctCount++;}else{score-=1;wrongCount++;}
+ answers.push({...q,chosen,correct});
+ document.querySelectorAll('input[name="answer"]').forEach(x=>x.disabled=true);
+ document.getElementById(`opt-${q.answer}`).classList.add('correct');
+ if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
+ const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
+ fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>`;
+ document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('mainBtn').textContent=idx===quiz.length-1?'Finish Quiz':'Next Question';
+}
+function next(){if(idx<quiz.length-1){idx++;render();}else showSummary(false);}
+function finishEarly(){if(confirm(`Finish now? You have attempted ${answers.length} question(s).`))showSummary(true);}
+function fileTimestamp(){
+ const d=new Date(), p=n=>String(n).padStart(2,'0');
+ return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+function reportBaseName(){
+ return `Day3_QuizSet1_Q1-15_${fileTimestamp()}_Wrong_Answers`;
+}
+function duration(){const s=Math.round((new Date()-startedAt)/1000);return `${Math.floor(s/60)}m ${s%60}s`;}
+function reportBody(){
+ const wrong=answers.filter(a=>!a.correct);let s=`<h1>Day 3 Quiz 1 — Wrong Answer Report</h1><p><b>Questions:</b> 1–15</p><p><b>Score:</b> ${score} / ${answers.length*4} &nbsp; <b>Correct:</b> ${correctCount} &nbsp; <b>Wrong:</b> ${wrongCount}</p>`;
+ if(!wrong.length)s+='<p>No wrong answers.</p>';
+ wrong.forEach((a,n)=>s+=`<hr><h2>${n+1}. Q${a.num}. ${esc(a.question)}</h2><p><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}</p><p><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}</p><p><b>Explanation:</b> ${esc(a.explanation)}</p><p><b>Exam pearl:</b> ${esc(a.pearl||'')}</p>`);
+ return s;
+}
+function downloadWord(){
+ const blob=new Blob([`<!doctype html><html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial">${reportBody()}</body></html>`],{type:'application/msword'});
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=reportBaseName()+'.doc';a.click();URL.revokeObjectURL(u);
+}
+function printPDF(){
+ const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+}
+function showSummary(early){
+ document.getElementById('progress').style.width='100%';
+ const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
+ document.getElementById('counter').textContent='Completed';
+ document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 1 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.</p>
+ <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
+ <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
+ ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
+ <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
+}
+render();
+</script></body></html>
