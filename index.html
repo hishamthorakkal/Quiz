@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEET-SS + ICP Interactive Quiz</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root {
+ --bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;
+ --blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;
+ --red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 48px}
+h1{margin:0 0 8px;font-size:26px}
+.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
+.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label.lbl{font-weight:700;font-size:14px}
+input[type=text],input[type=email]{width:100%;margin-top:6px;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+.rulebox{margin:16px 0;background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:14px;line-height:1.55}
+button{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px}
+.primary{background:var(--blue);color:#fff}
+.primary:hover{background:var(--blue2)}
+.secondary{background:#e2e8f0;color:#1e293b}
+.danger{background:#fee2e2;color:#991b1b}
+.progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}
+.progress{height:100%;background:var(--blue);width:0%;transition:.25s}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
+.q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}
+.option{display:block;border:1.5px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;cursor:pointer;background:#fff}
+.option:hover{border-color:#9db6ea;background:#f8fbff}
+.option.correct{border-color:var(--green);background:var(--greenbg);color:#14532d;font-weight:650}
+.option.wrong{border-color:var(--red);background:var(--redbg);color:#7f1d1d;font-weight:650}
+.option input{margin-right:10px;transform:scale(1.15)}
+.feedback{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}
+.feedback.correct{display:block;background:var(--greenbg);border:1px solid #86efac;color:#14532d}
+.feedback.wrong{display:block;background:var(--redbg);border:1px solid #fca5a5;color:#7f1d1d}
+.explain{margin-top:10px;background:#f8fafc;border-left:4px solid #94a3b8;padding:12px;border-radius:7px;color:#273449}
+.pearl{margin-top:10px;background:var(--amberbg);color:var(--amber);padding:11px;border-radius:8px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+.stat{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.stat strong{display:block;font-size:24px}
+.wrongitem{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:14px;margin:12px 0;line-height:1.5}
+.good{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;margin-top:14px}
+.small{font-size:13px;color:var(--muted)}
+.hidden{display:none}
+@media(max-width:650px){.start-grid,.stats{grid-template-columns:1fr}.q{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>NEET-SS + ICP Paediatrics — Interactive MCQ</h1>
+  <div class="sub">Day 4: Prematurity + ELBW/VLBW + Thermoregulation + Apnea of Prematurity</div>
+
+  <div class="card" id="startScreen">
+    <h2 style="margin-top:0">Candidate details</h2>
+    <div class="start-grid">
+      <div>
+        <label class="lbl">Name
+          <input id="studentName" type="text" placeholder="Enter candidate name">
+        </label>
+      </div>
+      <div>
+        <label class="lbl">Email / ID (optional)
+          <input id="studentId" type="email" placeholder="Email or candidate ID">
+        </label>
+      </div>
+    </div>
+    <div class="rulebox">
+      <b>Marking:</b> +4 for each correct answer, −1 for each wrong answer, 0 for unanswered.<br>
+      <b>Feedback:</b> Answer and explanation appear immediately after submission.<br>
+      <b>Reports:</b> Word and PDF wrong-answer reports are available at the end.
+    </div>
+    <button class="primary" onclick="startQuiz()">Start Sample Quiz</button>
+  </div>
+
+  <div id="quizArea" class="hidden">
+    <div class="progress-shell"><div class="progress" id="progress"></div></div>
+    <div class="topline">
+      <span id="counter"></span>
+      <span id="liveScore"></span>
+      <span id="answeredCount"></span>
+    </div>
+    <div class="card" id="card"></div>
+  </div>
+</div>
+
+<script>
+const quiz = [{"num": 1, "level": "Basic", "question": "Which infant meets the definition of ELBW?", "options": ["980 g at birth", "1180 g at birth", "1480 g at birth", "2480 g at birth"], "answer": 0, "explanation": "ELBW is defined as birth weight <1000 g regardless of gestational age. Therefore, 980 g is the only ELBW option.", "pearl": "Prematurity is defined by gestational age; LBW/VLBW/ELBW are defined by birth weight."}, {"num": 2, "level": "Basic", "question": "Which definition is correct?", "options": ["Very preterm = <34 weeks", "Extremely preterm = <32 weeks", "ELBW = <1500 g", "Very preterm = <32 weeks"], "answer": 3, "explanation": "Very preterm means <32 weeks. Extremely preterm means <28 weeks, while ELBW means birth weight <1000 g.", "pearl": "Keep gestational-age thresholds separate from birth-weight thresholds."}, {"num": 3, "level": "Basic", "question": "A conventional clinical definition of apnea of prematurity includes:", "options": ["Only pauses ≥30 s with cyanosis", "Any desaturation without a respiratory pause", "Breathing pause ≥20 s, or a shorter pause with bradycardia/desaturation", "Any pause ≥10 s regardless of physiology"], "answer": 2, "explanation": "AOP is conventionally a respiratory pause ≥20 seconds, or a shorter pause associated with clinically important bradycardia, desaturation, cyanosis, or pallor.", "pearl": "Physiologic consequence matters; a pause can be clinically important even when shorter than 20 seconds."}];
+let idx=0, score=0, correctCount=0, wrongCount=0, checked=false, startedAt=null;
+let answers=[];
+const RESULTS_ENDPOINT = ""; 
+// Optional: paste a Google Apps Script / webhook endpoint above.
+// When configured, the final result JSON will be POSTed automatically.
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+function startQuiz() {
+  const name=document.getElementById('studentName').value.trim();
+  if(!name){alert('Please enter the candidate name.');return;}
+  startedAt=new Date();
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('quizArea').classList.remove('hidden');
+  renderQuestion();
+}
+function renderQuestion() {
+  checked=false;
+  const q=quiz[idx];
+  document.getElementById('progress').style.width=`${(idx/quiz.length)*100}%`;
+  document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length}`;
+  document.getElementById('liveScore').textContent=`Score: ${score}`;
+  document.getElementById('answeredCount').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+  document.getElementById('card').innerHTML=`
+    <div class="badge">${esc(q.level)}</div>
+    <div class="q">Q${q.num}. ${esc(q.question)}</div>
+    <div>
+      ${q.options.map((o,i)=>`
+      <label class="option" id="opt-${i}">
+        <input type="radio" name="answer" value="${i}"> <b>${String.fromCharCode(65+i)}.</b> ${esc(o)}
+      </label>`).join('')}
+    </div>
+    <div id="feedback" class="feedback"></div>
+    <div class="actions">
+      <button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button>
+    </div>`;
+}
+function mainAction() {
+  if(!checked) submitAnswer(); else nextQuestion();
+}
+function submitAnswer() {
+  const selected=document.querySelector('input[name="answer"]:checked');
+  if(!selected){alert('Please select an answer first.');return;}
+  const q=quiz[idx];
+  const chosen=Number(selected.value);
+  const correct=chosen===q.answer;
+  checked=true;
+
+  if(correct){score+=4;correctCount++;} else {score-=1;wrongCount++;}
+  answers.push({num:q.num,question:q.question,options:q.options,chosen,answer:q.answer,correct,explanation:q.explanation,pearl:q.pearl});
+
+  document.querySelectorAll('input[name="answer"]').forEach(x=>x.disabled=true);
+  document.getElementById(`opt-${q.answer}`).classList.add('correct');
+  if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
+
+  const fb=document.getElementById('feedback');
+  fb.className=`feedback ${correct?'correct':'wrong'}`;
+  fb.innerHTML=`
+    <strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>
+    ${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}
+    <div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div>
+    <div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl)}</div>`;
+  document.getElementById('liveScore').textContent=`Score: ${score}`;
+  document.getElementById('answeredCount').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+  document.getElementById('mainBtn').textContent=idx===quiz.length-1?'Finish Quiz':'Next Question';
+}
+function nextQuestion(){
+  if(idx<quiz.length-1){idx++;renderQuestion();}else showSummary();
+}
+function durationText(){
+  const sec=Math.round((new Date()-startedAt)/1000);
+  return `${Math.floor(sec/60)}m ${sec%60}s`;
+}
+function getResultPayload(){
+  return {
+    candidate_name:document.getElementById('studentName').value.trim(),
+    candidate_id:document.getElementById('studentId').value.trim(),
+    quiz:"Day 4 — Prematurity + ELBW/VLBW + Thermoregulation + AOP",
+    total_questions:quiz.length,
+    correct:correctCount,
+    wrong:wrongCount,
+    score:score,
+    maximum_score:quiz.length*4,
+    percentage:Math.round((score/(quiz.length*4))*10000)/100,
+    duration:durationText(),
+    completed_at:new Date().toISOString(),
+    answers:answers
+  };
+}
+async function submitResults(){
+  if(!RESULTS_ENDPOINT)return;
+  try{
+    await fetch(RESULTS_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(getResultPayload())});
+  }catch(e){console.warn('Result submission failed',e);}
+}
+function showSummary(){
+  document.getElementById('progress').style.width='100%';
+  document.getElementById('counter').textContent='Completed';
+  const wrong=answers.filter(a=>!a.correct);
+  const max=quiz.length*4;
+  const pct=Math.round((score/max)*10000)/100;
+  document.getElementById('card').innerHTML=`
+    <h2 style="margin-top:0">Final Result</h2>
+    <p><b>Candidate:</b> ${esc(document.getElementById('studentName').value)}</p>
+    <div class="stats">
+      <div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div>
+      <div class="stat"><strong>${correctCount}</strong><span>Correct</span></div>
+      <div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div>
+      <div class="stat"><strong>${pct}%</strong><span>Percentage</span></div>
+    </div>
+    <p><b>Time:</b> ${durationText()}</p>
+    <h3>Wrong-answer review</h3>
+    ${wrong.length?wrong.map((a,n)=>`
+      <div class="wrongitem">
+        <b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br>
+        <b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br>
+        <b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}
+        <div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div>
+        <div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl)}</div>
+      </div>`).join(''):`<div class="good"><b>Excellent.</b> No wrong answers in this sample.</div>`}
+    <div class="actions">
+      <button class="secondary" onclick="downloadWord()">Download Word Report</button>
+      <button class="secondary" onclick="downloadPDF()">Download PDF Report</button>
+      <button class="primary" onclick="location.reload()">Retake Quiz</button>
+    </div>
+    <p class="small">${RESULTS_ENDPOINT?'Result submission is enabled.':'Result submission is currently disabled. Add a Google Apps Script/webhook URL to RESULTS_ENDPOINT to collect results centrally.'}</p>`;
+  submitResults();
+}
+function reportHTML(){
+  const r=getResultPayload(), wrong=answers.filter(a=>!a.correct);
+  let s=`<h1>NEET-SS + ICP Paediatrics — Wrong Answer Report</h1>
+  <p><b>Candidate:</b> ${esc(r.candidate_name)}</p>
+  <p><b>ID/Email:</b> ${esc(r.candidate_id||'-')}</p>
+  <p><b>Score:</b> ${r.score} / ${r.maximum_score} &nbsp; <b>Correct:</b> ${r.correct} &nbsp; <b>Wrong:</b> ${r.wrong}</p>
+  <p><b>Duration:</b> ${esc(r.duration)}</p>`;
+  if(!wrong.length)s+=`<p>No wrong answers.</p>`;
+  wrong.forEach((a,n)=>{
+    s+=`<hr><h2>${n+1}. Q${a.num}. ${esc(a.question)}</h2>
+    <p><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}</p>
+    <p><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}</p>
+    <p><b>Explanation:</b> ${esc(a.explanation)}</p>
+    <p><b>Exam pearl:</b> ${esc(a.pearl)}</p>`;
+  });
+  return s;
+}
+function downloadWord(){
+  const doc=`<!doctype html><html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial;font-size:11pt">${reportHTML()}</body></html>`;
+  const blob=new Blob([doc],{type:'application/msword'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='NEET_SS_Wrong_Answer_Report.doc';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function downloadPDF(){
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF({unit:'pt',format:'a4'});
+  const r=getResultPayload(), wrong=answers.filter(a=>!a.correct);
+  let y=44;
+  const line=(txt,size=10,bold=false)=>{
+    pdf.setFont('helvetica',bold?'bold':'normal');pdf.setFontSize(size);
+    const lines=pdf.splitTextToSize(txt,510);
+    if(y+lines.length*14>790){pdf.addPage();y=44;}
+    pdf.text(lines,42,y);y+=lines.length*14+6;
+  };
+  line('NEET-SS + ICP Paediatrics — Wrong Answer Report',16,true);
+  line(`Candidate: ${r.candidate_name}`,11,true);
+  line(`Score: ${r.score} / ${r.maximum_score} | Correct: ${r.correct} | Wrong: ${r.wrong} | Time: ${r.duration}`,10);
+  if(!wrong.length)line('No wrong answers.',11,true);
+  wrong.forEach((a,n)=>{
+    y+=8;line(`${n+1}. Q${a.num}. ${a.question}`,11,true);
+    line(`Your answer: ${String.fromCharCode(65+a.chosen)}. ${a.options[a.chosen]}`);
+    line(`Correct answer: ${String.fromCharCode(65+a.answer)}. ${a.options[a.answer]}`);
+    line(`Explanation: ${a.explanation}`);
+    line(`Exam pearl: ${a.pearl}`);
+  });
+  pdf.save('NEET_SS_Wrong_Answer_Report.pdf');
+}
+</script>
+</body>
+</html>
