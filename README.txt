@@ -3,13 +3,7 @@ NEET-SS MULTI-DAY QUIZ
 Folder structure:
 
 index.html
-Day3/
-  index.html
-  quiz1.html
-  quiz2.html
-  quiz3.html
-  quiz4.html
-Day4/
+Day5/
   index.html
   quiz1.html
   quiz2.html
@@ -18,7 +12,6 @@ Day4/
   quiz5.html
 
 Future days should be added as separate folders:
-Day5/
 Day6/
 Day7/
 ...
