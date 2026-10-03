@@ -1,0 +1,107 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cumulative Mock Quiz 9 — Q121–Q135</title><style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;--red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
+h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}.progress{height:100%;background:var(--blue);transition:.25s}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
+.q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}.option{display:block;border:1.5px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;cursor:pointer;background:#fff}
+.option:hover{border-color:#9db6ea;background:#f8fbff}.option.correct{border-color:var(--green);background:var(--greenbg);color:#14532d;font-weight:650}.option.wrong{border-color:var(--red);background:var(--redbg);color:#7f1d1d;font-weight:650}
+.option input{margin-right:10px;transform:scale(1.15)}.feedback{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}
+.feedback.correct{display:block;background:var(--greenbg);border:1px solid #86efac;color:#14532d}.feedback.wrong{display:block;background:var(--redbg);border:1px solid #fca5a5;color:#7f1d1d}
+.explain{margin-top:10px;background:#f8fafc;border-left:4px solid #94a3b8;padding:12px;border-radius:7px;color:#273449}.pearl{margin-top:10px;background:var(--amberbg);color:var(--amber);padding:11px;border-radius:8px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}button,.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block}
+.primary{background:var(--blue);color:#fff}.primary:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}.stat strong{display:block;font-size:24px}
+.wrongitem{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:14px;margin:12px 0;line-height:1.5}.good{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;margin-top:14px}
+.homegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.quizcard{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}.quizcard h2{margin:0 0 7px;font-size:19px}.small{font-size:13px;color:var(--muted)}
+@media(max-width:650px){.stats,.homegrid{grid-template-columns:1fr}.q{font-size:18px}}
+</style></head>
+<body><div class="wrap">
+<h1>Cumulative Mock — Quiz 9</h1>
+<div class="sub">Questions 121–135 · 15 MCQs · +4 correct / −1 wrong</div>
+<div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
+<div class="topline"><span id="counter"></span><span id="score"></span><span id="counts"></span></div>
+<div class="card" id="card"></div>
+</div>
+<script>
+const quiz=[{"num": 121, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Clinical", "question": "A 2-day-old preterm infant develops temperature instability, poor perfusion and increasing apnea. What must be urgently considered?", "options": ["Physiologic jaundice only", "Early-onset neonatal sepsis", "Infantile colic", "Normal transition"], "answer": 1, "explanation": "Neonatal sepsis often presents nonspecifically with temperature instability, apnea, feeding intolerance and perfusion abnormalities.", "pearl": "In neonates, subtle deterioration can be sepsis.", "srcAnswer": "A"}, {"num": 122, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Conceptual", "question": "Which statement about neonatal sepsis is most accurate?", "options": ["A single negative culture always excludes sepsis", "Fever is mandatory", "A normal CRP excludes infection", "Clinical manifestations are often nonspecific"], "answer": 3, "explanation": "Neonatal sepsis can present subtly and no single clinical or laboratory feature is perfectly sensitive.", "pearl": "Use serial clinical assessment plus microbiology and biomarkers.", "srcAnswer": "A"}, {"num": 123, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Clinical", "question": "A stable neonate is about to start antibiotics for suspected sepsis. Which investigation should be obtained before the first dose when this does not delay treatment?", "options": ["Stool culture only", "Serum bilirubin only", "Cranial ultrasound", "Blood culture"], "answer": 3, "explanation": "Blood culture is the microbiologic gold standard and should be obtained before antibiotics when feasible.", "pearl": "Culture first, but never create a dangerous treatment delay.", "srcAnswer": "A"}, {"num": 124, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · High", "question": "A baby has strong clinical suspicion of neonatal infection and is stable enough for lumbar puncture. According to current NICE guidance, what is the best approach?", "options": ["Delay antibiotics until MRI is complete", "Never perform LP before 7 days of antibiotics", "Use CRP instead of CSF", "Perform LP before antibiotics if safe and without clinically significant delay"], "answer": 3, "explanation": "NICE recommends LP when strong suspicion or meningitis signs exist, if safe; stabilization takes priority and antibiotics should not be dangerously delayed.", "pearl": "LP is valuable, but airway, breathing, shock, seizures and bleeding risk come first.", "srcAnswer": "A"}, {"num": 125, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Clinical", "question": "A neonate with suspected meningitis is in shock and having uncontrolled seizures. What should happen before lumbar puncture?", "options": ["Stabilize shock, airway/breathing and seizures", "Give oral antibiotics and discharge", "Perform LP immediately regardless of instability", "Wait for CRP to normalize"], "answer": 0, "explanation": "Current guidance specifies stabilization of respiratory compromise, shock, uncontrolled seizures and bleeding risk before LP.", "pearl": "LP should never destabilize a critically ill infant.", "srcAnswer": "A"}, {"num": 126, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · High", "question": "For suspected early-onset neonatal infection, which empiric regimen is first choice in NICE guidance unless local resistance patterns dictate otherwise?", "options": ["Ceftriaxone monotherapy", "Oral amoxicillin only from birth", "IV benzylpenicillin plus gentamicin", "Vancomycin plus meropenem for all infants"], "answer": 2, "explanation": "NICE recommends IV benzylpenicillin plus gentamicin as first-choice empiric treatment for suspected early-onset infection, subject to local microbiology.", "pearl": "Empiric therapy should be narrow enough for stewardship but adequate for expected pathogens.", "srcAnswer": "A"}, {"num": 127, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · High", "question": "A baby treated empirically for early-onset infection is clinically well at 36 hours, blood culture is negative, initial suspicion was not strong and serial CRP is reassuring. Best next step under NICE guidance?", "options": ["Add vancomycin", "Perform exchange transfusion", "Continue 14 days automatically", "Stop antibiotics"], "answer": 3, "explanation": "NICE supports stopping empiric antibiotics at 36 hours when culture is negative, suspicion was not strong, clinical condition is reassuring and CRP trend is reassuring.", "pearl": "Do not convert a rule-out course into prolonged therapy without evidence.", "srcAnswer": "A"}, {"num": 128, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Conceptual", "question": "Why should a single CRP not be used to exclude neonatal sepsis?", "options": ["CRP is always elevated in healthy neonates", "CRP becomes positive before infection begins", "Its sensitivity and specificity are insufficient in isolation and timing matters", "CRP identifies the pathogen"], "answer": 2, "explanation": "A single inflammatory marker is imperfect; serial trends can support but do not replace clinical assessment and cultures.", "pearl": "Biomarkers modify probability; they do not replace microbiology.", "srcAnswer": "A"}, {"num": 129, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Clinical", "question": "A neonate with sepsis develops prolonged capillary refill, weak pulses and hypotension. What is the immediate management principle?", "options": ["Phototherapy only", "Discharge if temperature is normal", "Simultaneous stabilization of airway/breathing/circulation and prompt antimicrobial therapy", "Wait for culture identification before supporting circulation"], "answer": 2, "explanation": "Septic shock requires immediate physiologic stabilization alongside prompt antimicrobial treatment.", "pearl": "Resuscitation and antibiotics happen in parallel.", "srcAnswer": "A"}, {"num": 130, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · High", "question": "Blood culture grows an organism susceptible to a narrower agent than the empiric regimen. The infant is improving. Best stewardship step?", "options": ["De-escalate to targeted therapy when appropriate", "Continue all broad-spectrum agents indefinitely", "Stop all therapy immediately", "Add another antibiotic regardless of susceptibility"], "answer": 0, "explanation": "Culture-directed narrowing reduces unnecessary broad-spectrum exposure while maintaining effective therapy.", "pearl": "Start broad enough; finish as narrow as safely possible.", "srcAnswer": "A"}, {"num": 131, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Clinical", "question": "Which finding should heighten concern for neonatal meningitis in a septic infant?", "options": ["Transient sneezing", "Normal feeding", "Isolated hiccups", "Seizures or abnormal neurologic examination"], "answer": 3, "explanation": "Seizures, altered consciousness, bulging fontanelle or focal neurologic signs increase concern for CNS infection.", "pearl": "Meningitis may lack classic meningeal signs in neonates.", "srcAnswer": "A"}, {"num": 132, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Clinical", "question": "A neonate has CSF WBC elevation, low CSF glucose relative to blood glucose and high protein. Which diagnosis is most concerning?", "options": ["Uncomplicated physiologic transition", "Bacterial meningitis", "TTN", "Apnea of prematurity"], "answer": 1, "explanation": "Pleocytosis with low CSF glucose and high protein is concerning for bacterial meningitis in the appropriate clinical context.", "pearl": "Always interpret CSF glucose against a contemporaneous blood glucose.", "srcAnswer": "A"}, {"num": 133, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · High", "question": "Why should blood glucose be measured immediately before lumbar puncture in suspected neonatal meningitis?", "options": ["To diagnose RDS", "To decide whether blood culture is needed", "To calculate the CSF-to-blood glucose relationship", "To estimate bilirubin production"], "answer": 2, "explanation": "Current guidance recommends a contemporaneous blood glucose so the CSF glucose can be interpreted appropriately.", "pearl": "Absolute CSF glucose is less informative without the blood value.", "srcAnswer": "A"}, {"num": 134, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Clinical", "question": "A neonate with suspected sepsis has a blood culture drawn, then becomes rapidly unstable. What should be done?", "options": ["Wait for culture positivity", "Start empiric IV antibiotics immediately while continuing stabilization", "Repeat CRP every hour before treatment", "Delay therapy until LP is completed despite shock"], "answer": 1, "explanation": "In an unstable neonate, treatment must not be delayed for tests that cannot be safely completed immediately.", "pearl": "Diagnostics should not become a barrier to life-saving therapy.", "srcAnswer": "A"}, {"num": 135, "level": "Neonatal Sepsis / Meningitis / Antibiotic Principles · Conceptual", "question": "Which factor most increases the diagnostic yield of blood culture?", "options": ["Adequate blood volume collected before antibiotics", "Drawing from a contaminated surface", "Collecting after several antibiotic doses", "Using only CRP"], "answer": 0, "explanation": "Blood-culture sensitivity depends strongly on adequate sample volume and obtaining it before antimicrobial exposure.", "pearl": "Pre-analytic quality matters.", "srcAnswer": "A"}];
+let queue=quiz.map((_,i)=>i),idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],skipped=new Set(),startedAt=new Date();
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function render(){
+ idx=queue[0];const q=quiz[idx];
+ document.getElementById('progress').style.width=`${(answers.length/quiz.length)*100}%`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
+ document.getElementById('score').textContent=`Score: ${score}`;
+ document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('card').innerHTML=`
+ <div class="badge">${esc(q.level)}</div>${skipped.has(idx)?' <div class="badge" style="background:var(--amberbg);color:var(--amber)">Skipped earlier — answer now</div>':''}
+ <div class="q">Q${q.num}. ${esc(q.question)}</div>
+ ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
+ <div id="feedback" class="feedback"></div>
+ <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button>${queue.length>1?'<button class="secondary" id="skipBtn" onclick="skipQuestion()">Skip for Now</button>':''}<button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
+ checked=false;
+}
+function mainAction(){if(!checked)submitAnswer();else next();}
+function skipQuestion(){if(checked||queue.length<2)return;skipped.add(idx);queue.push(queue.shift());render();}
+function submitAnswer(){
+ const selected=document.querySelector('input[name="answer"]:checked');
+ if(!selected){alert('Please select an answer first.');return;}
+ const q=quiz[idx],chosen=Number(selected.value),correct=chosen===q.answer;
+ checked=true;skipped.delete(idx);const sb=document.getElementById('skipBtn');if(sb)sb.remove();if(correct){score+=4;correctCount++;}else{score-=1;wrongCount++;}
+ answers.push({...q,chosen,correct});
+ document.querySelectorAll('input[name="answer"]').forEach(x=>x.disabled=true);
+ document.getElementById(`opt-${q.answer}`).classList.add('correct');
+ if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
+ const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
+ fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>`;
+ document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
+ document.getElementById('mainBtn').textContent=queue.length===1?'Finish Quiz':skipped.has(queue[1])?'Next (Skipped) Question':'Next Question';
+}
+function next(){queue.shift();if(queue.length)render();else showSummary(false);}
+function finishEarly(){const left=quiz.length-answers.length;if(confirm(`Finish now? You have attempted ${answers.length} question(s).${left?` ${left} unanswered question(s)${skipped.size?` (including ${skipped.size} skipped)`:''} will score 0.`:''}`))showSummary(true);}
+function fileTimestamp(){
+ const d=new Date(), p=n=>String(n).padStart(2,'0');
+ return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+function reportBaseName(){
+ return `Mock_Day1-5_QuizSet9_Q121-135_${fileTimestamp()}_Wrong_Answers`;
+}
+function duration(){const s=Math.round((new Date()-startedAt)/1000);return `${Math.floor(s/60)}m ${s%60}s`;}
+function reportBody(){
+ const wrong=answers.filter(a=>!a.correct);let s=`<h1>Cumulative Mock Quiz 9 — Wrong Answer Report</h1><p><b>Questions:</b> 121–135</p><p><b>Score:</b> ${score} / ${answers.length*4} &nbsp; <b>Correct:</b> ${correctCount} &nbsp; <b>Wrong:</b> ${wrongCount}</p>`;
+ if(!wrong.length)s+='<p>No wrong answers.</p>';
+ wrong.forEach((a,n)=>s+=`<hr><h2>${n+1}. Q${a.num}. ${esc(a.question)}</h2><p><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}</p><p><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}</p><p><b>Explanation:</b> ${esc(a.explanation)}</p><p><b>Exam pearl:</b> ${esc(a.pearl||'')}</p>`);
+ return s;
+}
+function downloadWord(){
+ const blob=new Blob([`<!doctype html><html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial">${reportBody()}</body></html>`],{type:'application/msword'});
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=reportBaseName()+'.doc';a.click();URL.revokeObjectURL(u);
+}
+function printPDF(){
+ const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+}
+let notified=false;
+function notifyResult(attempted,max,pct,early){
+ if(notified)return;notified=true;
+ const msg=[`Total questions: ${quiz.length}`,`Attempted: ${attempted}`,`Score: ${score} / ${max}`,`Correct: ${correctCount}`,`Wrong: ${wrongCount}`,`Skipped (unanswered): ${skipped.size}`,`Not reached: ${quiz.length-attempted-skipped.size}`,`Percentage: ${pct}%`,`Time: ${duration()}`].join('\n');
+ const title=`${document.title}${early?' (finished early)':''}`;
+ fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=memo`,{method:'POST',body:msg}).catch(()=>{});
+}
+function showSummary(early){
+ document.getElementById('progress').style.width='100%';answers.sort((a,b)=>a.num-b.num);
+ const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
+ notifyResult(attempted,max,pct,early);
+ document.getElementById('counter').textContent='Completed';
+ document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 9 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.${skipped.size?` Skipped and not answered: ${skipped.size}.`:''}</p>
+ <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
+ <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
+ ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
+ <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
+}
+render();
+</script></body></html>

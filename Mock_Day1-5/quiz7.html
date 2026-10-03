@@ -1,0 +1,107 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cumulative Mock Quiz 7 — Q91–Q105</title><style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;--red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
+h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}.progress{height:100%;background:var(--blue);transition:.25s}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
+.q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}.option{display:block;border:1.5px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;cursor:pointer;background:#fff}
+.option:hover{border-color:#9db6ea;background:#f8fbff}.option.correct{border-color:var(--green);background:var(--greenbg);color:#14532d;font-weight:650}.option.wrong{border-color:var(--red);background:var(--redbg);color:#7f1d1d;font-weight:650}
+.option input{margin-right:10px;transform:scale(1.15)}.feedback{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}
+.feedback.correct{display:block;background:var(--greenbg);border:1px solid #86efac;color:#14532d}.feedback.wrong{display:block;background:var(--redbg);border:1px solid #fca5a5;color:#7f1d1d}
+.explain{margin-top:10px;background:#f8fafc;border-left:4px solid #94a3b8;padding:12px;border-radius:7px;color:#273449}.pearl{margin-top:10px;background:var(--amberbg);color:var(--amber);padding:11px;border-radius:8px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}button,.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block}
+.primary{background:var(--blue);color:#fff}.primary:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}.stat strong{display:block;font-size:24px}
+.wrongitem{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:14px;margin:12px 0;line-height:1.5}.good{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;margin-top:14px}
+.homegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.quizcard{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}.quizcard h2{margin:0 0 7px;font-size:19px}.small{font-size:13px;color:var(--muted)}
+@media(max-width:650px){.stats,.homegrid{grid-template-columns:1fr}.q{font-size:18px}}
+</style></head>
+<body><div class="wrap">
+<h1>Cumulative Mock — Quiz 7</h1>
+<div class="sub">Questions 91–105 · 15 MCQs · +4 correct / −1 wrong</div>
+<div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
+<div class="topline"><span id="counter"></span><span id="score"></span><span id="counts"></span></div>
+<div class="card" id="card"></div>
+</div>
+<script>
+const quiz=[{"num": 91, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Basic", "question": "Very low birth weight (VLBW) is defined as birth weight:", "options": ["<1000 g", "<2000 g", "<2500 g", "<1500 g"], "answer": 3, "explanation": "VLBW is birth weight below 1500 g.", "pearl": "VLBW <1500 g; ELBW <1000 g.", "srcAnswer": "C"}, {"num": 92, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Basic", "question": "Extremely low birth weight (ELBW) is defined as birth weight:", "options": ["<750 g", "<1500 g", "<1000 g", "<1250 g"], "answer": 2, "explanation": "ELBW is birth weight below 1000 g.", "pearl": "Keep the 1500/1000 g distinction clear.", "srcAnswer": "C"}, {"num": 93, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Conceptual", "question": "Why are extremely preterm infants especially prone to hypothermia?", "options": ["Low evaporative loss", "Excess brown fat and thick skin", "High glycogen stores", "Large surface-area-to-mass ratio, thin skin and low fat stores"], "answer": 3, "explanation": "Large surface area, immature skin barrier, low subcutaneous fat and limited thermal reserves increase heat loss.", "pearl": "Preterm infants lose heat by evaporation, convection, conduction and radiation.", "srcAnswer": "A"}, {"num": 94, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Clinical", "question": "A 26-week infant is delivered in a cold room. Which immediate intervention most effectively reduces evaporative heat loss?", "options": ["Delay thermal care until after weighing", "Place in polyethylene wrap/bag under radiant heat with appropriate thermal measures", "Dry completely and leave uncovered", "Cold saline wipe"], "answer": 1, "explanation": "Plastic wrapping/bagging without drying the very preterm skin, combined with radiant heat and other measures, reduces evaporative loss.", "pearl": "Thermal protection begins before NICU admission.", "srcAnswer": "B"}, {"num": 95, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Conceptual", "question": "Cold stress increases neonatal risk of:", "options": ["Reduced metabolic demand", "Hyperglycemia only", "Improved surfactant function", "Higher oxygen and glucose consumption"], "answer": 3, "explanation": "Non-shivering thermogenesis consumes oxygen and glucose, increasing risk of hypoxemia, hypoglycemia and metabolic acidosis.", "pearl": "Hypothermia is a metabolic emergency in a tiny preterm infant.", "srcAnswer": "A"}, {"num": 96, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Clinical", "question": "A 29-week infant has recurrent pauses of 22 seconds with bradycardia and desaturation. Sepsis, glucose and electrolytes are normal. Most likely diagnosis?", "options": ["Tet spell", "Breath-holding spell", "Central hypoventilation syndrome by default", "Apnea of prematurity"], "answer": 3, "explanation": "Apnea of prematurity reflects immature respiratory control after secondary causes are excluded.", "pearl": "Apnea of prematurity is a diagnosis of context and exclusion.", "srcAnswer": "A"}, {"num": 97, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Clinical", "question": "A preterm infant has a brief apneic episode with bradycardia. What is the first bedside response?", "options": ["Immediate exchange transfusion", "Start chest compressions regardless of HR", "Phenobarbital bolus", "Gentle stimulation and assessment of airway/breathing"], "answer": 3, "explanation": "Initial management is stimulation and airway/breathing assessment; PPV is used if the infant does not recover promptly.", "pearl": "Escalate support according to response.", "srcAnswer": "A"}, {"num": 98, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Clinical", "question": "Which drug is first-line pharmacologic therapy for recurrent clinically significant apnea of prematurity?", "options": ["Phenobarbital", "Caffeine citrate", "Furosemide", "Indomethacin"], "answer": 1, "explanation": "Caffeine is preferred for apnea of prematurity because it stimulates respiratory drive and has a favorable therapeutic profile.", "pearl": "Caffeine treats respiratory-control immaturity, not every cause of apnea.", "srcAnswer": "A"}, {"num": 99, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · High", "question": "A 28-week infant on caffeine develops a sudden increase in apnea frequency, abdominal distension and temperature instability. Best next step?", "options": ["Increase caffeine and assume maturation issue", "Evaluate urgently for secondary illness such as sepsis or NEC", "Stop monitoring", "Start oral feeds rapidly"], "answer": 1, "explanation": "A change in apnea pattern with systemic signs suggests an acquired illness rather than uncomplicated apnea of prematurity.", "pearl": "New apnea is often a symptom, not a diagnosis.", "srcAnswer": "B"}, {"num": 100, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Conceptual", "question": "Caffeine improves apnea of prematurity mainly by:", "options": ["Closing the ductus arteriosus", "Causing neuromuscular paralysis", "Blocking surfactant secretion", "Antagonizing adenosine receptors and increasing respiratory drive"], "answer": 3, "explanation": "Methylxanthines antagonize adenosine receptors and stimulate central respiratory activity.", "pearl": "Know why caffeine works, not just that it works.", "srcAnswer": "A"}, {"num": 101, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Clinical", "question": "A preterm infant has recurrent desaturation with neck flexion and poor positioning. Best first intervention?", "options": ["Optimize airway position before escalating medication", "Give antibiotics solely for positioning-related events", "Double caffeine immediately", "Intubate without assessment"], "answer": 0, "explanation": "Upper-airway obstruction from positioning can mimic/worsen apnea and should be corrected first.", "pearl": "Not all monitor alarms are central apnea.", "srcAnswer": "A"}, {"num": 102, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Conceptual", "question": "Which feature is more typical of mixed apnea than pure central apnea?", "options": ["Continuous airflow with no effort", "Normal breathing throughout", "Only tachypnea", "Central pause followed or preceded by obstructive respiratory effort"], "answer": 3, "explanation": "Mixed apnea contains both central and obstructive components and is common in preterm infants.", "pearl": "Look at airflow and respiratory effort together.", "srcAnswer": "A"}, {"num": 103, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Clinical", "question": "A 27-week infant has frequent apnea despite caffeine and optimized non-invasive support. Blood gas shows rising PaCO2 and repeated PPV is required. Best next principle?", "options": ["Stop caffeine and all support", "Give diuretics as sole treatment", "Continue observation regardless of severity", "Escalate respiratory support after reassessing secondary causes"], "answer": 3, "explanation": "Recurrent severe events with ventilatory failure despite therapy may require escalation after excluding secondary causes.", "pearl": "Apnea treatment is a ladder: cause -> stimulation -> caffeine/NRS -> escalation if failing.", "srcAnswer": "A"}, {"num": 104, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · High", "question": "A preterm infant is being considered for caffeine discontinuation. Which factor is most important?", "options": ["Whether the infant is formula fed", "Serum bilirubin only", "Maturity and sustained absence of clinically significant apnea rather than chronological age alone", "Birth weight alone"], "answer": 2, "explanation": "Caffeine is generally stopped when respiratory control has matured and significant events have resolved, with unit-specific observation.", "pearl": "Clinical stability matters more than a single calendar cutoff.", "srcAnswer": "A"}, {"num": 105, "level": "Prematurity / ELBW-VLBW / Thermoregulation / Apnea · Conceptual", "question": "Which mode of heat loss occurs when an infant lies on a cold weighing scale?", "options": ["Convection", "Radiation", "Conduction", "Evaporation"], "answer": 2, "explanation": "Direct contact with a colder surface causes conductive heat loss.", "pearl": "Contact = conduction.", "srcAnswer": "A"}];
+let queue=quiz.map((_,i)=>i),idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],skipped=new Set(),startedAt=new Date();
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function render(){
+ idx=queue[0];const q=quiz[idx];
+ document.getElementById('progress').style.width=`${(answers.length/quiz.length)*100}%`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
+ document.getElementById('score').textContent=`Score: ${score}`;
+ document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('card').innerHTML=`
+ <div class="badge">${esc(q.level)}</div>${skipped.has(idx)?' <div class="badge" style="background:var(--amberbg);color:var(--amber)">Skipped earlier — answer now</div>':''}
+ <div class="q">Q${q.num}. ${esc(q.question)}</div>
+ ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
+ <div id="feedback" class="feedback"></div>
+ <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button>${queue.length>1?'<button class="secondary" id="skipBtn" onclick="skipQuestion()">Skip for Now</button>':''}<button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
+ checked=false;
+}
+function mainAction(){if(!checked)submitAnswer();else next();}
+function skipQuestion(){if(checked||queue.length<2)return;skipped.add(idx);queue.push(queue.shift());render();}
+function submitAnswer(){
+ const selected=document.querySelector('input[name="answer"]:checked');
+ if(!selected){alert('Please select an answer first.');return;}
+ const q=quiz[idx],chosen=Number(selected.value),correct=chosen===q.answer;
+ checked=true;skipped.delete(idx);const sb=document.getElementById('skipBtn');if(sb)sb.remove();if(correct){score+=4;correctCount++;}else{score-=1;wrongCount++;}
+ answers.push({...q,chosen,correct});
+ document.querySelectorAll('input[name="answer"]').forEach(x=>x.disabled=true);
+ document.getElementById(`opt-${q.answer}`).classList.add('correct');
+ if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
+ const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
+ fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>`;
+ document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
+ document.getElementById('mainBtn').textContent=queue.length===1?'Finish Quiz':skipped.has(queue[1])?'Next (Skipped) Question':'Next Question';
+}
+function next(){queue.shift();if(queue.length)render();else showSummary(false);}
+function finishEarly(){const left=quiz.length-answers.length;if(confirm(`Finish now? You have attempted ${answers.length} question(s).${left?` ${left} unanswered question(s)${skipped.size?` (including ${skipped.size} skipped)`:''} will score 0.`:''}`))showSummary(true);}
+function fileTimestamp(){
+ const d=new Date(), p=n=>String(n).padStart(2,'0');
+ return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+function reportBaseName(){
+ return `Mock_Day1-5_QuizSet7_Q91-105_${fileTimestamp()}_Wrong_Answers`;
+}
+function duration(){const s=Math.round((new Date()-startedAt)/1000);return `${Math.floor(s/60)}m ${s%60}s`;}
+function reportBody(){
+ const wrong=answers.filter(a=>!a.correct);let s=`<h1>Cumulative Mock Quiz 7 — Wrong Answer Report</h1><p><b>Questions:</b> 91–105</p><p><b>Score:</b> ${score} / ${answers.length*4} &nbsp; <b>Correct:</b> ${correctCount} &nbsp; <b>Wrong:</b> ${wrongCount}</p>`;
+ if(!wrong.length)s+='<p>No wrong answers.</p>';
+ wrong.forEach((a,n)=>s+=`<hr><h2>${n+1}. Q${a.num}. ${esc(a.question)}</h2><p><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}</p><p><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}</p><p><b>Explanation:</b> ${esc(a.explanation)}</p><p><b>Exam pearl:</b> ${esc(a.pearl||'')}</p>`);
+ return s;
+}
+function downloadWord(){
+ const blob=new Blob([`<!doctype html><html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial">${reportBody()}</body></html>`],{type:'application/msword'});
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=reportBaseName()+'.doc';a.click();URL.revokeObjectURL(u);
+}
+function printPDF(){
+ const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+}
+let notified=false;
+function notifyResult(attempted,max,pct,early){
+ if(notified)return;notified=true;
+ const msg=[`Total questions: ${quiz.length}`,`Attempted: ${attempted}`,`Score: ${score} / ${max}`,`Correct: ${correctCount}`,`Wrong: ${wrongCount}`,`Skipped (unanswered): ${skipped.size}`,`Not reached: ${quiz.length-attempted-skipped.size}`,`Percentage: ${pct}%`,`Time: ${duration()}`].join('\n');
+ const title=`${document.title}${early?' (finished early)':''}`;
+ fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=memo`,{method:'POST',body:msg}).catch(()=>{});
+}
+function showSummary(early){
+ document.getElementById('progress').style.width='100%';answers.sort((a,b)=>a.num-b.num);
+ const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
+ notifyResult(attempted,max,pct,early);
+ document.getElementById('counter').textContent='Completed';
+ document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 7 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.${skipped.size?` Skipped and not answered: ${skipped.size}.`:''}</p>
+ <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
+ <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
+ ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
+ <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
+}
+render();
+</script></body></html>
