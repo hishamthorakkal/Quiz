@@ -978,3 +978,1422 @@ Word / PDF Revision Report
 ```
 
 Every new source study-day document should be transformed into this structure, committed, and pushed while preserving all previously completed days.
+
+
+---
+
+# Mock Tests — Repository Rules
+
+## 31. Separate Mock Section
+
+Add a separate **Mock Tests** area alongside the normal study-day navigation.
+
+Preferred structure:
+
+```text
+/
+├── index.html
+├── Day4/
+├── Day5/
+├── Day6/
+├── Mock/
+│   ├── index.html
+│   ├── Day1-5/
+│   ├── Day1-11/
+│   ├── GrandMockTest1/
+│   └── GrandMockTest2/
+└── ...
+```
+
+The main application must clearly separate:
+
+```text
+Study Days
+Mock Tests
+```
+
+The user will provide the mock name together with the source question file.
+
+Examples:
+
+```text
+Day1-5
+Day1-11
+GrandMockTest 1
+GrandMockTest 2
+```
+
+Use the supplied mock name as the visible label.
+
+Do not invent a different mock name.
+
+---
+
+## 32. Mock List Page
+
+`Mock/index.html` must list mock tests separately from daily study material.
+
+Prefer two groups:
+
+```text
+Cumulative Mocks
+
+Day1-5
+Day1-11
+Day1-20
+...
+
+Grand Mocks
+
+GrandMockTest 1
+GrandMockTest 2
+...
+```
+
+Each mock must have its own folder.
+
+Example:
+
+```text
+Mock/
+├── index.html
+├── Day1-5/
+│   ├── index.html
+│   ├── quiz1.html
+│   ├── quiz2.html
+│   └── ...
+├── Day1-11/
+│   └── ...
+└── GrandMockTest1/
+    └── index.html
+```
+
+---
+
+## 33. Regular/Cumulative Mock Behaviour
+
+Mocks such as:
+
+```text
+Day1-5
+Day1-11
+Day1-20
+RevisionMock1
+```
+
+should use the existing **15-question quiz-set learning model**.
+
+Example for 75 questions:
+
+```text
+Quiz Set 1 → Q1–15
+Quiz Set 2 → Q16–30
+Quiz Set 3 → Q31–45
+Quiz Set 4 → Q46–60
+Quiz Set 5 → Q61–75
+```
+
+Regular mocks must retain:
+
+- one question at a time
+- +4 correct
+- -1 wrong
+- 0 unattempted
+- immediate answer validation
+- correct option shown in green
+- wrong selected option shown in red
+- explanation immediately after submission
+- exam pearl when available
+- sequential question flow
+- Finish Quiz option
+- final score
+- wrong-answer review
+- Word wrong-answer report
+- Print / Save PDF
+
+Do not add:
+
+- email
+- login
+- backend
+- question jumping
+- start-from-question controls
+
+Regular mock report filename example:
+
+```text
+Mock_Day1-5_QuizSet2_Q16-30_20261003_091522_Wrong_Answers.doc
+```
+
+---
+
+## 34. Grand Mock Detection
+
+Treat the source as a Grand Mock when the supplied mock name clearly identifies it as one.
+
+Examples:
+
+```text
+GrandMockTest 1
+GrandMockTest 2
+Grand Mock Test 3
+```
+
+Grand Mocks must use **exam simulation mode**, not the normal 15-question learning-mode behavior.
+
+Before implementing any Grand Mock, verify the latest available official NBEMS NEET-SS examination pattern.
+
+Priority sources:
+
+```text
+1. Latest official NBEMS NEET-SS Information Bulletin
+2. Latest official NBEMS NEET-SS notice
+3. Official NBEMS examination page
+```
+
+Do not assume the pattern is unchanged from previous years.
+
+At the time these rules were written, the latest officially verified pattern available was:
+
+```text
+Total questions: 150
+Total duration: 150 minutes
+
+Section A: 50 questions / 50 minutes
+Section B: 50 questions / 50 minutes
+Section C: 50 questions / 50 minutes
+
+Correct: +4
+Incorrect: -1
+Unattempted: 0
+```
+
+This is a reference only.
+
+If NBEMS changes the pattern later, use the latest official pattern.
+
+Record the verified pattern and source year in the repository update summary.
+
+---
+
+## 35. Grand Mock Instructions Screen
+
+Before the exam starts, show an exam instructions page.
+
+Display at least:
+
+```text
+Grand Mock name
+Total number of questions
+Total duration
+Number of sections
+Questions per section
+Time per section
+Correct = +4
+Incorrect = -1
+Unattempted = 0
+Section locking rule
+Answer-editing rule
+Final validation rule
+```
+
+The timer must NOT start until the candidate clicks:
+
+```text
+Start Grand Mock
+```
+
+---
+
+## 36. Grand Mock Section Timer
+
+Grand Mock sections must be strictly time-bound.
+
+For the currently verified reference pattern:
+
+```text
+Section A
+50 Questions
+50 Minutes
+
+Section B
+50 Questions
+50 Minutes
+
+Section C
+50 Questions
+50 Minutes
+```
+
+Display the current section and remaining time prominently.
+
+Example:
+
+```text
+GrandMockTest 1
+Section A
+Question 18 / 50
+Time Remaining: 32:14
+```
+
+The section timer must count down continuously.
+
+Do not provide a pause button.
+
+---
+
+## 37. Timer Persistence
+
+Do not implement the timer as a simple in-memory decrementing counter.
+
+Persist an absolute section deadline.
+
+Concept:
+
+```text
+sectionEndTime = sectionStartTime + sectionDuration
+```
+
+On reload:
+
+```text
+remainingTime = sectionEndTime - currentTime
+```
+
+Store exam state using `localStorage` or an equivalent lightweight browser mechanism.
+
+Persist at minimum:
+
+```text
+Grand Mock name
+active section
+section end timestamp
+answers
+review flags
+locked sections
+final-submission state
+```
+
+Refreshing the browser must not reset the timer or give extra time.
+
+If the stored deadline has already passed:
+
+- immediately lock the section
+- proceed according to exam rules
+
+---
+
+## 38. Answer Editing During Active Section
+
+While a section is active, the candidate must be able to:
+
+- select an answer
+- change an answer
+- clear an answer
+- navigate forward within the active section
+- navigate backward within the active section
+- revisit any question within the active section
+- optionally mark a question for review
+
+The candidate's final selection at section lock is the recorded answer.
+
+Example:
+
+```text
+Q12:
+First choice = B
+Changed later = D
+Section locks
+
+Recorded response = D
+```
+
+Do not score intermediate selections.
+
+---
+
+## 39. Clear Response
+
+Grand Mock questions must provide:
+
+```text
+Clear Response
+```
+
+While the section is active, this changes the question to:
+
+```text
+Unattempted
+```
+
+The candidate may select another answer afterward.
+
+Clear Response must be disabled once the section is locked.
+
+---
+
+## 40. Grand Mock Navigation Palette
+
+Provide a question palette for the currently active section.
+
+Recommended statuses:
+
+```text
+Not Visited
+Not Answered
+Answered
+Marked for Review
+Answered & Marked for Review
+```
+
+The candidate may click question numbers only inside the current active section.
+
+Do not allow access to:
+
+- future sections
+- previously locked sections
+
+---
+
+## 41. No Immediate Correctness Feedback in Grand Mock
+
+Grand Mock is exam mode.
+
+During the exam, DO NOT show:
+
+- correct/incorrect status
+- green correctness highlight
+- red wrong-answer highlight
+- correct answer
+- explanation
+- exam pearl
+- running correct count
+- running wrong count
+- running marks obtained
+
+The candidate should only see response status.
+
+Complete answer validation happens only after final exam submission.
+
+---
+
+## 42. Section Submission and Locking
+
+A section must lock when either:
+
+```text
+1. section time reaches 00:00
+```
+
+or, if practice-mode early submission is implemented:
+
+```text
+2. candidate explicitly submits the section
+```
+
+Before voluntary section submission, show a confirmation such as:
+
+```text
+Submit Section A?
+
+You still have 18 minutes remaining.
+
+Once submitted, answers in this section cannot be changed.
+
+[Cancel] [Submit Section]
+```
+
+After lock:
+
+- answers cannot be edited
+- responses cannot be cleared
+- the section cannot be reopened
+- navigation back into that section is blocked
+- its final answers remain stored
+
+This is mandatory.
+
+---
+
+## 43. Section Transition
+
+Follow the latest verified official NBEMS section-transition rules.
+
+Under the currently verified reference pattern:
+
+- each section is time-bound
+- candidates cannot review or modify a section after its allotted time ends
+- the next section starts after the previous section completes
+- previous sections remain locked
+
+Do not allow unrestricted movement across sections.
+
+If official rules change, update this behavior accordingly.
+
+---
+
+## 44. Grand Mock Final Submission
+
+After the final section is completed:
+
+- lock the entire exam
+- calculate the final result
+- validate all answers
+- show answer correctness
+- show explanations
+- allow post-exam review
+
+No answers may be modified after final submission.
+
+The final exam can complete by:
+
+```text
+final section timeout
+```
+
+or:
+
+```text
+explicit final section submission
+```
+
+---
+
+## 45. Grand Mock Final Result
+
+Display:
+
+```text
+Grand Mock name
+Total questions
+Attempted
+Unattempted
+Correct
+Wrong
+Score
+Maximum score
+Percentage
+Total elapsed exam time
+Section-wise performance
+```
+
+With a 150-question +4/-1 scheme:
+
+```text
+Maximum = 600
+Score = correct × 4 - wrong
+```
+
+Unattempted questions score zero.
+
+If the official marking scheme changes, use the verified current scheme instead.
+
+---
+
+## 46. Section-wise Performance
+
+Show a separate result for each exam section.
+
+Example:
+
+```text
+Section A
+Correct: 34
+Wrong: 10
+Unattempted: 6
+Score: 126 / 200
+
+Section B
+Correct: 37
+Wrong: 8
+Unattempted: 5
+Score: 140 / 200
+
+Section C
+Correct: 32
+Wrong: 12
+Unattempted: 6
+Score: 116 / 200
+
+Overall
+382 / 600
+```
+
+Use actual section counts and marks from the verified official pattern.
+
+---
+
+## 47. Grand Mock Final Review
+
+Only after full exam completion should answer explanations become visible.
+
+For every question show:
+
+```text
+Question
+Candidate response
+Correct response
+Status: Correct / Wrong / Unattempted
+Explanation
+Exam pearl
+```
+
+Provide review filters:
+
+```text
+All
+Wrong
+Correct
+Unattempted
+Marked for Review
+```
+
+At minimum, the `Wrong` filter is mandatory.
+
+---
+
+## 48. Grand Mock Wrong-Answer Report
+
+Provide:
+
+```text
+Download Wrong Answers
+Print / Save PDF
+```
+
+Report must include:
+
+```text
+Grand Mock name
+Overall score
+Section-wise scores
+Wrong questions
+Candidate answer
+Correct answer
+Explanation
+Exam pearl
+```
+
+Optionally include unattempted questions in a separate section.
+
+Filename example:
+
+```text
+GrandMockTest1_20261003_114233_Wrong_Answers.doc
+```
+
+Preserve the supplied Grand Mock name in a filesystem-safe form.
+
+---
+
+## 49. Grand Mock UI
+
+Grand Mock pages should look like an exam interface rather than a daily-study card.
+
+Recommended layout:
+
+```text
+------------------------------------------------
+GrandMockTest 1
+Section A                       Time: 42:17
+------------------------------------------------
+
+Question 18 of 50
+
+Question text...
+
+A. ...
+B. ...
+C. ...
+D. ...
+
+[Clear Response]
+[Mark for Review & Next]
+[Save & Next]
+
+Question Palette
+01 02 03 04 05 ...
+------------------------------------------------
+```
+
+Timer must remain visible.
+
+During the exam, status colors should represent navigation state, not correctness.
+
+Correctness colors are allowed only after final submission.
+
+---
+
+## 50. Grand Mock Question Source Integrity
+
+Use the supplied Grand Mock source file as the source of truth.
+
+Extract:
+
+- questions
+- four options
+- answer key
+- detailed explanations
+- exam pearls when present
+- question category/difficulty metadata when supplied
+
+Do not reveal answer explanations before exam completion.
+
+Validate:
+
+```text
+source MCQ count == generated Grand Mock MCQ count
+```
+
+If the current verified official pattern requires 150 questions but the supplied source contains fewer than 150 valid questions:
+
+- do not invent the missing questions
+- report the mismatch
+- do not label an incomplete test as an exact NEET-SS Grand Mock
+
+---
+
+## 51. Mock Naming
+
+Use the exact supplied mock name as the display name.
+
+Examples:
+
+```text
+Day1-5
+Day1-11
+GrandMockTest 1
+```
+
+Safe folder names may remove spaces:
+
+```text
+GrandMockTest 1 → GrandMockTest1
+Day1-5 → Day1-5
+```
+
+Do not replace a supplied name with generic names such as:
+
+```text
+Mock 1
+Mock 2
+```
+
+unless explicitly requested.
+
+---
+
+## 52. Mock Repository Update Workflow
+
+When a mock source file is supplied:
+
+```text
+1. Read the mock name provided by the user.
+2. Read the source file.
+3. Determine Regular Mock vs Grand Mock.
+4. Extract MCQs, answer key and explanations.
+5. Validate question count and mapping.
+6. Create Mock/<MockName>/.
+7. Generate the appropriate UI.
+8. Update Mock/index.html.
+9. Update root navigation if required.
+10. Test navigation.
+11. Test scoring.
+12. If Grand Mock, verify the latest official NBEMS pattern.
+13. If Grand Mock, test timers.
+14. If Grand Mock, test answer editing before lock.
+15. If Grand Mock, test section locking.
+16. If Grand Mock, test reload/timer persistence.
+17. Test final answer validation.
+18. Test wrong-answer reports.
+19. Review git diff.
+20. Commit.
+21. Push.
+22. Return a concise update summary.
+```
+
+---
+
+## 53. Additional Grand Mock Validation Checklist
+
+Before committing a Grand Mock:
+
+```text
+[ ] Exam timer starts only after Start Grand Mock
+[ ] Correct official pattern was verified
+[ ] Section timer displays correctly
+[ ] Active section questions can be revisited
+[ ] Answers can be changed before lock
+[ ] Clear Response works
+[ ] Mark for Review works if implemented
+[ ] Future section cannot be opened
+[ ] Locked previous section cannot be reopened
+[ ] Refresh does not reset time
+[ ] Timeout locks section automatically
+[ ] No correctness feedback appears during exam
+[ ] Section submission permanently locks section
+[ ] Final section completion locks the entire exam
+[ ] Final scoring is correct
+[ ] Section-wise scoring is correct
+[ ] Explanations appear only after final submission
+[ ] Wrong-answer filter works
+[ ] Wrong-answer Word report works
+[ ] Print / Save PDF works
+```
+
+Do not commit a Grand Mock with known timer, state-persistence, scoring, or section-lock defects.
+
+---
+
+## 54. Updated Application Objective
+
+The application should evolve into:
+
+```text
+NEET-SS + ICP Paediatrics
+│
+├── Study Days
+│   ├── Day 4
+│   │   └── 15-question learning quiz sets
+│   ├── Day 5
+│   │   └── 15-question learning quiz sets
+│   └── ...
+│
+└── Mock Tests
+    │
+    ├── Cumulative Mocks
+    │   ├── Day1-5
+    │   │   └── 15-question learning quiz sets
+    │   ├── Day1-11
+    │   │   └── 15-question learning quiz sets
+    │   └── ...
+    │
+    └── Grand Mocks
+        ├── GrandMockTest 1
+        │   └── Full NEET-SS exam simulation
+        ├── GrandMockTest 2
+        │   └── Full NEET-SS exam simulation
+        └── ...
+```
+
+Daily quizzes and cumulative mocks are **Learning Mode**.
+
+Grand Mock Tests are **Exam Simulation Mode**.
+
+Do not mix their answer-feedback behavior.
+
+
+---
+
+## 55. Grand Mock — Previous Question and Answer Change
+
+Grand Mock Tests must explicitly support going back to earlier questions within the currently active section.
+
+While the section timer is still running and the section has not been submitted, the candidate must be able to:
+
+```text
+Previous Question
+Next Question
+Click any question number in the active-section palette
+```
+
+The candidate may revisit any question in the current section and change the selected answer.
+
+Example:
+
+```text
+Q8 → selected B
+
+Candidate moves to Q9, Q10, Q11
+
+Candidate returns to Q8
+
+Candidate changes B → D
+
+Section is still active
+
+Final recorded answer for Q8 = D
+```
+
+There is no penalty for changing an answer before section lock.
+
+Only the **last selected option at the moment the section locks** is used for scoring.
+
+---
+
+## 56. Grand Mock — Explicit Navigation Controls
+
+Each question in Grand Mock exam mode should provide clear navigation controls such as:
+
+```text
+[Previous]
+[Clear Response]
+[Mark for Review & Next]
+[Save & Next]
+```
+
+Rules:
+
+- `Previous` moves to the preceding question in the current active section.
+- `Save & Next` stores the current selection and moves forward.
+- Selecting an option should also be auto-saved immediately so navigation does not lose the response.
+- Returning to a previously answered question must display the candidate's current saved selection.
+- The candidate can replace that selection with another option.
+- `Clear Response` removes the saved selection and makes the question unattempted.
+- The question palette may also be used to revisit any question in the current section.
+
+Do not force the candidate to answer questions sequentially in Grand Mock mode.
+
+---
+
+## 57. Grand Mock — Editing Window
+
+Answer editing remains available until the first of these events occurs:
+
+```text
+1. Section timer reaches 00:00
+2. Candidate confirms Submit Section
+```
+
+Before either event:
+
+```text
+Previous questions = editable
+Current question = editable
+Unanswered questions = accessible
+Marked questions = editable
+Answered questions = editable
+```
+
+After section lock:
+
+```text
+Previous questions in that section = read-only / inaccessible during exam
+Selections = permanently locked
+Clear Response = disabled
+Question palette for locked section = disabled
+```
+
+A locked section must never become editable again during the same Grand Mock attempt.
+
+---
+
+## 58. Grand Mock — Important Navigation Distinction
+
+There are two different meanings of "go back":
+
+### Allowed
+
+Going back to an earlier question **inside the currently active section**.
+
+Example:
+
+```text
+Section B is active.
+
+Q73 → Q72 → change answer → Q80
+```
+
+This must be supported.
+
+### Not Allowed After Lock
+
+Going back to a question in an already completed/locked section.
+
+Example:
+
+```text
+Section A time has ended.
+Section B is active.
+
+Candidate tries to return to Q20 in Section A.
+```
+
+This must be blocked if the verified official NEET-SS pattern uses time-bound locked sections.
+
+Always follow the latest verified official NBEMS rules if section navigation policy changes in the future.
+
+---
+
+## 59. Grand Mock — Validation Test for Answer Changes
+
+Before committing any Grand Mock, test this sequence:
+
+```text
+1. Open Q1.
+2. Select A.
+3. Click Save & Next.
+4. Navigate forward several questions.
+5. Click Previous or palette Q1.
+6. Verify A is still selected.
+7. Change Q1 to C.
+8. Navigate away.
+9. Return to Q1.
+10. Verify C is selected.
+11. Allow section to lock.
+12. Confirm C is the final stored response.
+13. Confirm Q1 can no longer be edited.
+```
+
+This test must pass before the Grand Mock is considered complete.
+
+
+---
+
+# 60. Canonical Repository Folder Structure — FINAL
+
+Use the following structure as the canonical repository layout from now on.
+
+The original source documents must be preserved inside a dedicated `source/` folder for each Day or Mock.
+
+Generated quiz files must remain outside `source/`.
+
+```text
+/
+├── index.html
+├── README.md
+│
+├── Day4/
+│   ├── source/
+│   │   └── Day_4_Prematurity_ELBW_VLBW_Thermoregulation_Apnea.docx
+│   ├── index.html
+│   ├── quiz1.html
+│   ├── quiz2.html
+│   ├── quiz3.html
+│   ├── quiz4.html
+│   └── quiz5.html
+│
+├── Day5/
+│   ├── source/
+│   │   └── Day_5_<Topic>.docx
+│   ├── index.html
+│   ├── quiz1.html
+│   ├── quiz2.html
+│   └── ...
+│
+├── Day6/
+│   ├── source/
+│   │   └── Day_6_<Topic>.docx
+│   └── ...
+│
+└── Mock/
+    ├── index.html
+    │
+    ├── Day1-5/
+    │   ├── source/
+    │   │   └── Day1-5.docx
+    │   ├── index.html
+    │   ├── quiz1.html
+    │   ├── quiz2.html
+    │   ├── quiz3.html
+    │   ├── quiz4.html
+    │   └── quiz5.html
+    │
+    ├── Day1-11/
+    │   ├── source/
+    │   │   └── Day1-11.docx
+    │   ├── index.html
+    │   ├── quiz1.html
+    │   ├── quiz2.html
+    │   └── ...
+    │
+    ├── GrandMockTest1/
+    │   ├── source/
+    │   │   └── GrandMockTest1.docx
+    │   ├── index.html
+    │   ├── exam.html
+    │   ├── questions.json
+    │   └── README.md
+    │
+    ├── GrandMockTest2/
+    │   ├── source/
+    │   │   └── GrandMockTest2.docx
+    │   ├── index.html
+    │   ├── exam.html
+    │   ├── questions.json
+    │   └── README.md
+    │
+    └── ...
+```
+
+This structure overrides any earlier examples in this document that placed source files beside generated quiz files.
+
+---
+
+# 61. Source Folder Rules
+
+Every Day and Mock folder must contain:
+
+```text
+source/
+```
+
+The purpose of this folder is to preserve the exact original material supplied by the user.
+
+Examples:
+
+```text
+Day7/source/Day_7_Neonatal_Shock.docx
+
+Mock/Day1-20/source/Day1-20.docx
+
+Mock/GrandMockTest3/source/GrandMockTest3.docx
+```
+
+Do not modify the original source document unless explicitly asked.
+
+Do not overwrite an existing source document silently.
+
+If a revised version of the same source is supplied, preserve a clearly identifiable filename when practical.
+
+Example:
+
+```text
+source/
+├── Day_8_v1.docx
+└── Day_8_v2.docx
+```
+
+or replace the source only when the user clearly intends the new file to supersede the old one.
+
+---
+
+# 62. Generated Files vs Source Files
+
+Keep these responsibilities separate.
+
+## Source material
+
+```text
+source/
+```
+
+contains only user-supplied study/test material such as:
+
+- DOCX
+- PDF
+- Markdown
+- other original question documents
+
+## Generated application files
+
+The parent Day/Mock folder contains:
+
+- `index.html`
+- `quiz*.html`
+- `exam.html`
+- `questions.json`
+- test metadata
+- README files
+
+Example:
+
+```text
+Mock/GrandMockTest1/
+├── source/
+│   └── GrandMockTest1.docx
+├── index.html
+├── exam.html
+├── questions.json
+└── README.md
+```
+
+Never place generated HTML files inside `source/`.
+
+---
+
+# 63. Daily Update Workflow With Source Preservation
+
+When a new Day source file is supplied:
+
+```text
+1. Determine the Day number from the supplied file/content.
+2. Create DayN/ if it does not exist.
+3. Create DayN/source/.
+4. Copy/save the supplied original file into DayN/source/.
+5. Read the source file from that location.
+6. Extract MCQs, answer keys and explanations.
+7. Validate the extracted question count.
+8. Generate DayN/index.html.
+9. Generate 15-question quiz-set HTML files.
+10. Update the root Day list.
+11. Test navigation and scoring.
+12. Review git diff.
+13. Commit the source file AND generated files.
+14. Push.
+```
+
+The original source document should normally be committed together with the generated quiz update so the repository contains an auditable source-to-quiz history.
+
+---
+
+# 64. Regular Mock Update Workflow With Source Preservation
+
+For a cumulative/regular mock such as:
+
+```text
+Day1-5
+Day1-11
+Day1-20
+```
+
+use:
+
+```text
+Mock/<MockName>/
+├── source/
+├── index.html
+├── quiz1.html
+├── quiz2.html
+└── ...
+```
+
+Workflow:
+
+```text
+1. Read the exact mock name supplied by the user.
+2. Create Mock/<MockName>/.
+3. Create Mock/<MockName>/source/.
+4. Preserve the supplied source file inside source/.
+5. Extract questions/answers/explanations.
+6. Split into maximum 15-question sets.
+7. Generate the mock index page.
+8. Generate quiz-set pages.
+9. Update Mock/index.html.
+10. Validate.
+11. Commit.
+12. Push.
+```
+
+---
+
+# 65. Grand Mock Update Workflow With Source Preservation
+
+For:
+
+```text
+GrandMockTest N
+```
+
+use:
+
+```text
+Mock/GrandMockTestN/
+├── source/
+│   └── <supplied Grand Mock source>
+├── index.html
+├── exam.html
+├── questions.json
+└── README.md
+```
+
+`source/` preserves the user-supplied test document.
+
+`questions.json` is the normalized machine-readable representation used by the exam UI.
+
+The transformation is:
+
+```text
+source document
+      ↓
+questions.json
+      ↓
+exam.html
+```
+
+Before writing `questions.json`, validate:
+
+```text
+source MCQ count
+answer-key count
+explanation count
+question-to-answer mapping
+```
+
+Do not regenerate `questions.json` from memory or from a previous Grand Mock.
+
+Always rebuild it from the current Grand Mock source file.
+
+---
+
+# 66. Grand Mock Metadata README
+
+Each Grand Mock folder should contain:
+
+```text
+README.md
+```
+
+Record at minimum:
+
+```text
+Grand Mock name
+Source filename
+Source question count
+Generated question count
+NEET-SS official pattern used
+Official pattern year
+Total exam duration
+Section count
+Questions per section
+Time per section
+Marking scheme
+Generation/update date
+```
+
+Example:
+
+```text
+# GrandMockTest 1
+
+Source:
+source/GrandMockTest1.docx
+
+Questions:
+150
+
+Exam pattern:
+NEET-SS 2025 official pattern
+
+Sections:
+3 × 50 questions
+
+Section duration:
+50 minutes
+
+Total duration:
+150 minutes
+
+Marking:
++4 / -1 / 0
+```
+
+This makes future maintenance easier when the official examination pattern changes.
+
+---
+
+# 67. Git Handling of Source Documents
+
+When updating the repository:
+
+```bash
+git status
+```
+
+Confirm the expected source file appears as a new or modified file.
+
+Stage both source and generated content.
+
+Example:
+
+```bash
+git add Day8/source/
+git add Day8/index.html
+git add Day8/quiz*.html
+git add index.html
+```
+
+For mocks:
+
+```bash
+git add Mock/Day1-11/
+git add Mock/index.html
+```
+
+For Grand Mock:
+
+```bash
+git add Mock/GrandMockTest2/
+git add Mock/index.html
+```
+
+Do not stage unrelated user documents.
+
+---
+
+# 68. Never Delete the Source After Generation
+
+After the quiz is generated successfully:
+
+DO NOT delete:
+
+```text
+source/
+```
+
+The source file is part of the repository record.
+
+It is useful for:
+
+- checking question fidelity
+- fixing answer-key errors
+- regenerating a quiz later
+- auditing explanations
+- comparing revised study material
+- rebuilding the UI with a new template
+
+The generated HTML/JSON should always be traceable back to the preserved source file.
+
+---
+
+# 69. Final Navigation and Folder Model
+
+The final application architecture is:
+
+```text
+ROOT
+│
+├── index.html
+│
+├── Day4/
+│   ├── source/
+│   ├── index.html
+│   └── quiz*.html
+│
+├── Day5/
+│   ├── source/
+│   ├── index.html
+│   └── quiz*.html
+│
+└── Mock/
+    ├── index.html
+    │
+    ├── Day1-5/
+    │   ├── source/
+    │   ├── index.html
+    │   └── quiz*.html
+    │
+    ├── Day1-11/
+    │   ├── source/
+    │   ├── index.html
+    │   └── quiz*.html
+    │
+    └── GrandMockTest1/
+        ├── source/
+        ├── index.html
+        ├── exam.html
+        ├── questions.json
+        └── README.md
+```
+
+Navigation remains:
+
+```text
+Home
+│
+├── Study Days
+│   └── Day
+│       └── Quiz Set
+│           └── Learning Quiz
+│
+└── Mock Tests
+    │
+    ├── Cumulative Mock
+    │   └── Quiz Set
+    │       └── Learning Quiz
+    │
+    └── Grand Mock
+        └── Full Timed Exam Simulation
+```
+
+This folder structure is the final preferred structure for future repository updates.
