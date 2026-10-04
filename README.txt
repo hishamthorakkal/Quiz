@@ -14,9 +14,11 @@ Mock_Day1-5/
   index.html
   mock.html        (full 150-question test)
   quiz1.html ... quiz10.html
+Day6/
+  index.html
+  quiz1.html ... quiz5.html
 
 Future days should be added as separate folders:
-Day6/
 Day7/
 ...
 

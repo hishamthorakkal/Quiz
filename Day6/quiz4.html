@@ -1,0 +1,107 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Day 6 Quiz 4 — Q46–Q60</title><style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;--red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
+h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}.progress{height:100%;background:var(--blue);transition:.25s}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
+.q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}.option{display:block;border:1.5px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;cursor:pointer;background:#fff}
+.option:hover{border-color:#9db6ea;background:#f8fbff}.option.correct{border-color:var(--green);background:var(--greenbg);color:#14532d;font-weight:650}.option.wrong{border-color:var(--red);background:var(--redbg);color:#7f1d1d;font-weight:650}
+.option input{margin-right:10px;transform:scale(1.15)}.feedback{display:none;margin-top:18px;padding:16px;border-radius:14px;line-height:1.55}
+.feedback.correct{display:block;background:var(--greenbg);border:1px solid #86efac;color:#14532d}.feedback.wrong{display:block;background:var(--redbg);border:1px solid #fca5a5;color:#7f1d1d}
+.explain{margin-top:10px;background:#f8fafc;border-left:4px solid #94a3b8;padding:12px;border-radius:7px;color:#273449}.pearl{margin-top:10px;background:var(--amberbg);color:var(--amber);padding:11px;border-radius:8px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}button,.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block}
+.primary{background:var(--blue);color:#fff}.primary:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}.stat strong{display:block;font-size:24px}
+.wrongitem{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:14px;margin:12px 0;line-height:1.5}.good{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;margin-top:14px}
+.homegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.quizcard{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}.quizcard h2{margin:0 0 7px;font-size:19px}.small{font-size:13px;color:var(--muted)}
+@media(max-width:650px){.stats,.homegrid{grid-template-columns:1fr}.q{font-size:18px}}
+</style></head>
+<body><div class="wrap">
+<h1>Day 6 — Quiz 4</h1>
+<div class="sub">Questions 46–60 · 15 MCQs · +4 correct / −1 wrong</div>
+<div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
+<div class="topline"><span id="counter"></span><span id="score"></span><span id="counts"></span></div>
+<div class="card" id="card"></div>
+</div>
+<script>
+const quiz=[{"num": 46, "level": "High", "question": "A 37+1 wk infant with no additional neurotoxicity risk factors has a TSB just below the no-additional-risk phototherapy threshold. Albumin later returns 2.8 g/dL. Best interpretation?", "options": ["Exchange immediately regardless of TSB", "Use TcB instead", "No change because albumin is not relevant", "Reassess against the threshold for additional neurotoxicity risk factors"], "answer": 3, "explanation": "Albumin <3 adds a neurotoxicity risk factor and can change the applicable threshold.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 47, "level": "High", "question": "A DAT-positive infant reaches escalation threshold but TSB is falling slowly under intensive phototherapy. Which statement about IVIG is best?", "options": ["Mandatory in all such infants", "Only useful in G6PD deficiency", "Contraindicated in isoimmune disease", "May be considered, but uncertain benefit and possible harm mean it should not replace exchange readiness"], "answer": 3, "explanation": "AAP makes IVIG an option, not routine therapy.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 48, "level": "High", "question": "A 39-wk infant has TSB 1.5 mg/dL below exchange threshold and is clinically stable. Which action is most appropriate?", "options": ["Discharge with next-day TcB", "Escalation-of-care pathway because the value is within 2 mg/dL of exchange threshold", "Stop phototherapy", "Routine nursery observation"], "answer": 1, "explanation": "This crosses the escalation threshold.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 49, "level": "High", "question": "During exchange preparation, TSB drops 0.5 mg/dL below exchange threshold and neurologic examination is normal. Best approach?", "options": ["Exchange is still mandatory immediately", "Stop monitoring", "May defer exchange, continue intensive phototherapy and q2h TSB until below escalation threshold", "Give IVIG to every infant"], "answer": 2, "explanation": "AAP permits deferral under these conditions.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 50, "level": "High", "question": "A 36-wk infant has sepsis and albumin 2.6 g/dL. Which statement best captures threshold logic?", "options": ["Use term thresholds", "Each risk factor is ignored because GA already accounts for risk", "Exchange regardless of TSB", "Use the appropriate lower threshold framework because additional neurotoxicity risks are present"], "answer": 3, "explanation": "Additional risk factors lower thresholds.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 51, "level": "High", "question": "A newborn has severe jaundice, DAT negative, retic 2%, Hb normal and a large cephalohematoma. Which mechanism is most likely?", "options": ["Cholestatic obstruction", "UGT1A1 excess", "Immune intravascular hemolysis", "Breakdown of extravascular blood"], "answer": 3, "explanation": "Cephalohematoma adds bilirubin without necessarily causing anemia/reticulocytosis.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 52, "level": "High", "question": "Which finding most strongly supports ongoing hemolysis rather than isolated suboptimal intake?", "options": ["Poor latch", "11% weight loss", "Reticulocytosis with falling hemoglobin", "Scant stools"], "answer": 2, "explanation": "Reticulocytosis + falling Hb indicates RBC destruction.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 53, "level": "High", "question": "A jaundiced infant has spherocytes and positive DAT. Which inference is safest?", "options": ["Immune hemolysis can produce spherocytes; interpret DAT/family history/MCHC together", "Hereditary spherocytosis is proven", "G6PD is proven", "Spherocytes exclude ABO disease"], "answer": 0, "explanation": "Spherocytes are not specific for HS.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 54, "level": "High", "question": "A preterm infant born at 33 weeks develops hyperbilirubinemia. Which is the most important guideline point?", "options": ["Exchange is never performed", "Use AAP 2022 ≥35 wk graphs", "AAP 2022 graphs are not validated for <35 wk; use preterm NICU protocol", "No phototherapy is used below 35 wk"], "answer": 2, "explanation": "AAP 2022 applies to ≥35 weeks.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 55, "level": "High", "question": "Why is hypocorrecting a high TSB by subtracting direct bilirubin dangerous?", "options": ["It increases TcB", "It can underestimate the treatment-relevant TSB used by AAP thresholds", "Direct bilirubin is always zero", "It causes hemolysis"], "answer": 1, "explanation": "Thresholds use total bilirubin.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "A"}, {"num": 56, "level": "High", "question": "An infant at escalation threshold is being transferred. Which therapy should continue during transfer if possible?", "options": ["No monitoring", "Stop all treatment until arrival", "Intensive phototherapy and IV hydration", "Oral phenobarbital only"], "answer": 2, "explanation": "AAP recommends continuing intensive phototherapy and IV hydration during transfer.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 57, "level": "High", "question": "A newborn with DAT-positive isoimmune disease has TSB below escalation threshold but rising. Best statement about IVIG?", "options": ["IVIG is not routinely indicated solely for DAT positivity below escalation threshold", "IVIG is used only for cholestasis", "Give immediately because DAT is positive", "IVIG is first-line before phototherapy"], "answer": 0, "explanation": "AAP narrows IVIG use to those reaching/exceeding escalation threshold.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 58, "level": "High", "question": "A term infant has TSB at phototherapy threshold at 18 h. Which etiologic clue is especially important?", "options": ["Early threshold-level hyperbilirubinemia suggests hemolysis and warrants evaluation", "It proves breast-milk jaundice", "It excludes G6PD deficiency", "It is always physiologic"], "answer": 0, "explanation": "Very early significant hyperbilirubinemia suggests hemolysis.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "A"}, {"num": 59, "level": "High", "question": "A neonate has severe bilirubin elevation but bilirubin/albumin ratio below the suggested exchange adjunct threshold. Which statement is best?", "options": ["No exchange can ever be done", "The ratio overrides TSB and neurologic signs", "B/A ratio is adjunctive; TSB threshold and ABE signs remain central", "Phototherapy should stop"], "answer": 2, "explanation": "B/A ratio supplements, not replaces, core criteria.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "B"}, {"num": 60, "level": "High", "question": "A baby with severe hyperbilirubinemia has a normal DAT and no anemia. Which diagnosis remains particularly important because anemia may be subtle?", "options": ["Rh alloimmunization", "Biliary atresia", "ABO incompatibility is proven", "G6PD deficiency"], "answer": 3, "explanation": "G6PD can cause severe jaundice without striking anemia.", "pearl": "Treat the bilirubin number together with gestational age, postnatal age, neurotoxicity risks, trajectory and neurologic status.", "srcAnswer": "A"}];
+let queue=quiz.map((_,i)=>i),idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],skipped=new Set(),startedAt=new Date();
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function render(){
+ idx=queue[0];const q=quiz[idx];
+ document.getElementById('progress').style.width=`${(answers.length/quiz.length)*100}%`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
+ document.getElementById('score').textContent=`Score: ${score}`;
+ document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('card').innerHTML=`
+ <div class="badge">${esc(q.level)}</div>${skipped.has(idx)?' <div class="badge" style="background:var(--amberbg);color:var(--amber)">Skipped earlier — answer now</div>':''}
+ <div class="q">Q${q.num}. ${esc(q.question)}</div>
+ ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
+ <div id="feedback" class="feedback"></div>
+ <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button>${queue.length>1?'<button class="secondary" id="skipBtn" onclick="skipQuestion()">Skip for Now</button>':''}<button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
+ checked=false;
+}
+function mainAction(){if(!checked)submitAnswer();else next();}
+function skipQuestion(){if(checked||queue.length<2)return;skipped.add(idx);queue.push(queue.shift());render();}
+function submitAnswer(){
+ const selected=document.querySelector('input[name="answer"]:checked');
+ if(!selected){alert('Please select an answer first.');return;}
+ const q=quiz[idx],chosen=Number(selected.value),correct=chosen===q.answer;
+ checked=true;skipped.delete(idx);const sb=document.getElementById('skipBtn');if(sb)sb.remove();if(correct){score+=4;correctCount++;}else{score-=1;wrongCount++;}
+ answers.push({...q,chosen,correct});
+ document.querySelectorAll('input[name="answer"]').forEach(x=>x.disabled=true);
+ document.getElementById(`opt-${q.answer}`).classList.add('correct');
+ if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
+ const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
+ fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>`;
+ document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
+ document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
+ document.getElementById('mainBtn').textContent=queue.length===1?'Finish Quiz':skipped.has(queue[1])?'Next (Skipped) Question':'Next Question';
+}
+function next(){queue.shift();if(queue.length)render();else showSummary(false);}
+function finishEarly(){const left=quiz.length-answers.length;if(confirm(`Finish now? You have attempted ${answers.length} question(s).${left?` ${left} unanswered question(s)${skipped.size?` (including ${skipped.size} skipped)`:''} will score 0.`:''}`))showSummary(true);}
+function fileTimestamp(){
+ const d=new Date(), p=n=>String(n).padStart(2,'0');
+ return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+function reportBaseName(){
+ return `Day6_QuizSet4_Q46-60_${fileTimestamp()}_Wrong_Answers`;
+}
+function duration(){const s=Math.round((new Date()-startedAt)/1000);return `${Math.floor(s/60)}m ${s%60}s`;}
+function reportBody(){
+ const wrong=answers.filter(a=>!a.correct);let s=`<h1>Day 6 Quiz 4 — Wrong Answer Report</h1><p><b>Questions:</b> 46–60</p><p><b>Score:</b> ${score} / ${answers.length*4} &nbsp; <b>Correct:</b> ${correctCount} &nbsp; <b>Wrong:</b> ${wrongCount}</p>`;
+ if(!wrong.length)s+='<p>No wrong answers.</p>';
+ wrong.forEach((a,n)=>s+=`<hr><h2>${n+1}. Q${a.num}. ${esc(a.question)}</h2><p><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}</p><p><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}</p><p><b>Explanation:</b> ${esc(a.explanation)}</p><p><b>Exam pearl:</b> ${esc(a.pearl||'')}</p>`);
+ return s;
+}
+function downloadWord(){
+ const blob=new Blob([`<!doctype html><html><head><meta charset="utf-8"></head><body style="font-family:Calibri,Arial">${reportBody()}</body></html>`],{type:'application/msword'});
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=reportBaseName()+'.doc';a.click();URL.revokeObjectURL(u);
+}
+function printPDF(){
+ const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
+}
+let notified=false;
+function notifyResult(attempted,max,pct,early){
+ if(notified)return;notified=true;
+ const msg=[`Total questions: ${quiz.length}`,`Attempted: ${attempted}`,`Score: ${score} / ${max}`,`Correct: ${correctCount}`,`Wrong: ${wrongCount}`,`Skipped (unanswered): ${skipped.size}`,`Not reached: ${quiz.length-attempted-skipped.size}`,`Percentage: ${pct}%`,`Time: ${duration()}`].join('\n');
+ const title=`${document.title}${early?' (finished early)':''}`;
+ fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=memo`,{method:'POST',body:msg}).catch(()=>{});
+}
+function showSummary(early){
+ document.getElementById('progress').style.width='100%';answers.sort((a,b)=>a.num-b.num);
+ const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
+ notifyResult(attempted,max,pct,early);
+ document.getElementById('counter').textContent='Completed';
+ document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 4 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.${skipped.size?` Skipped and not answered: ${skipped.size}.`:''}</p>
+ <div class="stats"><div class="stat"><strong>${score}</strong><span>Score / ${max}</span></div><div class="stat"><strong>${correctCount}</strong><span>Correct</span></div><div class="stat"><strong>${wrongCount}</strong><span>Wrong</span></div><div class="stat"><strong>${pct}%</strong><span>Score %</span></div></div>
+ <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
+ ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
+ <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
+}
+render();
+</script></body></html>
