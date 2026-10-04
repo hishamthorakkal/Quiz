@@ -10,16 +10,22 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 .item h2{margin:0 0 8px;font-size:20px}.small{font-size:13px;color:var(--muted)}
 .btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block;background:var(--blue);color:#fff}
 .btn:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}.disabled{opacity:.45;pointer-events:none}
-.section{margin-bottom:18px}.section-title{margin:0 0 4px;font-size:22px}.section-desc{margin:0 0 14px}
+.section{margin-bottom:18px;padding:0}.section>summary{list-style:none;cursor:pointer;padding:18px 22px;display:flex;align-items:center;gap:12px;border-radius:18px;user-select:none}
+.section>summary::-webkit-details-marker{display:none}.section>summary:hover{background:#f8fbff}
+.section-title{margin:0 0 3px;font-size:22px}.section-desc{margin:0}.section-head{flex:1}
+.count{background:#e0e7ff;color:#3730a3;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+.chev{width:12px;height:12px;border-right:2.5px solid var(--muted);border-bottom:2.5px solid var(--muted);transform:rotate(-45deg);transition:transform .2s;flex:none;margin-right:4px}
+.section[open]>summary .chev{transform:rotate(45deg)}.section-body{padding:0 22px 22px}
 @media(max-width:650px){.grid{grid-template-columns:1fr}}
 </style></head>
 <body><div class="wrap">
 <h1>NEET-SS + ICP Paediatrics</h1>
 <div class="sub">Choose a daily topic quiz, a cumulative mock, or a grand mock.</div>
 
-<div class="card section">
-<h2 class="section-title">Daily Quizzes</h2>
-<p class="small section-desc">One topic per day · 15-question sets · +4/−1</p>
+<details class="card section" open>
+<summary><span class="chev"></span><div class="section-head"><h2 class="section-title">Daily Quizzes</h2>
+<p class="small section-desc">One topic per day · 15-question sets · +4/−1</p></div><span class="count">2 days</span></summary>
+<div class="section-body">
 <div class="grid">
 <div class="item">
 <h2>Day 5</h2>
@@ -40,10 +46,12 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 </div>
 </div>
 </div>
+</details>
 
-<div class="card section">
-<h2 class="section-title">Cumulative Mocks</h2>
-<p class="small section-desc">Mixed revision across several days · full test or 15-question sets</p>
+<details class="card section">
+<summary><span class="chev"></span><div class="section-head"><h2 class="section-title">Cumulative Mocks</h2>
+<p class="small section-desc">Mixed revision across several days · full test or 15-question sets</p></div><span class="count">1 mock</span></summary>
+<div class="section-body">
 <div class="grid">
 <div class="item">
 <h2>Day 1–5 Mock</h2>
@@ -53,10 +61,12 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 </div>
 </div>
 </div>
+</details>
 
-<div class="card section">
-<h2 class="section-title">Grand Mocks</h2>
-<p class="small section-desc">Full-syllabus exam simulations</p>
+<details class="card section">
+<summary><span class="chev"></span><div class="section-head"><h2 class="section-title">Grand Mocks</h2>
+<p class="small section-desc">Full-syllabus exam simulations</p></div><span class="count">Coming soon</span></summary>
+<div class="section-body">
 <div class="grid">
 <div class="item">
 <h2>Grand Mock 1</h2>
@@ -65,4 +75,5 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 </div>
 </div>
 </div>
+</details>
 </div></body></html>
