@@ -31,9 +31,12 @@
     <div class="ttl">Day ${P.day} — ${escT(P.title)}<small>Study portal</small></div><a href="#" id="printBtn" title="Print this page">🖨 Print</a></header>
     <div class="bar-prog"><i id="progBar"></i></div>
     <div class="layout"><aside class="side"><input class="search" id="q" placeholder="Search Day ${P.day}…" autocomplete="off"><nav class="nav" id="nav"></nav></aside><main id="main"></main></div>
-    <div class="results" id="results"></div>`;
+    <div class="results" id="results"></div><div class="scrim" id="scrim"></div>
+    <nav class="mbar" aria-label="Page navigation"><a id="mPrev" href="#">‹ Prev</a><button id="mDone" type="button">✓ Done</button><a id="mNext" href="#">Next ›</a></nav>`;
   const $ = s => app.querySelector(s);
   $('.menu-btn').onclick = () => document.body.classList.toggle('nav-open');
+  $('#scrim').onclick = () => document.body.classList.remove('nav-open');
+  $('#mDone').onclick = () => { if (curId && !$('#mDone').disabled) toggleDone(curId); };
   $('#printBtn').onclick = e => { e.preventDefault(); window.print(); };
 
   function renderNav(cur) {
@@ -77,9 +80,11 @@
       const blurCol = ctx.page.kind === 'data' && /interpretation/i.test(strip(b.head[b.head.length - 1])) ? b.head.length - 1 : -1;
       const planChk = ctx.page.kind === 'overview' && /^time$/i.test(strip(b.head[0]));
       const plan = LS.get('plan', {});
+      // 3+ column tables become labelled cards on phones (CSS .stack); each cell carries its column name
+      const stack = b.head.length >= 3 && !planChk, lab = b.head.map(h => escT(strip(h)));
       return `${blurCol >= 0 ? '<div class="toolbar"><button class="btn ghost sm" data-act="reveal-all">Reveal all interpretations</button><button class="btn ghost sm" data-act="hide-all">Hide again</button></div>' : ''}
-        <div class="tw"><table><thead><tr>${planChk ? '<th>✓</th>' : ''}${b.head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${b.rows.map((r, ri) =>
-        `<tr>${planChk ? `<td><input type="checkbox" class="chk" data-plan="${ri}" ${plan[ri] ? 'checked' : ''}></td>` : ''}${r.map((c, ci) => ci === blurCol ? `<td class="blur"><span>${c}</span></td>` : `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+        <div class="tw"><table class="${stack ? 'stack' : ''}"><thead><tr>${planChk ? '<th>✓</th>' : ''}${b.head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${b.rows.map((r, ri) =>
+        `<tr>${planChk ? `<td><input type="checkbox" class="chk" data-plan="${ri}" ${plan[ri] ? 'checked' : ''}></td>` : ''}${r.map((c, ci) => ci === blurCol ? `<td class="blur" data-label="${lab[ci]}"><span>${c}</span></td>` : `<td data-label="${lab[ci]}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     }
     return '';
   }
@@ -156,6 +161,13 @@
     body += `<div class="pager">${prev ? `<a class="btn ghost" href="#/${prev.id}">← ${escT(prev.title)}</a>` : '<span></span>'}${next ? `<a class="btn" href="#/${next.id}">${escT(next.title)} →</a>` : ''}</div>`;
     const main = $('#main'); main.innerHTML = body;
     $('#progBar').style.width = progress().pct + '%';
+    // phone bottom bar: previous / mark done / next
+    const canDone = page.kind !== 'overview' && page.kind !== 'quizzes' && page.id !== 'references';
+    $('#mPrev').href = prev ? '#/' + prev.id : '#/' + page.id; $('#mPrev').classList.toggle('off', !prev);
+    $('#mNext').href = next ? '#/' + next.id : '#/' + page.id; $('#mNext').classList.toggle('off', !next);
+    $('#mNext').textContent = next ? 'Next ›' : 'End';
+    const md = $('#mDone'); md.disabled = !canDone; md.classList.toggle('on', canDone && d.has(page.id));
+    md.textContent = !canDone ? (page.kind === 'quizzes' ? 'Quizzes' : 'Day ' + P.day) : d.has(page.id) ? '✓ Done' : 'Mark done';
     document.title = `Day ${P.day} — ${page.title} · Study Portal`;
     document.body.classList.remove('nav-open');
     if (sec != null && scrollSec !== false) { const el = main.querySelector('#s-' + sec); if (el) { el.scrollIntoView(); el.classList.add('flash'); } }
