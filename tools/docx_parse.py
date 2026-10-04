@@ -164,6 +164,27 @@ def split_h1(doc):
 
 
 # ---------------------------------------------------------------- MCQs
+def set_sizes(n):
+    """Quiz-set sizes for n questions (learning mode, contiguous order).
+
+    Default 5 sets of 15. Up to 75 questions: sets of at most 15. 76-100: always 5 sets (15-20 each).
+    Over 100: as many sets as needed so none exceeds 20. Sizes differ by at most 1 (larger sets first).
+    """
+    if n <= 0:
+        return []
+    k = -(-n // 15) if n <= 75 else 5 if n <= 100 else -(-n // 20)
+    base, extra = divmod(n, k)
+    return [base + 1 if i < extra else base for i in range(k)]
+
+
+def split_sets(items):
+    out, i = [], 0
+    for s in set_sizes(len(items)):
+        out.append(items[i:i + s])
+        i += s
+    return out
+
+
 def compose_explanation(q):
     """Core reasoning + 'Why not the others' with the CURRENT option letters (works after shuffling)."""
     expl = q['core']

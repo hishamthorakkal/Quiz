@@ -1,4 +1,4 @@
-"""Build a Day study portal + 15-question quiz sets from the day's source docx.
+"""Build a Day study portal + quiz sets (sizes per rules §4) from the day's source docx.
 
 Usage:  python tools/build_day.py <day-number> <path-to-docx>
 
@@ -112,7 +112,7 @@ def build(day, docx):
             raise SystemExit(f"Shuffle verification failed at Q{q['num']}")
     key = ''.join('ABCD'[q['answer']] for q in qs)
     qs = [{k: q[k] for k in ('num', 'level', 'question', 'options', 'answer', 'explanation', 'pearl', 'srcAnswer')} for q in qs]
-    sets = [qs[i:i + 15] for i in range(0, len(qs), 15)]
+    sets = dp.split_sets(qs)   # 5 x 15 by default; grows to 20 per set, then adds sets (sizes within ±1)
     pages['quizzes'] = {'id': 'quizzes', 'title': 'Quizzes', 'group': 'Practice', 'kind': 'quizzes', 'sections': []}
     pages['notebook'] = {'id': 'notebook', 'title': 'Error Notebook', 'group': 'Revise', 'kind': 'notebook', 'sections': []}
     order = []

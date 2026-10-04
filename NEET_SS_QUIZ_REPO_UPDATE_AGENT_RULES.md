@@ -146,42 +146,63 @@ Do not simplify medical wording merely for convenience.
 
 ---
 
-# 4. Number of Questions Per Quiz
+# 4. Number of Questions Per Quiz Set
 
-The preferred quiz size is:
+Applies to every learning-mode test: daily study portals and cumulative mocks.
+(Grand Mocks use the official exam sections instead — see §34–36.)
 
-```text
-15 questions per quiz set
-```
-
-Example for 75 questions:
+## 4.1 Rule
 
 ```text
-Quiz Set 1 → Q1–15
-Quiz Set 2 → Q16–30
-Quiz Set 3 → Q31–45
-Quiz Set 4 → Q46–60
-Quiz Set 5 → Q61–75
+Default            : 5 sets × 15 questions (75 questions)
+More questions     : keep 5 sets and grow each set, up to 20 questions per set (100 questions)
+Even more questions: add more sets so that no set exceeds 20 questions
+Fewer questions    : sets of at most 15 questions
+Balance            : all sets as equal as possible — sizes may differ by at most 1
+Order              : contiguous source order (Set 1 = first questions); larger sets come first
 ```
 
-If the total is not divisible by 15:
+Number of sets for N questions:
 
-- keep sets of 15 where possible
-- place the remaining questions in the final set
+| Total questions (N) | Number of sets | Questions per set |
+|---|---|---|
+| 1 – 75 | ⌈N ÷ 15⌉ | ≤ 15 |
+| 76 – 100 | 5 | 16 – 20 |
+| 101 and above | ⌈N ÷ 20⌉ | ≤ 20 |
 
-Example:
+Then divide N as evenly as possible across the sets (each set gets ⌊N ÷ sets⌋ or ⌊N ÷ sets⌋ + 1).
+
+## 4.2 Examples
+
+| Questions | Sets | Sizes |
+|---|---|---|
+| 50 | 4 | 13, 13, 12, 12 |
+| 60 | 4 | 15, 15, 15, 15 |
+| 75 | 5 | 15, 15, 15, 15, 15 |
+| 80 | 5 | 16, 16, 16, 16, 16 |
+| 90 | 5 | 18, 18, 18, 18, 18 |
+| 100 | 5 | 20, 20, 20, 20, 20 |
+| 101 | 6 | 17, 17, 17, 17, 17, 16 |
+| 120 | 6 | 20 × 6 |
+| 150 | 8 | 19, 19, 19, 19, 19, 19, 18, 18 |
+| 200 | 10 | 20 × 10 |
+
+Example ranges for 90 questions:
 
 ```text
-67 questions
-
-Set 1 → Q1–15
-Set 2 → Q16–30
-Set 3 → Q31–45
-Set 4 → Q46–60
-Set 5 → Q61–67
+Quiz Set 1 → Q1–18
+Quiz Set 2 → Q19–36
+Quiz Set 3 → Q37–54
+Quiz Set 4 → Q55–72
+Quiz Set 5 → Q73–90
 ```
 
-Never drop questions just to make all sets equal.
+## 4.3 Requirements
+
+- Never drop or duplicate questions to make sets equal.
+- Sets must be contiguous: each set starts immediately after the previous one ends.
+- The build applies this automatically: `tools/docx_parse.py → set_sizes()` / `split_sets()`, used by `tools/build_day.py`.
+- Show each set's real question range and count on the quiz-set page (e.g. "Questions 19–36 · 18 MCQs").
 
 ---
 
@@ -370,7 +391,7 @@ Do not include:
 - Question dropdown
 - direct question navigation
 
-The learner should proceed sequentially within each 15-question quiz set.
+The learner should proceed sequentially within each quiz set (set sizes per §4).
 
 ---
 
@@ -874,7 +895,7 @@ Then perform:
 5. Cross-check question-to-answer mapping
 6. Extract all questions
 7. Create DayN folder
-8. Split questions into sets of maximum 15
+8. Split questions into quiz sets per §4 (default 5 × 15, up to 20 per set, sizes within ±1)
 9. Generate DayN/index.html
 10. Generate quiz pages
 11. Update root index.html
@@ -968,7 +989,7 @@ Day Selection
     ↓
 Day Quiz Set Selection
     ↓
-15-question Interactive Quiz
+Interactive Quiz Set (15–20 questions, §4)
     ↓
 Immediate Learning Feedback
     ↓
@@ -1081,7 +1102,7 @@ Day1-20
 RevisionMock1
 ```
 
-should use the existing **15-question quiz-set learning model**.
+should use the existing **quiz-set learning model** with set sizes per §4.
 
 Example for 75 questions:
 
@@ -1139,7 +1160,7 @@ GrandMockTest 2
 Grand Mock Test 3
 ```
 
-Grand Mocks must use **exam simulation mode**, not the normal 15-question learning-mode behavior.
+Grand Mocks must use **exam simulation mode**, not the normal quiz-set learning-mode behavior.
 
 Before implementing any Grand Mock, verify the latest available official NBEMS NEET-SS examination pattern.
 
@@ -1754,18 +1775,18 @@ NEET-SS + ICP Paediatrics
 │
 ├── Study Days
 │   ├── Day 4
-│   │   └── 15-question learning quiz sets
+│   │   └── learning quiz sets (§4 sizes)
 │   ├── Day 5
-│   │   └── 15-question learning quiz sets
+│   │   └── learning quiz sets (§4 sizes)
 │   └── ...
 │
 └── Mock Tests
     │
     ├── Cumulative Mocks
     │   ├── Day1-5
-    │   │   └── 15-question learning quiz sets
+    │   │   └── learning quiz sets (§4 sizes)
     │   ├── Day1-11
-    │   │   └── 15-question learning quiz sets
+    │   │   └── learning quiz sets (§4 sizes)
     │   └── ...
     │
     └── Grand Mocks
@@ -2115,7 +2136,7 @@ When a new Day source file is supplied:
 6. Extract MCQs, answer keys and explanations.
 7. Validate the extracted question count.
 8. Generate DayN/index.html.
-9. Generate 15-question quiz-set HTML files.
+9. Generate quiz-set HTML files (set sizes per §4).
 10. Update the root Day list.
 11. Test navigation and scoring.
 12. Review git diff.
@@ -2156,7 +2177,7 @@ Workflow:
 3. Create Mock/<MockName>/source/.
 4. Preserve the supplied source file inside source/.
 5. Extract questions/answers/explanations.
-6. Split into maximum 15-question sets.
+6. Split into quiz sets per §4.
 7. Generate the mock index page.
 8. Generate quiz-set pages.
 9. Update Mock/index.html.
@@ -2402,7 +2423,7 @@ This folder structure is the final preferred structure for future repository upd
 
 # 70. Daily Study Portal (from Day 5 onward)
 
-Each study day is a **study portal**, not only a quiz list. `DayN/index.html` is the portal; the 15-question quiz sets remain inside it.
+Each study day is a **study portal**, not only a quiz list. `DayN/index.html` is the portal; the quiz sets (sizes per §4) remain inside it.
 
 Build every day with the shared tooling — never hand-write portal HTML:
 

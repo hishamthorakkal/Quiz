@@ -127,7 +127,8 @@
   }
   function quizzesPage() {
     const q = quizStats();
-    return `<section class="sec"><h2>${P.mcqCount} MCQs · ${P.quizSets.length} sets of up to 15</h2><p class="lede">NEET-SS marking: +4 correct, −1 wrong, 0 unattempted. Instant feedback with explanation and exam pearl; skip and return; wrong-answer report.</p>
+    const sz = P.quizSets.map(s => s.n), lo = Math.min(...sz), hi = Math.max(...sz);
+    return `<section class="sec"><h2>${P.mcqCount} MCQs · ${P.quizSets.length} sets of ${lo === hi ? lo : lo + '–' + hi} questions</h2><p class="lede">NEET-SS marking: +4 correct, −1 wrong, 0 unattempted. Instant feedback with explanation and exam pearl; skip and return; wrong-answer report.</p>
       ${P.quizSets.map(s => { const r = q[s.k];
         return `<div class="quiz-row"><div class="info"><b>Quiz Set ${s.k}</b> · Questions ${s.from}–${s.to} (${s.n})<br>${r ? `<span class="pill g">Best ${r.best}/${r.bestMax} · ${r.bestPct}%</span> <span class="pill">Last ${r.last.score}/${r.last.max} · ${r.attempts} attempt${r.attempts > 1 ? 's' : ''}</span>` : '<span class="pill">Not attempted</span>'}</div>
         <a class="btn ${r ? 'ghost' : ''}" href="quiz${s.k}.html">${r ? 'Retake' : 'Start'} Set ${s.k}</a></div>`; }).join('')}</section>`;
