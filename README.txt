@@ -1,10 +1,10 @@
-NEET-SS + ICP PAEDIATRICS — STUDY PORTALS, MOCKS AND QUIZZES
+NEET-SS + ICP PAEDIATRICS — STUDY PORTALS AND QUIZZES
 
 Open the root index.html first.
 
 Folder structure:
 
-index.html                 Home: Daily Study Portals · Cumulative Mocks · Grand Mocks
+index.html                 Home: Daily Study Portals
 notebook.html              Combined K/C/R/G/S error notebook (all days and mocks)
 assets/
   portal.css, portal.js    Shared study-portal UI (every day uses these two files)
@@ -19,11 +19,6 @@ Day5/, Day6/
   index.html               Study portal (overview, notes, cases, pearls, revision, quizzes)
   content.js               Portal content generated from the docx — do not edit by hand
   quiz1.html ... quiz5.html
-Mock_Day1-5/
-  index.html, mock.html (full 150-question test), quiz1.html ... quiz8.html (8 sets of 18–19, rule in rules §4)
-Mock/
-  index.html               Mock test list
-  GrandMock_Day51_AllTopics/   Timed exam simulation (source/, index.html, exam.html, questions.json, README.md)
 
 Adding or updating a day (needs Python 3, no extra packages):
 
