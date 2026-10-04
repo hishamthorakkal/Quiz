@@ -5,8 +5,11 @@ Open the root index.html first.
 Folder structure:
 
 index.html                 Home: Daily Study Portals · Cumulative Mocks · Grand Mocks
+notebook.html              Combined K/C/R/G/S error notebook (all days and mocks)
 assets/
   portal.css, portal.js    Shared study-portal UI (every day uses these two files)
+  notebook.js              Automatic error notebook: records wrong answers when any quiz/mock finishes,
+                           K/C/R/G/S tagging panel on result screens, "Error notes" ntfy message, notebook pages
 tools/
   build_day.py             Builds a day's portal + quiz sets from its source docx
   docx_parse.py            Docx reader (headings, tables, callout boxes, MCQs)

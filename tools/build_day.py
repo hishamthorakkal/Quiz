@@ -50,10 +50,11 @@ PAGES = {  # id: (title, group, kind)
     'quizzes': ('Quizzes', 'Practice', 'quizzes'),
     'revision': ('Rapid Revision', 'Revise', 'revision'),
     'recall': ('Active Recall', 'Revise', 'recall'),
+    'notebook': ('Error Notebook', 'Revise', 'notebook'),
     'plan': ('Revision Plan', 'Revise', 'plan'),
     'references': ('References', 'More', 'notes'),
 }
-ORDER = ['overview', 'NOTES', 'numbers', 'tables', 'cases', 'data', 'pearls', 'quizzes', 'revision', 'recall', 'plan', 'references']
+ORDER = ['overview', 'NOTES', 'numbers', 'tables', 'cases', 'data', 'pearls', 'quizzes', 'revision', 'recall', 'notebook', 'plan', 'references']
 
 
 def build(day, docx):
@@ -113,6 +114,7 @@ def build(day, docx):
     qs = [{k: q[k] for k in ('num', 'level', 'question', 'options', 'answer', 'explanation', 'pearl', 'srcAnswer')} for q in qs]
     sets = [qs[i:i + 15] for i in range(0, len(qs), 15)]
     pages['quizzes'] = {'id': 'quizzes', 'title': 'Quizzes', 'group': 'Practice', 'kind': 'quizzes', 'sections': []}
+    pages['notebook'] = {'id': 'notebook', 'title': 'Error Notebook', 'group': 'Revise', 'kind': 'notebook', 'sections': []}
     order = []
     for o in ORDER:
         order += notes if o == 'NOTES' else ([o] if o in pages else [])
@@ -136,7 +138,7 @@ def build(day, docx):
 <title>Day {day} — {portal['title']} · Study Portal</title>
 <link rel="stylesheet" href="../assets/portal.css"></head>
 <body><div id="app"><noscript>This study portal needs JavaScript.</noscript></div>
-<script src="content.js"></script><script src="../assets/portal.js"></script></body></html>
+<script src="content.js"></script><script src="../assets/notebook.js"></script><script src="../assets/portal.js"></script></body></html>
 ''')
     T = open(f'{ROOT}/tools/templates/quiz.html', encoding='utf-8').read()
     for k, ch in enumerate(sets, 1):

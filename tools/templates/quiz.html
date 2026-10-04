@@ -28,8 +28,10 @@ h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-
 <div class="topline"><span id="counter"></span><span id="score"></span><span id="counts"></span></div>
 <div class="card" id="card"></div>
 </div>
+<script src="../assets/notebook.js"></script>
 <script>
 const quiz=__QUIZ__;
+const NB_CTX={srcId:'Day__DAY__',label:'Day __DAY__',set:'Quiz __K__',href:'Day__DAY__/quiz__K__.html'};
 let queue=quiz.map((_,i)=>i),idx=0,score=0,correctCount=0,wrongCount=0,checked=false,answers=[],skipped=new Set(),startedAt=new Date();
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
 function render(){
@@ -90,7 +92,8 @@ let notified=false;
 function wrongLines(list,lines,label){if(!list.length)return;const L=i=>String.fromCharCode(65+i),parts=[];for(let i=0;i<list.length;i++){const w=list[i],p=`Q${w.num} → ${L(w.chosen)} → ${L(w.answer)}`;if(new Blob([lines.join('\n')+`\n${label} → `+parts.concat(p).join(', ')]).size>3800){parts.push(`…and ${list.length-i} more`);break}parts.push(p)}lines.push('',`Wrong (${list.length}): chosen → correct`,`${label} → `+parts.join(', '))}
 function notifyResult(attempted,max,pct,early){
  if(notified)return;notified=true;
- const lines=[`Total questions: ${quiz.length}`,`Attempted: ${attempted}`,`Score: ${score} / ${max}`,`Correct: ${correctCount}`,`Wrong: ${wrongCount}`,`Skipped (unanswered): ${skipped.size}`,`Not reached: ${quiz.length-attempted-skipped.size}`,`Percentage: ${pct}%`,`Time: ${duration()}`];
+ const nr=quiz.length-attempted-skipped.size;
+ const lines=[`Score: ${score} / ${max} (${pct}%)`,`Attempted ${attempted}/${quiz.length} · Correct ${correctCount} · Wrong ${wrongCount} · Skipped ${skipped.size}${nr>0?` · Not reached ${nr}`:''}`,`Time: ${duration()}`];
  wrongLines(answers.filter(a=>!a.correct).sort((a,b)=>a.num-b.num),lines,'Day __DAY__');
  const msg=lines.join('\n');
  const title=`${document.title}${early?' (finished early)':''}`;
@@ -114,6 +117,10 @@ function showSummary(early){
  <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
  ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
  <div class="actions"><a class="btn secondary" href="index.html#/quizzes">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
+ // Error notebook: record wrong answers automatically, then let the learner tag them (K/C/R/G/S) and send error notes.
+ if(window.Notebook){const ids=Notebook.record(NB_CTX,answers.map(a=>({num:a.num,srcNum:a.num,question:a.question,options:a.options,chosen:a.chosen,answer:a.answer,explanation:a.explanation,pearl:a.pearl,correct:a.correct})));
+  const card=document.getElementById('card'),box=document.createElement('div'),h=card.querySelector('h3');card.insertBefore(box,h||null);
+  Notebook.panel(box,ids,`${NB_CTX.label} ${NB_CTX.set} — Error notes`);}
 }
 render();
 </script></body></html>

@@ -10,7 +10,7 @@
     set(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
   };
   const pages = P.pages, byId = Object.fromEntries(pages.map(p => [p.id, p]));
-  const tracked = pages.filter(p => !['overview', 'quizzes', 'references'].includes(p.id));
+  const tracked = pages.filter(p => !['overview', 'quizzes', 'notebook', 'references'].includes(p.id));
   const strip = h => String(h).replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
   const escT = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -154,20 +154,22 @@
     if (page.kind === 'cases') body += '<p class="lede">Read each case, decide your next step, then reveal the reasoning.</p>';
     if (page.kind === 'data') body += '<p class="lede">Interpret each station yourself first — tap an interpretation cell to check it.</p>';
     if (page.kind === 'quizzes') body += quizzesPage();
+    if (page.kind === 'notebook') body += `<p class="lede">Every wrong answer from Day ${P.day} quiz sets is saved here automatically. Tag why you got it wrong (K/C/R/G/S), add a one-line correction rule, and retest after 48–72 h. <a href="../notebook.html">All days &amp; mocks →</a></p><section class="sec" id="nbPage"></section>`;
     body += page.sections.map((s, i) => sectionHTML(page, s, i)).join('');
     if (page.kind === 'plan') body += planExtra();
-    if (page.kind !== 'overview' && page.kind !== 'quizzes' && page.id !== 'references')
+    if (page.kind !== 'overview' && page.kind !== 'quizzes' && page.kind !== 'notebook' && page.id !== 'references')
       body += `<div class="done-box"><button class="btn ${d.has(page.id) ? 'ok' : ''}" data-act="done">${d.has(page.id) ? '✓ Marked as done' : 'Mark this section as done'}</button></div>`;
     body += `<div class="pager">${prev ? `<a class="btn ghost" href="#/${prev.id}">← ${escT(prev.title)}</a>` : '<span></span>'}${next ? `<a class="btn" href="#/${next.id}">${escT(next.title)} →</a>` : ''}</div>`;
     const main = $('#main'); main.innerHTML = body;
+    if (page.kind === 'notebook' && window.Notebook) Notebook.page(main.querySelector('#nbPage'), { srcId: 'Day' + P.day }, '../');
     $('#progBar').style.width = progress().pct + '%';
     // phone bottom bar: previous / mark done / next
-    const canDone = page.kind !== 'overview' && page.kind !== 'quizzes' && page.id !== 'references';
+    const canDone = page.kind !== 'overview' && page.kind !== 'quizzes' && page.kind !== 'notebook' && page.id !== 'references';
     $('#mPrev').href = prev ? '#/' + prev.id : '#/' + page.id; $('#mPrev').classList.toggle('off', !prev);
     $('#mNext').href = next ? '#/' + next.id : '#/' + page.id; $('#mNext').classList.toggle('off', !next);
     $('#mNext').textContent = next ? 'Next ›' : 'End';
     const md = $('#mDone'); md.disabled = !canDone; md.classList.toggle('on', canDone && d.has(page.id));
-    md.textContent = !canDone ? (page.kind === 'quizzes' ? 'Quizzes' : 'Day ' + P.day) : d.has(page.id) ? '✓ Done' : 'Mark done';
+    md.textContent = !canDone ? (page.kind === 'quizzes' ? 'Quizzes' : page.kind === 'notebook' ? 'Notebook' : 'Day ' + P.day) : d.has(page.id) ? '✓ Done' : 'Mark done';
     document.title = `Day ${P.day} — ${page.title} · Study Portal`;
     document.body.classList.remove('nav-open');
     if (sec != null && scrollSec !== false) { const el = main.querySelector('#s-' + sec); if (el) { el.scrollIntoView(); el.classList.add('flash'); } }

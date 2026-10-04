@@ -2436,4 +2436,16 @@ Answer options are always shuffled once at build time (fixed seed per day, so re
 
 Content rules still apply: show the document text faithfully; do not rewrite medical content. Generic boilerplate "why not" lines are dropped from quiz explanations; pearls labelled "Qn pearl" are matched to question n even if printed under another question. Report such source issues in the update summary.
 
+Error notebook (`assets/notebook.js`, shared by every quiz page, mock and grand mock): wrong answers are recorded automatically when a test finishes (repeat mistakes counted, retest date +48–72 h, later correct answers mark the entry fixed). The result screen shows a K/C/R/G/S tagging panel; "Save error notes & send" posts a second ntfy message:
+
+```text
+📒 Day 6 Quiz 2 — Error notes
+Day 6 → Q18 → D → C · K
+Day 6 → Q22 → C → B · R · sepsis lowers threshold
+Total: K1 R1
+Retest: 6–7 Oct 2026
+```
+
+Each portal has an Error Notebook page; `notebook.html` combines all days and mocks. New pages must include `assets/notebook.js` and pass a `NB_CTX` ({srcId, label, set, href}).
+
 If a new document uses a Heading 1 the build does not recognise, it becomes a Study Notes page and is listed under `warnings` — review it before committing.

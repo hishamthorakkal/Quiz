@@ -21,6 +21,7 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 <body><div class="wrap">
 <h1>NEET-SS + ICP Paediatrics</h1>
 <div class="sub">Choose a daily study portal, a cumulative mock, or a grand mock.</div>
+<a class="btn" href="notebook.html" style="margin:0 0 16px;background:#0f172a">📒 Error Notebook <span id="nbCount" style="font-weight:500;opacity:.85"></span></a>
 
 <details class="card section" open>
 <summary><span class="chev"></span><div class="section-head"><h2 class="section-title">Daily Study Portals</h2>
@@ -81,6 +82,9 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 </details>
 </div>
 <script>
+// Error-notebook badge: open entries and how many are due for retest.
+try{const es=Object.values((JSON.parse(localStorage.getItem('neetss:notebook:v1'))||{entries:{}}).entries).filter(e=>!e.fixed),due=es.filter(e=>Date.now()>=e.retest).length;
+ if(es.length)document.getElementById('nbCount').textContent=`· ${es.length} open${due?` · ${due} due`:''}`;}catch(e){}
 // Show each day's portal progress (saved by the portal in this browser).
 document.querySelectorAll('[data-day]').forEach(el=>{
  try{const s=JSON.parse(localStorage.getItem('portal:Day'+el.dataset.day+':summary'));
