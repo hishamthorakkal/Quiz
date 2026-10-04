@@ -2459,13 +2459,28 @@ Content rules still apply: show the document text faithfully; do not rewrite med
 
 Error notebook (`assets/notebook.js`, shared by every quiz page, mock and grand mock): wrong answers are recorded automatically when a test finishes (repeat mistakes counted, retest date +48–72 h, later correct answers mark the entry fixed). The result screen shows a K/C/R/G/S tagging panel; "Save error notes & send" posts a second ntfy message:
 
+Every error-note entry uses exactly this format, one mistake per line:
+
 ```text
-📒 Day 6 Quiz 2 — Error notes
-Day 6 → Q18 → D → C · K
-Day 6 → Q22 → C → B · R · sepsis lowers threshold
-Total: K1 R1
-Retest: 6–7 Oct 2026
+Day → Question → Chosen answer → Correct answer → Error type → optional note
 ```
+
+Learning-mode quizzes put the error notes inside the single result notification:
+
+```text
+Day 6 Quiz 2 — Q16–Q30
+Score: 45 / 60 (75%)
+Attempted 15/15 · Correct 12 · Wrong 3 · Skipped 0
+Time: 11m 40s
+
+Wrong (3): Day → Question → Chosen → Correct → Type → Note
+Day 6 → Q16 → C → B → R → DAT is etiology, not a threshold
+Day 6 → Q22 → C → B → K
+Day 6 → Q29 → B → A → S (2×)
+Total: K1 R1 S1 · Retest: 6–7 Oct 2026
+```
+
+Untagged entries show `?` as the type (grand mock before tagging); repeated mistakes add `(2×)` after the type.
 
 Each portal has an Error Notebook page; `notebook.html` combines all days and mocks. New pages must include `assets/notebook.js` and pass a `NB_CTX` ({srcId, label, set, href}).
 

@@ -41,38 +41,36 @@
     update(id, patch) { const d = this.load(); if (d.entries[id]) { Object.assign(d.entries[id], patch); this.save(d); } },
     remove(id) { const d = this.load(); delete d.entries[id]; this.save(d); },
     list(filter) { return Object.values(this.load().entries).filter(e => !filter || !filter.srcId || e.srcId === filter.srcId).sort((a, b) => b.lastAt - a.lastAt); },
-    line(e) { return `${e.src} → Q${e.num} → ${L(e.chosen)} → ${L(e.answer)} · ${e.tag || '?'}${e.count > 1 ? ` · ${e.count}× wrong` : ''}${e.note ? ' · ' + e.note : ''}`; },
-    /** Message 2: "📒 <label> <set> — Error notes" */
-    message(ids) {
-      const d = this.load(), es = ids.map(i => d.entries[i]).filter(Boolean);
-      const lines = [], tot = {};
+    /** One mistake per line:  Day → Question → Chosen answer → Correct answer → Error type → optional note
+        e.g.  Day 6 → Q16 → C → B → R → DAT is etiology, not a threshold   (untagged = ?, repeats add "(2×)") */
+    HEADER: 'Day → Question → Chosen → Correct → Type → Note',
+    line(e) { return `${e.src} → Q${e.num} → ${L(e.chosen)} → ${L(e.answer)} → ${e.tag || '?'}${e.count > 1 ? ` (${e.count}×)` : ''}${e.note ? ' → ' + e.note : ''}`; },
+    lines(es, budget) {
+      const out = [];
       for (let i = 0; i < es.length; i++) {
         const l = this.line(es[i]);
-        if (new Blob([lines.concat(l).join('\n')]).size > 3500) { lines.push(`…and ${es.length - i} more`); break; }
-        lines.push(l);
+        if (new Blob([out.concat(l).join('\n')]).size > budget) { out.push(`…and ${es.length - i} more`); break; }
+        out.push(l);
       }
-      es.forEach(e => { const t = e.tag || '?'; tot[t] = (tot[t] || 0) + 1; });
-      lines.push('Total: ' + ['K', 'C', 'R', 'G', 'S', '?'].filter(t => tot[t]).map(t => t + tot[t]).join(' '));
-      if (es.length) lines.push('Retest: ' + range(Math.min(...es.map(e => e.retest)), Math.max(...es.map(e => e.retest)) + 24 * H));
-      return lines.join('\n');
+      return out;
     },
-    /** Error notes folded into the result notification (learning-mode quizzes, where tags are chosen during the quiz):
-        Wrong (3): chosen → correct · type / Day 6 → Q16 → C → B · R, Q22 → … / Note Q16: … / Total: … · Retest: … */
-    compact(ids, label) {
+    summary(es) {
+      const tot = {};
+      es.forEach(e => { const t = e.tag || '?'; tot[t] = (tot[t] || 0) + 1; });
+      return 'Total: ' + ['K', 'C', 'R', 'G', 'S', '?'].filter(t => tot[t]).map(t => t + tot[t]).join(' ') +
+        ' · Retest: ' + range(Math.min(...es.map(e => e.retest)), Math.max(...es.map(e => e.retest)) + 24 * H);
+    },
+    /** Separate error-notes message (grand mock, "Send updated notes"). */
+    message(ids) {
+      const d = this.load(), es = ids.map(i => d.entries[i]).filter(Boolean);
+      if (!es.length) return 'No wrong answers.';
+      return [this.HEADER, ...this.lines(es, 3300), this.summary(es)].join('\n');
+    },
+    /** Error notes inside the result notification (learning-mode quizzes, where tags are chosen during the quiz). */
+    compact(ids) {
       const d = this.load(), es = ids.map(i => d.entries[i]).filter(Boolean);
       if (!es.length) return [];
-      const parts = [], notes = [], tot = {};
-      for (let i = 0; i < es.length; i++) {
-        const e = es[i], p = `Q${e.num} → ${L(e.chosen)} → ${L(e.answer)} · ${e.tag || '?'}${e.count > 1 ? ` (${e.count}×)` : ''}`;
-        if (new Blob([`${label} → ` + parts.concat(p).join(', ')]).size > 2400) { parts.push(`…and ${es.length - i} more`); break; }
-        parts.push(p);
-      }
-      es.forEach(e => { const t = e.tag || '?'; tot[t] = (tot[t] || 0) + 1; if (e.note) notes.push(`Note Q${e.num}: ${e.note}`); });
-      const out = [`Wrong (${es.length}): chosen → correct · type`, `${label} → ` + parts.join(', ')];
-      for (const n of notes) { if (new Blob([out.concat(n).join('\n')]).size > 3300) break; out.push(n); }
-      out.push('Total: ' + ['K', 'C', 'R', 'G', 'S', '?'].filter(t => tot[t]).map(t => t + tot[t]).join(' ') +
-        ' · Retest: ' + range(Math.min(...es.map(e => e.retest)), Math.max(...es.map(e => e.retest)) + 24 * H));
-      return out;
+      return [`Wrong (${es.length}): ${this.HEADER}`, ...this.lines(es, 3000), this.summary(es)];
     },
     send(ids, title) {
       return fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=ledger`, { method: 'POST', body: this.message(ids) });
