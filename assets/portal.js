@@ -91,14 +91,22 @@
     }
     return '';
   }
+  // A recall item may carry its answer after "Answer:" (same bullet, usually after a line break).
+  function splitRecall(it) {
+    const m = String(it).match(/^([\s\S]*?)(?:\s*<br>)*\s*(?:<strong>)?\s*Answer\s*:\s*(?:<\/strong>)?\s*([\s\S]*)$/i);
+    return m && m[2].trim() ? [m[1], m[2]] : [it, ''];
+  }
   function recallCards(items) {
     const st = LS.get('recall', {}), only = LS.get('recallOnly', false);
     const got = items.filter((_, i) => st[i] === 'got').length, again = items.filter((_, i) => st[i] === 'again').length;
+    const hasAns = items.some(it => splitRecall(it)[1]);
     return `<div class="toolbar"><span class="pill g">Knew it: ${got}</span><span class="pill a">Revise again: ${again}</span><span class="pill">Not rated: ${items.length - got - again}</span>
       <button class="btn ghost sm" data-act="recall-only">${only ? 'Show all prompts' : 'Show only “revise again”'}</button><button class="btn ghost sm" data-act="recall-reset">Reset ratings</button></div>
-      <p class="lede">Answer each prompt aloud or on paper from memory, then check your notes and rate yourself.</p>
-      <div class="cards">${items.map((it, i) => (only && st[i] !== 'again') ? '' : `<div class="card ${st[i] || ''}"><div class="case-no">PROMPT ${i + 1}</div><div class="q">${it}</div>
-      <div class="acts"><button class="btn sm ${st[i] === 'got' ? 'ok' : 'ghost'}" data-recall="${i}" data-v="got">✓ Knew it</button><button class="btn sm ${st[i] === 'again' ? 'warn' : 'ghost'}" data-recall="${i}" data-v="again">↺ Revise again</button></div></div>`).join('')}</div>`;
+      <p class="lede">Answer each prompt aloud or on paper from memory, then rate yourself.${hasAns ? ' Tapping <b>Revise again</b> shows the answer.' : ' Check your notes for the answer.'}</p>
+      <div class="cards">${items.map((it, i) => { if (only && st[i] !== 'again') return ''; const [q, ans] = splitRecall(it);
+      return `<div class="card ${st[i] || ''}"><div class="case-no">PROMPT ${i + 1}</div><div class="q">${q}</div>
+      ${ans && st[i] === 'again' ? `<div class="ans"><b>Answer:</b> ${ans}</div>` : ''}
+      <div class="acts"><button class="btn sm ${st[i] === 'got' ? 'ok' : 'ghost'}" data-recall="${i}" data-v="got">✓ Knew it</button><button class="btn sm ${st[i] === 'again' ? 'warn' : 'ghost'}" data-recall="${i}" data-v="again">↺ Revise again</button></div></div>`; }).join('')}</div>`;
   }
 
   // ---------- pages ----------

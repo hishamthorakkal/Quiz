@@ -59,7 +59,7 @@ td.blur{cursor:pointer;position:relative}td.blur span{filter:blur(6px);user-sele
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
 .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
 .card.got{border-color:#86efac;background:#f0fdf4}.card.again{border-color:#fdba74;background:#fff7ed}
-.card .q{font-weight:650}.card .acts{display:flex;gap:6px;margin-top:auto}
+.card .q{font-weight:650}.card .ans{background:#fff;border:1px solid #fdba74;border-left:4px solid #d97706;border-radius:10px;padding:9px 11px;font-size:14.5px;line-height:1.5}.card .ans b{color:#92400e}.card .acts{display:flex;gap:6px;margin-top:auto}
 .facts{counter-reset:f;list-style:none;padding:0!important}.facts li{counter-increment:f;position:relative;padding:8px 10px 8px 44px!important;border-bottom:1px solid var(--line);margin:0!important}
 .facts li::before{content:counter(f);position:absolute;left:8px;top:8px;width:26px;height:26px;border-radius:50%;background:#dbeafe;color:#1e40af;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
 .list-pearl li::marker{content:"★  ";color:#f59e0b}.list-trap li::marker{content:"⚠  ";color:#ef4444}
