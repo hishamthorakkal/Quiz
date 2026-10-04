@@ -68,7 +68,7 @@ def asset_version():
     return h.hexdigest()[:8]
 
 
-def build(day, docx):
+def build(day, docx, keep_order=False):
     D = f'{ROOT}/Day{day}'
     os.makedirs(f'{D}/source', exist_ok=True)
     src_name = os.path.basename(docx)
@@ -112,8 +112,13 @@ def build(day, docx):
     qs, problems, stats = dp.parse_mcqs(doc, parts)
     if problems:
         raise SystemExit('MCQ problems — fix the source or parser first:\n  ' + '\n  '.join(problems))
-    # Source answer keys can be patterned (e.g. A-B-C-D repeating), so options are always shuffled once.
-    dp.shuffle_options(qs, seed=f'Day{day}')
+    # Source answer keys can be patterned (e.g. A-B-C-D repeating), so options are shuffled once —
+    # unless the source already carries a randomised key (--keep-order), so site letters match the doc.
+    if keep_order:
+        for q in qs:
+            q['srcAnswer'] = 'ABCD'[q['answer']]
+    else:
+        dp.shuffle_options(qs, seed=f'Day{day}')
     fresh, _, _ = dp.parse_mcqs(doc, parts)               # independent, unshuffled re-parse for verification
     for q, f0 in zip(qs, fresh):
         ok = (sorted(q['options']) == sorted(f0['options']) and q['options'][q['answer']] == f0['options'][f0['answer']]
@@ -173,5 +178,5 @@ def build(day, docx):
 
 
 if __name__ == '__main__':
-    r = build(int(sys.argv[1]), sys.argv[2])
+    r = build(int(sys.argv[1]), sys.argv[2], keep_order='--keep-order' in sys.argv[3:])
     print(json.dumps(r, ensure_ascii=False, indent=1))
