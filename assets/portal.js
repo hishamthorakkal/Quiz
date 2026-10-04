@@ -21,7 +21,10 @@
     const d = done(), q = quizStats();
     const pd = tracked.filter(p => d.has(p.id)).length, qd = P.quizSets.filter(s => q[s.k]).length;
     const total = tracked.length + P.quizSets.length, pct = total ? Math.round((pd + qd) / total * 100) : 0;
-    LS.set('summary', { pct, pagesDone: pd, pages: tracked.length, quizDone: qd, quizzes: P.quizSets.length, at: Date.now() });
+    // Only write when the numbers change: writes fire 'storage' events in other open tabs of this day.
+    const prev = LS.get('summary', null);
+    if (!prev || prev.pct !== pct || prev.pagesDone !== pd || prev.quizDone !== qd || prev.pages !== tracked.length || prev.quizzes !== P.quizSets.length)
+      LS.set('summary', { pct, pagesDone: pd, pages: tracked.length, quizDone: qd, quizzes: P.quizSets.length, at: Date.now() });
     return { pct, pd, qd };
   }
   function toggleDone(id) { const d = done(); d.has(id) ? d.delete(id) : d.add(id); LS.set('done', [...d]); render(); }
@@ -95,7 +98,7 @@
       <button class="btn ghost sm" data-act="recall-only">${only ? 'Show all prompts' : 'Show only “revise again”'}</button><button class="btn ghost sm" data-act="recall-reset">Reset ratings</button></div>
       <p class="lede">Answer each prompt aloud or on paper from memory, then check your notes and rate yourself.</p>
       <div class="cards">${items.map((it, i) => (only && st[i] !== 'again') ? '' : `<div class="card ${st[i] || ''}"><div class="case-no">PROMPT ${i + 1}</div><div class="q">${it}</div>
-      <div class="acts"><button class="btn sm ${st[i] === 'got' ? 'ok' : 'ghost'}" data-recall="${i}" data-v="got">✓ Knew it</button><button class="btn sm sec" data-recall="${i}" data-v="again">↺ Revise again</button></div></div>`).join('')}</div>`;
+      <div class="acts"><button class="btn sm ${st[i] === 'got' ? 'ok' : 'ghost'}" data-recall="${i}" data-v="got">✓ Knew it</button><button class="btn sm ${st[i] === 'again' ? 'warn' : 'ghost'}" data-recall="${i}" data-v="again">↺ Revise again</button></div></div>`).join('')}</div>`;
   }
 
   // ---------- pages ----------
@@ -228,7 +231,10 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') results.classList.remove('show'); });
 
   window.addEventListener('hashchange', () => render());
-  window.addEventListener('storage', e => { if (e.key && e.key.startsWith(NS)) render(false); });
+  // Sync with other open tabs — only for data that changes what this page shows (never summary/last, which
+  // every render may touch; reacting to those made two open tabs re-render each other endlessly).
+  const SYNC = ['done', 'quiz', 'recall', 'recallOnly', 'plan'].map(k => NS + k);
+  window.addEventListener('storage', e => { if (SYNC.includes(e.key)) render(false); });
   if (!location.hash) location.replace('#/' + (byId[LS.get('last', '')] ? LS.get('last') : 'overview'));
   render();
 })();
