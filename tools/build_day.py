@@ -100,6 +100,17 @@ def build(day, docx):
     qs, problems, stats = dp.parse_mcqs(doc, parts)
     if problems:
         raise SystemExit('MCQ problems — fix the source or parser first:\n  ' + '\n  '.join(problems))
+    # Source answer keys can be patterned (e.g. A-B-C-D repeating), so options are always shuffled once.
+    dp.shuffle_options(qs, seed=f'Day{day}')
+    fresh, _, _ = dp.parse_mcqs(doc, parts)               # independent, unshuffled re-parse for verification
+    for q, f0 in zip(qs, fresh):
+        ok = (sorted(q['options']) == sorted(f0['options']) and q['options'][q['answer']] == f0['options'][f0['answer']]
+              and all(q['options'][i] == f0['options'][j] and v == f0['why_not'][j] for i, v in q['why_not'].items()
+                      for j in [f0['options'].index(q['options'][i])]))
+        if not ok:
+            raise SystemExit(f"Shuffle verification failed at Q{q['num']}")
+    key = ''.join('ABCD'[q['answer']] for q in qs)
+    qs = [{k: q[k] for k in ('num', 'level', 'question', 'options', 'answer', 'explanation', 'pearl', 'srcAnswer')} for q in qs]
     sets = [qs[i:i + 15] for i in range(0, len(qs), 15)]
     pages['quizzes'] = {'id': 'quizzes', 'title': 'Quizzes', 'group': 'Practice', 'kind': 'quizzes', 'sections': []}
     order = []
@@ -140,6 +151,7 @@ def build(day, docx):
             os.remove(f'{D}/{f}')
     report = {'day': day, 'source': src_name, 'pages': [(p['id'], p['title'], sum(len(s['blocks']) for s in p['sections'])) for p in portal['pages']],
               'blocks': {'source': total_blocks, 'placed': placed}, 'mcq': stats, 'answers': dict(Counter('ABCD'[q['answer']] for q in qs)),
+              'answer_key_after_shuffle': key,
               'questions_without_pearl': [q['num'] for q in qs if not q['pearl']], 'warnings': warnings, 'sets': portal['quizSets']}
     return report
 

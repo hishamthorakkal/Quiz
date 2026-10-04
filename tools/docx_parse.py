@@ -164,6 +164,46 @@ def split_h1(doc):
 
 
 # ---------------------------------------------------------------- MCQs
+def compose_explanation(q):
+    """Core reasoning + 'Why not the others' with the CURRENT option letters (works after shuffling)."""
+    expl = q['core']
+    if q['why_not']:
+        expl += ' Why not the others: ' + '; '.join(f"{'ABCD'[i]}. {q['options'][i]} — {v}" for i, v in sorted(q['why_not'].items()))
+    return expl
+
+
+def shuffle_options(qs, seed):
+    """Shuffle each question's options once (deterministic per seed).
+
+    Correct answers end up evenly spread over A-D, never more than 3 identical letters in a row,
+    and never in a repeating 4-letter cycle. why_not reasons follow their option.
+    """
+    import random
+    rng = random.Random(seed)
+    n = len(qs)
+    while True:
+        targets = [i % 4 for i in range(n)]
+        rng.shuffle(targets)
+        runs = max(len(m.group(0)) for m in re.finditer(r'(.)\1*', ''.join(map(str, targets)))) if n else 0
+        cyclic = n >= 8 and all(targets[i] == targets[i % 4] for i in range(n))
+        if runs <= 3 and not cyclic:
+            break
+    for q, t in zip(qs, targets):
+        old = list(range(4))
+        others = [i for i in old if i != q['answer']]
+        rng.shuffle(others)
+        order = others[:t] + [q['answer']] + others[t:]          # order[new_index] = old_index
+        q['srcAnswer'] = 'ABCD'[q['answer']]
+        correct_text = q['options'][q['answer']]
+        q['options'] = [q['options'][i] for i in order]
+        q['why_not'] = {order.index(i): v for i, v in q['why_not'].items()}
+        q['answer'] = t
+        assert q['options'][t] == correct_text
+        q['explanation'] = compose_explanation(q)
+    return qs
+
+
+# ----
 BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the single best answer for this exact decision point')
 
 
@@ -259,11 +299,12 @@ def parse_mcqs(doc, parts):
         if n in pearl_labels and e.get('pearl_in_block') != pearl_labels[n]:
             shifted.append(n)
         core = ' '.join(e['core']).strip()
-        expl = core
-        if e['why_not']:
-            expl += ' Why not the others: ' + '; '.join(f"{k}. {q['options']['ABCD'.index(k)]} — {v}" for k, v in sorted(e['why_not'].items()))
-        out.append({'num': n, 'level': q['level'], 'question': q['question'], 'options': q['options'],
-                    'answer': 'ABCD'.index(e['ans']), 'explanation': expl, 'pearl': pearl})
+        # why_not is keyed by option INDEX so it survives option shuffling; compose_explanation() adds letters.
+        why_not = {'ABCD'.index(k): v for k, v in e['why_not'].items()}
+        item = {'num': n, 'level': q['level'], 'question': q['question'], 'options': q['options'],
+                'answer': 'ABCD'.index(e['ans']), 'core': core, 'why_not': why_not, 'pearl': pearl}
+        item['explanation'] = compose_explanation(item)
+        out.append(item)
     nums = [q['num'] for q in out]
     if nums != list(range(1, len(nums) + 1)):
         problems.append('question numbering not contiguous')

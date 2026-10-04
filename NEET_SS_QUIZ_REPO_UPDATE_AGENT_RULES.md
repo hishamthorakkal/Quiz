@@ -2432,6 +2432,8 @@ References
 
 The UI lives only in `assets/portal.css` and `assets/portal.js`. Change the look there so every day stays identical.
 
+Answer options are always shuffled once at build time (fixed seed per day, so rebuilds are identical): correct answers are spread evenly over A–D, never more than 3 identical letters in a row, never a repeating A-B-C-D cycle. "Why not the others" letters are relabelled to the shuffled positions and the build re-verifies every answer against an unshuffled parse of the docx. `srcAnswer` in the quiz data records the document's original letter.
+
 Content rules still apply: show the document text faithfully; do not rewrite medical content. Generic boilerplate "why not" lines are dropped from quiz explanations; pearls labelled "Qn pearl" are matched to question n even if printed under another question. Report such source issues in the update summary.
 
 If a new document uses a Heading 1 the build does not recognise, it becomes a Study Notes page and is listed under `warnings` — review it before committing.
