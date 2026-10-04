@@ -2453,6 +2453,10 @@ References
 
 The UI lives only in `assets/portal.css` and `assets/portal.js`. Change the look there so every day stays identical.
 
+Cache busting: the build appends `?v=<content hash>` to the shared assets (and `content.js`) so phones fetch the new copy after an update. After changing anything in `assets/`, rebuild every day (`tools/build_day.py`) so all pages get the new version tag; pages not built by the script (Day 1–5 mock, grand mock) must have their `notebook.js?v=` tag refreshed as well.
+
+Recognised extra headings: "Rapid Revision" (same as "Last 15-minute revision") → Rapid Revision page; "Cross-Day Connections" → Quick Reference page. Clinical cases may be one paragraph with line breaks — everything from the first "Structured reasoning / Reasoning / Answer / Trap identified / Management / Next step" line onward is hidden until revealed.
+
 Answer options are always shuffled once at build time (fixed seed per day, so rebuilds are identical): correct answers are spread evenly over A–D, never more than 3 identical letters in a row, never a repeating A-B-C-D cycle. "Why not the others" letters are relabelled to the shuffled positions and the build re-verifies every answer against an unshuffled parse of the docx. `srcAnswer` in the quiz data records the document's original letter.
 
 Content rules still apply: show the document text faithfully; do not rewrite medical content. Generic boilerplate "why not" lines are dropped from quiz explanations; pearls labelled "Qn pearl" are matched to question n even if printed under another question. Report such source issues in the update summary.

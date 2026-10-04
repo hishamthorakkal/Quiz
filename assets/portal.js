@@ -103,10 +103,22 @@
     const ctx = { page, sec: s };
     let inner;
     if (page.kind === 'cases' && s.blocks.length > 1) {
-      let k = s.blocks.findIndex((b, j) => j > 0 && (isNext(b) || (b.t === 'p' && /^(<strong>)?\s*(Reasoning|Answer|Next step|Management|Approach)\b/i.test(b.html))));
+      // Answer part of a case = first "Reasoning/Answer/Trap…" line or "What would you do next?" box onward.
+      // Some documents put the whole case (patient, labs, question, reasoning) in one paragraph with line breaks,
+      // so such paragraphs are split at the first answer line.
+      const ANS = /^(<strong>)?\s*(Structured reasoning|Reasoning|Answer|Trap identified|Management|Next step|Approach|Explanation)\b/i;
+      const bl = [];
+      s.blocks.forEach(b => {
+        if (b.t === 'p' && b.html.includes('<br>')) {
+          const ls = b.html.split('<br>'), at = ls.findIndex(l => ANS.test(l.trim()));
+          if (at > 0) { bl.push({ t: 'p', html: ls.slice(0, at).join('<br>') }, { t: 'p', html: ls.slice(at).join('<br>') }); return; }
+        }
+        bl.push(b);
+      });
+      let k = bl.findIndex((b, j) => j > 0 && (isNext(b) || (b.t === 'p' && ANS.test(b.html))));
       if (k < 0) k = 1;
-      const stem = s.blocks.slice(0, k).map(b => block(b, ctx)).join('');
-      const rest = s.blocks.slice(k).map(b => block(b, { ...ctx, noReveal: true })).join('');
+      const stem = bl.slice(0, k).map(b => block(b, ctx)).join('');
+      const rest = bl.slice(k).map(b => block(b, { ...ctx, noReveal: true })).join('');
       inner = `<div class="case-stem">${stem}</div>${reveal(rest, 'Show reasoning & answer')}`;
     } else inner = s.blocks.map(b => block(b, ctx)).join('');
     const h1 = s.h1 && s.h1 !== s.title ? `<div class="h1tag">${escT(s.h1)}</div>` : '';
