@@ -17,6 +17,7 @@ ul{line-height:1.7;padding-left:20px}.btn{border:0;border-radius:10px;padding:13
 <tr><td>Marking</td><td>Correct <b>+4</b> · Incorrect <b>−1</b> · Unattempted <b>0</b> · Maximum <b>600</b></td></tr>
 <tr><td>Pattern source</td><td class="small">NBEMS NEET-SS 2025 Information Bulletin (§4.3, 4.4.6, 4.4.8)</td></tr></table></div>
 <div class="card"><h2 style="margin-top:0">Rules</h2><ul>
+<li><b>Mixed order:</b> like the real exam, every section mixes all topics (Neonatology, Cardiology, Neurology, …). Questions are numbered Q1–Q150 in exam order; the review also shows each question's source number.</li>
 <li>The timer starts only when you click <b>Start Grand Mock</b>. There is no pause; closing or reloading the page does not stop or reset the clock.</li>
 <li><b>Answer editing:</b> within the active section you can move with Previous / Save &amp; Next or the question palette, change any answer, use <b>Clear Response</b>, and <b>Mark for Review</b>. Your last selection when the section locks is the one scored.</li>
 <li><b>Section locking:</b> a section locks when its 50 minutes end, or earlier if you click <b>Submit Section</b> and confirm (practice option — the real exam has no early submission). The next section then starts automatically. Locked sections can never be reopened.</li>
@@ -25,7 +26,7 @@ ul{line-height:1.7;padding-left:20px}.btn{border:0;border-radius:10px;padding:13
 <li>Progress is saved in this browser only. Use the same device and browser to resume.</li></ul></div>
 <div class="card"><div class="actions" id="act"></div><p class="small" id="info"></p></div>
 </div><script>
-const KEY='gm:GrandMock_Day51_AllTopics:v1',SEC_MS=50*60000;
+const KEY='gm:GrandMock_Day51_AllTopics:v2',SEC_MS=50*60000;
 function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
 function startExam(){
  if(load())return location.href='exam.html';
