@@ -30,6 +30,9 @@
         else d.entries[id] = { id, srcId: ctx.srcId, src: ctx.label, set: ctx.set, href: ctx.href, num: it.num, srcNum: it.srcNum,
           question: it.question, options: it.options, chosen: it.chosen, answer: it.answer, explanation: it.explanation || '', pearl: it.pearl || '',
           tag: null, note: '', count: 1, firstAt: now, lastAt: now, retest: now + 48 * H, fixed: false, fixedAt: null };
+        // tag/note chosen during the quiz (learning mode) — the latest attempt's reason wins
+        if (it.tag) d.entries[id].tag = it.tag;
+        if (it.note) d.entries[id].note = it.note;
         ids.push(id);
       }
       this.save(d);
@@ -99,25 +102,31 @@
       });
     },
     /** Result-screen panel for the wrong answers of the test just finished. */
-    panel(container, ids, title) {
+    panel(container, ids, title, opts) {
       if (!container) return;
+      opts = opts || {};
       this.css();
       const d = this.load(), es = ids.map(i => d.entries[i]).filter(Boolean);
       if (!es.length) { container.innerHTML = ''; return; }
-      container.innerHTML = `<div class="nb"><h3>📒 Error notebook — tag your mistakes</h3>
-        <p class="nb-sub">These ${es.length} wrong answer${es.length > 1 ? 's were' : ' was'} saved to your notebook automatically. Tap why you got each one wrong (optional), then send your error notes.</p>
+      const intro = opts.auto
+        ? `These ${es.length} wrong answer${es.length > 1 ? 's were' : ' was'} saved to your notebook with the K/C/R/G/S tag${es.length > 1 ? 's' : ''} you chose, and your error notes were sent. You can still change a tag or add a correction rule and send an update.`
+        : `These ${es.length} wrong answer${es.length > 1 ? 's were' : ' was'} saved to your notebook automatically. Tap why you got each one wrong (optional), then send your error notes.`;
+      container.innerHTML = `<div class="nb"><h3>📒 Error notebook${opts.auto ? '' : ' — tag your mistakes'}</h3>
+        <p class="nb-sub">${intro}</p>
         ${es.map(e => `<div class="nb-row" data-nb-id="${esc(e.id)}"><div class="nb-q"><b>Q${e.num}</b> · chose ${L(e.chosen)} → correct ${L(e.answer)}${e.count > 1 ? `<span class="nb-rep">${e.count}× wrong</span>` : ''}</div>
           ${this.tagButtons(e)}<input class="nb-note" maxlength="140" placeholder="One-line correction rule (optional)" value="${esc(e.note)}"></div>`).join('')}
         ${this.legend()}
-        <div class="nb-actions"><button type="button" class="nb-btn" data-nb-send>Save error notes &amp; send</button><span class="nb-status"></span></div></div>`;
+        <div class="nb-actions"><button type="button" class="nb-btn" data-nb-send>${opts.auto ? 'Send updated notes' : 'Save error notes &amp; send'}</button><span class="nb-status"></span></div></div>`;
       this.wire(container);
-      container.querySelector('[data-nb-send]').onclick = async ev => {
-        const btn = ev.currentTarget, st = container.querySelector('.nb-status');
+      const btn = container.querySelector('[data-nb-send]'), st = container.querySelector('.nb-status');
+      const go = async (auto) => {
         btn.disabled = true; st.textContent = 'Sending…';
-        try { await this.send(ids, title); st.textContent = '✓ Error notes saved & sent'; btn.textContent = 'Send again'; }
-        catch (e) { st.textContent = 'Saved. Sending failed — check your connection and try again.'; }
+        try { await this.send(ids, title); st.textContent = auto ? '✓ Error notes sent' : '✓ Updated notes sent'; if (!auto) btn.textContent = 'Send again'; }
+        catch (e) { st.textContent = 'Saved. Sending failed — check your connection and tap send again.'; }
         btn.disabled = false;
       };
+      btn.onclick = () => go(false);
+      if (opts.auto) setTimeout(() => go(true), 1500);   // after the result message, so it arrives second
     },
     /** Full notebook page. filter: {srcId} for one day, or {} for everything. */
     page(container, filter, prefix) {

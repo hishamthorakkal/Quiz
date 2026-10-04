@@ -19,6 +19,7 @@ h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-
 .wrongitem{border:1px solid #fecaca;background:#fff7f7;border-radius:12px;padding:14px;margin:12px 0;line-height:1.5}.good{border:1px solid #bbf7d0;background:#f0fdf4;border-radius:12px;padding:14px;margin-top:14px}
 .homegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.quizcard{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}.quizcard h2{margin:0 0 7px;font-size:19px}.small{font-size:13px;color:var(--muted)}
 @media(max-width:650px){.stats,.homegrid{grid-template-columns:1fr 1fr}.q{font-size:17px;margin-bottom:12px}.wrap{padding:12px 10px 20px}h1{font-size:20px;margin:0 0 2px}.sub{font-size:13px;margin-bottom:6px}.progress-shell{margin:10px 0 6px}.topline{font-size:12.5px;margin-bottom:10px;gap:4px 10px}.card{padding:14px;border-radius:14px}.option{padding:12px;margin:8px 0;font-size:15.5px}.option input{transform:scale(1.3)}.feedback{padding:12px}.actions{position:sticky;bottom:0;z-index:5;background:#fff;margin:14px -14px -14px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);border-radius:0 0 14px 14px;box-shadow:0 -6px 18px rgba(15,23,42,.06);display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}.actions>*{min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px 10px}.actions #mainBtn{grid-column:1/-1;order:-1;min-height:50px;font-size:16px}}
+#mainBtn:disabled{opacity:.6;cursor:not-allowed}.tagbox{margin-top:12px;background:#fff;border:1.5px solid #fca5a5;border-radius:12px;padding:10px 12px;color:#172033}.tagbox .req{font-size:11px;background:#fee2e2;color:#991b1b;border-radius:999px;padding:1px 8px;font-weight:700;margin-left:4px}.tagbtns{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}.tagbtns button{min-width:46px;min-height:42px;border-radius:10px;border:1.5px solid #cbd5e1;background:#fff;font-weight:800;font-size:16px;color:#334155;padding:0 10px}.tagbtns button.on{background:#1d4ed8;border-color:#1d4ed8;color:#fff}.taglegend{font-size:12px;color:#64748b;margin:0 0 8px}.tagnote{width:100%;border:1.5px solid #dbe4f0;border-radius:9px;padding:8px 10px;font-size:15px;font-family:inherit}.tagbox.shake{animation:shake .35s}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 </style></head>
 <body><div class="wrap">
 <h1>Cumulative Mock — Quiz 6</h1>
@@ -47,7 +48,15 @@ function render(){
  <div class="actions"><a class="btn secondary" href="index.html">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button>${queue.length>1?'<button class="secondary" id="skipBtn" onclick="skipQuestion()">Skip for Now</button>':''}<button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
  checked=false;
 }
-function mainAction(){if(!checked)submitAnswer();else next();}
+function mainAction(){if(!checked)submitAnswer();else{if(needTag()){nudgeTag();return}next();}}
+// Required K/C/R/G/S tag for every wrong answer (learning mode shows the answer immediately, so the cause is tagged right here).
+const TAGN={K:'Knowledge',C:'Concept',R:'Reasoning',G:'Guess',S:'Silly'};
+function tagBox(){return `<div class="tagbox" id="tagBox"><b>Why did you get this wrong?</b><span class="req">required</span><div class="tagbtns">${Object.keys(TAGN).map(t=>`<button type="button" data-tag="${t}" title="${TAGN[t]}" onclick="setTag('${t}')">${t}</button>`).join('')}</div><div class="taglegend">K Knowledge · C Concept · R Reasoning · G Guess · S Silly</div><input class="tagnote" maxlength="140" placeholder="One-line correction rule (optional)" oninput="setNote(this.value)"></div>`}
+function curAns(){return answers[answers.length-1]}
+function needTag(){const a=curAns();return checked&&a&&!a.correct&&!a.tag}
+function setTag(t){const a=curAns();if(!checked||!a||a.correct)return;a.tag=t;document.querySelectorAll('#tagBox [data-tag]').forEach(b=>b.classList.toggle('on',b.dataset.tag===t));const m=document.getElementById('mainBtn');m.disabled=false;m.textContent=m.dataset.label||'Next Question';}
+function setNote(v){const a=curAns();if(a&&!a.correct)a.note=v.trim().slice(0,140)}
+function nudgeTag(){const b=document.getElementById('tagBox');if(b){b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');b.scrollIntoView({block:'center',behavior:'smooth'})}}
 function skipQuestion(){if(checked||queue.length<2)return;skipped.add(idx);queue.push(queue.shift());render();}
 function submitAnswer(){
  const selected=document.querySelector('input[name="answer"]:checked');
@@ -59,13 +68,14 @@ function submitAnswer(){
  document.getElementById(`opt-${q.answer}`).classList.add('correct');
  if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
  const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
- fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>`;
+ fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>${!correct?tagBox():''}`;
  document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
  document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
  document.getElementById('mainBtn').textContent=queue.length===1?'Finish Quiz':skipped.has(queue[1])?'Next (Skipped) Question':'Next Question';
+ {const m=document.getElementById('mainBtn');m.dataset.label=m.textContent;if(!correct){m.disabled=true;m.textContent='Tag K/C/R/G/S to continue';}}
 }
 function next(){queue.shift();if(queue.length)render();else showSummary(false);}
-function finishEarly(){const left=quiz.length-answers.length;if(confirm(`Finish now? You have attempted ${answers.length} question(s).${left?` ${left} unanswered question(s)${skipped.size?` (including ${skipped.size} skipped)`:''} will score 0.`:''}`))showSummary(true);}
+function finishEarly(){if(needTag()){nudgeTag();alert('Choose K/C/R/G/S for this wrong answer first.');return}const left=quiz.length-answers.length;if(confirm(`Finish now? You have attempted ${answers.length} question(s).${left?` ${left} unanswered question(s)${skipped.size?` (including ${skipped.size} skipped)`:''} will score 0.`:''}`))showSummary(true);}
 function fileTimestamp(){
  const d=new Date(), p=n=>String(n).padStart(2,'0');
  return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
@@ -108,10 +118,10 @@ function showSummary(early){
  <p><b>Time:</b> ${duration()}</p><h3>Wrong-answer review</h3>
  ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
  <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
- // Error notebook: record wrong answers automatically, then let the learner tag them (K/C/R/G/S) and send error notes.
- if(window.Notebook){const ids=Notebook.record(NB_CTX,answers.map(a=>({num:a.num,srcNum:a.num,question:a.question,options:a.options,chosen:a.chosen,answer:a.answer,explanation:a.explanation,pearl:a.pearl,correct:a.correct})));
+ // Error notebook: record wrong answers with the K/C/R/G/S tags chosen during the quiz, then send the error notes automatically.
+ if(window.Notebook){const ids=Notebook.record(NB_CTX,answers.map(a=>({num:a.num,srcNum:a.num,question:a.question,options:a.options,chosen:a.chosen,answer:a.answer,explanation:a.explanation,pearl:a.pearl,correct:a.correct,tag:a.tag,note:a.note})));
   const card=document.getElementById('card'),box=document.createElement('div'),h=card.querySelector('h3');card.insertBefore(box,h||null);
-  Notebook.panel(box,ids,`${NB_CTX.label} ${NB_CTX.set} — Error notes`);}
+  Notebook.panel(box,ids,`${NB_CTX.label} ${NB_CTX.set} — Error notes`,{auto:true});}
 }
 render();
 </script></body></html>
