@@ -103,7 +103,7 @@ function notifyResult(attempted,max,pct,early){
  if(notified)return;notified=true;
  const nr=quiz.length-attempted-skipped.size;
  const lines=[`Score: ${score} / ${max} (${pct}%)`,`Attempted ${attempted}/${quiz.length} · Correct ${correctCount} · Wrong ${wrongCount} · Skipped ${skipped.size}${nr>0?` · Not reached ${nr}`:''}`,`Time: ${duration()}`];
- wrongLines(answers.filter(a=>!a.correct).sort((a,b)=>a.num-b.num),lines,'Mock Day 1–5');
+ if(window.__nbIds&&window.__nbIds.length&&window.Notebook)lines.push('',...Notebook.compact(window.__nbIds,'Mock Day 1–5'));else wrongLines(answers.filter(a=>!a.correct).sort((a,b)=>a.num-b.num),lines,'Mock Day 1–5');
  const msg=lines.join('\n');
  const title=`${document.title}${early?' (finished early)':''}`;
  fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=memo`,{method:'POST',body:msg}).catch(()=>{});
@@ -111,6 +111,8 @@ function notifyResult(attempted,max,pct,early){
 function showSummary(early){
  document.getElementById('progress').style.width='100%';answers.sort((a,b)=>a.num-b.num);
  const attempted=answers.length,max=attempted*4,pct=attempted?Math.round(score/max*10000)/100:0,wrong=answers.filter(a=>!a.correct);
+ // Error notebook first (tags were chosen during the quiz), so the single result message can include the error notes.
+ window.__nbIds=window.Notebook?Notebook.record(NB_CTX,answers.map(a=>({num:a.num,srcNum:a.num,question:a.question,options:a.options,chosen:a.chosen,answer:a.answer,explanation:a.explanation,pearl:a.pearl,correct:a.correct,tag:a.tag,note:a.note}))):null;
  notifyResult(attempted,max,pct,early);
  document.getElementById('counter').textContent='Completed';
  document.getElementById('card').innerHTML=`<h2 style="margin-top:0">Quiz 9 Result</h2><p>${early?'<b>Finished early.</b><br>':''}Attempted ${attempted} of ${quiz.length} questions.${skipped.size?` Skipped and not answered: ${skipped.size}.`:''}</p>
@@ -119,9 +121,9 @@ function showSummary(early){
  ${wrong.length?wrong.map((a,n)=>`<div class="wrongitem"><b>${n+1}. Q${a.num}. ${esc(a.question)}</b><br><br><b>Your answer:</b> ${String.fromCharCode(65+a.chosen)}. ${esc(a.options[a.chosen])}<br><b>Correct answer:</b> ${String.fromCharCode(65+a.answer)}. ${esc(a.options[a.answer])}<div class="explain"><b>Explanation:</b> ${esc(a.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(a.pearl||'')}</div></div>`).join(''):'<div class="good"><b>No wrong answers.</b></div>'}
  <div class="actions"><a class="btn secondary" href="index.html">Back to Quiz Sets</a><button class="secondary" onclick="downloadWord()">Download Word</button><button class="secondary" onclick="printPDF()">Print / Save PDF</button></div>`;
  // Error notebook: record wrong answers with the K/C/R/G/S tags chosen during the quiz, then send the error notes automatically.
- if(window.Notebook){const ids=Notebook.record(NB_CTX,answers.map(a=>({num:a.num,srcNum:a.num,question:a.question,options:a.options,chosen:a.chosen,answer:a.answer,explanation:a.explanation,pearl:a.pearl,correct:a.correct,tag:a.tag,note:a.note})));
+ if(window.Notebook&&window.__nbIds){
   const card=document.getElementById('card'),box=document.createElement('div'),h=card.querySelector('h3');card.insertBefore(box,h||null);
-  Notebook.panel(box,ids,`${NB_CTX.label} ${NB_CTX.set} — Error notes`,{auto:true});}
+  Notebook.panel(box,window.__nbIds,`${NB_CTX.label} ${NB_CTX.set} — Error notes`,{inResult:true});}
 }
 render();
 </script></body></html>

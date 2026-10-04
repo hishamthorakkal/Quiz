@@ -56,6 +56,24 @@
       if (es.length) lines.push('Retest: ' + range(Math.min(...es.map(e => e.retest)), Math.max(...es.map(e => e.retest)) + 24 * H));
       return lines.join('\n');
     },
+    /** Error notes folded into the result notification (learning-mode quizzes, where tags are chosen during the quiz):
+        Wrong (3): chosen → correct · type / Day 6 → Q16 → C → B · R, Q22 → … / Note Q16: … / Total: … · Retest: … */
+    compact(ids, label) {
+      const d = this.load(), es = ids.map(i => d.entries[i]).filter(Boolean);
+      if (!es.length) return [];
+      const parts = [], notes = [], tot = {};
+      for (let i = 0; i < es.length; i++) {
+        const e = es[i], p = `Q${e.num} → ${L(e.chosen)} → ${L(e.answer)} · ${e.tag || '?'}${e.count > 1 ? ` (${e.count}×)` : ''}`;
+        if (new Blob([`${label} → ` + parts.concat(p).join(', ')]).size > 2400) { parts.push(`…and ${es.length - i} more`); break; }
+        parts.push(p);
+      }
+      es.forEach(e => { const t = e.tag || '?'; tot[t] = (tot[t] || 0) + 1; if (e.note) notes.push(`Note Q${e.num}: ${e.note}`); });
+      const out = [`Wrong (${es.length}): chosen → correct · type`, `${label} → ` + parts.join(', ')];
+      for (const n of notes) { if (new Blob([out.concat(n).join('\n')]).size > 3300) break; out.push(n); }
+      out.push('Total: ' + ['K', 'C', 'R', 'G', 'S', '?'].filter(t => tot[t]).map(t => t + tot[t]).join(' ') +
+        ' · Retest: ' + range(Math.min(...es.map(e => e.retest)), Math.max(...es.map(e => e.retest)) + 24 * H));
+      return out;
+    },
     send(ids, title) {
       return fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=ledger`, { method: 'POST', body: this.message(ids) });
     },
@@ -108,15 +126,17 @@
       this.css();
       const d = this.load(), es = ids.map(i => d.entries[i]).filter(Boolean);
       if (!es.length) { container.innerHTML = ''; return; }
-      const intro = opts.auto
-        ? `These ${es.length} wrong answer${es.length > 1 ? 's were' : ' was'} saved to your notebook with the K/C/R/G/S tag${es.length > 1 ? 's' : ''} you chose, and your error notes were sent. You can still change a tag or add a correction rule and send an update.`
+      const intro = opts.inResult
+        ? `These ${es.length} wrong answer${es.length > 1 ? 's were' : ' was'} saved to your notebook with the K/C/R/G/S tag${es.length > 1 ? 's' : ''} you chose and included in the result notification. You can still change a tag or add a correction rule and send an update.`
+        : opts.auto
+        ?`These ${es.length} wrong answer${es.length > 1 ? 's were' : ' was'} saved to your notebook with the K/C/R/G/S tag${es.length > 1 ? 's' : ''} you chose, and your error notes were sent. You can still change a tag or add a correction rule and send an update.`
         : `These ${es.length} wrong answer${es.length > 1 ? 's were' : ' was'} saved to your notebook automatically. Tap why you got each one wrong (optional), then send your error notes.`;
-      container.innerHTML = `<div class="nb"><h3>📒 Error notebook${opts.auto ? '' : ' — tag your mistakes'}</h3>
+      container.innerHTML = `<div class="nb"><h3>📒 Error notebook${opts.auto || opts.inResult ? '' : ' — tag your mistakes'}</h3>
         <p class="nb-sub">${intro}</p>
         ${es.map(e => `<div class="nb-row" data-nb-id="${esc(e.id)}"><div class="nb-q"><b>Q${e.num}</b> · chose ${L(e.chosen)} → correct ${L(e.answer)}${e.count > 1 ? `<span class="nb-rep">${e.count}× wrong</span>` : ''}</div>
           ${this.tagButtons(e)}<input class="nb-note" maxlength="140" placeholder="One-line correction rule (optional)" value="${esc(e.note)}"></div>`).join('')}
         ${this.legend()}
-        <div class="nb-actions"><button type="button" class="nb-btn" data-nb-send>${opts.auto ? 'Send updated notes' : 'Save error notes &amp; send'}</button><span class="nb-status"></span></div></div>`;
+        <div class="nb-actions"><button type="button" class="nb-btn" data-nb-send>${opts.auto || opts.inResult ? 'Send updated notes' : 'Save error notes &amp; send'}</button><span class="nb-status"></span></div></div>`;
       this.wire(container);
       const btn = container.querySelector('[data-nb-send]'), st = container.querySelector('.nb-status');
       const go = async (auto) => {
