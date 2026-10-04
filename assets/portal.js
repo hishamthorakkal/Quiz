@@ -27,7 +27,28 @@
       LS.set('summary', { pct, pagesDone: pd, pages: tracked.length, quizDone: qd, quizzes: P.quizSets.length, at: Date.now() });
     return { pct, pd, qd };
   }
-  function toggleDone(id) { const d = done(); d.has(id) ? d.delete(id) : d.add(id); LS.set('done', [...d]); render(); }
+  function toggleDone(id) { const d = done(); if (!d.has(id)) recallNotify(); d.has(id) ? d.delete(id) : d.add(id); LS.set('done', [...d]); render(); }
+
+  // Active Recall: when leaving the page via "Mark as done" or "Next" with prompts rated "Revise again",
+  // send one ntfy message listing them. Re-sent only if the set of prompts changed since the last message.
+  function recallNotify() {
+    if (curId !== 'recall' || !byId.recall) return;
+    const list = byId.recall.sections.flatMap(s => s.blocks).find(b => b.t === 'list');
+    if (!list) return;
+    const st = LS.get('recall', {}), again = list.items.map((it, i) => [i, it]).filter(([i]) => st[i] === 'again');
+    if (!again.length) return;
+    const sig = again.map(([i]) => i).join(',');
+    if (LS.get('recallSent', '') === sig) return;
+    const lines = [];
+    for (const [i, it] of again) {
+      const l = `P${i + 1}. ${strip(splitRecall(it)[0]).replace(/\s+/g, ' ').trim()}`;
+      if (new Blob([lines.concat(l).join('\n')]).size > 3500) { lines.push(`…and ${again.length - lines.length} more`); break; }
+      lines.push(l);
+    }
+    const title = `Day ${P.day} — Active Recall: revise again (${again.length})`;
+    fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=repeat`, { method: 'POST', body: lines.join('\n') })
+      .then(() => LS.set('recallSent', sig)).catch(() => {});
+  }
 
   // ---------- shell ----------
   app.innerHTML = `<header class="top"><button class="menu-btn" aria-label="Menu">☰</button><a href="../index.html">← Home</a>
@@ -40,6 +61,11 @@
   $('.menu-btn').onclick = () => document.body.classList.toggle('nav-open');
   $('#scrim').onclick = () => document.body.classList.remove('nav-open');
   $('#mDone').onclick = () => { if (curId && !$('#mDone').disabled) toggleDone(curId); };
+  // "Next" (desktop pager or phone bar) from Active Recall also sends the revise-again list
+  app.addEventListener('click', e => {
+    const a = e.target.closest('a'); if (!a || curId !== 'recall') return;
+    if (a.id === 'mNext' || (a.closest('.pager') && !a.classList.contains('ghost'))) recallNotify();
+  });
   $('#printBtn').onclick = e => { e.preventDefault(); window.print(); };
 
   function renderNav(cur) {
@@ -207,11 +233,11 @@
     else if (t.dataset.act === 'done') toggleDone(curId);
     else if (t.dataset.recall != null) { const st = LS.get('recall', {}); st[t.dataset.recall] = st[t.dataset.recall] === t.dataset.v ? undefined : t.dataset.v; LS.set('recall', st); render(false); }
     else if (t.dataset.act === 'recall-only') { LS.set('recallOnly', !LS.get('recallOnly', false)); render(false); }
-    else if (t.dataset.act === 'recall-reset') { if (confirm('Clear all active-recall ratings?')) { LS.set('recall', {}); render(false); } }
+    else if (t.dataset.act === 'recall-reset') { if (confirm('Clear all active-recall ratings?')) { LS.set('recall', {}); LS.set('recallSent', ''); render(false); } }
     else if (t.dataset.plan != null) { const p = LS.get('plan', {}); p[t.dataset.plan] = t.checked; LS.set('plan', p); }
     else if (t.dataset.act === 'reset-progress') {
       if (confirm(`Reset all Day ${P.day} progress (sections, plan ticks, recall ratings and quiz scores)?`)) {
-        ['done', 'plan', 'recall', 'recallOnly', 'quiz', 'last', 'summary'].forEach(k => localStorage.removeItem(NS + k)); render(false);
+        ['done', 'plan', 'recall', 'recallOnly', 'recallSent', 'quiz', 'last', 'summary'].forEach(k => localStorage.removeItem(NS + k)); render(false);
       }
     }
   });
