@@ -86,9 +86,12 @@ function printPDF(){
  const w=window.open('','_blank');const pdfName=reportBaseName();w.document.write(`<!doctype html><html><head><title>${pdfName}</title><style>body{font-family:Arial;padding:30px;line-height:1.45}h1{font-size:22px}h2{font-size:16px}</style></head><body>${reportBody()}<script>window.onload=()=>window.print();<\/script></body></html>`);w.document.close();
 }
 let notified=false;
+function wrongLines(list,lines){if(!list.length)return;const L=i=>String.fromCharCode(65+i),cut=(s,n=70)=>{s=String(s);return s.length>n?s.slice(0,n-1)+'…':s};lines.push('',`Wrong answers (${list.length}):`);for(let i=0;i<list.length;i++){const w=list[i],l=`Q${w.num}: chose ${L(w.chosen)}. ${cut(w.options[w.chosen])} → correct ${L(w.answer)}. ${cut(w.options[w.answer])}`;if(new Blob([lines.join('\n')+'\n'+l]).size>3800){lines.push(`…and ${list.length-i} more — see the wrong-answer report`);break}lines.push(l)}}
 function notifyResult(attempted,max,pct,early){
  if(notified)return;notified=true;
- const msg=[`Total questions: ${quiz.length}`,`Attempted: ${attempted}`,`Score: ${score} / ${max}`,`Correct: ${correctCount}`,`Wrong: ${wrongCount}`,`Skipped (unanswered): ${skipped.size}`,`Not reached: ${quiz.length-attempted-skipped.size}`,`Percentage: ${pct}%`,`Time: ${duration()}`].join('\n');
+ const lines=[`Total questions: ${quiz.length}`,`Attempted: ${attempted}`,`Score: ${score} / ${max}`,`Correct: ${correctCount}`,`Wrong: ${wrongCount}`,`Skipped (unanswered): ${skipped.size}`,`Not reached: ${quiz.length-attempted-skipped.size}`,`Percentage: ${pct}%`,`Time: ${duration()}`];
+ wrongLines(answers.filter(a=>!a.correct).sort((a,b)=>a.num-b.num),lines);
+ const msg=lines.join('\n');
  const title=`${document.title}${early?' (finished early)':''}`;
  fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=memo`,{method:'POST',body:msg}).catch(()=>{});
 }
