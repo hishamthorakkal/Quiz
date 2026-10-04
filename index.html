@@ -20,23 +20,25 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 </style></head>
 <body><div class="wrap">
 <h1>NEET-SS + ICP Paediatrics</h1>
-<div class="sub">Choose a daily topic quiz, a cumulative mock, or a grand mock.</div>
+<div class="sub">Choose a daily study portal, a cumulative mock, or a grand mock.</div>
 
 <details class="card section" open>
-<summary><span class="chev"></span><div class="section-head"><h2 class="section-title">Daily Quizzes</h2>
-<p class="small section-desc">One topic per day · 15-question sets · +4/−1</p></div><span class="count">2 days</span></summary>
+<summary><span class="chev"></span><div class="section-head"><h2 class="section-title">Daily Study Portals</h2>
+<p class="small section-desc">Notes · cases · pearls · revision · 15-question quiz sets (+4/−1)</p></div><span class="count">2 days</span></summary>
 <div class="section-body">
 <div class="grid">
-<div class="item">
+<div class="item" data-day="5">
 <h2>Day 5</h2>
 <p>Mechanical Ventilation + ABG + BPD + Air-Leak Syndromes</p>
-<p class="small">75 MCQs · 5 quiz sets · 15 questions each</p>
+<p class="small">Study portal · 75 MCQs in 5 quiz sets</p>
+<p class="small prog"></p>
 <a class="btn" href="Day5/index.html">Open Day 5</a>
 </div>
-<div class="item">
+<div class="item" data-day="6">
 <h2>Day 6</h2>
 <p>Neonatal Jaundice + Phototherapy + Exchange Transfusion + Hemolytic Disease</p>
-<p class="small">75 MCQs · 5 quiz sets · 15 questions each</p>
+<p class="small">Study portal · 75 MCQs in 5 quiz sets</p>
+<p class="small prog"></p>
 <a class="btn" href="Day6/index.html">Open Day 6</a>
 </div>
 <div class="item">
@@ -77,4 +79,12 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 </div>
 </div>
 </details>
-</div></body></html>
+</div>
+<script>
+// Show each day's portal progress (saved by the portal in this browser).
+document.querySelectorAll('[data-day]').forEach(el=>{
+ try{const s=JSON.parse(localStorage.getItem('portal:Day'+el.dataset.day+':summary'));
+  if(s)el.querySelector('.prog').innerHTML=`<b style="color:#15803d">${s.pct}% complete</b> · ${s.pagesDone}/${s.pages} sections · ${s.quizDone}/${s.quizzes} quiz sets`;}catch(e){}
+});
+</script>
+</body></html>

@@ -1,0 +1,274 @@
+"""Parse a NEET-SS day docx into portal pages + quiz questions.
+
+Reads the docx XML directly (no third-party packages). Every Word block is kept:
+headings, paragraphs (bold/italic/sub/superscript), bullet/numbered lists, tables,
+one-cell "callout" boxes and WHAT/WHY/HOW grids. MCQs come from Sections A-C.
+"""
+import html, re, zipfile
+from xml.etree import ElementTree as ET
+
+W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
+
+
+def esc(s):
+    return html.escape(s, quote=False)
+
+
+class Doc:
+    def __init__(self, path):
+        z = zipfile.ZipFile(path)
+        self.styles = {}
+        if 'word/styles.xml' in z.namelist():
+            for s in ET.fromstring(z.read('word/styles.xml')).iter(W + 'style'):
+                n = s.find(W + 'name')
+                self.styles[s.get(W + 'styleId')] = n.get(W + 'val') if n is not None else ''
+        self.body = list(ET.fromstring(z.read('word/document.xml')).find(W + 'body'))
+
+    def style(self, p):
+        ps = p.find(W + 'pPr/' + W + 'pStyle')
+        return self.styles.get(ps.get(W + 'val'), ps.get(W + 'val')).lower() if ps is not None else ''
+
+
+def _on(rp, tag):
+    e = rp.find(W + tag) if rp is not None else None
+    return e is not None and e.get(W + 'val') not in ('0', 'false')
+
+
+def text(p):
+    return ''.join(t.text or '' for t in p.iter(W + 't')).strip()
+
+
+def rich(p):
+    """Paragraph -> HTML with bold/italic/sub/sup preserved."""
+    out = []
+    for r in p.iter(W + 'r'):
+        t = ''.join((x.text or '') if x.tag == W + 't' else ('\n' if x.tag == W + 'br' else '\t' if x.tag == W + 'tab' else '')
+                    for x in r if x.tag in (W + 't', W + 'br', W + 'tab'))
+        if not t:
+            continue
+        s = esc(t).replace('\n', '<br>')
+        rp = r.find(W + 'rPr')
+        va = rp.find(W + 'vertAlign') if rp is not None else None
+        if va is not None and va.get(W + 'val') in ('subscript', 'superscript'):
+            s = f"<{'sub' if va.get(W + 'val') == 'subscript' else 'sup'}>{s}</{'sub' if va.get(W + 'val') == 'subscript' else 'sup'}>"
+        if _on(rp, 'i'):
+            s = f'<em>{s}</em>'
+        if _on(rp, 'b'):
+            s = f'<strong>{s}</strong>'
+        out.append(s)
+    h = ''.join(out).strip()
+    return re.sub(r'</strong>(\s*)<strong>', r'\1', h)
+
+
+def is_list(doc, p):
+    st = doc.style(p)
+    return 'list' in st or p.find(W + 'pPr/' + W + 'numPr') is not None, ('number' in st)
+
+
+def cell_paras(tc):
+    return [p for p in tc.iter(W + 'p') if text(p)]
+
+
+def shade(tc):
+    s = tc.find(W + 'tcPr/' + W + 'shd')
+    return (s.get(W + 'fill') or '').upper() if s is not None else ''
+
+
+GRID_LABELS = ('WHAT', 'WHY', 'HOW', 'RECOGNIZE', 'WHAT NEXT')
+
+
+def table_block(tbl):
+    rows = [tr.findall(W + 'tc') for tr in tbl.findall(W + 'tr')]
+    if not rows:
+        return None
+    ncol = max(len(r) for r in rows)
+    # one-cell callout box: label row + body row(s)
+    if ncol == 1 and len(rows) >= 2:
+        label = text(rows[0][0])
+        title = ''
+        if '|' in label:
+            label, title = [x.strip() for x in label.split('|', 1)]
+        body = []
+        for r in rows[1:]:
+            body += [rich(p) for p in cell_paras(r[0])]
+        return {'t': 'callout', 'label': label, 'title': title, 'html': body, 'fill': shade(rows[0][0])}
+    if ncol == 1 and len(rows) == 1:
+        return {'t': 'callout', 'label': '', 'title': '', 'html': [rich(p) for p in cell_paras(rows[0][0])], 'fill': shade(rows[0][0])}
+    # WHAT / WHY / HOW / RECOGNIZE / WHAT NEXT grid (header row form, or label-inside-cell form)
+    head = [text(c).upper() for c in rows[0]]
+    if len(rows) == 2 and tuple(head) == GRID_LABELS:
+        return {'t': 'grid', 'items': [{'label': GRID_LABELS[i], 'html': '<br>'.join(rich(p) for p in cell_paras(c))} for i, c in enumerate(rows[1])]}
+    if len(rows) == 1 and all(text(c).upper().startswith(GRID_LABELS[i]) for i, c in enumerate(rows[0])) and len(rows[0]) == 5:
+        items = []
+        for i, c in enumerate(rows[0]):
+            h = '<br>'.join(rich(p) for p in cell_paras(c))
+            h = re.sub(r'^<strong>' + re.escape(GRID_LABELS[i]) + r'\s*(<br>\s*)*</strong>\s*(<br>\s*)*', '', h, flags=re.I)
+            items.append({'label': GRID_LABELS[i], 'html': h})
+        return {'t': 'grid', 'items': items}
+    cell = lambda c: '<br>'.join(rich(p) for p in cell_paras(c))
+    return {'t': 'table', 'head': [cell(c) for c in rows[0]], 'rows': [[cell(c) for c in r] for r in rows[1:]]}
+
+
+def blocks_from(doc, elements):
+    """Convert a run of body elements (no heading-1s) into blocks grouped under heading-2 sections."""
+    sections = [{'title': '', 'blocks': []}]
+    lst = None
+    for el in elements:
+        if el.tag == W + 'p':
+            t = text(el)
+            if not t:
+                continue
+            st = doc.style(el)
+            if st.startswith('heading 2') or st.startswith('heading 3'):
+                sections.append({'title': t, 'blocks': []})
+                lst = None
+                continue
+            listy, numbered = is_list(doc, el)
+            m = re.match(r'^(\d+)\.\s+(.+)$', t) if not listy else None
+            if listy or m:
+                numbered = numbered or bool(m)
+                item = rich(el)
+                if m:
+                    item = re.sub(r'^(<strong>)?\d+\.\s+', r'\1', item)
+                if lst is None or lst['ordered'] != numbered:
+                    lst = {'t': 'list', 'ordered': numbered, 'items': []}
+                    sections[-1]['blocks'].append(lst)
+                lst['items'].append(item)
+                continue
+            lst = None
+            sections[-1]['blocks'].append({'t': 'p', 'html': rich(el)})
+        elif el.tag == W + 'tbl':
+            lst = None
+            b = table_block(el)
+            if b:
+                sections[-1]['blocks'].append(b)
+    return [s for s in sections if s['title'] or s['blocks']]
+
+
+def split_h1(doc):
+    """Return (title, preface_elements, [(h1_text, elements)])."""
+    title, pre, parts, cur = '', [], [], None
+    for el in doc.body:
+        if el.tag == W + 'p':
+            st = doc.style(el)
+            if st == 'title' and not title:
+                title = ' '.join(x.text or '' for x in el.iter(W + 't') if True)
+                title = re.sub(r'\s+', ' ', ''.join((x.text or '') if x.tag == W + 't' else ' ' for x in el.iter() if x.tag in (W + 't', W + 'br'))).strip()
+                continue
+            if st.startswith('heading 1'):
+                cur = (text(el), [])
+                parts.append(cur)
+                continue
+        (cur[1] if cur else pre).append(el)
+    return title, pre, parts
+
+
+# ---------------------------------------------------------------- MCQs
+BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the single best answer for this exact decision point')
+
+
+def parse_mcqs(doc, parts):
+    find = lambda pat: next((els for h, els in parts if re.match(pat, h, re.I)), None)
+    A, B, C = find(r'^SECTION A'), find(r'^SECTION B'), find(r'^SECTION C')
+    problems, qs, cur = [], [], None
+    for el in A or []:
+        if el.tag != W + 'p':
+            continue
+        t = text(el)
+        m = re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t)
+        if m:
+            cur = {'num': int(m[1]), 'level': m[2].strip(), 'question': m[3].strip(), 'options': []}
+            qs.append(cur)
+            continue
+        m = re.match(r'^([A-D])\.\s+(.+)$', t)
+        if m and cur:
+            if 'ABCD'.index(m[1]) != len(cur['options']):
+                problems.append(f"Q{cur['num']}: option order")
+            cur['options'].append(m[2].strip())
+        elif t and cur and not cur['options']:
+            cur['question'] += ' ' + t
+    key, klev = {}, {}
+    for el in B or []:
+        if el.tag == W + 'tbl':
+            for tr in el.findall(W + 'tr'):
+                c = [text(tc) for tc in tr.findall(W + 'tc')]
+                for i in range(0, len(c) - 1, 3 if len(c) == 3 else 2):
+                    if c[i].isdigit():
+                        key[int(c[i])] = c[i + 1].strip()
+                        if len(c) == 3:
+                            klev[int(c[i])] = c[2].strip()
+    Q = {q['num']: q for q in qs}
+    ex, e, pearl_labels = {}, None, {}
+    for el in C or []:
+        if el.tag == W + 'p':
+            t = text(el)
+            m = re.match(r'^Q(\d+)\.\s*Answer:?\s*([A-D])\s*[—-]\s*(.+)$', t)
+            if m:
+                e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
+                ex[int(m[1])] = e
+                continue
+            if not e or not t:
+                continue
+            m = re.match(r'^([A-D])\.\s+(.+)$', t)
+            if m and e['q']:
+                opt = e['q']['options']['ABCD'.index(m[1])]
+                rest = m[2]
+                if not rest.startswith(opt + ' — '):
+                    problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
+                    continue
+                reason = rest[len(opt) + 3:].strip()
+                if reason.startswith('Correct'):
+                    e['marked'].append(m[1])
+                else:
+                    reason = re.sub(r'^(Incorrect|Wrong)\.\s*', '', reason)
+                    if not any(b in reason for b in BOILERPLATE):
+                        e['why_not'][m[1]] = reason
+                continue
+            e['core'].append(re.sub(r'^Core reasoning:\s*', '', t))
+        elif el.tag == W + 'tbl' and e:
+            b = table_block(el)
+            if b and b['t'] == 'callout':
+                body = ' '.join(re.sub(r'<[^>]+>', '', h) for h in b['html']).strip()
+                body = html.unescape(body)
+                if b['label'].upper().startswith('EXAM PEARL'):
+                    m = re.match(r'^Q(\d+) pearl\s*[—-]\s*(.+)$', body)
+                    if m:
+                        pearl_labels[int(m[1])] = m[2].strip()
+                        e.setdefault('pearl_in_block', m[2].strip())
+                    else:
+                        e['pearl'] = body
+                elif b['label'].upper().startswith('WHY THIS'):
+                    e['why'] = body
+    out = []
+    shifted = []
+    for q in qs:
+        n, e = q['num'], ex.get(q['num'])
+        if len(q['options']) != 4:
+            problems.append(f'Q{n}: {len(q["options"])} options')
+        if not e:
+            problems.append(f'Q{n}: no explanation')
+            continue
+        if key.get(n) != e['ans']:
+            problems.append(f'Q{n}: answer key {key.get(n)} != explanation {e["ans"]}')
+        if e['marked'] and e['marked'] != [e['ans']]:
+            problems.append(f'Q{n}: option marked correct {e["marked"]} != {e["ans"]}')
+        if klev and not (q['level'] == klev.get(n) == e['lev']):
+            problems.append(f'Q{n}: level mismatch {q["level"]}/{klev.get(n)}/{e["lev"]}')
+        # Pearls labelled "Qn pearl — ..." are matched by their label (some docs print them under the wrong question).
+        pearl = pearl_labels.get(n) or e.get('pearl', '')
+        if n in pearl_labels and e.get('pearl_in_block') != pearl_labels[n]:
+            shifted.append(n)
+        core = ' '.join(e['core']).strip()
+        expl = core
+        if e['why_not']:
+            expl += ' Why not the others: ' + '; '.join(f"{k}. {q['options']['ABCD'.index(k)]} — {v}" for k, v in sorted(e['why_not'].items()))
+        out.append({'num': n, 'level': q['level'], 'question': q['question'], 'options': q['options'],
+                    'answer': 'ABCD'.index(e['ans']), 'explanation': expl, 'pearl': pearl})
+    nums = [q['num'] for q in out]
+    if nums != list(range(1, len(nums) + 1)):
+        problems.append('question numbering not contiguous')
+    if len(set(q['question'] for q in out)) != len(out):
+        problems.append('duplicate question stems')
+    stats = {'mcq': len(qs), 'key': len(key), 'explanations': len(ex), 'built': len(out),
+             'pearls_relabelled': shifted, 'why_not_kept': sum(1 for e in ex.values() if e['why_not'])}
+    return out, problems, stats

@@ -2397,3 +2397,41 @@ Home
 ```
 
 This folder structure is the final preferred structure for future repository updates.
+
+---
+
+# 70. Daily Study Portal (from Day 5 onward)
+
+Each study day is a **study portal**, not only a quiz list. `DayN/index.html` is the portal; the 15-question quiz sets remain inside it.
+
+Build every day with the shared tooling — never hand-write portal HTML:
+
+```bash
+python tools/build_day.py N "path/to/Day_N_source.docx"
+```
+
+The script:
+
+1. copies the docx into `DayN/source/`
+2. converts the whole document (headings, tables, callout boxes, WHAT/WHY/HOW grids, lists, bold/italic) into `DayN/content.js`
+3. builds `DayN/quiz1..K.html` from `tools/templates/quiz.html` (Sections A–C)
+4. stops with an error list if MCQ count, answer key, explanation answer, option text or level disagree
+5. stops if any document block is not placed in the portal (block-integrity check)
+
+Standard portal pages (same for every day, driven by the document's Heading 1 titles):
+
+```text
+Overview (objectives, study plan with tick boxes, progress)
+Study Notes (one page per PART)
+Must-Know Numbers · Tables & Algorithms
+Clinical Cases (reasoning hidden until revealed) · Data Interpretation (answers hidden)
+Pearls & Traps · Quizzes
+Rapid Revision · Active Recall (self-rated cards) · Revision Plan
+References
+```
+
+The UI lives only in `assets/portal.css` and `assets/portal.js`. Change the look there so every day stays identical.
+
+Content rules still apply: show the document text faithfully; do not rewrite medical content. Generic boilerplate "why not" lines are dropped from quiz explanations; pearls labelled "Qn pearl" are matched to question n even if printed under another question. Report such source issues in the update summary.
+
+If a new document uses a Heading 1 the build does not recognise, it becomes a Study Notes page and is listed under `warnings` — review it before committing.
