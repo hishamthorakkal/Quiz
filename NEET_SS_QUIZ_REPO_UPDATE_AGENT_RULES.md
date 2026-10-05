@@ -2463,6 +2463,8 @@ Accepted Section C formats: "Q12. Answer: B — <level>" (Days 5–6) and "12. C
 
 Overview study plan (the "Time | Focus" table): portal.js links each row to the sections it covers from the row text (notes pages by unique title words/acronyms; "cases", "data", "MCQ", "rapid revision", "active recall", "pearls" to those pages). A row ticks itself (locked) when all linked sections are marked done and, for MCQ rows, every quiz set has been attempted; rows with no link stay manual. Overview shows as done in the sidebar when every row is ticked. When adding a day, check the linked-section chips under each plan row.
 
+Images: pictures placed in the docx (e.g. EEG/aEEG/MRI visual stations) become image blocks and are copied to DayN/img/; media files in the docx package that the document never places (old drafts) are ignored. On the Data page, "Visual Station N" paragraphs become headings and the Interpretation / Closest distractor / Next management step / Exam trap lines are hidden behind "Show interpretation".
+
 Content rules still apply: show the document text faithfully; do not rewrite medical content. Generic boilerplate "why not" lines are dropped from quiz explanations; pearls labelled "Qn pearl" are matched to question n even if printed under another question. Report such source issues in the update summary.
 
 Error notebook (`assets/notebook.js`, shared by every quiz page, mock and grand mock): wrong answers are recorded automatically when a test finishes (repeat mistakes counted, retest date +48–72 h, later correct answers mark the entry fixed). The result screen shows a K/C/R/G/S tagging panel; "Save error notes & send" posts a second ntfy message:

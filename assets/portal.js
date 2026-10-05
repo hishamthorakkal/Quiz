@@ -41,7 +41,7 @@
     const same = (a, b) => a === b || (Math.min(a.length, b.length) >= 5 && (a.includes(b) || b.includes(a)))
       || (Math.min(a.length, b.length) >= 6 && a.slice(0, 6) === b.slice(0, 6));
     const has = id => pages.some(p => p.id === id);
-    const SPECIAL = [[/\bcases?\b/, 'cases'], [/\bdata\b/, 'data'], [/\bmcqs?\b/, 'quizzes'], [/rapid revision|last 15/, 'revision'],
+    const SPECIAL = [[/\bcases?\b/, 'cases'], [/\bdata\b/, 'data'], [/\bmcqs?\b/, 'quizzes'], [/visual stations?|image-style/, 'data'], [/rapid revision|last 15/, 'revision'], [/\btriage\b|error-review/, 'plan'],
       [/active recall/, 'recall'], [/pearls?\b|traps?\b/, 'pearls'], [/must-know|key numbers/, 'numbers'], [/algorithm|comparison table/, 'tables']];
     return rows.map(text => {
       const t = String(text).toLowerCase(), score = {};
@@ -140,6 +140,7 @@
       const html = `<div class="callout ${tone(b.label)}">${b.label ? `<div class="lb">${escT(b.label)}${b.title ? `<span class="tt">${escT(b.title)}</span>` : ''}</div>` : ''}${b.html.map(h => `<p>${h}</p>`).join('')}</div>`;
       return isNext(b) && !ctx.noReveal ? reveal(html, 'What would you do next? — show answer') : html;
     }
+    if (b.t === 'img') return `<figure class="fig"><a href="${b.src}" target="_blank" rel="noopener" title="Open full size"><img src="${b.src}" alt="${escT(b.alt || '')}" loading="lazy"></a></figure>`;
     if (b.t === 'grid') return `<div class="grid5">${b.items.map(i => `<div><b>${escT(i.label)}</b>${i.html}</div>`).join('')}</div>`;
     if (b.t === 'table') {
       const blurCol = ctx.page.kind === 'data' && /interpretation/i.test(strip(b.head[b.head.length - 1])) ? b.head.length - 1 : -1;
@@ -171,6 +172,7 @@
   }
 
   // ---------- pages ----------
+  const DATA_ANS = /^(<strong>)?\s*(Interpretation|Closest distractor|Discriminator|Next management step|Next step|Exam trap|Answer)\b/i;
   function sectionHTML(page, s, i) {
     const ctx = { page, sec: s };
     let inner;
@@ -192,6 +194,18 @@
       const stem = bl.slice(0, k).map(b => block(b, ctx)).join('');
       const rest = bl.slice(k).map(b => block(b, { ...ctx, noReveal: true })).join('');
       inner = `<div class="case-stem">${stem}</div>${reveal(rest, 'Show reasoning & answer')}`;
+    } else if (page.kind === 'data' && s.blocks.some(b => b.t === 'p' && DATA_ANS.test(b.html))) {
+      // Visual stations: title + image + question stay visible; interpretation, discriminator, next step and trap
+      // lines are hidden behind one reveal button per station.
+      let out = '', hid = [];
+      const flush = () => { if (hid.length) out += reveal(hid.join(''), 'Show interpretation'); hid = []; };
+      s.blocks.forEach(b => {
+        if (b.t === 'p' && DATA_ANS.test(b.html)) { hid.push(block(b, ctx)); return; }
+        flush();
+        out += b.t === 'p' && /^(<strong>)?\s*Visual Station \d+/i.test(b.html) ? `<h3 class="station">${b.html}</h3>` : block(b, ctx);
+      });
+      flush();
+      inner = out;
     } else inner = s.blocks.map(b => block(b, ctx)).join('');
     const h1 = s.h1 && s.h1 !== s.title ? `<div class="h1tag">${escT(s.h1)}</div>` : '';
     return `<section class="sec" id="s-${i}">${h1}${s.title ? `<h2>${escT(s.title)}</h2>` : ''}${inner}</section>`;

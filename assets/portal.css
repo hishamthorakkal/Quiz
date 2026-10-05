@@ -131,3 +131,10 @@ tr.plan-done td{background:#f0fdf4}
 .chk:disabled{accent-color:#16a34a;opacity:1;cursor:default}
 .plan-banner{margin:14px 0;padding:10px 14px;border-radius:10px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;font-size:14px}
 .plan-banner.ok{background:#dcfce7;border-color:#86efac;color:#166534;font-weight:600}
+
+/* Figures from the source document (EEG/aEEG/MRI visual stations); tap opens full size */
+.fig{margin:12px 0;padding:8px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow-x:auto}
+.fig img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:6px}
+@media (max-width:640px){.fig img{min-width:560px}}
+
+.station{font-size:17px;margin:22px 0 6px;color:#0f2d5e;border-top:1px solid #e2e8f0;padding-top:14px}

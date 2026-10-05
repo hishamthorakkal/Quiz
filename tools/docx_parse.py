@@ -8,6 +8,9 @@ import html, re, zipfile
 from xml.etree import ElementTree as ET
 
 W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
+BLIP = '{http://schemas.openxmlformats.org/drawingml/2006/main}blip'
+EMBED = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed'
+DOCPR = '{http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing}docPr'
 
 
 def esc(s):
@@ -23,6 +26,20 @@ class Doc:
                 n = s.find(W + 'name')
                 self.styles[s.get(W + 'styleId')] = n.get(W + 'val') if n is not None else ''
         self.body = list(ET.fromstring(z.read('word/document.xml')).find(W + 'body'))
+        self.zip, self.rels = z, {}
+        if 'word/_rels/document.xml.rels' in z.namelist():
+            for r in ET.fromstring(z.read('word/_rels/document.xml.rels')):
+                self.rels[r.get('Id')] = r.get('Target')
+
+    def images(self, el):
+        """Embedded pictures in an element -> [(zip path, alt text)] (only images actually placed in the document)."""
+        out, alt = [], ''
+        for d in el.iter():
+            if d.tag == DOCPR:
+                alt = d.get('descr') or d.get('title') or ''
+            if d.tag == BLIP and d.get(EMBED) in self.rels:
+                out.append(('word/' + self.rels[d.get(EMBED)].lstrip('/').replace('word/', '', 1), alt))
+        return out
 
     def style(self, p):
         ps = p.find(W + 'pPr/' + W + 'pStyle')
@@ -116,6 +133,9 @@ def blocks_from(doc, elements):
     for el in elements:
         if el.tag == W + 'p':
             t = text(el)
+            for src, alt in doc.images(el):     # pictures (e.g. EEG/aEEG visual stations) become image blocks
+                lst = None
+                sections[-1]['blocks'].append({'t': 'img', 'src': src, 'alt': alt})
             if not t:
                 continue
             st = doc.style(el)

@@ -152,6 +152,21 @@ def build(day, docx, keep_order=False):
     placed = sum(len(s['blocks']) for p in pages.values() for s in p['sections'])
     if placed != total_blocks:
         raise SystemExit(f'Block integrity failed: {placed} placed vs {total_blocks} in source')
+    # Pictures placed in the document are copied to DayN/img/ (unused/orphan media in the docx are ignored).
+    imgs = [b for p in pages.values() for s in p['sections'] for b in s['blocks'] if b['t'] == 'img']
+    if imgs:
+        os.makedirs(f'{D}/img', exist_ok=True)
+    keep = set()
+    for b in imgs:
+        name = os.path.basename(b['src'])
+        with open(f'{D}/img/{name}', 'wb') as f:
+            f.write(doc.zip.read(b['src']))
+        b['src'] = f'img/{name}'
+        keep.add(name)
+    if os.path.isdir(f'{D}/img'):
+        for f in os.listdir(f'{D}/img'):
+            if f not in keep:
+                os.remove(f'{D}/img/{f}')
     lines = [dp.text(p) for p in pre if p.tag == dp.W + 'p' and dp.text(p)]
     portal = {
         'day': day, 'title': nice(re.sub(r'^DAY\s*\d+\s*[—-]?\s*', '', title)) or f'Day {day}',
@@ -187,7 +202,7 @@ def build(day, docx, keep_order=False):
         if m and int(m[1]) > len(sets):
             os.remove(f'{D}/{f}')
     report = {'day': day, 'source': src_name, 'pages': [(p['id'], p['title'], sum(len(s['blocks']) for s in p['sections'])) for p in portal['pages']],
-              'blocks': {'source': total_blocks, 'placed': placed}, 'mcq': stats, 'answers': dict(Counter('ABCD'[q['answer']] for q in qs)),
+              'blocks': {'source': total_blocks, 'placed': placed}, 'images': [b['src'] for b in imgs], 'mcq': stats, 'answers': dict(Counter('ABCD'[q['answer']] for q in qs)),
               'answer_key_after_shuffle': key,
               'questions_without_pearl': [q['num'] for q in qs if not q['pearl']], 'warnings': warnings, 'sets': portal['quizSets']}
     return report
