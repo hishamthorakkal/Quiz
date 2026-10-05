@@ -27,6 +27,42 @@
       LS.set('summary', { pct, pagesDone: pd, pages: tracked.length, quizDone: qd, quizzes: P.quizSets.length, at: Date.now() });
     return { pct, pd, qd };
   }
+  // ---------- overview study plan ----------
+  // Each "Time | Focus" row of the overview plan is linked to the portal sections it covers (worked out from the
+  // row text). A row ticks itself once all its linked sections are done; Overview is complete when every row is ticked.
+  /*PLANLINKS*/function planLinks(pages, rows) {
+    const STOP = new Set('and the with for from into after before plus its this that all per vs interpretation style image patterns progressive review targeted strategy'.split(' '));
+    const words = s => String(s).toLowerCase().replace(/<[^>]+>/g, ' ').split(/[^a-z0-9]+/).filter(w => w.length > 2 && !STOP.has(w));
+    const parts = pages.filter(p => /^part-\d+$/.test(p.id)).map(p => {
+      const ws = words(p.title);
+      const acr = p.title.split(/[\s-]+/).filter(w => /^[a-z]/i.test(w) && !STOP.has(w.toLowerCase()) && w !== '&').map(w => w[0]).join('').toLowerCase();
+      return { id: p.id, ws: acr.length > 2 ? ws.concat(acr) : ws };
+    });
+    const same = (a, b) => a === b || (Math.min(a.length, b.length) >= 5 && (a.includes(b) || b.includes(a)))
+      || (Math.min(a.length, b.length) >= 6 && a.slice(0, 6) === b.slice(0, 6));
+    const has = id => pages.some(p => p.id === id);
+    const SPECIAL = [[/\bcases?\b/, 'cases'], [/\bdata\b/, 'data'], [/\bmcqs?\b/, 'quizzes'], [/rapid revision|last 15/, 'revision'],
+      [/active recall/, 'recall'], [/pearls?\b|traps?\b/, 'pearls'], [/must-know|key numbers/, 'numbers'], [/algorithm|comparison table/, 'tables']];
+    return rows.map(text => {
+      const t = String(text).toLowerCase(), score = {};
+      for (const w of words(t)) {   // a word counts only if it points at exactly one notes page
+        const hit = parts.filter(p => p.ws.some(x => same(w, x)));
+        if (hit.length === 1) score[hit[0].id] = (score[hit[0].id] || 0) + 1;
+      }
+      const best = Math.max(0, ...Object.values(score)), ids = parts.map(p => p.id).filter(id => score[id] === best);
+      for (const [re, id] of SPECIAL) if (re.test(t) && has(id) && !ids.includes(id)) ids.push(id);
+      return ids;
+    });
+  }/*END*/
+  const planTable = ((byId.overview || {}).sections || []).flatMap(s => s.blocks).find(b => b.t === 'table' && /^time$/i.test(strip(b.head[0]).trim()));
+  const planMap = planTable ? planLinks(pages, planTable.rows.map(r => r.slice(1).join(' '))) : [];
+  const isComplete = id => id === 'quizzes' ? P.quizSets.every(s => quizStats()[s.k]) : done().has(id);
+  const planAuto = ri => planMap[ri] && planMap[ri].length > 0 && planMap[ri].every(isComplete);
+  const planTicked = ri => planAuto(ri) || !!LS.get('plan', {})[ri];
+  const overviewDone = () => !!planTable && planTable.rows.every((_, ri) => planTicked(ri));
+  const planLinksHTML = ri => (planMap[ri] || []).length ? `<div class="plan-links">${planMap[ri].map(id =>
+    `<a href="#/${id}" class="${isComplete(id) ? 'ok' : ''}">${isComplete(id) ? '✓ ' : ''}${escT(byId[id].eyebrow ? byId[id].eyebrow + ' · ' + byId[id].title : byId[id].title)}</a>`).join('')}</div>` : '';
+
   function toggleDone(id) { const d = done(); if (!d.has(id)) recallNotify(); d.has(id) ? d.delete(id) : d.add(id); LS.set('done', [...d]); render(); }
 
   // Active Recall: when leaving the page via "Mark as done" or "Next" with prompts rated "Revise again",
@@ -72,7 +108,7 @@
     const d = done(); let html = '', g = '';
     pages.forEach(p => {
       if (p.group !== g) { g = p.group; html += `<div class="grp">${escT(g)}</div>`; }
-      const isDone = p.id === 'quizzes' ? P.quizSets.every(s => quizStats()[s.k]) : d.has(p.id);
+      const isDone = p.id === 'overview' ? overviewDone() : isComplete(p.id);
       html += `<a href="#/${p.id}" class="${p.id === cur ? 'on' : ''} ${isDone ? 'done' : ''}"><span class="tick"></span>${p.eyebrow ? `<span class="eb">${escT(p.eyebrow.replace(/^Part\s+/, ''))}</span>` : ''}${escT(p.title)}</a>`;
     });
     $('#nav').innerHTML = html;
@@ -108,12 +144,11 @@
     if (b.t === 'table') {
       const blurCol = ctx.page.kind === 'data' && /interpretation/i.test(strip(b.head[b.head.length - 1])) ? b.head.length - 1 : -1;
       const planChk = ctx.page.kind === 'overview' && /^time$/i.test(strip(b.head[0]));
-      const plan = LS.get('plan', {});
       // 3+ column tables become labelled cards on phones (CSS .stack); each cell carries its column name
       const stack = b.head.length >= 3 && !planChk, lab = b.head.map(h => escT(strip(h)));
       return `${blurCol >= 0 ? '<div class="toolbar"><button class="btn ghost sm" data-act="reveal-all">Reveal all interpretations</button><button class="btn ghost sm" data-act="hide-all">Hide again</button></div>' : ''}
         <div class="tw"><table class="${stack ? 'stack' : ''}"><thead><tr>${planChk ? '<th>✓</th>' : ''}${b.head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${b.rows.map((r, ri) =>
-        `<tr>${planChk ? `<td><input type="checkbox" class="chk" data-plan="${ri}" ${plan[ri] ? 'checked' : ''}></td>` : ''}${r.map((c, ci) => ci === blurCol ? `<td class="blur" data-label="${lab[ci]}"><span>${c}</span></td>` : `<td data-label="${lab[ci]}">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+        `<tr class="${planChk && planTicked(ri) ? 'plan-done' : ''}">${planChk ? `<td>${planAuto(ri) ? `<input type="checkbox" class="chk" checked disabled title="Ticked automatically: all linked sections are done">` : `<input type="checkbox" class="chk" data-plan="${ri}" ${planTicked(ri) ? 'checked' : ''}>`}</td>` : ''}${r.map((c, ci) => ci === blurCol ? `<td class="blur" data-label="${lab[ci]}"><span>${c}</span></td>` : `<td data-label="${lab[ci]}">${c}${planChk && ci === r.length - 1 ? planLinksHTML(ri) : ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     }
     return '';
   }
@@ -172,7 +207,9 @@
       <div class="stats"><div class="stat"><div class="ring" style="--p:${pr.pct}"><b>${pr.pct}%</b></div><span>Day progress</span></div>
       <div class="stat"><strong>${pr.pd}/${tracked.length}</strong><span>Sections done</span></div>
       <div class="stat"><strong>${pr.qd}/${P.quizSets.length}</strong><span>Quiz sets attempted</span></div>
-      <div class="stat"><strong>${avg == null ? '—' : avg + '%'}</strong><span>Avg best quiz score</span></div></div>`;
+      <div class="stat"><strong>${avg == null ? '—' : avg + '%'}</strong><span>Avg best quiz score</span></div></div>
+      ${planTable ? (overviewDone() ? `<div class="plan-banner ok">✓ Overview complete — every block of the study plan is ticked.</div>`
+        : `<div class="plan-banner">Study plan: <b>${planTable.rows.filter((_, ri) => planTicked(ri)).length}/${planTable.rows.length}</b> blocks ticked. A block ticks itself when you mark its linked sections done (and attempt all quiz sets for MCQ blocks).</div>`) : ''}`;
   }
   function quizzesPage() {
     const q = quizStats();
@@ -234,7 +271,7 @@
     else if (t.dataset.recall != null) { const st = LS.get('recall', {}); st[t.dataset.recall] = st[t.dataset.recall] === t.dataset.v ? undefined : t.dataset.v; LS.set('recall', st); render(false); }
     else if (t.dataset.act === 'recall-only') { LS.set('recallOnly', !LS.get('recallOnly', false)); render(false); }
     else if (t.dataset.act === 'recall-reset') { if (confirm('Clear all active-recall ratings?')) { LS.set('recall', {}); LS.set('recallSent', ''); render(false); } }
-    else if (t.dataset.plan != null) { const p = LS.get('plan', {}); p[t.dataset.plan] = t.checked; LS.set('plan', p); }
+    else if (t.dataset.plan != null) { const p = LS.get('plan', {}); p[t.dataset.plan] = t.checked; LS.set('plan', p); render(false); }
     else if (t.dataset.act === 'reset-progress') {
       if (confirm(`Reset all Day ${P.day} progress (sections, plan ticks, recall ratings and quiz scores)?`)) {
         ['done', 'plan', 'recall', 'recallOnly', 'recallSent', 'quiz', 'last', 'summary'].forEach(k => localStorage.removeItem(NS + k)); render(false);

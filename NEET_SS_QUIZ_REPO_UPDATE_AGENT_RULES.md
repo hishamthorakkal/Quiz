@@ -2461,6 +2461,8 @@ Answer options are always shuffled once at build time (fixed seed per day, so re
 
 Accepted Section C formats: "Q12. Answer: B — <level>" (Days 5–6) and "12. Correct answer: B — <option text>" with a "Reasoning:" line and "Incorrect." / "CORRECT." option lines (Day 7+; the option text on the header is checked against the question). A separate "ACTIVE RECALL — ANSWERS" section is merged into the prompts as "prompt<br>Answer: …" (counts must match). "Weak-concept triage / R1-R2-R3" goes to the Revision Plan page.
 
+Overview study plan (the "Time | Focus" table): portal.js links each row to the sections it covers from the row text (notes pages by unique title words/acronyms; "cases", "data", "MCQ", "rapid revision", "active recall", "pearls" to those pages). A row ticks itself (locked) when all linked sections are marked done and, for MCQ rows, every quiz set has been attempted; rows with no link stay manual. Overview shows as done in the sidebar when every row is ticked. When adding a day, check the linked-section chips under each plan row.
+
 Content rules still apply: show the document text faithfully; do not rewrite medical content. Generic boilerplate "why not" lines are dropped from quiz explanations; pearls labelled "Qn pearl" are matched to question n even if printed under another question. Report such source issues in the update summary.
 
 Error notebook (`assets/notebook.js`, shared by every quiz page, mock and grand mock): wrong answers are recorded automatically when a test finishes (repeat mistakes counted, retest date +48–72 h, later correct answers mark the entry fixed). The result screen shows a K/C/R/G/S tagging panel; "Save error notes & send" posts a second ntfy message:
