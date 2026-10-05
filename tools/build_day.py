@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import docx_parse as dp
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ACRONYMS = {'ABG', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
+ACRONYMS = {'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
             'NICU', 'ELBW', 'VLBW', 'PPHN', 'TSB', 'TCB', 'DAT', 'ICP', 'NEET-SS', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX',
             'XI', 'XII', 'XIII', 'K/C/R/G/S', 'R1', 'R2', 'R3', 'QA', 'MCQS', 'CPAP', 'NIV', 'MAP', 'PIP', 'EOS', 'LOS'}
 SMALL = {'and', 'of', 'the', 'vs', 'in', 'for', 'to', 'a', 'an', 'on', 'or', 'with', '&'}
@@ -38,7 +38,7 @@ RULES = [
     (r'clinical cases', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
     (r'^section [abc]\b', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
     (r'cross-day connection', 'connections'),
-    (r'error notebook|self-assessment|r1 / r2|spaced revision', 'plan'),
+    (r'error notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
     (r'reference', 'references'), (r'document qa', 'references'),
 ]
 PAGES = {  # id: (title, group, kind)
@@ -78,6 +78,7 @@ def build(day, docx, keep_order=False):
     title, pre, parts = dp.split_h1(doc)
     pages, notes, warnings = {}, [], []
     total_blocks = 0
+    recall_answers = None
 
     def add(pid, h1, sections, as_section=True):
         p = pages.setdefault(pid, {'id': pid, 'title': PAGES[pid][0], 'group': PAGES[pid][1], 'kind': PAGES[pid][2], 'sections': []})
@@ -99,6 +100,9 @@ def build(day, docx, keep_order=False):
         if kind == 'mcq':
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
+        if kind == 'recall' and re.search(r'\banswers?\b', h1, re.I):
+            recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
+            continue
         if kind is None:
             m = re.match(r'^PART ([IVXLC]+)\s*[—-]\s*(.+)$', h1)
             pid = f'part-{len(notes) + 1}'
@@ -109,6 +113,17 @@ def build(day, docx, keep_order=False):
             pages[pid] = {'id': pid, 'title': ptitle, 'eyebrow': f'Part {m[1]}' if m else '', 'group': 'Study Notes', 'kind': 'notes', 'sections': secs}
             continue
         add(kind, h1, secs, as_section=kind in ('overview', 'tables', 'plan', 'references'))
+    if recall_answers:
+        # Pair prompt i with answer i as "prompt<br>Answer: ..." (same shape as docs that print answers inline).
+        ql = next((b for s in pages.get('recall', {}).get('sections', []) for b in s['blocks'] if b['t'] == 'list'), None)
+        al = [b for s in recall_answers for b in s['blocks'] if b['t'] == 'list']
+        if not ql or len(al) != 1 or len(al[0]['items']) != len(ql['items'])                 or sum(len(s['blocks']) for s in recall_answers) != 1:
+            raise SystemExit('Active Recall answers do not line up with the prompts')
+        ql['items'] = [f'{q}<br>Answer: {a}' for q, a in zip(ql['items'], al[0]['items'])]
+        total_blocks -= 1
+        for s in pages['recall']['sections']:
+            if s['title'].upper().startswith('ACTIVE RECALL'):
+                s['title'] = ''
     qs, problems, stats = dp.parse_mcqs(doc, parts)
     if problems:
         raise SystemExit('MCQ problems — fix the source or parser first:\n  ' + '\n  '.join(problems))

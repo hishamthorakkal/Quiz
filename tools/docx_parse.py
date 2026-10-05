@@ -268,6 +268,14 @@ def parse_mcqs(doc, parts):
                 e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
                 continue
+            # Day 7+ format: "12. Correct answer: B — <option text>" (no level on the header line)
+            m = re.match(r'^Q?(\d+)\.\s*Correct answer:?\s*([A-D])\s*[—-]\s*(.+)$', t)
+            if m:
+                e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
+                ex[int(m[1])] = e
+                if e['q'] and e['q']['options'][ 'ABCD'.index(m[2])] != m[3].strip():
+                    problems.append(f"Q{m[1]}: 'Correct answer' text does not match option {m[2]}")
+                continue
             if not e or not t:
                 continue
             m = re.match(r'^([A-D])\.\s+(.+)$', t)
@@ -278,14 +286,14 @@ def parse_mcqs(doc, parts):
                     problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
                     continue
                 reason = rest[len(opt) + 3:].strip()
-                if reason.startswith('Correct'):
+                if reason.lower().startswith('correct'):
                     e['marked'].append(m[1])
                 else:
                     reason = re.sub(r'^(Incorrect|Wrong)\.\s*', '', reason)
                     if not any(b in reason for b in BOILERPLATE):
                         e['why_not'][m[1]] = reason
                 continue
-            e['core'].append(re.sub(r'^Core reasoning:\s*', '', t))
+            e['core'].append(re.sub(r'^(Core reasoning|Reasoning):\s*', '', t))
         elif el.tag == W + 'tbl' and e:
             b = table_block(el)
             if b and b['t'] == 'callout':
@@ -313,7 +321,7 @@ def parse_mcqs(doc, parts):
             problems.append(f'Q{n}: answer key {key.get(n)} != explanation {e["ans"]}')
         if e['marked'] and e['marked'] != [e['ans']]:
             problems.append(f'Q{n}: option marked correct {e["marked"]} != {e["ans"]}')
-        if klev and not (q['level'] == klev.get(n) == e['lev']):
+        if klev and not (q['level'] == klev.get(n) == (e['lev'] or q['level'])):
             problems.append(f'Q{n}: level mismatch {q["level"]}/{klev.get(n)}/{e["lev"]}')
         # Pearls labelled "Qn pearl — ..." are matched by their label (some docs print them under the wrong question).
         pearl = pearl_labels.get(n) or e.get('pearl', '')
