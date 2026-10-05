@@ -88,7 +88,7 @@
 
   // ---------- shell ----------
   app.innerHTML = `<header class="top"><button class="menu-btn" aria-label="Menu">☰</button><a href="../index.html">← Home</a>
-    <div class="ttl">Day ${P.day} — ${escT(P.title)}<small>Study portal</small></div><a href="#" id="printBtn" title="Print this page">🖨 Print</a></header>
+    <div class="ttl">Day ${P.day} — ${escT(P.title)}<small>Study portal</small></div><span data-countdown="chip"></span><a href="#" id="printBtn" title="Print this page">🖨 Print</a></header>
     <div class="bar-prog"><i id="progBar"></i></div>
     <div class="layout"><aside class="side"><input class="search" id="q" placeholder="Search Day ${P.day}…" autocomplete="off"><nav class="nav" id="nav"></nav></aside><main id="main"></main></div>
     <div class="results" id="results"></div><div class="scrim" id="scrim"></div>

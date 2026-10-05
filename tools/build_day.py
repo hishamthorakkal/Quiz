@@ -63,7 +63,7 @@ def asset_version():
     """Short content hash of the shared assets, appended as ?v=… so browsers fetch new copies after an update."""
     import hashlib
     h = hashlib.sha1()
-    for f in ('portal.css', 'portal.js', 'notebook.js'):
+    for f in ('portal.css', 'portal.js', 'notebook.js', 'countdown.js'):
         h.update(open(f'{ROOT}/assets/{f}', 'rb').read())
     return h.hexdigest()[:8]
 
@@ -187,14 +187,15 @@ def build(day, docx, keep_order=False):
 <title>Day {day} — {portal['title']} · Study Portal</title>
 <link rel="stylesheet" href="../assets/portal.css?v={ver}"></head>
 <body><div id="app"><noscript>This study portal needs JavaScript.</noscript></div>
-<script src="content.js?v={ver}"></script><script src="../assets/notebook.js?v={ver}"></script><script src="../assets/portal.js?v={ver}"></script></body></html>
+<script src="content.js?v={ver}"></script><script src="../assets/notebook.js?v={ver}"></script><script src="../assets/portal.js?v={ver}"></script><script src="../assets/countdown.js?v={ver}"></script></body></html>
 ''')
     T = open(f'{ROOT}/tools/templates/quiz.html', encoding='utf-8').read()
     for k, ch in enumerate(sets, 1):
         a, b = ch[0]['num'], ch[-1]['num']
         s = (T.replace('__DAY__', str(day)).replace('__K__', str(k)).replace('__A__', str(a)).replace('__B__', str(b))
              .replace('__N__', str(len(ch))).replace('__QUIZ__', json.dumps(ch, ensure_ascii=False))
-             .replace('src="../assets/notebook.js"', f'src="../assets/notebook.js?v={asset_version()}"'))
+             .replace('src="../assets/notebook.js"', f'src="../assets/notebook.js?v={asset_version()}"')
+             .replace('src="../assets/countdown.js"', f'src="../assets/countdown.js?v={asset_version()}"'))
         assert '__' not in re.sub(r'__proto__', '', s.replace('__QUIZ__', '')) or True
         open(f'{D}/quiz{k}.html', 'w', encoding='utf-8', newline='\n').write(s)
     for f in os.listdir(D):  # remove stale quiz pages beyond the new set count

@@ -23,7 +23,7 @@ h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-
 #mainBtn:disabled{opacity:.6;cursor:not-allowed}.tagbox{margin-top:12px;background:#fff;border:1.5px solid #fca5a5;border-radius:12px;padding:10px 12px;color:#172033}.tagbox .req{font-size:11px;background:#fee2e2;color:#991b1b;border-radius:999px;padding:1px 8px;font-weight:700;margin-left:4px}.tagbtns{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 4px}.tagbtns button{min-width:46px;min-height:42px;border-radius:10px;border:1.5px solid #cbd5e1;background:#fff;font-weight:800;font-size:16px;color:#334155;padding:0 10px}.tagbtns button.on{background:#1d4ed8;border-color:#1d4ed8;color:#fff}.taglegend{font-size:12px;color:#64748b;margin:0 0 8px}.tagnote{width:100%;border:1.5px solid #dbe4f0;border-radius:9px;padding:8px 10px;font-size:15px;font-family:inherit}.tagbox.shake{animation:shake .35s}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 </style></head>
 <body><div class="wrap">
-<div style="margin-bottom:10px"><a class="btn secondary" href="index.html#/quizzes">← Day __DAY__ portal</a></div>
+<div style="margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><a class="btn secondary" href="index.html#/quizzes">← Day __DAY__ portal</a><span data-countdown="chip"></span></div>
 <h1>Day __DAY__ — Quiz __K__</h1>
 <div class="sub">Questions __A__–__B__ · __N__ MCQs · +4 correct / −1 wrong</div>
 <div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
@@ -136,4 +136,4 @@ function showSummary(early){
   Notebook.panel(box,window.__nbIds,`${NB_CTX.label} ${NB_CTX.set} — Error notes`,{inResult:true});}
 }
 render();
-</script></body></html>
+</script><script src="../assets/countdown.js"></script></body></html>

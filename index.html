@@ -21,6 +21,7 @@ h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-
 </style></head>
 <body><div class="wrap">
 <h1>NEET-SS + ICP Paediatrics</h1>
+<div data-countdown="banner"></div>
 <div class="sub">Choose a daily study portal.</div>
 <!-- Error Notebook button hidden for now (delete "display:none;" to show it again) -->
 <a class="btn" href="notebook.html" style="display:none;margin:0 0 16px;background:#0f172a">📒 Error Notebook <span id="nbCount" style="font-weight:500;opacity:.85"></span></a>
@@ -72,4 +73,5 @@ document.querySelectorAll('[data-day]').forEach(el=>{
   if(s)el.querySelector('.prog').innerHTML=`<b style="color:#15803d">${s.pct}% complete</b> · ${s.pagesDone}/${s.pages} sections · ${s.quizDone}/${s.quizzes} quiz sets`;}catch(e){}
 });
 </script>
+<script src="assets/countdown.js?v=34a5c329"></script>
 </body></html>

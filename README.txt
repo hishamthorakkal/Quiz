@@ -8,6 +8,7 @@ index.html                 Home: Daily Study Portals
 notebook.html              Combined K/C/R/G/S error notebook (all days and mocks)
 assets/
   portal.css, portal.js    Shared study-portal UI (every day uses these two files)
+  countdown.js             Exam countdown (home banner + chip on portal/quiz pages); exam date/time set at the top of the file
   notebook.js              Automatic error notebook: records wrong answers when any quiz/mock finishes,
                            K/C/R/G/S tagging panel on result screens, "Error notes" ntfy message, notebook pages
 tools/
