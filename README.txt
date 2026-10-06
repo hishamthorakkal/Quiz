@@ -15,11 +15,14 @@ tools/
   build_day.py             Builds a day's portal + quiz sets from its source docx
   docx_parse.py            Docx reader (headings, tables, callout boxes, MCQs)
   templates/quiz.html      Shared quiz-set template (set sizes: rules §4)
-Day5/, Day6/
+Day7/, Day8/
   source/<day docx>        Original document (kept for audit/regeneration)
   index.html               Study portal (overview, notes, cases, pearls, revision, quizzes)
   content.js               Portal content generated from the docx — do not edit by hand
   quiz1.html ... quiz5.html
+  calc.html                Calculation Drill (numeric answers), when the document has one
+  img/                     Pictures from the document + generated unlabelled schematics (tools/gen_xray.py)
+  source/extras.json       Optional: generated images for image MCQs/visual stations, reworded drill questions, day title
 
 Adding or updating a day (needs Python 3, no extra packages):
 

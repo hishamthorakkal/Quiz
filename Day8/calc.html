@@ -1,0 +1,76 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="../favicon.ico?v=3" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png?v=3"><link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png?v=3"><meta name="theme-color" content="#1e3a8a">
+<title>Day 8 — Calculation Drill</title><style>
+:root{--bg:#f4f7fb;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;--red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:24px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
+h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}.progress{height:100%;background:var(--blue);transition:.25s}
+.topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
+.q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}
+.ansrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ansrow input{font-size:20px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;width:200px;font-variant-numeric:tabular-nums}
+.ansrow input:focus{outline:none;border-color:var(--blue)}.unit{font-size:17px;font-weight:650;color:#334155}
+.err{color:var(--red);font-size:14px;margin-top:8px;min-height:1em}
+.feedback{margin-top:18px;padding:16px;border-radius:14px;line-height:1.6}
+.feedback.correct{background:var(--greenbg);border:1px solid #86efac;color:#14532d}.feedback.wrong{background:var(--redbg);border:1px solid #fca5a5;color:#7f1d1d}
+.work{margin-top:10px;background:#f8fafc;border-left:4px solid #94a3b8;padding:12px;border-radius:7px;color:#273449}.trap{margin-top:10px;background:var(--amberbg);color:var(--amber);padding:11px;border-radius:8px}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}button,.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block}
+.primary{background:var(--blue);color:#fff}.primary:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.stat{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}.stat strong{display:block;font-size:24px}
+.row{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;line-height:1.5}.row.ok{border-color:#bbf7d0;background:#f0fdf4}.row.no{border-color:#fecaca;background:#fff7f7}
+@media(max-width:650px){.wrap{padding:12px 10px 20px}h1{font-size:20px}.q{font-size:17px}.card{padding:14px}.ansrow input{width:100%;font-size:18px}.stats{grid-template-columns:1fr 1fr 1fr}.actions button{flex:1}}
+</style></head>
+<body><div class="wrap">
+<div style="margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><a class="btn secondary" href="index.html#/quizzes">← Day 8 portal</a><span data-countdown="chip"></span></div>
+<h1>Day 8 — Calculation Drill</h1>
+<div class="sub">Numeric problems · type your answer in the unit shown · answers within about 2% (rounding) count as correct · not scored with the MCQs</div>
+<div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
+<div class="topline"><span id="counter"></span><span id="score"></span></div>
+<div class="card" id="app"></div>
+</div>
+<script>
+const CALC=[{"num": 1, "title": "Feed volume", "question": "A 1.25-kg preterm infant is prescribed enteral feeds of 160 mL/kg/day. What total volume of milk is needed per day?", "working": "160 × 1.25 = 200 mL/day.", "trap": "keep units explicit and include all fluid/glucose sources.", "answer": 200.0, "unit": "mL/day"}, {"num": 2, "title": "Per-feed volume", "question": "The same 1.25-kg infant (200 mL/day of milk) is fed every 3 hours. What volume should be given at each feed?", "working": "8 feeds/day; 200 ÷ 8 = 25 mL/feed.", "trap": "keep units explicit and include all fluid/glucose sources.", "answer": 25.0, "unit": "mL/feed"}, {"num": 3, "title": "GIR", "question": "A 1-kg infant is receiving D10 at 100 mL/kg/day. What is the glucose infusion rate (GIR)?", "working": "D10=100 mg/mL; 100×100/1440 = 6.94 mg/kg/min.", "trap": "keep units explicit and include all fluid/glucose sources.", "answer": 6.94, "unit": "mg/kg/min"}, {"num": 4, "title": "GIR", "question": "An infant is receiving D12.5 at 96 mL/kg/day. What is the glucose infusion rate (GIR)?", "working": "125×96/1440 = 8.33 mg/kg/min.", "trap": "keep units explicit and include all fluid/glucose sources.", "answer": 8.33, "unit": "mg/kg/min"}, {"num": 5, "title": "Amino acids", "question": "A 1.4-kg infant is prescribed parenteral amino acids at 3.5 g/kg/day. How many grams of amino acids does the infant receive per day?", "working": "1.4×3.5 = 4.9 g/day.", "trap": "keep units explicit and include all fluid/glucose sources.", "answer": 4.9, "unit": "g/day"}, {"num": 6, "title": "Enteral + PN fluid", "question": "An infant's total fluid goal is 150 mL/kg/day and enteral feeds already provide 90 mL/kg/day. How much fluid remains for PN/IV fluids, before accounting for medications and flushes?", "working": "Remaining PN/IV allowance = 60 mL/kg/day before accounting for medications/flushes.", "trap": "keep units explicit and include all fluid/glucose sources.", "answer": 60.0, "unit": "mL/kg/day"}, {"num": 7, "title": "Daily milk volume", "question": "A 900-g infant receives milk at 140 mL/kg/day. What is the total daily milk volume?", "working": "0.9×140 = 126 mL/day.", "trap": "keep units explicit and include all fluid/glucose sources.", "answer": 126.0, "unit": "mL/day"}, {"num": 8, "title": "Feed advancement", "question": "Enteral feeds are increased from 40 to 70 mL/kg/day over 24 hours. What is the feed advancement over that day?", "working": "Advancement = 30 mL/kg/day; judge acceptability using the supplied unit protocol and infant stability.", "trap": "keep units explicit and include all fluid/glucose sources.", "answer": 30.0, "unit": "mL/kg/day"}];
+const DAY=8, KEY='portal:Day'+DAY+':calc';
+let i=0;const res=[];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>(+n.toFixed(2)).toString();
+const close=(v,a)=>Math.abs(v-a)<=Math.max(Math.abs(a)*0.02,0.05);
+function head(){
+  document.getElementById('counter').textContent=`Problem ${Math.min(i+1,CALC.length)} / ${CALC.length}`;
+  document.getElementById('score').textContent=`Correct: ${res.filter(r=>r.ok).length}`;
+  document.getElementById('progress').style.width=(res.length/CALC.length*100)+'%';
+}
+function show(){
+  head();const c=CALC[i],r=res[i];
+  document.getElementById('app').innerHTML=`<div class="badge">${esc(c.title)}</div>
+  <div class="q">C${c.num}. ${esc(c.question)}</div>
+  <div class="ansrow"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Your answer" ${r?'disabled value="'+esc(r.raw)+'"':''}><span class="unit">${esc(c.unit)}</span></div>
+  <div class="err" id="err"></div>
+  ${r?`<div class="feedback ${r.ok?'correct':'wrong'}"><b>${r.ok?'Correct':'Not quite'}</b> — answer: <b>${fmt(c.answer)} ${esc(c.unit)}</b>${r.ok?'':` (you entered ${esc(r.raw)})`}
+     <div class="work"><b>Working:</b> ${esc(c.working)}</div>${c.trap?`<div class="trap"><b>Trap:</b> ${esc(c.trap)}</div>`:''}</div>`:''}
+  <div class="actions">${r?`<button class="primary" id="next">${i===CALC.length-1?'See results':'Next problem'}</button>`:'<button class="primary" id="check">Check answer</button>'}</div>`;
+  const inp=document.getElementById('ans');
+  if(!r){inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});inp.addEventListener('input',()=>document.getElementById('err').textContent='');document.getElementById('check').onclick=check;}
+  else document.getElementById('next').onclick=()=>{i++;i<CALC.length?show():finish();};
+}
+function check(){
+  const raw=document.getElementById('ans').value.trim().replace(',','.'),v=parseFloat(raw);
+  if(raw===''||!isFinite(v)||!/^-?\d*\.?\d+$/.test(raw)){document.getElementById('err').textContent='Enter a number first (digits and a decimal point only).';return;}
+  res[i]={raw,v,ok:close(v,CALC[i].answer)};show();
+}
+function finish(){
+  head();const n=CALC.length,ok=res.filter(r=>r.ok).length;
+  try{const p=JSON.parse(localStorage.getItem(KEY))||{best:0,attempts:0};localStorage.setItem(KEY,JSON.stringify({n,best:Math.max(p.best||0,ok),last:ok,attempts:(p.attempts||0)+1,at:Date.now()}));}catch(e){}
+  const wrong=CALC.map((c,k)=>[c,res[k]]).filter(([,r])=>!r.ok);
+  const lines=[`Score: ${ok} / ${n}`,...(wrong.length?['','Wrong: Day → Problem → Entered → Correct',...wrong.map(([c,r])=>`Day ${DAY} → C${c.num} ${c.title} → ${r.raw} → ${fmt(c.answer)} ${c.unit}`)]:['All correct'])];
+  fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(`Day ${DAY} — Calculation Drill: ${ok}/${n}`)}&tags=abacus`,{method:'POST',body:lines.join('\n')}).catch(()=>{});
+  document.getElementById('app').innerHTML=`<h2 style="margin-top:0">Drill finished</h2>
+  <div class="stats"><div class="stat"><strong>${ok}/${n}</strong>Correct</div><div class="stat"><strong>${n-ok}</strong>Wrong</div><div class="stat"><strong>${Math.round(ok/n*100)}%</strong>Accuracy</div></div>
+  ${CALC.map((c,k)=>`<div class="row ${res[k].ok?'ok':'no'}"><b>C${c.num}. ${esc(c.title)}</b> — ${res[k].ok?'✓':'✗'} you: ${esc(res[k].raw)} · answer: <b>${fmt(c.answer)} ${esc(c.unit)}</b><br><span style="color:#475569">${esc(c.working)}</span></div>`).join('')}
+  <div class="actions"><a class="btn secondary" href="index.html#/quizzes">Back to quizzes</a><button class="primary" onclick="location.reload()">Retake drill</button></div>`;
+}
+show();
+</script><script src="../assets/countdown.js?v=4041b023"></script></body></html>

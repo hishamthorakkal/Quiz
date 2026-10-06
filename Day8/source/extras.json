@@ -1,0 +1,58 @@
+{
+  "_about": "Build extras for Day 8 (read by tools/build_day.py). Generated images come from tools/gen_xray.py and are unlabelled so they do not give the answer away; the document's own labelled schematics stay behind 'Show interpretation'. calc_questions reword the Calculation Drill data lines into complete questions (numbers, answers and working are unchanged from the source).",
+  "title": "NEC + Preterm Feeding + Human Milk + TPN",
+  "subtitle": [
+    "Necrotising enterocolitis · Enteral feeding · Human milk & fortification · Parenteral nutrition",
+    "NEET-SS + ICP Paediatrics 2026"
+  ],
+  "plan_links": [
+    [
+      "plan",
+      "part-1"
+    ],
+    [
+      "part-1",
+      "part-2"
+    ],
+    [
+      "part-3",
+      "part-4"
+    ],
+    [
+      "part-5"
+    ],
+    [
+      "data",
+      "part-2"
+    ],
+    [
+      "quizzes"
+    ]
+  ],
+  "mcq_images": {
+    "29": "gen_fixed_loop.png",
+    "72": "gen_pneumatosis.png",
+    "73": "gen_portal_gas.png",
+    "74": "gen_free_air.png"
+  },
+  "station_images": {
+    "Visual Station 1": "gen_pneumatosis.png",
+    "Visual Station 2": "gen_portal_gas.png",
+    "Visual Station 3": "gen_free_air.png",
+    "Visual Station 4": "gen_fixed_loop.png",
+    "Visual Station 5": "gen_free_air.png",
+    "Visual Station 6": {
+      "crop_top": 62
+    }
+  },
+  "calc_questions": [
+    "A 1.25-kg preterm infant is prescribed enteral feeds of 160 mL/kg/day. What total volume of milk is needed per day?",
+    "The same 1.25-kg infant (200 mL/day of milk) is fed every 3 hours. What volume should be given at each feed?",
+    "A 1-kg infant is receiving D10 at 100 mL/kg/day. What is the glucose infusion rate (GIR)?",
+    "An infant is receiving D12.5 at 96 mL/kg/day. What is the glucose infusion rate (GIR)?",
+    "A 1.4-kg infant is prescribed parenteral amino acids at 3.5 g/kg/day. How many grams of amino acids does the infant receive per day?",
+    "An infant's total fluid goal is 150 mL/kg/day and enteral feeds already provide 90 mL/kg/day. How much fluid remains for PN/IV fluids, before accounting for medications and flushes?",
+    "A 900-g infant receives milk at 140 mL/kg/day. What is the total daily milk volume?",
+    "Enteral feeds are increased from 40 to 70 mL/kg/day over 24 hours. What is the feed advancement over that day?"
+  ]
+}

@@ -14,12 +14,15 @@ import docx_parse as dp
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ACRONYMS = {'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
             'NICU', 'ELBW', 'VLBW', 'PPHN', 'TSB', 'TCB', 'DAT', 'ICP', 'NEET-SS', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX',
-            'XI', 'XII', 'XIII', 'K/C/R/G/S', 'R1', 'R2', 'R3', 'QA', 'MCQS', 'CPAP', 'NIV', 'MAP', 'PIP', 'EOS', 'LOS'}
+            'XI', 'XII', 'XIII', 'K/C/R/G/S', 'R1', 'R2', 'R3', 'QA', 'MCQS', 'CPAP', 'NIV', 'PIP', 'EOS', 'LOS',
+            'NEC', 'TPN', 'PN', 'NNF', 'SIP', 'GIR', 'PDHM', 'MOM', 'HMF', 'IUGR', 'SGA', 'IV/PN'}
 SMALL = {'and', 'of', 'the', 'vs', 'in', 'for', 'to', 'a', 'an', 'on', 'or', 'with', '&'}
 
 
 def nice(title):
-    """'PART II — AAP ≥35-WEEK DECISION FRAMEWORK' -> 'AAP ≥35-Week Decision Framework' (keeps acronyms)."""
+    """'PART II — AAP ≥35-WEEK DECISION FRAMEWORK' -> 'AAP ≥35-Week Decision Framework' (keeps acronyms).
+
+    Each letter/digit run inside a word is cased on its own, so "(TPN/PN)" and "EEG-aEEG" keep their acronyms."""
     out = []
     for i, w in enumerate(title.split()):
         if re.sub(r'[^\w/+-]', '', w).upper() in ACRONYMS:
@@ -27,12 +30,13 @@ def nice(title):
         elif i and w.lower() in SMALL:
             out.append(w.lower())
         else:
-            out.append('-'.join(p if p.upper() in ACRONYMS else p[:1].upper() + p[1:].lower() for p in w.split('-')))
+            out.append(re.sub(r'[^\W_]+', lambda m: m[0] if m[0].upper() in ACRONYMS else m[0][:1].upper() + m[0][1:].lower(), w))
     return ' '.join(out)
 
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
+    (r'calculation drill', 'calc'), (r'exam stations|image / tracing', 'data'),
     (r'objective', 'overview'), (r'(study|teaching) plan', 'overview'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
@@ -68,6 +72,42 @@ def asset_version():
     return h.hexdigest()[:8]
 
 
+GEN_CAPTION = 'Generated radiograph-style teaching schematic — not a patient image.'
+
+
+def add_generated_images(D, doc, pages, extras):
+    """Write generated images listed in extras and put them in front of the matching visual stations.
+
+    On the Data page a station's own (labelled) picture moves behind "Show interpretation" and the unlabelled
+    image is shown with the question instead, so the picture does not give the answer away.
+    """
+    names = set(extras.get('mcq_images', {}).values()) | {v for v in extras.get('station_images', {}).values() if isinstance(v, str)}
+    if not names:
+        return set()
+    import gen_xray
+    os.makedirs(f'{D}/img', exist_ok=True)
+    for name in names:
+        gen_xray.GENERATORS[name.rsplit('.', 1)[0]]().save(f'{D}/img/{name}', optimize=True)
+    data = pages.get('data', {'sections': []})
+    for prefix, spec in extras.get('station_images', {}).items():
+        sec = next((s for s in data['sections'] if s['title'].startswith(prefix)), None)
+        if sec is None:
+            raise SystemExit(f'extras.json: no visual station titled "{prefix}…"')
+        i = next(i for i, b in enumerate(sec['blocks']) if b['t'] == 'img')
+        own = sec['blocks'][i]
+        own['reveal'], own['caption'] = True, 'Labelled schematic from the source document'
+        if isinstance(spec, dict) and 'crop_top' in spec:   # same picture with its answer-giving title cropped off
+            from PIL import Image
+            im = Image.open(f"{D}/{own['src']}")
+            name = os.path.basename(own['src']).replace('.png', '_q.png')
+            im.crop((0, spec['crop_top'], im.width, im.height)).save(f'{D}/img/{name}', optimize=True)
+            names.add(name)
+            sec['blocks'].insert(i, {'t': 'img', 'src': f'img/{name}', 'alt': ''})
+        else:
+            sec['blocks'].insert(i, {'t': 'img', 'src': f'img/{spec}', 'alt': '', 'caption': GEN_CAPTION})
+    return names
+
+
 def build(day, docx, keep_order=False):
     D = f'{ROOT}/Day{day}'
     os.makedirs(f'{D}/source', exist_ok=True)
@@ -79,6 +119,11 @@ def build(day, docx, keep_order=False):
     pages, notes, warnings = {}, [], []
     total_blocks = 0
     recall_answers = None
+    calc = None
+    # Optional per-day extras (DayN/source/extras.json): generated images for image-based MCQs and visual stations,
+    # and reworded Calculation Drill questions. See NEET_SS_QUIZ_REPO_UPDATE_AGENT_RULES.md.
+    xf = f'{D}/source/extras.json'
+    extras = json.load(open(xf, encoding='utf-8')) if os.path.exists(xf) else {}
 
     def add(pid, h1, sections, as_section=True):
         p = pages.setdefault(pid, {'id': pid, 'title': PAGES[pid][0], 'group': PAGES[pid][1], 'kind': PAGES[pid][2], 'sections': []})
@@ -98,6 +143,9 @@ def build(day, docx, keep_order=False):
         secs = dp.blocks_from(doc, els)
         kind = next((k for pat, k in RULES if re.search(pat, h1, re.I)), None)
         if kind == 'mcq':
+            continue
+        if kind == 'calc':                 # numeric drill -> its own page under Quizzes (calc.html), not a study page
+            calc = dp.parse_calc(secs)
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
         if kind == 'recall' and re.search(r'\banswers?\b', h1, re.I):
@@ -142,7 +190,10 @@ def build(day, docx, keep_order=False):
         if not ok:
             raise SystemExit(f"Shuffle verification failed at Q{q['num']}")
     key = ''.join('ABCD'[q['answer']] for q in qs)
-    qs = [{k: q[k] for k in ('num', 'level', 'question', 'options', 'answer', 'explanation', 'pearl', 'srcAnswer')} for q in qs]
+    for n, name in extras.get('mcq_images', {}).items():
+        q = next(q for q in qs if q['num'] == int(n))
+        q['img'], q['imgCaption'] = f'img/{name}', GEN_CAPTION
+    qs = [{k: q[k] for k in ('num', 'level', 'question', 'options', 'answer', 'explanation', 'pearl', 'srcAnswer', 'img', 'imgCaption') if k in q} for q in qs]
     sets = dp.split_sets(qs)   # 5 x 15 by default; grows to 20 per set, then adds sets (sizes within ±1)
     pages['quizzes'] = {'id': 'quizzes', 'title': 'Quizzes', 'group': 'Practice', 'kind': 'quizzes', 'sections': []}
     pages['notebook'] = {'id': 'notebook', 'title': 'Error Notebook', 'group': 'Revise', 'kind': 'notebook', 'sections': []}
@@ -163,18 +214,30 @@ def build(day, docx, keep_order=False):
             f.write(doc.zip.read(b['src']))
         b['src'] = f'img/{name}'
         keep.add(name)
+    keep |= add_generated_images(D, doc, pages, extras)
     if os.path.isdir(f'{D}/img'):
         for f in os.listdir(f'{D}/img'):
             if f not in keep:
                 os.remove(f'{D}/img/{f}')
     lines = [dp.text(p) for p in pre if p.tag == dp.W + 'p' and dp.text(p)]
     portal = {
-        'day': day, 'title': nice(re.sub(r'^DAY\s*\d+\s*[—-]?\s*', '', title)) or f'Day {day}',
-        'docTitle': title, 'subtitle': lines[:2], 'source': f'source/{src_name}',
+        'day': day, 'title': extras.get('title') or nice(re.sub(r'^DAY\s*\d+\s*[—-]?\s*', '', title)) or f'Day {day}',
+        'docTitle': title, 'subtitle': lines[:2] or extras.get('subtitle', []), 'source': f'source/{src_name}',
         'pages': [pages[i] for i in order],
         'quizSets': [{'k': k + 1, 'from': s[0]['num'], 'to': s[-1]['num'], 'n': len(s)} for k, s in enumerate(sets)],
         'mcqCount': len(qs),
     }
+    if extras.get('plan_links'):
+        ids = {p['id'] for p in portal['pages']}
+        bad = [i for row in extras['plan_links'] for i in row if i not in ids]
+        if bad:
+            raise SystemExit(f'extras.json plan_links: unknown page ids {bad}')
+        portal['planLinks'] = extras['plan_links']
+    if calc:
+        for i, q in enumerate(extras.get('calc_questions', [])):
+            if q and i < len(calc):
+                calc[i]['question'] = q          # reworded as a complete question; answer/working stay from the source
+        portal['calc'] = {'n': len(calc), 'href': 'calc.html'}
     with open(f'{D}/content.js', 'w', encoding='utf-8', newline='\n') as f:
         f.write('// Generated by tools/build_day.py from ' + portal['source'] + ' — do not edit by hand.\n')
         f.write('window.PORTAL=' + json.dumps(portal, ensure_ascii=False) + ';\n')
@@ -198,6 +261,13 @@ def build(day, docx, keep_order=False):
              .replace('src="../assets/countdown.js"', f'src="../assets/countdown.js?v={asset_version()}"'))
         assert '__' not in re.sub(r'__proto__', '', s.replace('__QUIZ__', '')) or True
         open(f'{D}/quiz{k}.html', 'w', encoding='utf-8', newline='\n').write(s)
+    if calc:
+        C = open(f'{ROOT}/tools/templates/calc.html', encoding='utf-8').read()
+        open(f'{D}/calc.html', 'w', encoding='utf-8', newline='\n').write(
+            C.replace('__DAY__', str(day)).replace('__CALC__', json.dumps(calc, ensure_ascii=False))
+             .replace('src="../assets/countdown.js"', f'src="../assets/countdown.js?v={asset_version()}"'))
+    elif os.path.exists(f'{D}/calc.html'):
+        os.remove(f'{D}/calc.html')
     for f in os.listdir(D):  # remove stale quiz pages beyond the new set count
         m = re.match(r'^quiz(\d+)\.html$', f)
         if m and int(m[1]) > len(sets):
@@ -205,7 +275,8 @@ def build(day, docx, keep_order=False):
     report = {'day': day, 'source': src_name, 'pages': [(p['id'], p['title'], sum(len(s['blocks']) for s in p['sections'])) for p in portal['pages']],
               'blocks': {'source': total_blocks, 'placed': placed}, 'images': [b['src'] for b in imgs], 'mcq': stats, 'answers': dict(Counter('ABCD'[q['answer']] for q in qs)),
               'answer_key_after_shuffle': key,
-              'questions_without_pearl': [q['num'] for q in qs if not q['pearl']], 'warnings': warnings, 'sets': portal['quizSets']}
+              'questions_without_pearl': [q['num'] for q in qs if not q['pearl']], 'warnings': warnings, 'sets': portal['quizSets'],
+              'mcq_images': {q['num']: q['img'] for q in qs if 'img' in q}, 'calc': calc}
     return report
 
 

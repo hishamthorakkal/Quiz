@@ -245,20 +245,50 @@ def shuffle_options(qs, seed):
 
 
 # ----
-BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the single best answer for this exact decision point')
+BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the single best answer for this exact decision point',
+               'would require a different clinical or data pattern', 'This stage does not match the severity pattern in the stem',
+               'This numerical choice results from a unit, decimal, frequency or fluid-allocation error')
+RETEST = re.compile(r'^EXTRA NOTEBOOK RETEST\b', re.I)
 
+
+def parse_calc(sections):
+    """CALCULATION DRILL sections ("1. Feed volume" + Data/question, Formula/substitution/final answer, Trap)
+    -> [{num, title, question, working, trap, answer, unit}]. The answer is the last "= <number> <unit>" of the working."""
+    out = []
+    for s in sections:
+        m = re.match(r'^(\d+)\.\s*(.+)$', s['title'])
+        if not m:
+            continue
+        f = {}
+        for b in s['blocks']:
+            t = html.unescape(re.sub(r'<[^>]+>', '', b.get('html', '') if isinstance(b.get('html'), str) else ''))
+            k = re.match(r'^(Data/question|Formula/substitution/final answer|Trap)\s*:\s*(.+)$', t, re.I)
+            if k:
+                f[k[1].lower()] = k[2].strip()
+        work = f.get('formula/substitution/final answer', '')
+        nums = re.findall(r'=\s*([0-9]+(?:\.[0-9]+)?)\s*((?:mg|g|mL|kcal|mmol|mEq|µg|mcg|kg|L|min|h|%)[A-Za-z/]*)', work)
+        if not f.get('data/question') or not nums:
+            raise SystemExit(f'Calculation Drill {m[1]}: could not read the question or a numeric answer')
+        out.append({'num': int(m[1]), 'title': m[2].strip(), 'question': f['data/question'], 'working': work,
+                    'trap': f.get('trap', ''), 'answer': float(nums[-1][0]), 'unit': nums[-1][1]})
+    return out
 
 def parse_mcqs(doc, parts):
     find = lambda pat: next((els for h, els in parts if re.match(pat, h, re.I)), None)
     A, B, C = find(r'^SECTION A'), find(r'^SECTION B'), find(r'^SECTION C')
+    if A is None and B is not None and find(r'^SECTION B\b.*\bQUESTIONS\b'):
+        A, B = B, None                 # questions are in Section B; answer key comes from Section C
     problems, qs, cur = [], [], None
     for el in A or []:
         if el.tag != W + 'p':
             continue
         t = text(el)
-        m = re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t)
+        m = re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t) or re.match(r'^Q(\d+)\.\s*()(.+)$', t)
         if m:
-            cur = {'num': int(m[1]), 'level': m[2].strip(), 'question': m[3].strip(), 'options': []}
+            stem = m[3].strip()
+            if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — …": label dropped, stem is on the next line
+                stem = ''
+            cur = {'num': int(m[1]), 'level': m[2].strip(), 'question': stem, 'options': []}
             qs.append(cur)
             continue
         m = re.match(r'^([A-D])\.\s+(.+)$', t)
@@ -267,7 +297,7 @@ def parse_mcqs(doc, parts):
                 problems.append(f"Q{cur['num']}: option order")
             cur['options'].append(m[2].strip())
         elif t and cur and not cur['options']:
-            cur['question'] += ' ' + t
+            cur['question'] = (cur['question'] + ' ' + t).strip()
     key, klev = {}, {}
     for el in B or []:
         if el.tag == W + 'tbl':
@@ -313,6 +343,18 @@ def parse_mcqs(doc, parts):
                     if not any(b in reason for b in BOILERPLATE):
                         e['why_not'][m[1]] = reason
                 continue
+            m = re.match(r'^EXAM PEARL\s*[—:-]\s*(.+)$', t)
+            if m:
+                e['pearl'] = m[1].strip()
+                continue
+            m = re.match(r'^WHY THIS QUESTION MATTERS\s*[:—-]\s*(.+)$', t)
+            if m:
+                e['why'] = m[1].strip()
+                continue
+            m = re.match(r'^Closest[- ]distractor discriminator\s*:\s*(?:Closest distractor:\s*)?(.+)$', t, re.I)
+            if m:
+                e['disc'] = m[1].strip()
+                continue
             e['core'].append(re.sub(r'^(Core reasoning|Reasoning):\s*', '', t))
         elif el.tag == W + 'tbl' and e:
             b = table_block(el)
@@ -337,8 +379,12 @@ def parse_mcqs(doc, parts):
         if not e:
             problems.append(f'Q{n}: no explanation')
             continue
-        if key.get(n) != e['ans']:
+        if key and key.get(n) != e['ans']:
             problems.append(f'Q{n}: answer key {key.get(n)} != explanation {e["ans"]}')
+        if not e['marked']:
+            problems.append(f'Q{n}: no option marked Correct in the explanation')
+        if not q['level']:
+            q['level'] = '' if RETEST.match(e['lev'] or '') else (e['lev'] or '')
         if e['marked'] and e['marked'] != [e['ans']]:
             problems.append(f'Q{n}: option marked correct {e["marked"]} != {e["ans"]}')
         if klev and not (q['level'] == klev.get(n) == (e['lev'] or q['level'])):
@@ -350,6 +396,8 @@ def parse_mcqs(doc, parts):
         core = ' '.join(e['core']).strip()
         # why_not is keyed by option INDEX so it survives option shuffling; compose_explanation() adds letters.
         why_not = {'ABCD'.index(k): v for k, v in e['why_not'].items()}
+        if e.get('disc'):
+            core = (core + ' Closest distractor: ' + e['disc']).strip()
         item = {'num': n, 'level': q['level'], 'question': q['question'], 'options': q['options'],
                 'answer': 'ABCD'.index(e['ans']), 'core': core, 'why_not': why_not, 'pearl': pearl}
         item['explanation'] = compose_explanation(item)

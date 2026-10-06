@@ -41,7 +41,7 @@
     const same = (a, b) => a === b || (Math.min(a.length, b.length) >= 5 && (a.includes(b) || b.includes(a)))
       || (Math.min(a.length, b.length) >= 6 && a.slice(0, 6) === b.slice(0, 6));
     const has = id => pages.some(p => p.id === id);
-    const SPECIAL = [[/\bcases?\b/, 'cases'], [/\bdata\b/, 'data'], [/\bmcqs?\b/, 'quizzes'], [/visual stations?|image-style/, 'data'], [/rapid revision|last 15/, 'revision'], [/\btriage\b|error-review/, 'plan'],
+    const SPECIAL = [[/\bcases?\b/, 'cases'], [/\bdata\b/, 'data'], [/\bmcqs?\b/, 'quizzes'], [/visual stations?|image-style/, 'data'], [/rapid revision|last 15/, 'revision'], [/calculation drill|calculations?\b/, 'quizzes'], [/\btriage\b|error-review/, 'plan'],
       [/active recall/, 'recall'], [/pearls?\b|traps?\b/, 'pearls'], [/must-know|key numbers/, 'numbers'], [/algorithm|comparison table/, 'tables']];
     return rows.map(text => {
       const t = String(text).toLowerCase(), score = {};
@@ -54,8 +54,12 @@
       return ids;
     });
   }/*END*/
-  const planTable = ((byId.overview || {}).sections || []).flatMap(s => s.blocks).find(b => b.t === 'table' && /^time$/i.test(strip(b.head[0]).trim()));
-  const planMap = planTable ? planLinks(pages, planTable.rows.map(r => r.slice(1).join(' '))) : [];
+  const isPlan = b => b.t === 'table' && b.head.some(h => /^time$/i.test(strip(h).trim()));
+  const planTable = ((byId.overview || {}).sections || []).flatMap(s => s.blocks).find(isPlan);
+  const planTimeCol = planTable ? planTable.head.findIndex(h => /^time$/i.test(strip(h).trim())) : -1;
+  // extras.json may fix the links per row (P.planLinks); otherwise they are worked out from the row text
+  const planMap = !planTable ? [] : P.planLinks ? planTable.rows.map((_, i) => (P.planLinks[i] || []).filter(id => byId[id]))
+    : planLinks(pages, planTable.rows.map(r => r.slice(planTimeCol + 1).join(' ')));
   const isComplete = id => id === 'quizzes' ? P.quizSets.every(s => quizStats()[s.k]) : done().has(id);
   const planAuto = ri => planMap[ri] && planMap[ri].length > 0 && planMap[ri].every(isComplete);
   const planTicked = ri => planAuto(ri) || !!LS.get('plan', {})[ri];
@@ -140,11 +144,11 @@
       const html = `<div class="callout ${tone(b.label)}">${b.label ? `<div class="lb">${escT(b.label)}${b.title ? `<span class="tt">${escT(b.title)}</span>` : ''}</div>` : ''}${b.html.map(h => `<p>${h}</p>`).join('')}</div>`;
       return isNext(b) && !ctx.noReveal ? reveal(html, 'What would you do next? — show answer') : html;
     }
-    if (b.t === 'img') return `<figure class="fig"><a href="${b.src}" target="_blank" rel="noopener" title="Open full size"><img src="${b.src}" alt="${escT(b.alt || '')}" loading="lazy"></a></figure>`;
+    if (b.t === 'img') return `<figure class="fig"><a href="${b.src}" target="_blank" rel="noopener" title="Open full size"><img src="${b.src}" alt="${escT(b.alt || '')}" loading="lazy"></a>${b.caption ? `<figcaption>${escT(b.caption)}</figcaption>` : ''}</figure>`;
     if (b.t === 'grid') return `<div class="grid5">${b.items.map(i => `<div><b>${escT(i.label)}</b>${i.html}</div>`).join('')}</div>`;
     if (b.t === 'table') {
       const blurCol = ctx.page.kind === 'data' && /interpretation/i.test(strip(b.head[b.head.length - 1])) ? b.head.length - 1 : -1;
-      const planChk = ctx.page.kind === 'overview' && /^time$/i.test(strip(b.head[0]));
+      const planChk = ctx.page.kind === 'overview' && b === planTable;
       // 3+ column tables become labelled cards on phones (CSS .stack); each cell carries its column name
       const stack = b.head.length >= 3 && !planChk, lab = b.head.map(h => escT(strip(h)));
       return `${blurCol >= 0 ? '<div class="toolbar"><button class="btn ghost sm" data-act="reveal-all">Reveal all interpretations</button><button class="btn ghost sm" data-act="hide-all">Hide again</button></div>' : ''}
@@ -172,7 +176,9 @@
   }
 
   // ---------- pages ----------
-  const DATA_ANS = /^(<strong>)?\s*(Interpretation|Closest distractor|Discriminator|Next management step|Next step|Exam trap|Answer)\b/i;
+  const CASE_T = /^\s*(Case \d+)\s*[—–-]\s*(.+)$/i;
+  const STATION = /^\s*(Visual Station \d+)\s*[—–-]\s*(.+)$/i;
+  const DATA_ANS = /^(<strong>)?\s*(Interpretation|Closest distractor|Discriminator|Decisive visual|Next management step|Next step|Exam trap|Trace-back|Answer)\b/i;
   function sectionHTML(page, s, i) {
     const ctx = { page, sec: s };
     let inner;
@@ -193,22 +199,29 @@
       if (k < 0) k = 1;
       const stem = bl.slice(0, k).map(b => block(b, ctx)).join('');
       const rest = bl.slice(k).map(b => block(b, { ...ctx, noReveal: true })).join('');
-      inner = `<div class="case-stem">${stem}</div>${reveal(rest, 'Show reasoning & answer')}`;
+      const ct = String(s.title).match(CASE_T);   // "Case 3 — Volvulus trap": the label names the answer, so it is revealed with it
+      inner = `<div class="case-stem">${stem}</div>${reveal((ct ? `<p><b>Case topic:</b> ${escT(ct[2])}</p>` : '') + rest, 'Show reasoning & answer')}`;
     } else if (page.kind === 'data' && s.blocks.some(b => b.t === 'p' && DATA_ANS.test(b.html))) {
       // Visual stations: title + image + question stay visible; interpretation, discriminator, next step and trap
       // lines are hidden behind one reveal button per station.
       let out = '', hid = [];
+      const st = String(s.title).match(STATION);
+      let topic = st ? `<p><b>Station topic:</b> ${escT(st[2])}</p>` : '';
       const flush = () => { if (hid.length) out += reveal(hid.join(''), 'Show interpretation'); hid = []; };
       s.blocks.forEach(b => {
-        if (b.t === 'p' && DATA_ANS.test(b.html)) { hid.push(block(b, ctx)); return; }
+        if ((b.t === 'p' && DATA_ANS.test(b.html)) || (b.t === 'img' && b.reveal)) { if (topic) { hid.push(topic); topic = ''; } hid.push(block(b, ctx)); return; }
         flush();
+        const sm = b.t === 'p' && strip(b.html).match(STATION);
+        if (sm) { flush(); topic = `<p><b>Station topic:</b> ${escT(sm[2])}</p>`; out += `<h3 class="station">${escT(sm[1])}</h3>`; return; }
         out += b.t === 'p' && /^(<strong>)?\s*Visual Station \d+/i.test(b.html) ? `<h3 class="station">${b.html}</h3>` : block(b, ctx);
       });
       flush();
       inner = out;
     } else inner = s.blocks.map(b => block(b, ctx)).join('');
     const h1 = s.h1 && s.h1 !== s.title ? `<div class="h1tag">${escT(s.h1)}</div>` : '';
-    return `<section class="sec" id="s-${i}">${h1}${s.title ? `<h2>${escT(s.title)}</h2>` : ''}${inner}</section>`;
+    const hideT = (page.kind === 'data' && String(s.title).match(STATION)) || (page.kind === 'cases' && s.blocks.length > 1 && String(s.title).match(CASE_T));
+    const shown = hideT ? hideT[1] : s.title;
+    return `<section class="sec" id="s-${i}">${h1}${shown ? `<h2>${escT(shown)}</h2>` : ''}${inner}</section>`;
   }
   function overview() {
     const pr = progress(), q = quizStats(), last = LS.get('last', null);
@@ -231,7 +244,13 @@
     return `<section class="sec"><h2>${P.mcqCount} MCQs · ${P.quizSets.length} sets of ${lo === hi ? lo : lo + '–' + hi} questions</h2><p class="lede">NEET-SS marking: +4 correct, −1 wrong, 0 unattempted. Instant feedback with explanation and exam pearl; skip and return; wrong-answer report.</p>
       ${P.quizSets.map(s => { const r = q[s.k];
         return `<div class="quiz-row"><div class="info"><b>Quiz Set ${s.k}</b> · Questions ${s.from}–${s.to} (${s.n})<br>${r ? `<span class="pill g">Best ${r.best}/${r.bestMax} · ${r.bestPct}%</span> <span class="pill">Last ${r.last.score}/${r.last.max} · ${r.attempts} attempt${r.attempts > 1 ? 's' : ''}</span>` : '<span class="pill">Not attempted</span>'}</div>
-        <a class="btn ${r ? 'ghost' : ''}" href="quiz${s.k}.html">${r ? 'Retake' : 'Start'} Set ${s.k}</a></div>`; }).join('')}</section>`;
+        <a class="btn ${r ? 'ghost' : ''}" href="quiz${s.k}.html">${r ? 'Retake' : 'Start'} Set ${s.k}</a></div>`; }).join('')}${calcRow()}</section>`;
+  }
+  function calcRow() {
+    if (!P.calc) return '';
+    const r = LS.get('calc', null);
+    return `<div class="quiz-row"><div class="info"><b>Calculation Drill</b> · ${P.calc.n} numeric problems (type the answer, then see the working)<br>${r ? `<span class="pill g">Best ${r.best}/${r.n}</span> <span class="pill">Last ${r.last}/${r.n} · ${r.attempts} attempt${r.attempts > 1 ? 's' : ''}</span>` : '<span class="pill">Not attempted</span>'}</div>
+      <a class="btn ${r ? 'ghost' : ''}" href="${P.calc.href}">${r ? 'Retake' : 'Start'} drill</a></div>`;
   }
   function planExtra() {
     const pr = progress();

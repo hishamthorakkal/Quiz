@@ -8,6 +8,8 @@
 h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
 .progress-shell{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin:20px 0 7px}.progress{height:100%;background:var(--blue);transition:.25s}
 .topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin-bottom:14px}
+.qfig{margin:10px 0 14px}.qfig img{display:block;max-width:100%;height:auto;border-radius:8px;border:1px solid #e2e8f0}.qfig figcaption{font-size:12px;color:#64748b;margin-top:4px}
+.badge:empty{display:none}
 .badge{display:inline-block;background:#e0e7ff;color:#3730a3;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;margin-bottom:12px}
 .q{font-size:21px;font-weight:750;line-height:1.45;margin-bottom:18px}.option{display:block;border:1.5px solid var(--line);border-radius:12px;padding:14px 15px;margin:10px 0;cursor:pointer;background:#fff}
 .option:hover{border-color:#9db6ea;background:#f8fbff}.option.correct{border-color:var(--green);background:var(--greenbg);color:#14532d;font-weight:650}.option.wrong{border-color:var(--red);background:var(--redbg);color:#7f1d1d;font-weight:650}
@@ -44,7 +46,7 @@ function render(){
  document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
  document.getElementById('card').innerHTML=`
  <div class="badge">${esc(q.level)}</div>${skipped.has(idx)?' <div class="badge" style="background:var(--amberbg);color:var(--amber)">Skipped earlier — answer now</div>':''}
- <div class="q">Q${q.num}. ${esc(q.question)}</div>
+ <div class="q">Q${q.num}. ${esc(q.question)}</div>${q.img?`<figure class="qfig"><a href="${q.img}" target="_blank" rel="noopener"><img src="${q.img}" alt="Image for question ${q.num}"></a>${q.imgCaption?`<figcaption>${esc(q.imgCaption)}</figcaption>`:''}</figure>`:''}
  ${q.options.map((o,i)=>`<label class="option" id="opt-${i}"><input type="radio" name="answer" value="${i}"><b>${String.fromCharCode(65+i)}.</b> ${esc(o)}</label>`).join('')}
  <div id="feedback" class="feedback"></div>
  <div class="actions"><a class="btn secondary" href="index.html#/quizzes">Quiz Sets</a><button class="secondary" onclick="finishEarly()">Finish Quiz</button>${queue.length>1?'<button class="secondary" id="skipBtn" onclick="skipQuestion()">Skip for Now</button>':''}<button class="primary" id="mainBtn" onclick="mainAction()">Submit Answer</button></div>`;
