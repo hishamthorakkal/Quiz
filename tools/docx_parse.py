@@ -273,16 +273,22 @@ def parse_calc(sections):
                     'trap': f.get('trap', ''), 'answer': float(nums[-1][0]), 'unit': nums[-1][1]})
     return out
 
-def parse_mcqs(doc, parts):
+def parse_mcqs(doc, parts, aliases=None):
     find = lambda pat: next((els for h, els in parts if re.match(pat, h, re.I)), None)
     A, B, C = find(r'^SECTION A'), find(r'^SECTION B'), find(r'^SECTION C')
     if A is None and B is not None and find(r'^SECTION B\b.*\bQUESTIONS\b'):
         A, B = B, None                 # questions are in Section B; answer key comes from Section C
-    problems, qs, cur = [], [], None
+    problems, qs, cur, fixed = [], [], None, []
     for el in A or []:
         if el.tag != W + 'p':
             continue
+        if cur is not None:
+            for src, _ in doc.images(el):          # picture placed with the question in the document
+                cur['doc_img'] = src
         t = text(el)
+        if cur is not None and re.match(r'^Question-linked\b', t, re.I):
+            cur['doc_caption'] = t                 # caption of that picture, not part of the stem
+            continue
         m = re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t) or re.match(r'^Q(\d+)\.\s*()(.+)$', t)
         if m:
             stem = m[3].strip()
@@ -293,9 +299,14 @@ def parse_mcqs(doc, parts):
             continue
         m = re.match(r'^([A-D])\.\s+(.+)$', t)
         if m and cur:
+            if 'ABCD'.index(m[1]) == len(cur['options']) + 1 and cur.get('unlabelled'):
+                cur['options'].append(cur.pop('unlabelled'))
+                fixed.append(f"Q{cur['num']}: option {'ABCD'[len(cur['options']) - 1]} had no letter label in the document")
             if 'ABCD'.index(m[1]) != len(cur['options']):
                 problems.append(f"Q{cur['num']}: option order")
             cur['options'].append(m[2].strip())
+        elif t and cur and 0 < len(cur['options']) < 4:
+            cur['unlabelled'] = t
         elif t and cur and not cur['options']:
             cur['question'] = (cur['question'] + ' ' + t).strip()
     key, klev = {}, {}
@@ -332,6 +343,9 @@ def parse_mcqs(doc, parts):
             if m and e['q']:
                 opt = e['q']['options']['ABCD'.index(m[1])]
                 rest = m[2]
+                alias = ((aliases or {}).get(str(e['q']['num'])) or {}).get(m[1])
+                if alias and rest.startswith(alias + ' — '):   # explanation words the option differently (known, reviewed)
+                    rest = opt + rest[len(alias):]
                 if not rest.startswith(opt + ' — '):
                     problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
                     continue
@@ -400,6 +414,9 @@ def parse_mcqs(doc, parts):
             core = (core + ' Closest distractor: ' + e['disc']).strip()
         item = {'num': n, 'level': q['level'], 'question': q['question'], 'options': q['options'],
                 'answer': 'ABCD'.index(e['ans']), 'core': core, 'why_not': why_not, 'pearl': pearl}
+        for k in ('doc_img', 'doc_caption'):
+            if q.get(k):
+                item[k] = q[k]
         item['explanation'] = compose_explanation(item)
         out.append(item)
     nums = [q['num'] for q in out]
@@ -407,6 +424,6 @@ def parse_mcqs(doc, parts):
         problems.append('question numbering not contiguous')
     if len(set(q['question'] for q in out)) != len(out):
         problems.append('duplicate question stems')
-    stats = {'mcq': len(qs), 'key': len(key), 'explanations': len(ex), 'built': len(out),
+    stats = {'mcq': len(qs), 'key': len(key), 'explanations': len(ex), 'built': len(out), 'source_fixes': fixed,
              'pearls_relabelled': shifted, 'why_not_kept': sum(1 for e in ex.values() if e['why_not'])}
     return out, problems, stats

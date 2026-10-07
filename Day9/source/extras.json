@@ -1,0 +1,22 @@
+{
+  "_about": "Build extras for Day 9 (read by tools/build_day.py). Document pictures whose titles/labels state the answer are kept behind the reveal; unlabelled versions from tools/gen_charts.py (or a crop of the document picture) are shown with the question. Q51/Q66/Q69 show no picture because the document picture depicts the correct option. Q34: the explanation words option C differently from the question; the question wording is shown.",
+  "title": "PDA + PPHN + Neonatal Hemodynamics",
+  "subtitle": ["Patent ductus arteriosus · Persistent pulmonary hypertension of the newborn · Shock physiology and vasoactive choice", "NEET-SS + ICP Paediatrics 2026"],
+  "explanation_option_text": {
+    "34": {"C": "Response may be limited; management depends on lung hypoplasia and ventricular physiology"}
+  },
+  "mcq_images": {
+    "23": "gen_diffsat_97_84.png",
+    "50": "gen_doppler_low_pulsatile.png",
+    "51": "none",
+    "66": "none",
+    "69": "none"
+  },
+  "station_images": {
+    "Visual Station 1": [{"crop": [0, 150, null, 482]}],
+    "Visual Station 2": ["gen_diffsat_96_84.png"],
+    "Visual Station 3": ["gen_doppler_ab.png"],
+    "Visual Station 5": ["hide", "gen_septum.png"],
+    "Visual Station 6": ["gen_oi_trend.png", "drop"]
+  }
+}

@@ -36,13 +36,13 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
-    (r'calculation drill', 'calc'), (r'exam stations|image / tracing', 'data'),
+    (r'calculation drill', 'calc'), (r'exam stations|image / tracing|interpretation stations|visual / data', 'data'),
     (r'objective', 'overview'), (r'(study|teaching) plan', 'overview'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
     (r'^section [abc]\b', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
     (r'cross-day connection', 'connections'),
-    (r'error notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
+    (r'error[- ]notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
     (r'reference', 'references'), (r'document qa', 'references'),
 ]
 PAGES = {  # id: (title, group, kind)
@@ -81,30 +81,41 @@ def add_generated_images(D, doc, pages, extras):
     On the Data page a station's own (labelled) picture moves behind "Show interpretation" and the unlabelled
     image is shown with the question instead, so the picture does not give the answer away.
     """
-    names = set(extras.get('mcq_images', {}).values()) | {v for v in extras.get('station_images', {}).values() if isinstance(v, str)}
-    if not names:
+    specs = [s for v in extras.get('station_images', {}).values() for s in (v if isinstance(v, list) else [v])]
+    names = {v for v in extras.get('mcq_images', {}).values() if v not in ('doc', 'none')} | \
+            {s for s in specs if isinstance(s, str) and s not in ('hide', 'drop')}
+    if not names and not specs:
         return set()
-    import gen_xray
+    import gen_xray, gen_charts
+    gens = {**gen_xray.GENERATORS, **gen_charts.GENERATORS}
     os.makedirs(f'{D}/img', exist_ok=True)
     for name in names:
-        gen_xray.GENERATORS[name.rsplit('.', 1)[0]]().save(f'{D}/img/{name}', optimize=True)
+        gens[name.rsplit('.', 1)[0]]().save(f'{D}/img/{name}', optimize=True)
     data = pages.get('data', {'sections': []})
     for prefix, spec in extras.get('station_images', {}).items():
         sec = next((s for s in data['sections'] if s['title'].startswith(prefix)), None)
         if sec is None:
             raise SystemExit(f'extras.json: no visual station titled "{prefix}…"')
-        i = next(i for i, b in enumerate(sec['blocks']) if b['t'] == 'img')
-        own = sec['blocks'][i]
-        own['reveal'], own['caption'] = True, 'Labelled schematic from the source document'
-        if isinstance(spec, dict) and 'crop_top' in spec:   # same picture with its answer-giving title cropped off
-            from PIL import Image
-            im = Image.open(f"{D}/{own['src']}")
-            name = os.path.basename(own['src']).replace('.png', '_q.png')
-            im.crop((0, spec['crop_top'], im.width, im.height)).save(f'{D}/img/{name}', optimize=True)
-            names.add(name)
-            sec['blocks'].insert(i, {'t': 'img', 'src': f'img/{name}', 'alt': ''})
-        else:
-            sec['blocks'].insert(i, {'t': 'img', 'src': f'img/{spec}', 'alt': '', 'caption': GEN_CAPTION})
+        own_imgs = [b for b in sec['blocks'] if b['t'] == 'img']
+        for own, sp in zip(own_imgs, spec if isinstance(spec, list) else [spec]):
+            i = sec['blocks'].index(own)
+            if sp == 'drop':
+                sec['blocks'].remove(own)
+                continue
+            own['reveal'], own['caption'] = True, 'Labelled schematic from the source document'
+            if sp == 'hide':
+                continue
+            if isinstance(sp, dict):                  # same picture with its answer-giving part cropped off
+                from PIL import Image
+                im = Image.open(f"{D}/{own['src']}")
+                box = sp.get('crop') or [0, sp['crop_top'], None, None]
+                box = [im.width if v is None and k == 2 else im.height if v is None else v for k, v in enumerate(box)]
+                name = os.path.basename(own['src']).replace('.png', '_q.png')
+                im.crop(tuple(box)).save(f'{D}/img/{name}', optimize=True)
+                names.add(name)
+                sec['blocks'].insert(i, {'t': 'img', 'src': f'img/{name}', 'alt': ''})
+            else:
+                sec['blocks'].insert(i, {'t': 'img', 'src': f'img/{sp}', 'alt': '', 'caption': GEN_CAPTION})
     return names
 
 
@@ -120,6 +131,7 @@ def build(day, docx, keep_order=False):
     total_blocks = 0
     recall_answers = None
     calc = None
+    doc_mcq_imgs = set()
     # Optional per-day extras (DayN/source/extras.json): generated images for image-based MCQs and visual stations,
     # and reworded Calculation Drill questions. See NEET_SS_QUIZ_REPO_UPDATE_AGENT_RULES.md.
     xf = f'{D}/source/extras.json'
@@ -172,7 +184,7 @@ def build(day, docx, keep_order=False):
         for s in pages['recall']['sections']:
             if s['title'].upper().startswith('ACTIVE RECALL'):
                 s['title'] = ''
-    qs, problems, stats = dp.parse_mcqs(doc, parts)
+    qs, problems, stats = dp.parse_mcqs(doc, parts, extras.get('explanation_option_text'))
     if problems:
         raise SystemExit('MCQ problems — fix the source or parser first:\n  ' + '\n  '.join(problems))
     # Source answer keys can be patterned (e.g. A-B-C-D repeating), so options are shuffled once —
@@ -182,7 +194,7 @@ def build(day, docx, keep_order=False):
             q['srcAnswer'] = 'ABCD'[q['answer']]
     else:
         dp.shuffle_options(qs, seed=f'Day{day}')
-    fresh, _, _ = dp.parse_mcqs(doc, parts)               # independent, unshuffled re-parse for verification
+    fresh, _, _ = dp.parse_mcqs(doc, parts, extras.get('explanation_option_text'))   # independent, unshuffled re-parse
     for q, f0 in zip(qs, fresh):
         ok = (sorted(q['options']) == sorted(f0['options']) and q['options'][q['answer']] == f0['options'][f0['answer']]
               and all(q['options'][i] == f0['options'][j] and v == f0['why_not'][j] for i, v in q['why_not'].items()
@@ -190,9 +202,17 @@ def build(day, docx, keep_order=False):
         if not ok:
             raise SystemExit(f"Shuffle verification failed at Q{q['num']}")
     key = ''.join('ABCD'[q['answer']] for q in qs)
-    for n, name in extras.get('mcq_images', {}).items():
-        q = next(q for q in qs if q['num'] == int(n))
-        q['img'], q['imgCaption'] = f'img/{name}', GEN_CAPTION
+    mi = extras.get('mcq_images', {})
+    for q in qs:
+        spec = mi.get(str(q['num']), 'doc' if q.get('doc_img') else None)
+        if spec == 'doc' and q.get('doc_img'):
+            os.makedirs(f'{D}/img', exist_ok=True)
+            name = os.path.basename(q['doc_img'])
+            open(f'{D}/img/{name}', 'wb').write(doc.zip.read(q['doc_img']))
+            q['img'], q['imgCaption'] = f'img/{name}', q.get('doc_caption', '')
+            doc_mcq_imgs.add(name)
+        elif spec and spec not in ('none', 'doc'):
+            q['img'], q['imgCaption'] = f'img/{spec}', GEN_CAPTION
     qs = [{k: q[k] for k in ('num', 'level', 'question', 'options', 'answer', 'explanation', 'pearl', 'srcAnswer', 'img', 'imgCaption') if k in q} for q in qs]
     sets = dp.split_sets(qs)   # 5 x 15 by default; grows to 20 per set, then adds sets (sizes within ±1)
     pages['quizzes'] = {'id': 'quizzes', 'title': 'Quizzes', 'group': 'Practice', 'kind': 'quizzes', 'sections': []}
@@ -214,7 +234,7 @@ def build(day, docx, keep_order=False):
             f.write(doc.zip.read(b['src']))
         b['src'] = f'img/{name}'
         keep.add(name)
-    keep |= add_generated_images(D, doc, pages, extras)
+    keep |= add_generated_images(D, doc, pages, extras) | doc_mcq_imgs
     if os.path.isdir(f'{D}/img'):
         for f in os.listdir(f'{D}/img'):
             if f not in keep:

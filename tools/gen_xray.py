@@ -85,7 +85,9 @@ def bowel(img, loops=LOOPS, dilate=None):
 
 
 def finish(img, seed):
-    noise = Image.effect_noise((W, H), 20).filter(ImageFilter.GaussianBlur(0.8))
+    rng = random.Random(1000 + seed)                     # seeded film grain so rebuilds give identical files
+    grain = Image.frombytes('L', (W // 2, H // 2), rng.randbytes(W // 2 * H // 2)).point(lambda v: 128 + (v - 128) * 0.32)
+    noise = grain.resize((W, H), Image.BILINEAR).filter(ImageFilter.GaussianBlur(0.8))
     img = ImageChops.add(img, noise, scale=1.0, offset=-128).filter(ImageFilter.GaussianBlur(1.1))
     return img.convert('RGB')
 
