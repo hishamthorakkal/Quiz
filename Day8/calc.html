@@ -37,7 +37,7 @@ const DAY=8, KEY='portal:Day'+DAY+':calc';
 let i=0;const res=[];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt=n=>(+n.toFixed(2)).toString();
-const close=(v,a)=>Math.abs(v-a)<=Math.max(Math.abs(a)*0.02,0.05);
+const close=(v,c)=>Math.abs(v-c.answer)<=(c.tol!=null?c.tol:Math.max(Math.abs(c.answer)*0.02,0.05));   // "29 ±2" uses the stated band
 function head(){
   document.getElementById('counter').textContent=`Problem ${Math.min(i+1,CALC.length)} / ${CALC.length}`;
   document.getElementById('score').textContent=`Correct: ${res.filter(r=>r.ok).length}`;
@@ -49,7 +49,7 @@ function show(){
   <div class="q">C${c.num}. ${esc(c.question)}</div>
   <div class="ansrow"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Your answer" ${r?'disabled value="'+esc(r.raw)+'"':''}><span class="unit">${esc(c.unit)}</span></div>
   <div class="err" id="err"></div>
-  ${r?`<div class="feedback ${r.ok?'correct':'wrong'}"><b>${r.ok?'Correct':'Not quite'}</b> — answer: <b>${fmt(c.answer)} ${esc(c.unit)}</b>${r.ok?'':` (you entered ${esc(r.raw)})`}
+  ${r?`<div class="feedback ${r.ok?'correct':'wrong'}"><b>${r.ok?'Correct':'Not quite'}</b> — answer: <b>${fmt(c.answer)}${c.tol!=null?' ±'+fmt(c.tol):''} ${esc(c.unit)}</b>${r.ok?'':` (you entered ${esc(r.raw)})`}
      <div class="work"><b>Working:</b> ${esc(c.working)}</div>${c.trap?`<div class="trap"><b>Trap:</b> ${esc(c.trap)}</div>`:''}</div>`:''}
   <div class="actions">${r?`<button class="primary" id="next">${i===CALC.length-1?'See results':'Next problem'}</button>`:'<button class="primary" id="check">Check answer</button>'}</div>`;
   const inp=document.getElementById('ans');
@@ -59,7 +59,7 @@ function show(){
 function check(){
   const raw=document.getElementById('ans').value.trim().replace(',','.'),v=parseFloat(raw);
   if(raw===''||!isFinite(v)||!/^-?\d*\.?\d+$/.test(raw)){document.getElementById('err').textContent='Enter a number first (digits and a decimal point only).';return;}
-  res[i]={raw,v,ok:close(v,CALC[i].answer)};show();
+  res[i]={raw,v,ok:close(v,CALC[i])};show();
 }
 function finish(){
   head();const n=CALC.length,ok=res.filter(r=>r.ok).length;
@@ -73,4 +73,4 @@ function finish(){
   <div class="actions"><a class="btn secondary" href="index.html#/quizzes">Back to quizzes</a><button class="primary" onclick="location.reload()">Retake drill</button></div>`;
 }
 show();
-</script><script src="../assets/countdown.js?v=4041b023"></script></body></html>
+</script><script src="../assets/countdown.js?v=57f27952"></script></body></html>

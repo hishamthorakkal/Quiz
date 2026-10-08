@@ -1,7 +1,7 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="../favicon.ico?v=3" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png?v=3"><link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png?v=3"><meta name="theme-color" content="#1e3a8a">
-<title>Day __DAY__ — Calculation Drill</title><style>
+<title>Day 10 — Calculation Drill</title><style>
 :root{--bg:#f4f7fb;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8;--green:#15803d;--greenbg:#dcfce7;--red:#b91c1c;--redbg:#fee2e2;--amber:#92400e;--amberbg:#fef3c7}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
 .wrap{max-width:900px;margin:auto;padding:24px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07)}
@@ -24,16 +24,16 @@ h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-
 @media(max-width:650px){.wrap{padding:12px 10px 20px}h1{font-size:20px}.q{font-size:17px}.card{padding:14px}.ansrow input{width:100%;font-size:18px}.stats{grid-template-columns:1fr 1fr 1fr}.actions button{flex:1}}
 </style></head>
 <body><div class="wrap">
-<div style="margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><a class="btn secondary" href="index.html#/quizzes">← Day __DAY__ portal</a><span data-countdown="chip"></span></div>
-<h1>Day __DAY__ — Calculation Drill</h1>
+<div style="margin-bottom:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap"><a class="btn secondary" href="index.html#/quizzes">← Day 10 portal</a><span data-countdown="chip"></span></div>
+<h1>Day 10 — Calculation Drill</h1>
 <div class="sub">Numeric problems · type your answer in the unit shown · answers within about 2% (rounding) count as correct · not scored with the MCQs</div>
 <div class="progress-shell"><div class="progress" id="progress" style="width:0%"></div></div>
 <div class="topline"><span id="counter"></span><span id="score"></span></div>
 <div class="card" id="app"></div>
 </div>
 <script>
-const CALC=__CALC__;
-const DAY=__DAY__, KEY='portal:Day'+DAY+':calc';
+const CALC=[{"num": 1, "title": "GIR", "question": "An infant is receiving D10 at 90 mL/kg/day. What is the glucose infusion rate (GIR)?", "working": "Formula: GIR = D% × mL/kg/day ÷ 144. Substitution: 10 × 90 ÷ 144. Final answer: 6.25 mg/kg/min.", "trap": "Do not divide by 1440 again.", "answer": 6.25, "unit": "mg/kg/min", "tol": null}, {"num": 2, "title": "GIR from an hourly rate", "question": "A 2.0-kg infant is receiving D12.5 at 4 mL/h. What is the GIR?", "working": "Formula: GIR = D% ×10 ×mL/h ÷(kg×60). Substitution: 12.5×10×4 ÷120. Final answer: 4.17 mg/kg/min.", "trap": "Do not omit the ×10 concentration conversion.", "answer": 4.17, "unit": "mg/kg/min", "tol": null}, {"num": 3, "title": "GIR", "question": "An infant is receiving D15 at 100 mL/kg/day. What is the GIR?", "working": "Formula: GIR = D% ×mL/kg/day ÷144. Substitution: 15×100 ÷144. Final answer: 10.42 mg/kg/min.", "trap": "D15 means 15%, not 15 mg/mL.", "answer": 10.42, "unit": "mg/kg/min", "tol": null}, {"num": 4, "title": "Total GIR from two infusions", "question": "An infant receives D10 at 60 mL/kg/day plus D20 at 40 mL/kg/day. What is the total GIR?", "working": "Formula: Total GIR = Σ(D%×mL/kg/day) ÷144. Substitution: (10×60 +20×40) ÷144. Final answer: 9.72 mg/kg/min.", "trap": "Do not average concentrations without volume weighting.", "answer": 9.72, "unit": "mg/kg/min", "tol": null}, {"num": 5, "title": "Dextrose concentration needed", "question": "You want a GIR of 6 mg/kg/min with a total infusion of 130 mL/kg/day. What dextrose concentration (%) is required?", "working": "Formula: D% = GIR ×144 ÷mL/kg/day. Substitution: 6×144 ÷130. Final answer: 6.65%, approximately D7.", "trap": "Separate glucose delivery from total water volume.", "answer": 6.65, "unit": "%", "tol": null}, {"num": 6, "title": "Anion gap", "question": "Na 140, Cl 108 and HCO₃ 14 mmol/L. What is the anion gap?", "working": "Formula: AG = Na −(Cl+HCO₃). Substitution: 140−(108+14). Final answer: 18 mmol/L.", "trap": "Reference range is albumin-dependent.", "answer": 18.0, "unit": "mmol/L", "tol": null}, {"num": 7, "title": "Expected PaCO₂ (Winter's formula)", "question": "A neonate has metabolic acidosis with HCO₃ 14 mmol/L. What is the expected PaCO₂ if respiratory compensation is appropriate?", "working": "Formula: Expected PaCO₂ =1.5×HCO₃+8 ±2. Substitution: 1.5×14+8. Final answer: 29 ±2 mmHg.", "trap": "Outside the band suggests an additional respiratory disorder.", "answer": 29.0, "unit": "mmHg", "tol": 2.0}, {"num": 8, "title": "Glucose-corrected sodium", "question": "Glucose is 400 mg/dL and measured Na is 130 mmol/L. What is the corrected sodium (1.6 correction factor)?", "working": "Formula: Corrected Na = measured Na +1.6×[(glucose−100)/100]. Substitution: 130+1.6×3. Final answer: 134.8 mmol/L.", "trap": "Use the correction factor specified in the question.", "answer": 134.8, "unit": "mmol/L", "tol": null}];
+const DAY=10, KEY='portal:Day'+DAY+':calc';
 let i=0;const res=[];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt=n=>(+n.toFixed(2)).toString();
@@ -73,4 +73,4 @@ function finish(){
   <div class="actions"><a class="btn secondary" href="index.html#/quizzes">Back to quizzes</a><button class="primary" onclick="location.reload()">Retake drill</button></div>`;
 }
 show();
-</script><script src="../assets/countdown.js"></script></body></html>
+</script><script src="../assets/countdown.js?v=57f27952"></script></body></html>

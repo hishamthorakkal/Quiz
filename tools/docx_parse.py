@@ -247,8 +247,11 @@ def shuffle_options(qs, seed):
 # ----
 BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the single best answer for this exact decision point',
                'would require a different clinical or data pattern', 'This stage does not match the severity pattern in the stem',
-               'This numerical choice results from a unit, decimal, frequency or fluid-allocation error')
+               'This numerical choice results from a unit, decimal, frequency or fluid-allocation error',
+               'This option proposes “', 'This prioritizes “', 'This delays or de-escalates care despite',
+               'Although superficially plausible, this choice conflicts', 'This would fit a different clinical setting')
 RETEST = re.compile(r'^EXTRA NOTEBOOK RETEST\b', re.I)
+RETEST_LABEL = re.compile(r'^EXTRA NOTEBOOK RETEST\s*[—–-]\s*NOT PART OF (?:THE )?(?:BASE )?75(?: MCQS)?\s*(?:[—–-]\s*)?', re.I)
 
 
 def parse_calc(sections):
@@ -256,6 +259,19 @@ def parse_calc(sections):
     -> [{num, title, question, working, trap, answer, unit}]. The answer is the last "= <number> <unit>" of the working."""
     out = []
     for s in sections:
+        for b in s['blocks']:
+            for i, it in enumerate(b.get('items', []) if b['t'] == 'list' else []):
+                t = html.unescape(re.sub(r'<[^>]+>', '', it))
+                k = re.match(r'^Data/question:\s*(.+?)\s*Formula:\s*(.+?)\s*Substitution:\s*(.+?)\s*Final answer:\s*(.+?)\s*Trap:\s*(.+)$', t)
+                if not k:
+                    continue
+                q, formula, sub, final, trap = (x.strip() for x in k.groups())
+                n = re.match(r'^\s*(-?[0-9]+(?:\.[0-9]+)?)\s*(?:±\s*([0-9.]+))?\s*(%|[A-Za-zµ/]+(?:/[A-Za-z]+)*)?\s*(?:±\s*([0-9.]+))?', final)
+                if not n:
+                    raise SystemExit(f'Calculation Drill {i + 1}: no numeric final answer in "{final}"')
+                out.append({'num': len(out) + 1, 'title': re.sub(r'\?$', '', q.rsplit(':', 1)[-1]).strip() or f'Problem {len(out) + 1}',
+                            'question': q, 'working': f'Formula: {formula} Substitution: {sub} Final answer: {final}',
+                            'trap': trap, 'answer': float(n[1]), 'unit': (n[3] or '').strip(), 'tol': float(n[2] or n[4]) if (n[2] or n[4]) else None})
         m = re.match(r'^(\d+)\.\s*(.+)$', s['title'])
         if not m:
             continue
@@ -276,7 +292,8 @@ def parse_calc(sections):
 def parse_mcqs(doc, parts, aliases=None):
     find = lambda pat: next((els for h, els in parts if re.match(pat, h, re.I)), None)
     A, B, C = find(r'^SECTION A'), find(r'^SECTION B'), find(r'^SECTION C')
-    if A is None and B is not None and find(r'^SECTION B\b.*\bQUESTIONS\b'):
+    if A is None and B is not None and not any(el.tag == W + 'tbl' for el in B) and \
+            any(el.tag == W + 'p' and re.match(r'^Q\d+\.', text(el)) for el in B):
         A, B = B, None                 # questions are in Section B; answer key comes from Section C
     problems, qs, cur, fixed = [], [], None, []
     for el in A or []:
@@ -289,12 +306,13 @@ def parse_mcqs(doc, parts, aliases=None):
         if cur is not None and re.match(r'^Question-linked\b', t, re.I):
             cur['doc_caption'] = t                 # caption of that picture, not part of the stem
             continue
-        m = re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t) or re.match(r'^Q(\d+)\.\s*()(.+)$', t)
+        m = (re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t) or re.match(r'^Q(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t)
+             or re.match(r'^Q(\d+)\.\s*()(.+)$', t))
         if m:
-            stem = m[3].strip()
-            if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — …": label dropped, stem is on the next line
-                stem = ''
-            cur = {'num': int(m[1]), 'level': m[2].strip(), 'question': stem, 'options': []}
+            stem, retest = m[3].strip(), False
+            if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75 [— stem]": label dropped
+                stem, retest = RETEST_LABEL.sub('', stem).strip(), True
+            cur = {'num': int(m[1]), 'level': m[2].strip(), 'question': stem, 'options': [], 'retest': retest}
             qs.append(cur)
             continue
         m = re.match(r'^([A-D])\.\s+(.+)$', t)
@@ -357,6 +375,10 @@ def parse_mcqs(doc, parts, aliases=None):
                     if not any(b in reason for b in BOILERPLATE):
                         e['why_not'][m[1]] = reason
                 continue
+            m = re.match(r'^Notebook trace-back:\s*(.+?)\s*•\s*(R\d)\b', t)
+            if m:
+                e['retest_from'], e['stage'] = m[1].strip(), m[2]
+                continue
             m = re.match(r'^EXAM PEARL\s*[—:-]\s*(.+)$', t)
             if m:
                 e['pearl'] = m[1].strip()
@@ -417,6 +439,9 @@ def parse_mcqs(doc, parts, aliases=None):
         for k in ('doc_img', 'doc_caption'):
             if q.get(k):
                 item[k] = q[k]
+        if q.get('retest') or RETEST.match(e['lev'] or ''):
+            # notebook retest: shown as a normal question, tracked internally (stage defaults to R1 = first retest)
+            item['retest'] = {'stage': e.get('stage') or 'R1', 'from': e.get('retest_from', '')}
         item['explanation'] = compose_explanation(item)
         out.append(item)
     nums = [q['num'] for q in out]

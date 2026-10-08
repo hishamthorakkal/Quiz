@@ -2478,6 +2478,17 @@ Day 8+ document format (all handled by tools/build_day.py):
 - An option line without its letter (e.g. "C." missing between B and D) is taken as that option and reported in the build report (mcq.source_fixes). When Section C words an option differently from Section B, "explanation_option_text" {"Q": {"C": "<Section C wording>"}} lets the build match them after the wording has been checked; the question's wording is what students see.
 - Generated images are deterministic (seeded), so rebuilding a day does not change them.
 
+Notebook retests (user instruction, 08 Oct 2026). A question labelled "EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75" (label on its own line or before the stem on the same line) is shown with no label and scored like the others, but is marked internally as a revision/retest question: quiz data carries "retest": {"stage": "R1", "from": "Day 7 Q34 — …"}. The stage and source come from Section C "Notebook trace-back: <source> • R1 today • …"; without that line the stage is R1 (first retest).
+- Correct answer on a retest: the learner must choose "Understood" or "Guessed" before moving on. Wrong answer: the usual required K/C/R/G/S tag.
+- The quiz-set ntfy message ends with a "Retests:" block, one line per retest in that set:
+  Day 10 Q19 → Correct + understood → R1 → Improving
+  Day 10 Q19 → Correct + guessed → R1 → Not secure (repeat R1)
+  Day 10 Q19 → Wrong + K → R1 → Repeat failure ×2
+  Day 10 Q19 → Not answered → R1 → Pending
+- Case-discriminator tables ("PART … — CASE DISCRIMINATORS", page kind cases): columns headed Decision/Answer/Trap/Management are blurred until tapped.
+- Calculation Drill, Day 10 layout: question list plus a "CALCULATION DRILL — ANSWERS" list of "Data/question: … Formula: … Substitution: … Final answer: … Trap: …". A "±n" in the final answer becomes the accepted band (e.g. 29 ±2 mmHg). extras.json "calc_questions" entries may be {"title", "question"}.
+- extras.json picture edits ("mcq_images" value or "station_images" entry as an object): {"mask": [[x0,y0,x1,y1], …]} white boxes over answer-giving labels, {"text": [[x, y, "Trace 1", size?], …]} neutral replacement labels, {"crop": …}. When a label overlaps data (cannot be masked cleanly), redraw the data unlabelled in tools/gen_charts.py and report any value read from the picture.
+
 Content rules still apply: show the document text faithfully; do not rewrite medical content. Generic boilerplate "why not" lines are dropped from quiz explanations; pearls labelled "Qn pearl" are matched to question n even if printed under another question. Report such source issues in the update summary.
 
 Error notebook (`assets/notebook.js`, shared by every quiz page, mock and grand mock): wrong answers are recorded automatically when a test finishes (repeat mistakes counted, retest date +48–72 h, later correct answers mark the entry fixed). The result screen shows a K/C/R/G/S tagging panel; "Save error notes & send" posts a second ntfy message:

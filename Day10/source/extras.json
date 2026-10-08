@@ -1,0 +1,29 @@
+{
+  "_about": "Build extras for Day 10 (read by tools/build_day.py). Document pictures whose titles/labels/columns state the answer are shown with those parts masked or cropped (originals behind the reveal); pictures that ARE the answer are only behind the reveal. Q28/Q31/Q43/Q48 show no picture: the stem already gives the data and the linked picture shows the answer or belongs to another question. Calculation Drill questions are reworded into complete questions (numbers, answers and working unchanged).",
+  "title": "Hypoglycemia + Electrolytes + Metabolic Emergencies",
+  "mcq_images": {
+    "19": {"mask": [[200, 15, 1600, 62], [510, 75, 1340, 118], [420, 520, 1430, 562]]},
+    "28": "none",
+    "31": "none",
+    "43": "none",
+    "48": "none"
+  },
+  "station_images": {
+    "Visual Station 1": ["hide"],
+    "Visual Station 2": ["hide"],
+    "Visual Station 3": [{"mask": [[15, 95, 850, 135], [15, 425, 640, 465], [15, 755, 600, 795]], "text": [[25, 98, "Trace 1"], [25, 428, "Trace 2"], [25, 758, "Trace 3"]]}],
+    "Visual Station 4": [{"mask": [[440, 15, 1240, 62], [460, 126, 1535, 176]], "text": [[1080, 134, "Plan B (dashed): -1.0 mmol/L/h", 28]]}],
+    "Visual Station 5": ["gen_bloodgas_table.png"],
+    "Visual Station 6": [{"mask": [[200, 15, 1600, 62], [510, 75, 1340, 118], [420, 520, 1430, 562]]}]
+  },
+  "calc_questions": [
+    {"title": "GIR", "question": "An infant is receiving D10 at 90 mL/kg/day. What is the glucose infusion rate (GIR)?"},
+    {"title": "GIR from an hourly rate", "question": "A 2.0-kg infant is receiving D12.5 at 4 mL/h. What is the GIR?"},
+    {"title": "GIR", "question": "An infant is receiving D15 at 100 mL/kg/day. What is the GIR?"},
+    {"title": "Total GIR from two infusions", "question": "An infant receives D10 at 60 mL/kg/day plus D20 at 40 mL/kg/day. What is the total GIR?"},
+    {"title": "Dextrose concentration needed", "question": "You want a GIR of 6 mg/kg/min with a total infusion of 130 mL/kg/day. What dextrose concentration (%) is required?"},
+    {"title": "Anion gap", "question": "Na 140, Cl 108 and HCO₃ 14 mmol/L. What is the anion gap?"},
+    {"title": "Expected PaCO₂ (Winter's formula)", "question": "A neonate has metabolic acidosis with HCO₃ 14 mmol/L. What is the expected PaCO₂ if respiratory compensation is appropriate?"},
+    {"title": "Glucose-corrected sodium", "question": "Glucose is 400 mg/dL and measured Na is 130 mmol/L. What is the corrected sodium (1.6 correction factor)?"}
+  ]
+}

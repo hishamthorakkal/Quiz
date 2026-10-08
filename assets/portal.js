@@ -147,13 +147,15 @@
     if (b.t === 'img') return `<figure class="fig"><a href="${b.src}" target="_blank" rel="noopener" title="Open full size"><img src="${b.src}" alt="${escT(b.alt || '')}" loading="lazy"></a>${b.caption ? `<figcaption>${escT(b.caption)}</figcaption>` : ''}</figure>`;
     if (b.t === 'grid') return `<div class="grid5">${b.items.map(i => `<div><b>${escT(i.label)}</b>${i.html}</div>`).join('')}</div>`;
     if (b.t === 'table') {
-      const blurCol = ctx.page.kind === 'data' && /interpretation/i.test(strip(b.head[b.head.length - 1])) ? b.head.length - 1 : -1;
+      const blurCols = ctx.page.kind === 'data' && /interpretation/i.test(strip(b.head[b.head.length - 1])) ? [b.head.length - 1]
+        : ctx.page.kind === 'cases' ? b.head.map((h, i) => /decision|answer|trap|management/i.test(strip(h)) ? i : -1).filter(i => i > 0) : [];
+      const blurCol = blurCols.length ? blurCols[0] : -1;
       const planChk = ctx.page.kind === 'overview' && b === planTable;
       // 3+ column tables become labelled cards on phones (CSS .stack); each cell carries its column name
       const stack = b.head.length >= 3 && !planChk, lab = b.head.map(h => escT(strip(h)));
       return `${blurCol >= 0 ? '<div class="toolbar"><button class="btn ghost sm" data-act="reveal-all">Reveal all interpretations</button><button class="btn ghost sm" data-act="hide-all">Hide again</button></div>' : ''}
         <div class="tw"><table class="${stack ? 'stack' : ''}"><thead><tr>${planChk ? '<th>✓</th>' : ''}${b.head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${b.rows.map((r, ri) =>
-        `<tr class="${planChk && planTicked(ri) ? 'plan-done' : ''}">${planChk ? `<td>${planAuto(ri) ? `<input type="checkbox" class="chk" checked disabled title="Ticked automatically: all linked sections are done">` : `<input type="checkbox" class="chk" data-plan="${ri}" ${planTicked(ri) ? 'checked' : ''}>`}</td>` : ''}${r.map((c, ci) => ci === blurCol ? `<td class="blur" data-label="${lab[ci]}"><span>${c}</span></td>` : `<td data-label="${lab[ci]}">${c}${planChk && ci === r.length - 1 ? planLinksHTML(ri) : ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+        `<tr class="${planChk && planTicked(ri) ? 'plan-done' : ''}">${planChk ? `<td>${planAuto(ri) ? `<input type="checkbox" class="chk" checked disabled title="Ticked automatically: all linked sections are done">` : `<input type="checkbox" class="chk" data-plan="${ri}" ${planTicked(ri) ? 'checked' : ''}>`}</td>` : ''}${r.map((c, ci) => blurCols.includes(ci) ? `<td class="blur" data-label="${lab[ci]}"><span>${c}</span></td>` : `<td data-label="${lab[ci]}">${c}${planChk && ci === r.length - 1 ? planLinksHTML(ri) : ''}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     }
     return '';
   }

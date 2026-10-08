@@ -37,9 +37,9 @@ def nice(title):
 # h1 text -> (page id, kind, group, title)
 RULES = [
     (r'calculation drill', 'calc'), (r'exam stations|image / tracing|interpretation stations|visual / data', 'data'),
-    (r'objective', 'overview'), (r'(study|teaching) plan', 'overview'),
+    (r'objective|learning outcomes', 'overview'), (r'(study|teaching) plan', 'overview'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
-    (r'clinical cases', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
+    (r'clinical cases|case discriminators', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
     (r'^section [abc]\b', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
     (r'cross-day connection', 'connections'),
     (r'error[- ]notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
@@ -75,6 +75,25 @@ def asset_version():
 GEN_CAPTION = 'Generated radiograph-style teaching schematic — not a patient image.'
 
 
+def derive_image(src_path, out_path, sp):
+    """Copy of a document picture with answer-giving parts removed.
+
+    sp: {"mask": [[x0,y0,x1,y1], ...]} white boxes, {"text": [[x, y, "label", size?], ...]} neutral labels,
+        {"crop": [x0, y0, x1|null, y1|null]} or {"crop_top": px}. Coordinates are in the original picture."""
+    from PIL import Image, ImageDraw, ImageFont
+    im = Image.open(src_path).convert('RGB')
+    d = ImageDraw.Draw(im)
+    for box in sp.get('mask', []):
+        d.rectangle(tuple(box), fill='white')
+    for x, y, label, *size in sp.get('text', []):
+        d.text((x, y), label, fill=(0, 0, 0), font=ImageFont.load_default(size=size[0] if size else 30))
+    box = sp.get('crop') or ([0, sp['crop_top'], None, None] if 'crop_top' in sp else None)
+    if box:
+        box = [im.width if v is None and k == 2 else im.height if v is None else v for k, v in enumerate(box)]
+        im = im.crop(tuple(box))
+    im.save(out_path, optimize=True)
+
+
 def add_generated_images(D, doc, pages, extras):
     """Write generated images listed in extras and put them in front of the matching visual stations.
 
@@ -82,7 +101,7 @@ def add_generated_images(D, doc, pages, extras):
     image is shown with the question instead, so the picture does not give the answer away.
     """
     specs = [s for v in extras.get('station_images', {}).values() for s in (v if isinstance(v, list) else [v])]
-    names = {v for v in extras.get('mcq_images', {}).values() if v not in ('doc', 'none')} | \
+    names = {v for v in extras.get('mcq_images', {}).values() if isinstance(v, str) and v not in ('doc', 'none')} | \
             {s for s in specs if isinstance(s, str) and s not in ('hide', 'drop')}
     if not names and not specs:
         return set()
@@ -105,13 +124,9 @@ def add_generated_images(D, doc, pages, extras):
             own['reveal'], own['caption'] = True, 'Labelled schematic from the source document'
             if sp == 'hide':
                 continue
-            if isinstance(sp, dict):                  # same picture with its answer-giving part cropped off
-                from PIL import Image
-                im = Image.open(f"{D}/{own['src']}")
-                box = sp.get('crop') or [0, sp['crop_top'], None, None]
-                box = [im.width if v is None and k == 2 else im.height if v is None else v for k, v in enumerate(box)]
+            if isinstance(sp, dict):                  # same picture with its answer-giving parts removed
                 name = os.path.basename(own['src']).replace('.png', '_q.png')
-                im.crop(tuple(box)).save(f'{D}/img/{name}', optimize=True)
+                derive_image(f"{D}/{own['src']}", f'{D}/img/{name}', sp)
                 names.add(name)
                 sec['blocks'].insert(i, {'t': 'img', 'src': f'img/{name}', 'alt': ''})
             else:
@@ -205,7 +220,16 @@ def build(day, docx, keep_order=False):
     mi = extras.get('mcq_images', {})
     for q in qs:
         spec = mi.get(str(q['num']), 'doc' if q.get('doc_img') else None)
-        if spec == 'doc' and q.get('doc_img'):
+        if isinstance(spec, dict) and q.get('doc_img'):
+            os.makedirs(f'{D}/img', exist_ok=True)
+            name = os.path.basename(q['doc_img']).replace('.png', f"_q{q['num']}.png")
+            tmp = f'{D}/img/_src_{name}'
+            open(tmp, 'wb').write(doc.zip.read(q['doc_img']))
+            derive_image(tmp, f'{D}/img/{name}', spec)
+            os.remove(tmp)
+            q['img'], q['imgCaption'] = f'img/{name}', q.get('doc_caption', '')
+            doc_mcq_imgs.add(name)
+        elif spec == 'doc' and q.get('doc_img'):
             os.makedirs(f'{D}/img', exist_ok=True)
             name = os.path.basename(q['doc_img'])
             open(f'{D}/img/{name}', 'wb').write(doc.zip.read(q['doc_img']))
@@ -213,7 +237,7 @@ def build(day, docx, keep_order=False):
             doc_mcq_imgs.add(name)
         elif spec and spec not in ('none', 'doc'):
             q['img'], q['imgCaption'] = f'img/{spec}', GEN_CAPTION
-    qs = [{k: q[k] for k in ('num', 'level', 'question', 'options', 'answer', 'explanation', 'pearl', 'srcAnswer', 'img', 'imgCaption') if k in q} for q in qs]
+    qs = [{k: q[k] for k in ('num', 'level', 'question', 'options', 'answer', 'explanation', 'pearl', 'srcAnswer', 'img', 'imgCaption', 'retest') if k in q} for q in qs]
     sets = dp.split_sets(qs)   # 5 x 15 by default; grows to 20 per set, then adds sets (sizes within ±1)
     pages['quizzes'] = {'id': 'quizzes', 'title': 'Quizzes', 'group': 'Practice', 'kind': 'quizzes', 'sections': []}
     pages['notebook'] = {'id': 'notebook', 'title': 'Error Notebook', 'group': 'Revise', 'kind': 'notebook', 'sections': []}
@@ -255,8 +279,8 @@ def build(day, docx, keep_order=False):
         portal['planLinks'] = extras['plan_links']
     if calc:
         for i, q in enumerate(extras.get('calc_questions', [])):
-            if q and i < len(calc):
-                calc[i]['question'] = q          # reworded as a complete question; answer/working stay from the source
+            if q and i < len(calc):          # reworded as a complete question (str) or {"title", "question"}; answer/working stay from the source
+                calc[i].update(q if isinstance(q, dict) else {'question': q})
         portal['calc'] = {'n': len(calc), 'href': 'calc.html'}
     with open(f'{D}/content.js', 'w', encoding='utf-8', newline='\n') as f:
         f.write('// Generated by tools/build_day.py from ' + portal['source'] + ' — do not edit by hand.\n')
@@ -296,7 +320,8 @@ def build(day, docx, keep_order=False):
               'blocks': {'source': total_blocks, 'placed': placed}, 'images': [b['src'] for b in imgs], 'mcq': stats, 'answers': dict(Counter('ABCD'[q['answer']] for q in qs)),
               'answer_key_after_shuffle': key,
               'questions_without_pearl': [q['num'] for q in qs if not q['pearl']], 'warnings': warnings, 'sets': portal['quizSets'],
-              'mcq_images': {q['num']: q['img'] for q in qs if 'img' in q}, 'calc': calc}
+              'mcq_images': {q['num']: q['img'] for q in qs if 'img' in q}, 'calc': calc,
+              'retests': {q['num']: q['retest'] for q in qs if 'retest' in q}}
     return report
 
 

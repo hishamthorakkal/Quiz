@@ -138,10 +138,27 @@ def oi_trend():
     return img
 
 
-GENERATORS = {
-    'gen_diffsat_97_84': lambda: diffsat(97, 84), 'gen_diffsat_96_84': lambda: diffsat(96, 84),
+def bloodgas_table():
+    """Two infants' gas/ammonia values without the interpretation column (Day 10 Visual Station 5)."""
+    head = ['', 'pH', 'PaCO2', 'HCO3', 'AG', 'Ketones', 'NH3 (umol/L)']
+    rows = [['Infant X', '7.52', '22', '17', '12', 'Absent', '680'], ['Infant Y', '7.05', '20', '6', '28', '3+', '190']]
+    widths = [190, 140, 150, 150, 130, 170, 230]
+    img = Image.new('RGB', (sum(widths) + 40, 300), 'white')
+    d = ImageDraw.Draw(img)
+    y = 40
+    for r, cells in enumerate([head] + rows):
+        x = 20
+        for w, c in zip(widths, cells):
+            d.rectangle((x, y, x + w, y + 70), fill=(226, 232, 240) if r == 0 else 'white', outline=INK, width=3)
+            d.text((x + w / 2, y + 35), c, fill=INK, font=font(32 if r else 30), anchor='mm')
+            x += w
+        y += 70
+    return img
+
+
+GENERATORS = {    'gen_diffsat_97_84': lambda: diffsat(97, 84), 'gen_diffsat_96_84': lambda: diffsat(96, 84),
     'gen_doppler_low_pulsatile': doppler_single, 'gen_doppler_ab': doppler_ab,
-    'gen_septum': septum, 'gen_oi_trend': oi_trend,
+    'gen_septum': septum, 'gen_oi_trend': oi_trend, 'gen_bloodgas_table': bloodgas_table,
 }
 
 if __name__ == '__main__':
