@@ -441,7 +441,11 @@ def parse_mcqs(doc, parts, aliases=None):
                 item[k] = q[k]
         if q.get('retest') or RETEST.match(e['lev'] or ''):
             # notebook retest: shown as a normal question, tracked internally (stage defaults to R1 = first retest)
-            item['retest'] = {'stage': e.get('stage') or 'R1', 'from': e.get('retest_from', '')}
+            src = e.get('retest_from', '')
+            if not src:   # older docs: "WHY THIS QUESTION MATTERS: Spaced repair of Day 5 — DOPE" / "retrieval of the Day 5 Q34 …"
+                m = re.search(r'(?:repair|retrieval) of (?:the )?(Day\s*\d+(?:\s*Q\d+)?(?:\s*[—-]\s*[^.;]+)?)', e.get('why', ''))
+                src = m[1].strip() if m else ''
+            item['retest'] = {'stage': e.get('stage') or 'R1', 'from': src}
         item['explanation'] = compose_explanation(item)
         out.append(item)
     nums = [q['num'] for q in out]

@@ -105,13 +105,16 @@ function printPDF(){
 }
 let notified=false;
 function wrongLines(list,lines,label){if(!list.length)return;const L=i=>String.fromCharCode(65+i),parts=[];for(let i=0;i<list.length;i++){const w=list[i],p=`Q${w.num} → ${L(w.chosen)} → ${L(w.answer)}`;if(new Blob([lines.join('\n')+`\n${label} → `+parts.concat(p).join(', ')]).size>3800){parts.push(`…and ${list.length-i} more`);break}parts.push(p)}lines.push('',`Wrong (${list.length}): chosen → correct`,`${label} → `+parts.join(', '))}
-// "Day 10 Q19 → Correct + understood → R1 → Improving" for each notebook retest in this set.
+// "Day 10 Q19 retest Day 7 Q34 → Correct + understood → R1 → Improving" for each notebook retest in this set
+// (the original mistake is "Day N QN" when the document names it, otherwise just "Day N").
 function retestLines(){
  const rq=quiz.filter(q=>q.retest);if(!rq.length)return[];
  return['','Retests:',...rq.map(q=>{const a=answers.find(x=>x.num===q.num),st=q.retest.stage||'R1';
-  if(!a)return`Day 9 Q${q.num} → Not answered → ${st} → Pending`;
-  if(a.correct)return a.conf==='guessed'?`Day 9 Q${q.num} → Correct + guessed → ${st} → Not secure (repeat ${st})`:`Day 9 Q${q.num} → Correct + understood → ${st} → Improving`;
-  return`Day 9 Q${q.num} → Wrong + ${a.tag||'?'} → ${st} → Repeat failure ×2`;})];
+  const src=(String(q.retest.from||'').match(/Day\s*\d+(?:\s*Q\d+)?/)||[''])[0].replace(/\s+/g,' ');
+  const id=`Day 9 Q${q.num}${src?` retest ${src}`:' retest'}`;
+  if(!a)return`${id} → Not answered → ${st} → Pending`;
+  if(a.correct)return a.conf==='guessed'?`${id} → Correct + guessed → ${st} → Not secure (repeat ${st})`:`${id} → Correct + understood → ${st} → Improving`;
+  return`${id} → Wrong + ${a.tag||'?'} → ${st} → Repeat failure ×2`;})];
 }
 function notifyResult(attempted,max,pct,early){
  if(notified)return;notified=true;

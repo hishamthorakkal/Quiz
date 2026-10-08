@@ -2481,10 +2481,11 @@ Day 8+ document format (all handled by tools/build_day.py):
 Notebook retests (user instruction, 08 Oct 2026). A question labelled "EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75" (label on its own line or before the stem on the same line) is shown with no label and scored like the others, but is marked internally as a revision/retest question: quiz data carries "retest": {"stage": "R1", "from": "Day 7 Q34 — …"}. The stage and source come from Section C "Notebook trace-back: <source> • R1 today • …"; without that line the stage is R1 (first retest).
 - Correct answer on a retest: the learner must choose "Understood" or "Guessed" before moving on. Wrong answer: the usual required K/C/R/G/S tag.
 - The quiz-set ntfy message ends with a "Retests:" block, one line per retest in that set:
-  Day 10 Q19 → Correct + understood → R1 → Improving
-  Day 10 Q19 → Correct + guessed → R1 → Not secure (repeat R1)
-  Day 10 Q19 → Wrong + K → R1 → Repeat failure ×2
-  Day 10 Q19 → Not answered → R1 → Pending
+  Day 10 Q19 retest Day 7 Q34 → Correct + understood → R1 → Improving
+  Day 10 Q19 retest Day 7 Q34 → Correct + guessed → R1 → Not secure (repeat R1)
+  Day 10 Q19 retest Day 7 Q34 → Wrong + K → R1 → Repeat failure ×2
+  Day 10 Q19 retest Day 7 Q34 → Not answered → R1 → Pending
+  (format set by the user 08 Oct 2026; the original mistake comes from the trace-back line, or from 'Spaced repair of Day N …' in older docs, which gives only the day)
 - Case-discriminator tables ("PART … — CASE DISCRIMINATORS", page kind cases): columns headed Decision/Answer/Trap/Management are blurred until tapped.
 - Calculation Drill, Day 10 layout: question list plus a "CALCULATION DRILL — ANSWERS" list of "Data/question: … Formula: … Substitution: … Final answer: … Trap: …". A "±n" in the final answer becomes the accepted band (e.g. 29 ±2 mmHg). extras.json "calc_questions" entries may be {"title", "question"}.
 - extras.json picture edits ("mcq_images" value or "station_images" entry as an object): {"mask": [[x0,y0,x1,y1], …]} white boxes over answer-giving labels, {"text": [[x, y, "Trace 1", size?], …]} neutral replacement labels, {"crop": …}. When a label overlaps data (cannot be masked cleanly), redraw the data unlabelled in tools/gen_charts.py and report any value read from the picture.
