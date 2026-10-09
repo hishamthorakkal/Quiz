@@ -251,7 +251,7 @@ BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the sing
                'This option proposes “', 'This prioritizes “', 'This delays or de-escalates care despite',
                'Although superficially plausible, this choice conflicts', 'This would fit a different clinical setting')
 RETEST = re.compile(r'^EXTRA NOTEBOOK RETEST\b', re.I)
-RETEST_LABEL = re.compile(r'^EXTRA NOTEBOOK RETEST\s*[—–-]\s*NOT PART OF (?:THE )?(?:BASE )?75(?: MCQS)?\s*(?:[—–-]\s*)?', re.I)
+RETEST_LABEL = re.compile(r'^EXTRA NOTEBOOK RETEST\s*[—–-]\s*NOT PART OF (?:THE )?(?:BASE )?75(?: MCQS)?\s*[.:]?\s*(?:[—–-]\s*)?', re.I)
 
 
 def parse_calc(sections):
@@ -291,7 +291,12 @@ def parse_calc(sections):
 
 def parse_mcqs(doc, parts, aliases=None):
     find = lambda pat: next((els for h, els in parts if re.match(pat, h, re.I)), None)
-    A, B, C = find(r'^SECTION A'), find(r'^SECTION B'), find(r'^SECTION C')
+    # Questions: the first "SECTION A/B" part that really holds "1. [Level] …" / "Qn. …" lines (some documents
+    # also name study-note parts "SECTION A — …"); explanations: SECTION C.
+    has_q = lambda els: sum(1 for el in els if el.tag == W + 'p' and re.match(r'^Q?\d+\.\s*(\[|\S)', text(el))) >= 5 and \
+        any(el.tag == W + 'p' and re.match(r'^[A-D]\.\s', text(el)) for el in els)
+    A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
+    B, C = find(r'^SECTION B'), find(r'^SECTION C')
     if A is None and B is not None and not any(el.tag == W + 'tbl' for el in B) and \
             any(el.tag == W + 'p' and re.match(r'^Q\d+\.', text(el)) for el in B):
         A, B = B, None                 # questions are in Section B; answer key comes from Section C
@@ -368,16 +373,21 @@ def parse_mcqs(doc, parts, aliases=None):
                     problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
                     continue
                 reason = rest[len(opt) + 3:].strip()
-                if reason.lower().startswith('correct'):
+                if re.match(r'^correct\b', reason, re.I):
                     e['marked'].append(m[1])
                 else:
+                    if re.match(r'^(Incorrect|Wrong)\b', reason, re.I):
+                        e['labelled'] = True
                     reason = re.sub(r'^(Incorrect|Wrong)\.\s*', '', reason)
                     if not any(b in reason for b in BOILERPLATE):
                         e['why_not'][m[1]] = reason
                 continue
-            m = re.match(r'^Notebook trace-back:\s*(.+?)\s*•\s*(R\d)\b', t)
+            m = re.match(r'^Notebook trace-back[^:]*:\s*(.+)$', t)
             if m:
-                e['retest_from'], e['stage'] = m[1].strip(), m[2]
+                body = re.sub(r'\bERR-D(\d+)-Q(\d+)\b', r'Day \1 Q\2', m[1])
+                st = re.search(r'\b(R\d)\b', body)
+                e['retest_from'] = re.split(r'\s*[•;]\s*', body)[0].strip()
+                e['stage'] = st[1] if st else None
                 continue
             m = re.match(r'^EXAM PEARL\s*[—:-]\s*(.+)$', t)
             if m:
@@ -408,6 +418,7 @@ def parse_mcqs(doc, parts, aliases=None):
                     e['why'] = body
     out = []
     shifted = []
+    unlabelled = []
     for q in qs:
         n, e = q['num'], ex.get(q['num'])
         if len(q['options']) != 4:
@@ -417,8 +428,11 @@ def parse_mcqs(doc, parts, aliases=None):
             continue
         if key and key.get(n) != e['ans']:
             problems.append(f'Q{n}: answer key {key.get(n)} != explanation {e["ans"]}')
-        if not e['marked']:
+        if not e['marked'] and e.get('labelled'):
             problems.append(f'Q{n}: no option marked Correct in the explanation')
+        if not e['marked'] and not e.get('labelled'):
+            unlabelled.append(n)
+            e['why_not'].pop(e['ans'], None)       # keyed option's line explains why it is right
         if not q['level']:
             q['level'] = '' if RETEST.match(e['lev'] or '') else (e['lev'] or '')
         if e['marked'] and e['marked'] != [e['ans']]:
@@ -436,6 +450,12 @@ def parse_mcqs(doc, parts, aliases=None):
             core = (core + ' Closest distractor: ' + e['disc']).strip()
         item = {'num': n, 'level': q['level'], 'question': q['question'], 'options': q['options'],
                 'answer': 'ABCD'.index(e['ans']), 'core': core, 'why_not': why_not, 'pearl': pearl}
+        # "Refer to Visual A. Refer to Visual Station 1. Visual A — purpose-built …; not a patient image." at the end
+        # of a stem points at the picture: move it out of the question text (the picture itself is placed by the build)
+        refs = re.findall(r'\s*(?:Refer to Visual(?: Station)? [A-Z0-9]+\.|Visual [A-Z] — [^.]*?not a (?:clinical )?patient [^.]*\.)', item['question'])
+        if refs:
+            item['question'] = re.sub(r'\s*(?:Refer to Visual(?: Station)? [A-Z0-9]+\.|Visual [A-Z] — [^.]*?not a (?:clinical )?patient [^.]*\.)', '', item['question']).strip()
+            q.setdefault('doc_caption', 'Purpose-built educational schematic; not a patient image.')
         for k in ('doc_img', 'doc_caption'):
             if q.get(k):
                 item[k] = q[k]
@@ -453,6 +473,8 @@ def parse_mcqs(doc, parts, aliases=None):
         problems.append('question numbering not contiguous')
     if len(set(q['question'] for q in out)) != len(out):
         problems.append('duplicate question stems')
+    if unlabelled:
+        fixed.append(f'{len(unlabelled)} explanations mark no option as Correct/Incorrect; the "Answer X" header is the key')
     stats = {'mcq': len(qs), 'key': len(key), 'explanations': len(ex), 'built': len(out), 'source_fixes': fixed,
              'pearls_relabelled': shifted, 'why_not_kept': sum(1 for e in ex.values() if e['why_not'])}
     return out, problems, stats

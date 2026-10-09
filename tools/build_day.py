@@ -40,7 +40,7 @@ RULES = [
     (r'objective|learning outcomes', 'overview'), (r'(study|teaching) plan', 'overview'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases|case discriminators', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
-    (r'^section [abc]\b', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
+    (r'^section [abc]\b.*(mcq|question|answer key|explanation)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
     (r'cross-day connection', 'connections'),
     (r'error[- ]notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
     (r'reference', 'references'), (r'document qa', 'references'),
@@ -179,7 +179,7 @@ def build(day, docx, keep_order=False):
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
-            m = re.match(r'^PART ([IVXLC]+)\s*[—-]\s*(.+)$', h1)
+            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—-]\s*(.+)$', h1)
             pid = f'part-{len(notes) + 1}'
             if not m:
                 warnings.append(f'Unrecognised heading kept as a notes page: {h1}')

@@ -1,0 +1,18 @@
+{
+  "_about": "Build extras for Day 11 (read by tools/build_day.py). The document's fundus/ultrasound schematics carry titles and panel labels that state the answer (stage, grade, PVHI, cysts); those are masked and replaced by neutral labels, or the relevant single panel is cropped for a question. The ROP-examination workflow (Station 6) is the answer itself, so it is only behind the reveal. Q43 shows no picture: the stem gives every measurement.",
+  "title": "ROP + IVH + PVL + Neurodevelopmental Follow-up",
+  "mcq_images": {
+    "32": {"mask": [[0, 0, 1592, 150]], "crop": [25, 152, 700, 822]},
+    "43": "none",
+    "52": {"mask": [[0, 0, 1604, 135]], "crop": [900, 138, 1580, 822]},
+    "58": {"crop": [862, 872, 1512, 1520]}
+  },
+  "station_images": {
+    "Visual Station 1": [{"mask": [[0, 0, 1592, 150]], "text": [[300, 100, "Panel A", 38], [1170, 100, "Panel B", 38]]}],
+    "Visual Station 2": [{"mask": [[0, 0, 1604, 135]], "text": [[300, 88, "Left panel", 38], [1150, 88, "Right panel", 38]]}],
+    "Visual Station 3": [{"mask": [[0, 0, 1530, 100], [130, 110, 580, 155], [900, 110, 1460, 155], [100, 825, 600, 868], [880, 825, 1500, 868]], "text": [[330, 110, "1", 40], [1175, 110, "2", 40], [330, 825, "3", 40], [1175, 825, "4", 40]]}],
+    "Visual Station 4": [{"mask": [[0, 0, 1578, 140]], "text": [[310, 96, "Left", 38], [1180, 96, "Right", 38]]}],
+    "Visual Station 5": [{"mask": [[0, 0, 1578, 140]], "text": [[260, 96, "Day-5 scan", 38], [1120, 96, "5-week scan", 38]]}],
+    "Visual Station 6": ["hide"]
+  }
+}
