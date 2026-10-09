@@ -40,7 +40,7 @@ RULES = [
     (r'objective|learning outcomes', 'overview'), (r'(study|teaching) plan', 'overview'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases|case discriminators', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
-    (r'^section [abc]\b.*(mcq|question|answer key|explanation)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
+    (r'^section [abc]\b.*(mcq|question|answer key|explanation|\bq\d+\s*[–-]\s*q\d+|retest)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
     (r'cross-day connection', 'connections'),
     (r'error[- ]notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
     (r'reference', 'references'), (r'document qa', 'references'),
@@ -54,13 +54,13 @@ PAGES = {  # id: (title, group, kind)
     'data': ('Data Interpretation', 'Practice', 'data'),
     'pearls': ('Pearls & Traps', 'Practice', 'pearls'),
     'quizzes': ('Quizzes', 'Practice', 'quizzes'),
-    'revision': ('Rapid Revision', 'Revise', 'revision'),
+    'revision': ('Rapid Revision', 'Practice', 'revision'),
     'recall': ('Active Recall', 'Revise', 'recall'),
     'notebook': ('Error Notebook', 'Revise', 'notebook'),
     'plan': ('Revision Plan', 'Revise', 'plan'),
     'references': ('References', 'More', 'notes'),
 }
-ORDER = ['overview', 'NOTES', 'numbers', 'tables', 'connections', 'cases', 'data', 'pearls', 'quizzes', 'revision', 'recall', 'notebook', 'plan', 'references']
+ORDER = ['overview', 'NOTES', 'numbers', 'tables', 'connections', 'cases', 'data', 'revision', 'pearls', 'quizzes', 'recall', 'notebook', 'plan', 'references']  # Rapid Revision + Pearls & Traps right before the quizzes
 
 
 def asset_version():
