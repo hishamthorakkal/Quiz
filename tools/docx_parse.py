@@ -251,17 +251,28 @@ BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the sing
                'This option proposes “', 'This prioritizes “', 'This delays or de-escalates care despite',
                'Although superficially plausible, this choice conflicts', 'This would fit a different clinical setting')
 RETEST = re.compile(r'^EXTRA NOTEBOOK RETEST\b', re.I)
-RETEST_LABEL = re.compile(r'^EXTRA NOTEBOOK RETEST\s*[—–-]\s*NOT PART OF (?:THE )?(?:BASE )?75(?: MCQS)?\s*[.:]?\s*(?:[—–-]\s*)?', re.I)
+RETEST_LABEL = re.compile(r'^EXTRA NOTEBOOK RETEST\s*[—–-]\s*NOT PART OF (?:THE )?(?:BASE )?\d+(?: MCQS)?\s*[.:]?\s*(?:[—–-]\s*)?', re.I)
 
 
 def parse_calc(sections):
     """CALCULATION DRILL sections ("1. Feed volume" + Data/question, Formula/substitution/final answer, Trap)
     -> [{num, title, question, working, trap, answer, unit}]. The answer is the last "= <number> <unit>" of the working."""
     out = []
+    titles = {}
     for s in sections:
         for b in s['blocks']:
-            for i, it in enumerate(b.get('items', []) if b['t'] == 'list' else []):
+            t = html.unescape(re.sub(r'<[^>]+>', '', b.get('html', ''))) if b['t'] == 'p' and isinstance(b.get('html'), str) else ''
+            m = re.match(r'^Drill (\d+)\.\s*(.+?)\s*[—–-]\s*Data/question:', t)
+            if m:
+                titles[int(m[1])] = m[2].strip()
+    for s in sections:
+        for b in s['blocks']:
+            items = b.get('items', []) if b['t'] == 'list' else [b['html']] if b['t'] == 'p' and isinstance(b.get('html'), str) else []
+            for i, it in enumerate(items):
                 t = html.unescape(re.sub(r'<[^>]+>', '', it))
+                dn = re.match(r'^Drill (\d+)\.\s*', t)
+                if dn:
+                    t = re.sub(r'^Drill \d+\.\s*Data:', 'Data/question:', t)
                 k = re.match(r'^Data/question:\s*(.+?)\s*Formula:\s*(.+?)\s*Substitution:\s*(.+?)\s*Final answer:\s*(.+?)\s*Trap:\s*(.+)$', t)
                 if not k:
                     continue
@@ -269,7 +280,7 @@ def parse_calc(sections):
                 n = re.match(r'^\s*(-?[0-9]+(?:\.[0-9]+)?)\s*(?:±\s*([0-9.]+))?\s*(%|[A-Za-zµ/]+(?:/[A-Za-z]+)*)?\s*(?:±\s*([0-9.]+))?', final)
                 if not n:
                     raise SystemExit(f'Calculation Drill {i + 1}: no numeric final answer in "{final}"')
-                out.append({'num': len(out) + 1, 'title': re.sub(r'\?$', '', q.rsplit(':', 1)[-1]).strip() or f'Problem {len(out) + 1}',
+                out.append({'num': len(out) + 1, 'title': (titles.get(int(dn[1])) if dn else None) or re.sub(r'\?$', '', q.rsplit(':', 1)[-1]).strip() or f'Problem {len(out) + 1}',
                             'question': q, 'working': f'Formula: {formula} Substitution: {sub} Final answer: {final}',
                             'trap': trap, 'answer': float(n[1]), 'unit': (n[3] or '').strip(), 'tol': float(n[2] or n[4]) if (n[2] or n[4]) else None})
         m = re.match(r'^(\d+)\.\s*(.+)$', s['title'])
@@ -301,6 +312,7 @@ def parse_mcqs(doc, parts, aliases=None):
             any(el.tag == W + 'p' and re.match(r'^Q\d+\.', text(el)) for el in B):
         A, B = B, None                 # questions are in Section B; answer key comes from Section C
     problems, qs, cur, fixed = [], [], None, []
+    pending_retest = False
     for el in A or []:
         if el.tag != W + 'p':
             continue
@@ -308,6 +320,9 @@ def parse_mcqs(doc, parts, aliases=None):
             for src, _ in doc.images(el):          # picture placed with the question in the document
                 cur['doc_img'] = src
         t = text(el)
+        if RETEST.match(t) and not RETEST_LABEL.sub('', t).strip():
+            pending_retest = True                  # "EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 120" on its own line
+            continue
         if cur is not None and re.match(r'^Question-linked\b', t, re.I):
             cur['doc_caption'] = t                 # caption of that picture, not part of the stem
             continue
@@ -317,7 +332,8 @@ def parse_mcqs(doc, parts, aliases=None):
             stem, retest = m[3].strip(), False
             if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75 [— stem]": label dropped
                 stem, retest = RETEST_LABEL.sub('', stem).strip(), True
-            cur = {'num': int(m[1]), 'level': m[2].strip(), 'question': stem, 'options': [], 'retest': retest}
+            cur = {'num': int(m[1]), 'level': m[2].strip(), 'question': stem, 'options': [], 'retest': retest or pending_retest}
+            pending_retest = False
             qs.append(cur)
             continue
         m = re.match(r'^([A-D])\.\s+(.+)$', t)
@@ -342,6 +358,12 @@ def parse_mcqs(doc, parts, aliases=None):
                         key[int(c[i])] = c[i + 1].strip()
                         if len(c) == 3:
                             klev[int(c[i])] = c[2].strip()
+    for h, els in parts:
+        if re.match(r'^ANSWER KEY\b', h, re.I):
+            for el in els:
+                if el.tag == W + 'p':
+                    for n_, a_ in re.findall(r'\bQ(\d+)\s+([A-D])\b', text(el)):
+                        key[int(n_)] = a_
     Q = {q['num']: q for q in qs}
     ex, e, pearl_labels = {}, None, {}
     for el in C or []:
@@ -382,9 +404,12 @@ def parse_mcqs(doc, parts, aliases=None):
                     if not any(b in reason for b in BOILERPLATE):
                         e['why_not'][m[1]] = reason
                 continue
+            if RETEST.match(t):
+                e['retest'] = True
+                continue
             m = re.match(r'^Notebook trace-back[^:]*:\s*(.+)$', t)
             if m:
-                body = re.sub(r'\bERR-D(\d+)-Q(\d+)\b', r'Day \1 Q\2', m[1])
+                body = re.sub(r'—\s*—', '—', re.sub(r'\bERR-D(\d+)-Q(\d+)\b:?', r'Day \1 Q\2 —', m[1]))
                 st = re.search(r'\b(R\d)\b', body)
                 e['retest_from'] = re.split(r'\s*[•;]\s*', body)[0].strip()
                 e['stage'] = st[1] if st else None
@@ -459,7 +484,7 @@ def parse_mcqs(doc, parts, aliases=None):
         for k in ('doc_img', 'doc_caption'):
             if q.get(k):
                 item[k] = q[k]
-        if q.get('retest') or RETEST.match(e['lev'] or ''):
+        if q.get('retest') or e.get('retest') or RETEST.match(e['lev'] or ''):
             # notebook retest: shown as a normal question, tracked internally (stage defaults to R1 = first retest)
             src = e.get('retest_from', '')
             if not src:   # older docs: "WHY THIS QUESTION MATTERS: Spaced repair of Day 5 — DOPE" / "retrieval of the Day 5 Q34 …"

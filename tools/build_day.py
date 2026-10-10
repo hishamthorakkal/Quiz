@@ -36,14 +36,14 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
-    (r'calculation drill', 'calc'), (r'exam stations|image / tracing|interpretation stations|visual / data', 'data'),
+    (r'calculation drill', 'calc'), (r'^answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data', 'data'),
     (r'objective|learning outcomes', 'overview'), (r'(study|teaching) plan', 'overview'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases|case discriminators', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
-    (r'^section [abc]\b.*(mcq|question|answer key|explanation|\bq\d+\s*[–-]\s*q\d+|retest)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
+    (r'^section [abc]\b.*(mcq|question|answer key|explanation|\bq\d+\s*[–-]\s*q\d+|retest|\btest\b)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
     (r'cross-day connection', 'connections'),
     (r'error[- ]notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
-    (r'reference', 'references'), (r'document qa', 'references'),
+    (r'reference|guideline verification|source frameworks', 'references'), (r'document qa', 'references'),
 ]
 PAGES = {  # id: (title, group, kind)
     'overview': ('Overview', 'Start', 'overview'),

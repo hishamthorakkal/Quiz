@@ -2492,6 +2492,13 @@ Notebook retests (user instruction, 08 Oct 2026). A question labelled "EXTRA NOT
 
 Page order (user request, 09 Oct 2026): Overview → study notes → Must-Know Numbers → Tables & Algorithms → Cross-Day Connections → Clinical Cases → Data Interpretation → Rapid Revision → Pearls & Traps → Quizzes → Active Recall → Error Notebook → Revision Plan → References. Rapid Revision sits in the Practice group so the last revision pass comes right before the quiz sets.
 
+System Revision Tests (user request, 10 Oct 2026). Integrated revision days (e.g. Day 12 "Neonatology System Revision Test 1 of 6") are built like any day (DayN/ folder, portal, quiz sets) but listed on the home page in their own collapsible section "System Revision Tests", below Daily Study Portals, not as a daily card. The daily placeholder skips the revision day number (after Day 11 comes Day 13).
+- 100–150 questions split by the set rule (125 → 7 sets of 18/18/18/18/18/18/17).
+- Retest label may sit on its own line before the question and may say "BASE 120"; in Section C the same label line marks the explanation as a retest. Trace-backs like "ERR-D10-Q8: CPS 72 h vs PES 48 h • R1 retest" give "Day 10 Q8".
+- A separate "ANSWER KEY …" part written as text ("Q1 B   Q2 C …" and "EXTRA NOTEBOOK RETEST KEY: Q18 A …") is read as the answer key and cross-checked against every Section C header; it is never a study page.
+- Section titles like "SECTION B — NEONATOLOGY SYSTEM REVISION TEST" count as MCQ parts ("test" in the title). "Source frameworks / guideline verification" parts go to References.
+- Calculation Drill, Day 12 layout: "Drill N. <title> — Data/question: …" lines plus "Drill N. Data: … Formula: … Substitution: … Final answer: … Trap: …" paragraphs.
+
 Day 11 format (09 Oct 2026):
 - Study parts may also be titled "SECTION A — …" (e.g. "SECTION A — CONCEPTUAL & CLINICAL NOTES", "SECTION A — VISUAL / DATA INTERPRETATION STATIONS"). Only a Section A/B/C whose title mentions MCQs, questions, answer key or explanations is an MCQ part; the questions are read from the first Section A/B part that actually contains numbered questions with A–D options.
 - Section C option lines may carry no "Correct/Incorrect" wording ("C. Equipment failure — reason"). The "Qn. Answer X" header is then the key, the keyed option's line is not used as a why-not reason, and the build report says so (mcq.source_fixes). Check that each keyed option's line reads as supporting it. "Correct" must be the whole word ("Corrected age …" is not a marker).
