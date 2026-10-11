@@ -144,12 +144,12 @@ def blocks_from(doc, elements):
                 lst = None
                 continue
             listy, numbered = is_list(doc, el)
-            m = re.match(r'^(\d+)\.\s+(.+)$', t) if not listy else None
+            m = re.match(r'^P?(\d+)\.\s+(.+)$', t) if not listy else None   # "1. …" or "P1. …" (recall prompts)
             if listy or m:
                 numbered = numbered or bool(m)
                 item = rich(el)
                 if m:
-                    item = re.sub(r'^(<strong>)?\d+\.\s+', r'\1', item)
+                    item = re.sub(r'^(<strong>)?P?\d+\.\s+', r'\1', item)
                 if lst is None or lst['ordered'] != numbered:
                     lst = {'t': 'list', 'ordered': numbered, 'items': []}
                     sections[-1]['blocks'].append(lst)
@@ -321,7 +321,12 @@ def parse_mcqs(doc, parts, aliases=None):
                 cur['doc_img'] = src
         t = text(el)
         if RETEST.match(t) and not RETEST_LABEL.sub('', t).strip():
-            pending_retest = True                  # "EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 120" on its own line
+            # "EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 120" on its own line: after a stem (no options yet) it
+            # belongs to that question; between questions it marks the next one
+            if cur is not None and not cur['options']:
+                cur['retest'] = True
+            else:
+                pending_retest = True
             continue
         if cur is not None and re.match(r'^Question-linked\b', t, re.I):
             cur['doc_caption'] = t                 # caption of that picture, not part of the stem
@@ -384,6 +389,17 @@ def parse_mcqs(doc, parts, aliases=None):
                 continue
             if not e or not t:
                 continue
+            m = re.match(r'^([A-D]):\s+(.+)$', t)
+            if m and e['q']:
+                reason = m[2].strip()
+                if re.match(r'^correct\b', reason, re.I):
+                    e['marked'].append(m[1])
+                else:
+                    e['labelled'] = e.get('labelled') or bool(re.match(r'^(Incorrect|Wrong)\b', reason, re.I))
+                    reason = re.sub(r'^(Incorrect|Wrong)[.:]\s*', '', reason)
+                    if not any(b in reason for b in BOILERPLATE):
+                        e['why_not'][m[1]] = reason
+                continue
             m = re.match(r'^([A-D])\.\s+(.+)$', t)
             if m and e['q']:
                 opt = e['q']['options']['ABCD'.index(m[1])]
@@ -406,6 +422,9 @@ def parse_mcqs(doc, parts, aliases=None):
                 continue
             if RETEST.match(t):
                 e['retest'] = True
+                m = re.search(r'Source:\s*ERR-D(\d+)-Q(\d+)', t)
+                if m and not e.get('retest_from'):
+                    e['retest_from'] = f'Day {m[1]} Q{m[2]}'
                 continue
             m = re.match(r'^Notebook trace-back[^:]*:\s*(.+)$', t)
             if m:

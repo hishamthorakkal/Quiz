@@ -2499,6 +2499,12 @@ System Revision Tests (user request, 10 Oct 2026). Integrated revision days (e.g
 - Section titles like "SECTION B — NEONATOLOGY SYSTEM REVISION TEST" count as MCQ parts ("test" in the title). "Source frameworks / guideline verification" parts go to References.
 - Calculation Drill, Day 12 layout: "Drill N. <title> — Data/question: …" lines plus "Drill N. Data: … Formula: … Substitution: … Final answer: … Trap: …" paragraphs.
 
+Day 13 format (11 Oct 2026):
+- A retest label line that sits between a stem and its options belongs to that question (a label line between questions marks the next one).
+- Section C option lines may be "A:  reason" (colon, option text not repeated); "Correct:" at the start marks the keyed option. Section C retest label lines may carry "Source: ERR-D10-Q8".
+- Paragraphs numbered "P1. …" (Active Recall prompts/answers) are read as a numbered list, so prompts and answers pair up.
+- "SECTION A2 — … TEACHING CASES" → Clinical Cases; "SOURCE NOTES …", "SOURCE COMPARISON & EDITORIAL AUDIT" → References.
+
 Day 11 format (09 Oct 2026):
 - Study parts may also be titled "SECTION A — …" (e.g. "SECTION A — CONCEPTUAL & CLINICAL NOTES", "SECTION A — VISUAL / DATA INTERPRETATION STATIONS"). Only a Section A/B/C whose title mentions MCQs, questions, answer key or explanations is an MCQ part; the questions are read from the first Section A/B part that actually contains numbered questions with A–D options.
 - Section C option lines may carry no "Correct/Incorrect" wording ("C. Equipment failure — reason"). The "Qn. Answer X" header is then the key, the keyed option's line is not used as a why-not reason, and the build report says so (mcq.source_fixes). Check that each keyed option's line reads as supporting it. "Correct" must be the whole word ("Corrected age …" is not a marker).
