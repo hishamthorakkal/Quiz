@@ -37,7 +37,7 @@ const DAY=10, KEY='portal:Day'+DAY+':calc';
 let i=0;const res=[];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt=n=>(+n.toFixed(2)).toString();
-const close=(v,c)=>Math.abs(v-c.answer)<=(c.tol!=null?c.tol:Math.max(Math.abs(c.answer)*0.02,0.05));   // "29 ±2" uses the stated band
+const close=(v,c)=>Math.abs(v-c.answer)<=(c.tol!=null?c.tol:Math.max(Math.abs(c.answer)*0.02,0.05));   // per answer box
 function head(){
   document.getElementById('counter').textContent=`Problem ${Math.min(i+1,CALC.length)} / ${CALC.length}`;
   document.getElementById('score').textContent=`Correct: ${res.filter(r=>r.ok).length}`;
@@ -47,30 +47,32 @@ function show(){
   head();const c=CALC[i],r=res[i];
   document.getElementById('app').innerHTML=`<div class="badge">${esc(c.title)}</div>
   <div class="q">C${c.num}. ${esc(c.question)}</div>
-  <div class="ansrow"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Your answer" ${r?'disabled value="'+esc(r.raw)+'"':''}><span class="unit">${esc(c.unit)}</span></div>
+  ${parts(c).map((p,k)=>`${p.label?`<div class="small" style="margin:10px 0 4px;color:#475569;font-weight:600">${esc(p.label)}</div>`:''}<div class="ansrow"><input class="ans" data-k="${k}" inputmode="decimal" autocomplete="off" placeholder="Your answer" ${r?'disabled value="'+esc(r.raws[k])+'"':''}><span class="unit">${esc(p.unit)}</span></div>`).join('')}
   <div class="err" id="err"></div>
-  ${r?`<div class="feedback ${r.ok?'correct':'wrong'}"><b>${r.ok?'Correct':'Not quite'}</b> — answer: <b>${fmt(c.answer)}${c.tol!=null?' ±'+fmt(c.tol):''} ${esc(c.unit)}</b>${r.ok?'':` (you entered ${esc(r.raw)})`}
+  ${r?`<div class="feedback ${r.ok?'correct':'wrong'}"><b>${r.ok?'Correct':'Not quite'}</b> — answer: <b>${parts(c).map(p=>`${fmt(p.answer)}${p.tol!=null?' ±'+fmt(p.tol):''} ${esc(p.unit)}`).join(' · ')}</b>${r.ok?'':` (you entered ${esc(r.raws.join(' · '))})`}
      <div class="work"><b>Working:</b> ${esc(c.working)}</div>${c.trap?`<div class="trap"><b>Trap:</b> ${esc(c.trap)}</div>`:''}</div>`:''}
   <div class="actions">${r?`<button class="primary" id="next">${i===CALC.length-1?'See results':'Next problem'}</button>`:'<button class="primary" id="check">Check answer</button>'}</div>`;
-  const inp=document.getElementById('ans');
-  if(!r){inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});inp.addEventListener('input',()=>document.getElementById('err').textContent='');document.getElementById('check').onclick=check;}
+  const ins=[...document.querySelectorAll('input.ans')];
+  if(!r){ins[0].focus();ins.forEach(inp=>{inp.addEventListener('keydown',e=>{if(e.key==='Enter')check();});inp.addEventListener('input',()=>document.getElementById('err').textContent='');});document.getElementById('check').onclick=check;}
   else document.getElementById('next').onclick=()=>{i++;i<CALC.length?show():finish();};
 }
+const parts=c=>c.parts&&c.parts.length?c.parts:[{answer:c.answer,unit:c.unit,tol:c.tol}];
 function check(){
-  const raw=document.getElementById('ans').value.trim().replace(',','.'),v=parseFloat(raw);
-  if(raw===''||!isFinite(v)||!/^-?\d*\.?\d+$/.test(raw)){document.getElementById('err').textContent='Enter a number first (digits and a decimal point only).';return;}
-  res[i]={raw,v,ok:close(v,CALC[i])};show();
+  const c=CALC[i],raws=[...document.querySelectorAll('input.ans')].map(x=>x.value.trim().replace(',','.'));
+  if(raws.some(raw=>raw===''||!/^-?\d*\.?\d+$/.test(raw))){document.getElementById('err').textContent='Enter a number in every box (digits and a decimal point only).';return;}
+  const oks=parts(c).map((p,k)=>close(parseFloat(raws[k]),p));
+  res[i]={raw:raws.join(' · '),raws,ok:oks.every(Boolean)};show();
 }
 function finish(){
   head();const n=CALC.length,ok=res.filter(r=>r.ok).length;
   try{const p=JSON.parse(localStorage.getItem(KEY))||{best:0,attempts:0};localStorage.setItem(KEY,JSON.stringify({n,best:Math.max(p.best||0,ok),last:ok,attempts:(p.attempts||0)+1,at:Date.now()}));}catch(e){}
   const wrong=CALC.map((c,k)=>[c,res[k]]).filter(([,r])=>!r.ok);
-  const lines=[`Score: ${ok} / ${n}`,...(wrong.length?['','Wrong: Day → Problem → Entered → Correct',...wrong.map(([c,r])=>`Day ${DAY} → C${c.num} ${c.title} → ${r.raw} → ${fmt(c.answer)} ${c.unit}`)]:['All correct'])];
+  const lines=[`Score: ${ok} / ${n}`,...(wrong.length?['','Wrong: Day → Problem → Entered → Correct',...wrong.map(([c,r])=>`Day ${DAY} → C${c.num} ${c.title} → ${r.raw} → ${parts(c).map(p=>fmt(p.answer)+' '+p.unit).join(' · ')}`)]:['All correct'])];
   fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(`Day ${DAY} — Calculation Drill: ${ok}/${n}`)}&tags=abacus`,{method:'POST',body:lines.join('\n')}).catch(()=>{});
   document.getElementById('app').innerHTML=`<h2 style="margin-top:0">Drill finished</h2>
   <div class="stats"><div class="stat"><strong>${ok}/${n}</strong>Correct</div><div class="stat"><strong>${n-ok}</strong>Wrong</div><div class="stat"><strong>${Math.round(ok/n*100)}%</strong>Accuracy</div></div>
-  ${CALC.map((c,k)=>`<div class="row ${res[k].ok?'ok':'no'}"><b>C${c.num}. ${esc(c.title)}</b> — ${res[k].ok?'✓':'✗'} you: ${esc(res[k].raw)} · answer: <b>${fmt(c.answer)} ${esc(c.unit)}</b><br><span style="color:#475569">${esc(c.working)}</span></div>`).join('')}
+  ${CALC.map((c,k)=>`<div class="row ${res[k].ok?'ok':'no'}"><b>C${c.num}. ${esc(c.title)}</b> — ${res[k].ok?'✓':'✗'} you: ${esc(res[k].raw)} · answer: <b>${parts(c).map(p=>fmt(p.answer)+' '+esc(p.unit)).join(' · ')}</b><br><span style="color:#475569">${esc(c.working)}</span></div>`).join('')}
   <div class="actions"><a class="btn secondary" href="index.html#/quizzes">Back to quizzes</a><button class="primary" onclick="location.reload()">Retake drill</button></div>`;
 }
 show();
-</script><script src="../assets/countdown.js?v=57f27952"></script></body></html>
+</script><script src="../assets/countdown.js?v=c71ce328"></script></body></html>

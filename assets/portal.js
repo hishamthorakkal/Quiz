@@ -179,8 +179,8 @@
 
   // ---------- pages ----------
   const CASE_T = /^\s*(Case \d+)\s*[—–-]\s*(.+)$/i;
-  const STATION = /^\s*(Visual Station \d+)\s*[—–-]\s*(.+)$/i;
-  const DATA_ANS = /^(<strong>)?\s*(Interpretation|Closest distractor|Discriminator|Decisive visual|Next management step|Next step|Exam trap|Trace-back|Answer)\b/i;
+  const STATION = /^\s*((?:Visual|Practice) Station \d+)\s*[—–-]\s*(.+)$/i;
+  const DATA_ANS = /^(<strong>)?\s*(Interpretation|Closest distractor|Discriminator|Decisive visual|Next management step|Next step|Exam trap|Trap|Trace-back|Answer)\b/i;
   function sectionHTML(page, s, i) {
     const ctx = { page, sec: s };
     let inner;
@@ -215,7 +215,7 @@
         flush();
         const sm = b.t === 'p' && strip(b.html).match(STATION);
         if (sm) { flush(); topic = `<p><b>Station topic:</b> ${escT(sm[2])}</p>`; out += `<h3 class="station">${escT(sm[1])}</h3>`; return; }
-        out += b.t === 'p' && /^(<strong>)?\s*Visual Station \d+/i.test(b.html) ? `<h3 class="station">${b.html}</h3>` : block(b, ctx);
+        out += b.t === 'p' && /^(<strong>)?\s*(Visual|Practice) Station \d+/i.test(b.html) ? `<h3 class="station">${b.html}</h3>` : block(b, ctx);
       });
       flush();
       inner = out;

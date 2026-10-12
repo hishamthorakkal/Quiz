@@ -144,12 +144,12 @@ def blocks_from(doc, elements):
                 lst = None
                 continue
             listy, numbered = is_list(doc, el)
-            m = re.match(r'^P?(\d+)\.\s+(.+)$', t) if not listy else None   # "1. …" or "P1. …" (recall prompts)
+            m = re.match(r'^[PR]?(\d+)\.\s+(.+)$', t) if not listy else None   # "1. …", "P1. …" or "R1. …" (recall prompts)
             if listy or m:
                 numbered = numbered or bool(m)
                 item = rich(el)
                 if m:
-                    item = re.sub(r'^(<strong>)?P?\d+\.\s+', r'\1', item)
+                    item = re.sub(r'^(<strong>)?[PR]?\d+\.\s+', r'\1', item)
                 if lst is None or lst['ordered'] != numbered:
                     lst = {'t': 'list', 'ordered': numbered, 'items': []}
                     sections[-1]['blocks'].append(lst)
@@ -283,8 +283,20 @@ def parse_calc(sections):
                 out.append({'num': len(out) + 1, 'title': (titles.get(int(dn[1])) if dn else None) or re.sub(r'\?$', '', q.rsplit(':', 1)[-1]).strip() or f'Problem {len(out) + 1}',
                             'question': q, 'working': f'Formula: {formula} Substitution: {sub} Final answer: {final}',
                             'trap': trap, 'answer': float(n[1]), 'unit': (n[3] or '').strip(), 'tol': float(n[2] or n[4]) if (n[2] or n[4]) else None})
-        m = re.match(r'^(\d+)\.\s*(.+)$', s['title'])
+        m = re.match(r'^(\d+)\.\s*(.+)$', s['title']) or re.match(r'^Drill (\d+)()\s*$', s['title'])
         if not m:
+            continue
+        g = {}
+        for b in s['blocks']:
+            t = html.unescape(re.sub(r'<[^>]+>', '', b.get('html', '') if isinstance(b.get('html'), str) else ''))
+            k = re.match(r'^(Data & question|Formula, substitution, units & arithmetic|Final answer|Common trap)\s*:\s*(.+)$', t, re.I)
+            if k:
+                g[k[1].lower()] = k[2].strip()
+        if g.get('data & question') and g.get('final answer'):
+            n = re.match(r'^\s*(-?[0-9]+(?:\.[0-9]+)?)\s*(%|[A-Za-zµ/]+(?:/[A-Za-z]+)*)?', g['final answer'])
+            out.append({'num': int(m[1]), 'title': m[2].strip() or f'Drill {m[1]}', 'question': g['data & question'],
+                        'working': f"{g.get('formula, substitution, units & arithmetic', '')} Final answer: {g['final answer']}".strip(),
+                        'trap': g.get('common trap', ''), 'answer': float(n[1]) if n else 0.0, 'unit': (n[2] or '') if n else '', 'tol': None})
             continue
         f = {}
         for b in s['blocks']:
@@ -364,7 +376,7 @@ def parse_mcqs(doc, parts, aliases=None):
                         if len(c) == 3:
                             klev[int(c[i])] = c[2].strip()
     for h, els in parts:
-        if re.match(r'^ANSWER KEY\b', h, re.I):
+        if re.search(r'\bANSWER KEY\b', h, re.I) and not re.search(r'EXPLANATION', h, re.I):
             for el in els:
                 if el.tag == W + 'p':
                     for n_, a_ in re.findall(r'\bQ(\d+)\s+([A-D])\b', text(el)):
@@ -426,11 +438,11 @@ def parse_mcqs(doc, parts, aliases=None):
                 if m and not e.get('retest_from'):
                     e['retest_from'] = f'Day {m[1]} Q{m[2]}'
                 continue
-            m = re.match(r'^Notebook trace-back[^:]*:\s*(.+)$', t)
+            m = re.match(r'^(?:Notebook trace-back|Error-notebook source)[^:]*:\s*(.+)$', t)
             if m:
                 body = re.sub(r'—\s*—', '—', re.sub(r'\bERR-D(\d+)-Q(\d+)\b:?', r'Day \1 Q\2 —', m[1]))
                 st = re.search(r'\b(R\d)\b', body)
-                e['retest_from'] = re.split(r'\s*[•;]\s*', body)[0].strip()
+                e['retest_from'] = re.split(r'\s*[•;]\s*', body)[0].strip().rstrip(' —–-')
                 e['stage'] = st[1] if st else None
                 continue
             m = re.match(r'^EXAM PEARL\s*[—:-]\s*(.+)$', t)

@@ -2499,6 +2499,14 @@ System Revision Tests (user request, 10 Oct 2026). Integrated revision days (e.g
 - Section titles like "SECTION B — NEONATOLOGY SYSTEM REVISION TEST" count as MCQ parts ("test" in the title). "Source frameworks / guideline verification" parts go to References.
 - Calculation Drill, Day 12 layout: "Drill N. <title> — Data/question: …" lines plus "Drill N. Data: … Formula: … Substitution: … Final answer: … Trap: …" paragraphs.
 
+Day 14 format (12 Oct 2026):
+- Separate key part may be titled "SECTION B — SEPARATE ANSWER KEY"; "Q11 D*" (star = retest) is read like "Q11 D" and cross-checked.
+- Retest source line "Error-notebook source / tracking: ERR-D5-Q34; …" gives "Day 5 Q34".
+- Recall items numbered "R1. …" are a numbered list like "P1. …".
+- "ADDITIONAL DATA-INTERPRETATION PRACTICE" parts go to Data Interpretation; "Practice Station N — topic" titles are shown as "Practice Station N" with the topic behind the reveal, like Visual Stations. A clinical-case workbook inside that part ("… case workbook" heading + "Case N — …" sub-sections) is moved to Clinical Cases.
+- Calculation Drill, Day 14 layout: "Drill N" headings with "Data & question:", "Formula, substitution, units & arithmetic:", "Final answer:", "Common trap:". When a problem asks for two quantities, extras.json "calc_parts" gives one answer box per quantity ([{"label", "answer", "unit"}, …]); the drill marks it correct only if every box is right and the ntfy message lists all parts.
+- "PRIMARY SOURCE MAP …" and "COMPARATIVE EDITORIAL SUMMARY" go to References.
+
 Day 13 format (11 Oct 2026):
 - A retest label line that sits between a stem and its options belongs to that question (a label line between questions marks the next one).
 - Section C option lines may be "A:  reason" (colon, option text not repeated); "Correct:" at the start marks the keyed option. Section C retest label lines may carry "Source: ERR-D10-Q8".
