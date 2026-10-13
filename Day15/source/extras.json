@@ -1,32 +1,161 @@
 {
-  "_about": "Build extras for Day 15 (read by tools/build_day.py). answer_fixes: in five gap-fill extras the keyed option contradicts the document's own explanation (Q30 trisomy 13, Q40 maternal 14;21 carrier 10-15%, Q50 benzoate-glycine-hippurate, Q70 saline + dextrose + hydrocortisone with 17-OHP, Q79 MELAS); the key is set to the option the explanation describes. Drill answers are given explicitly (calc_parts) because the table's bold answers mix numbers and notes; questions are reworded into complete questions with the same numbers.",
+  "_about": "Build extras for Day 15 (read by tools/build_day.py). Deep Audit Revised edition: the five keys that contradicted their explanations (Q30, Q40, Q50, Q70, Q79) are corrected in the Section C headers, but the one-line \"Quick key\" still lists the old letters; stale_key makes the build use the corrected headers for those five. Drill answers are given explicitly (calc_parts) because the table bold text mixes numbers and notes; drill questions are reworded into complete questions with the same numbers.",
   "title": "Genetics, Dysmorphology & Inborn Errors of Metabolism",
-  "answer_fixes": {
-    "30": {"answer": "B", "why": "Explanation: midline defects, postaxial polydactyly and scalp defects point to trisomy 13"},
-    "40": {"answer": "A", "why": "Explanation: maternal 14;21 Robertsonian carrier, empirical risk about 10-15%"},
-    "50": {"answer": "C", "why": "Explanation: sodium benzoate conjugates with glycine to hippurate"},
-    "70": {"answer": "C", "why": "Explanation: treat the adrenal crisis first with saline, dextrose and hydrocortisone after drawing 17-OHP"},
-    "79": {"answer": "A", "why": "Explanation: MELAS is usually m.3243A>G with maternal transmission"}
-  },
+  "stale_key": [
+    30,
+    40,
+    50,
+    70,
+    79
+  ],
   "station_images": {
-    "Station 3": [{"mask": [[195, 310, 522, 334]]}],
-    "Station 5": [{"mask": [[90, 403, 1272, 505]], "text": [[150, 410, "1", 30], [280, 410, "2", 30], [410, 410, "3", 30], [540, 410, "4", 30], [778, 410, "1", 30], [908, 410, "2", 30], [1038, 410, "3", 30], [1168, 410, "4", 30]]}]
+    "Station 3": [
+      {
+        "mask": [
+          [
+            195,
+            310,
+            522,
+            334
+          ]
+        ]
+      }
+    ],
+    "Station 5": [
+      {
+        "mask": [
+          [
+            90,
+            403,
+            1272,
+            505
+          ]
+        ],
+        "text": [
+          [
+            150,
+            410,
+            "1",
+            30
+          ],
+          [
+            280,
+            410,
+            "2",
+            30
+          ],
+          [
+            410,
+            410,
+            "3",
+            30
+          ],
+          [
+            540,
+            410,
+            "4",
+            30
+          ],
+          [
+            778,
+            410,
+            "1",
+            30
+          ],
+          [
+            908,
+            410,
+            "2",
+            30
+          ],
+          [
+            1038,
+            410,
+            "3",
+            30
+          ],
+          [
+            1168,
+            410,
+            "4",
+            30
+          ]
+        ]
+      }
+    ]
   },
-  "calc_questions": [    {"title": "GIR", "question": "A neonate receives D12.5 at 96 mL/kg/day. What is the glucose infusion rate (GIR)?"},
-    {"title": "Dextrose concentration", "question": "You want a GIR of 10 mg/kg/min with a total infusion of 120 mL/kg/day. What dextrose concentration (%) is needed?"},
-    {"title": "Recessive recurrence in two pregnancies", "question": "Both parents are carriers of the same autosomal recessive disorder. What is the probability (%) that both of their next two pregnancies are affected?"},
-    {"title": "X-linked carrier mother", "question": "A mother is a carrier of an X-linked recessive disorder (equal sex ratio). What is the chance (%) that her next child is an affected son?"},
-    {"title": "Anion gap", "question": "Na 138, Cl 102 and HCO₃ 9 mmol/L. What is the anion gap?"},
-    {"title": "Ammonia unit conversion", "question": "Plasma ammonia is 300 µg/dL. What is it approximately in µmol/L (conversion factor 0.587)?"},
-    {"title": "Scavenger loading dose", "question": "A 3.5-kg neonate needs a scavenger loading dose of 250 mg/kg of each drug. How many mg of each drug are given?"}
+  "calc_questions": [
+    {
+      "title": "GIR",
+      "question": "A neonate receives D12.5 at 96 mL/kg/day. What is the glucose infusion rate (GIR)?"
+    },
+    {
+      "title": "Dextrose concentration",
+      "question": "You want a GIR of 10 mg/kg/min with a total infusion of 120 mL/kg/day. What dextrose concentration (%) is needed?"
+    },
+    {
+      "title": "Recessive recurrence in two pregnancies",
+      "question": "Both parents are carriers of the same autosomal recessive disorder. What is the probability (%) that both of their next two pregnancies are affected?"
+    },
+    {
+      "title": "X-linked carrier mother",
+      "question": "A mother is a carrier of an X-linked recessive disorder (equal sex ratio). What is the chance (%) that her next child is an affected son?"
+    },
+    {
+      "title": "Anion gap",
+      "question": "Na 138, Cl 102 and HCO₃ 9 mmol/L. What is the anion gap?"
+    },
+    {
+      "title": "Ammonia unit conversion",
+      "question": "Plasma ammonia is 300 µg/dL. What is it approximately in µmol/L (conversion factor 0.587)?"
+    },
+    {
+      "title": "Scavenger loading dose",
+      "question": "A 3.5-kg neonate needs a scavenger loading dose of 250 mg/kg of each drug. How many mg of each drug are given?"
+    }
   ],
   "calc_parts": [
-    [{"answer": 8.33, "unit": "mg/kg/min"}],
-    [{"answer": 12, "unit": "%"}],
-    [{"answer": 6.25, "unit": "%"}],
-    [{"answer": 25, "unit": "%"}],
-    [{"answer": 27, "unit": "mmol/L"}],
-    [{"answer": 176, "unit": "µmol/L"}],
-    [{"answer": 875, "unit": "mg"}]
+    [
+      {
+        "answer": 8.33,
+        "unit": "mg/kg/min"
+      }
+    ],
+    [
+      {
+        "answer": 12,
+        "unit": "%"
+      }
+    ],
+    [
+      {
+        "answer": 6.25,
+        "unit": "%"
+      }
+    ],
+    [
+      {
+        "answer": 25,
+        "unit": "%"
+      }
+    ],
+    [
+      {
+        "answer": 27,
+        "unit": "mmol/L"
+      }
+    ],
+    [
+      {
+        "answer": 176,
+        "unit": "µmol/L"
+      }
+    ],
+    [
+      {
+        "answer": 875,
+        "unit": "mg"
+      }
+    ]
   ]
 }

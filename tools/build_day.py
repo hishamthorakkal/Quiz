@@ -229,6 +229,10 @@ def build(day, docx, keep_order=False):
             if s['title'].upper().startswith('ACTIVE RECALL'):
                 s['title'] = ''
     qs, problems, stats = dp.parse_mcqs(doc, parts, extras.get('explanation_option_text'))
+    # extras "stale_key": [n, …] — the document's separate quick key was not updated after its own (audited) key
+    # corrections; for these questions the Section C header answer is used and the quick-key mismatch is not an error
+    stale = {int(n) for n in extras.get('stale_key', [])}
+    problems = [pr for pr in problems if not (re.match(r'^Q(\d+): answer key ', pr) and int(re.match(r'^Q(\d+)', pr)[1]) in stale)]
     if problems:
         raise SystemExit('MCQ problems — fix the source or parser first:\n  ' + '\n  '.join(problems))
     # Source answer keys can be patterned (e.g. A-B-C-D repeating), so options are shuffled once —
