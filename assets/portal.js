@@ -137,7 +137,7 @@
       let cls = '';
       if (ctx.page.kind === 'pearls') cls = /trap/i.test(ctx.sec.title) ? 'list-trap' : 'list-pearl';
       if (ctx.page.kind === 'revision') return `<ol class="facts">${b.items.map(i => `<li>${i}</li>`).join('')}</ol>`;
-      if (ctx.page.kind === 'recall') return recallCards(b.items);
+      if (ctx.page.kind === 'recall' && !b.facts) return recallCards(b.items);
       return `<${tag} class="${cls}">${b.items.map(i => `<li>${i}</li>`).join('')}</${tag}>`;
     }
     if (b.t === 'callout') {

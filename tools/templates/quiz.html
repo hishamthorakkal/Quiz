@@ -74,7 +74,7 @@ function submitAnswer(){
  document.getElementById(`opt-${q.answer}`).classList.add('correct');
  if(!correct)document.getElementById(`opt-${chosen}`).classList.add('wrong');
  const fb=document.getElementById('feedback');fb.className=`feedback ${correct?'correct':'wrong'}`;
- fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div><div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl||'')}</div>${!correct?tagBox():q.retest?confBox():''}`;
+ fb.innerHTML=`<strong>${correct?'✓ Correct (+4)':'✗ Incorrect (−1)'}</strong>${!correct?`<div style="margin-top:7px"><b>Correct answer:</b> ${String.fromCharCode(65+q.answer)}. ${esc(q.options[q.answer])}</div>`:''}<div class="explain"><b>Explanation:</b> ${esc(q.explanation)}</div>${q.pearl?`<div class="pearl"><b>Exam pearl:</b> ${esc(q.pearl)}</div>`:''}${!correct?tagBox():q.retest?confBox():''}`;
  document.getElementById('score').textContent=`Score: ${score}`;document.getElementById('counts').textContent=`Correct: ${correctCount} | Wrong: ${wrongCount}`;
  document.getElementById('counter').textContent=`Question ${idx+1} / ${quiz.length} (Source Q${q.num})${skipped.size?` · Skipped: ${skipped.size}`:''}`;
  document.getElementById('mainBtn').textContent=queue.length===1?'Finish Quiz':skipped.has(queue[1])?'Next (Skipped) Question':'Next Question';

@@ -2501,6 +2501,14 @@ System Revision Tests (user request, 10 Oct 2026). Integrated revision days (e.g
 
 Partial edition updates (13 Oct 2026): when a new edition breaks some questions (e.g. the Day 14 distractor-rewrite working edition overwrote the correct option of 6 questions while the key still pointed at that letter), compare every question's keyed option text with the previous edition before building, report the broken ones, and — with the user's choice — use extras.json "keep_questions": {"from": "<earlier docx in DayN/source>", "nums": [...]} to take those questions whole from the earlier edition. Alternatively (user choice for Day 14), extras.json ""option_fixes"": {""40"": {""A"": ""36 mg elemental iron/day""}} restores only the keyed correct option (wording from the earlier edition) and keeps the new distractors; the build refuses to change any non-keyed option. Check the new distractors so that none is also correct. Placeholder reasons ("Distractor revised to be closer to the tested concept …") are dropped as boilerplate.
 
+Day 15 format (13 Oct 2026):
+- Section B tags "[Base]" and "[EXTRA GAP-FILL]" are not difficulty levels (no badge shown); "[CARRY-OVER RETEST]" marks a tracked retest. Gap-fill extras are scored with the rest.
+- Section C header "Q1  Answer A   Base", then a restatement "A. <answer text>" (checked against the option), core text, "Trap: …", "Option A — Correct: …" / "Option B — reason" lines, and for retests "Source: Day 8 carry-over (…)". A one-line "Quick key: 1A  2C …" is the answer key for the cross-check.
+- ALWAYS read explanations that have no option-by-option lines against their keyed option: in Day 15, five gap-fill extras (Q30, Q40, Q50, Q70, Q79) were keyed to an option their own explanation rejects. extras.json "answer_fixes": {"50": {"answer": "C", "why": "…"}} sets the key to the option the explanation describes; report every such fix to the user.
+- Calculation Drill as a table (# | Problem | Working and answer | Trap): answers come from extras "calc_parts" when the bold answer text mixes numbers and notes.
+- Active Recall as two-column tables (prompt | answer), possibly several: all rows become one card list; rows whose "prompt" repeats the answer word-for-word are listed under "FACTS TO RECALL" (no card), and the build warns.
+- Quiz pages hide the "Exam pearl" box when a question has no pearl.
+
 Day 14 format (12 Oct 2026):
 - Separate key part may be titled "SECTION B — SEPARATE ANSWER KEY"; "Q11 D*" (star = retest) is read like "Q11 D" and cross-checked.
 - Retest source line "Error-notebook source / tracking: ERR-D5-Q34; …" gives "Day 5 Q34".

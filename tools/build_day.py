@@ -43,7 +43,7 @@ RULES = [
     (r'^section [abc]\b.*(mcq|question|answer key|explanation|\bq\d+\s*[–-]\s*q\d+|retest|\btest\b)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
     (r'cross-day connection', 'connections'),
     (r'error[- ]notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
-    (r'reference|guideline verification|source frameworks|source notes|source comparison|editorial audit|source map|editorial summary', 'references'), (r'document qa', 'references'),
+    (r'reference|guideline verification|source frameworks|source notes|source comparison|editorial audit|source map|editorial summary|verification status', 'references'), (r'document qa', 'references'),
 ]
 PAGES = {  # id: (title, group, kind)
     'overview': ('Overview', 'Start', 'overview'),
@@ -195,6 +195,28 @@ def build(day, docx, keep_order=False):
             pages['data']['sections'] = [s for s in dsecs if s not in moved]
             pages.setdefault('cases', {'id': 'cases', 'title': PAGES['cases'][0], 'group': PAGES['cases'][1], 'kind': 'cases', 'sections': []})
             pages['cases']['sections'] += [s for s in moved if s['blocks'] or not re.search(r'case workbook', s['title'], re.I)]
+    if 'recall' in pages:
+        # Active Recall given as two-column tables (prompt | answer), possibly several (e.g. a carry-over table):
+        # all rows become ONE card list (ratings are kept per card index); rows whose "prompt" just repeats the
+        # answer (no question in the document) are listed separately as facts to recall
+        tables = [b for s_ in pages['recall']['sections'] for b in s_['blocks']
+                  if b['t'] == 'table' and len(b['head']) == 2 and re.search(r'prompt', re.sub(r'<[^>]+>', '', b['head'][0]), re.I)]
+        if tables:
+            cards, facts = [], []
+            for b in tables:
+                for p_, a_ in b['rows']:
+                    p2 = re.sub(r'^(<strong>)?\s*[A-Z]?\d+\.\s*', r'\1', p_).strip()
+                    same = re.sub(r'<[^>]+>|\W', '', p2).lower() == re.sub(r'<[^>]+>|\W', '', a_).lower()
+                    (facts.append(a_) if same else cards.append(f'{p2}<br>Answer: {a_}'))
+            old_n = sum(len(s_['blocks']) for s_ in pages['recall']['sections'])
+            keep = [b for s_ in pages['recall']['sections'] for b in s_['blocks'] if b not in tables and b['t'] != 'list']
+            nb = [{'t': 'list', 'ordered': True, 'items': cards}] if cards else []
+            if facts:
+                warnings.append(f'Active Recall: {len(facts)} prompts repeat their answer (no question in the document); listed as facts to recall')
+                nb += [{'t': 'callout', 'label': 'FACTS TO RECALL', 'title': '', 'html': ['The document gives no question for these lines; read and recall them.'], 'fill': ''},
+                       {'t': 'list', 'ordered': False, 'items': facts, 'facts': True}]
+            pages['recall']['sections'] = [{'title': '', 'blocks': nb + keep}]
+            total_blocks += len(nb + keep) - old_n
     if recall_answers:
         # Pair prompt i with answer i as "prompt<br>Answer: ..." (same shape as docs that print answers inline).
         ql = next((b for s in pages.get('recall', {}).get('sections', []) for b in s['blocks'] if b['t'] == 'list'), None)
@@ -236,6 +258,12 @@ def build(day, docx, keep_order=False):
                 if q.get('retest'):
                     old['retest'] = q['retest']
                 qs[i] = old
+    # extras "answer_fixes": {"50": {"answer": "C", "why": "…"}} — correct a key the document itself contradicts
+    for n, fx in extras.get('answer_fixes', {}).items():
+        q = next(q for q in qs if q['num'] == int(n))
+        q['answer'] = 'ABCD'.index(fx['answer'])
+        q['why_not'].pop(q['answer'], None)
+        q['explanation'] = dp.compose_explanation(q) if 'core' in q else q['explanation']
     # extras "option_fixes": {"40": {"A": "36 mg elemental iron/day"}} — replace one option's text after checking
     # (used when an edition overwrote the keyed correct option with a distractor); only the keyed option may be fixed
     for n, fx in extras.get('option_fixes', {}).items():

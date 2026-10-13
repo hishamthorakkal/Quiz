@@ -262,6 +262,18 @@ def parse_calc(sections):
     titles = {}
     for s in sections:
         for b in s['blocks']:
+            if b['t'] == 'table' and len(b['head']) >= 3 and re.search(r'problem', re.sub(r'<[^>]+>', '', b['head'][1]), re.I):
+                for r in b['rows']:
+                    plain = [html.unescape(re.sub(r'<[^>]+>', '', c)).strip() for c in r]
+                    bold = re.findall(r'<strong>(.*?)</strong>', r[2]) or [plain[2]]
+                    n = re.match(r'^\s*D?(-?[0-9]+(?:\.[0-9]+)?)\s*(%|[A-Za-zµ/]+(?:/[A-Za-z]+)*)?', html.unescape(re.sub(r'<[^>]+>', '', bold[-1])))
+                    out.append({'num': len(out) + 1, 'title': f'Problem {plain[0]}', 'question': plain[1], 'working': plain[2],
+                                'trap': plain[3] if len(plain) > 3 else '', 'answer': float(n[1]) if n else 0.0,
+                                'unit': (n[2] or '') if n else '', 'tol': None})
+    if out:
+        return out
+    for s in sections:
+        for b in s['blocks']:
             t = html.unescape(re.sub(r'<[^>]+>', '', b.get('html', ''))) if b['t'] == 'p' and isinstance(b.get('html'), str) else ''
             m = re.match(r'^Drill (\d+)\.\s*(.+?)\s*[—–-]\s*Data/question:', t)
             if m:
@@ -350,7 +362,12 @@ def parse_mcqs(doc, parts, aliases=None):
             stem, retest = m[3].strip(), False
             if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75 [— stem]": label dropped
                 stem, retest = RETEST_LABEL.sub('', stem).strip(), True
-            cur = {'num': int(m[1]), 'level': m[2].strip(), 'question': stem, 'options': [], 'retest': retest or pending_retest}
+            lev = m[2].strip()
+            if re.search(r'retest', lev, re.I):
+                retest, lev = True, ''
+            elif re.match(r'^(base|extra[ -]gap[- ]fill|gap[- ]fill|extra)$', lev, re.I):
+                lev = ''
+            cur = {'num': int(m[1]), 'level': lev, 'question': stem, 'options': [], 'retest': retest or pending_retest}
             pending_retest = False
             qs.append(cur)
             continue
@@ -376,6 +393,10 @@ def parse_mcqs(doc, parts, aliases=None):
                         key[int(c[i])] = c[i + 1].strip()
                         if len(c) == 3:
                             klev[int(c[i])] = c[2].strip()
+    for el in C or []:
+        if el.tag == W + 'p' and re.match(r'^Quick key\b', text(el), re.I):
+            for n_, a_ in re.findall(r'\b(\d+)\s*([A-D])\b', text(el)):
+                key[int(n_)] = a_
     for h, els in parts:
         if re.search(r'\bANSWER KEY\b', h, re.I) and not re.search(r'EXPLANATION', h, re.I):
             for el in els:
@@ -392,6 +413,14 @@ def parse_mcqs(doc, parts, aliases=None):
                 e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
                 continue
+            m = re.match(r'^Q(\d+)\s+Answer\s+([A-D])\b\s*(.*)$', t)
+            if m:
+                tag = m[3].strip()
+                e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
+                if re.search(r'retest', tag, re.I):
+                    e['retest'] = True
+                ex[int(m[1])] = e
+                continue
             # Day 7+ format: "12. Correct answer: B — <option text>" (no level on the header line)
             m = re.match(r'^Q?(\d+)\.\s*Correct answer:?\s*([A-D])\s*[—-]\s*(.+)$', t)
             if m:
@@ -402,7 +431,15 @@ def parse_mcqs(doc, parts, aliases=None):
                 continue
             if not e or not t:
                 continue
-            m = re.match(r'^([A-D]):\s+(.+)$', t)
+            m = re.match(r'^([A-D])\.\s+(.+)$', t) if not e['core'] and not e['why_not'] and ' — ' not in t else None
+            if m and e['q'] and 'restated' not in e:     # restatement of the keyed answer right after the header
+                e['restated'] = (m[1], m[2].strip())
+                continue
+            m = re.match(r'^Source:\s*(Day\s*\d+)(?:\s*Q(\d+))?', t)
+            if m:
+                e['retest_from'] = m[1] + (f' Q{m[2]}' if m[2] else '')
+                continue
+            m = re.match(r'^Option ([A-D])\s*[—–-]\s*(.+)$', t) or re.match(r'^([A-D]):\s+(.+)$', t)
             if m and e['q']:
                 reason = m[2].strip()
                 if re.match(r'^correct\b', reason, re.I):
@@ -485,6 +522,12 @@ def parse_mcqs(doc, parts, aliases=None):
             continue
         if key and key.get(n) != e['ans']:
             problems.append(f'Q{n}: answer key {key.get(n)} != explanation {e["ans"]}')
+        if e.get('restated'):
+            rl, rt = e['restated']
+            if rl != e['ans']:
+                problems.append(f'Q{n}: restated answer letter {rl} != header answer {e["ans"]}')
+            elif rt.rstrip('.') != q['options']['ABCD'.index(rl)].rstrip('.'):
+                fixed.append(f'Q{n}: restated answer wording differs from option {rl}')
         if not e['marked'] and e.get('labelled'):
             problems.append(f'Q{n}: no option marked Correct in the explanation')
         if not e['marked'] and not e.get('labelled'):
