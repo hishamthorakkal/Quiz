@@ -236,6 +236,14 @@ def build(day, docx, keep_order=False):
                 if q.get('retest'):
                     old['retest'] = q['retest']
                 qs[i] = old
+    # extras "option_fixes": {"40": {"A": "36 mg elemental iron/day"}} — replace one option's text after checking
+    # (used when an edition overwrote the keyed correct option with a distractor); only the keyed option may be fixed
+    for n, fx in extras.get('option_fixes', {}).items():
+        q = next(q for q in qs if q['num'] == int(n))
+        for letter, txt in fx.items():
+            if 'ABCD'.index(letter) != q['answer']:
+                raise SystemExit(f'extras.json option_fixes: Q{n} {letter} is not the keyed option')
+            q['options'][q['answer']] = txt
     key = ''.join('ABCD'[q['answer']] for q in qs)
     mi = extras.get('mcq_images', {})
     for q in qs:
@@ -346,7 +354,8 @@ def build(day, docx, keep_order=False):
               'questions_without_pearl': [q['num'] for q in qs if not q['pearl']], 'warnings': warnings, 'sets': portal['quizSets'],
               'mcq_images': {q['num']: q['img'] for q in qs if 'img' in q}, 'calc': calc,
               'retests': {q['num']: q['retest'] for q in qs if 'retest' in q},
-              'kept_from_earlier_edition': (extras.get('keep_questions') or {}).get('nums', [])}
+              'kept_from_earlier_edition': (extras.get('keep_questions') or {}).get('nums', []),
+              'option_fixes': extras.get('option_fixes', {})}
     return report
 
 

@@ -1,16 +1,25 @@
 {
-  "_about": "Build extras for Day 14 (read by tools/build_day.py). Several Calculation Drill problems ask for two quantities; calc_parts gives one answer box per quantity (values from the document's worked answers, arithmetic re-checked). calc_questions reword two-part prompts so each asked quantity is explicit. The Distractor Rewrite Working Edition overwrote the correct option of Q12, Q21, Q23, Q34, Q40 and Q50 (the keyed letter now holds a distractor); keep_questions takes those six whole from the previous edition. Its placeholder why-not lines (\"Distractor revised …\") are dropped.",
+  "_about": "Build extras for Day 14 (read by tools/build_day.py). Several Calculation Drill problems ask for two quantities; calc_parts gives one answer box per quantity (values from the document's worked answers, arithmetic re-checked). calc_questions reword two-part prompts so each asked quantity is explicit. The Distractor Rewrite Working Edition overwrote the correct option of Q12, Q21, Q23, Q34, Q40 and Q50 with a distractor while the key still pointed at that letter; option_fixes puts the correct answer (wording from the previous edition) back into the keyed slot, keeping the new distractors. Placeholder why-not lines (\"Distractor revised …\") are dropped.",
   "title": "Nutrition & Micronutrients",
-  "keep_questions": {
-    "from": "Day14_NEETSS_ICP_Nutrition_Integrated_Indian_Protocol_Enhanced.docx",
-    "nums": [
-      12,
-      21,
-      23,
-      34,
-      40,
-      50
-    ]
+  "option_fixes": {
+    "12": {
+      "C": "Severe stunting without current wasting"
+    },
+    "21": {
+      "A": "Excess zinc impairs intestinal copper absorption"
+    },
+    "23": {
+      "B": "Reassure and support responsive breastfeeding"
+    },
+    "34": {
+      "B": "100,000 IU orally at the next eligible contact"
+    },
+    "40": {
+      "A": "36 mg elemental iron/day"
+    },
+    "50": {
+      "D": "800 mL/day"
+    }
   },
   "station_images": {
     "Visual Station 1": [
