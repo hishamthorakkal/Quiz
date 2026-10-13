@@ -223,6 +223,19 @@ def build(day, docx, keep_order=False):
                       for j in [f0['options'].index(q['options'][i])]))
         if not ok:
             raise SystemExit(f"Shuffle verification failed at Q{q['num']}")
+    # extras "keep_questions": {"from": "<earlier docx in DayN/source>", "nums": [...]} — take those questions whole
+    # from the earlier edition (used when a new edition breaks them, e.g. overwrote the correct option)
+    kq = extras.get('keep_questions')
+    if kq:
+        d0 = dp.Doc(f"{D}/source/{kq['from']}")
+        q0 = {q['num']: q for q in dp.parse_mcqs(d0, dp.split_h1(d0)[2], extras.get('explanation_option_text'))[0]}
+        for i, q in enumerate(qs):
+            if q['num'] in kq['nums']:
+                old = dict(q0[q['num']])
+                old['srcAnswer'] = 'ABCD'[old['answer']]
+                if q.get('retest'):
+                    old['retest'] = q['retest']
+                qs[i] = old
     key = ''.join('ABCD'[q['answer']] for q in qs)
     mi = extras.get('mcq_images', {})
     for q in qs:
@@ -332,7 +345,8 @@ def build(day, docx, keep_order=False):
               'answer_key_after_shuffle': key,
               'questions_without_pearl': [q['num'] for q in qs if not q['pearl']], 'warnings': warnings, 'sets': portal['quizSets'],
               'mcq_images': {q['num']: q['img'] for q in qs if 'img' in q}, 'calc': calc,
-              'retests': {q['num']: q['retest'] for q in qs if 'retest' in q}}
+              'retests': {q['num']: q['retest'] for q in qs if 'retest' in q},
+              'kept_from_earlier_edition': (extras.get('keep_questions') or {}).get('nums', [])}
     return report
 
 

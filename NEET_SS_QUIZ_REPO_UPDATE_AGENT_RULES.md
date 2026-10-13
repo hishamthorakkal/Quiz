@@ -2499,6 +2499,8 @@ System Revision Tests (user request, 10 Oct 2026). Integrated revision days (e.g
 - Section titles like "SECTION B — NEONATOLOGY SYSTEM REVISION TEST" count as MCQ parts ("test" in the title). "Source frameworks / guideline verification" parts go to References.
 - Calculation Drill, Day 12 layout: "Drill N. <title> — Data/question: …" lines plus "Drill N. Data: … Formula: … Substitution: … Final answer: … Trap: …" paragraphs.
 
+Partial edition updates (13 Oct 2026): when a new edition breaks some questions (e.g. the Day 14 distractor-rewrite working edition overwrote the correct option of 6 questions while the key still pointed at that letter), compare every question's keyed option text with the previous edition before building, report the broken ones, and — with the user's choice — use extras.json "keep_questions": {"from": "<earlier docx in DayN/source>", "nums": [...]} to take those questions whole from the earlier edition. Placeholder reasons ("Distractor revised to be closer to the tested concept …") are dropped as boilerplate.
+
 Day 14 format (12 Oct 2026):
 - Separate key part may be titled "SECTION B — SEPARATE ANSWER KEY"; "Q11 D*" (star = retest) is read like "Q11 D" and cross-checked.
 - Retest source line "Error-notebook source / tracking: ERR-D5-Q34; …" gives "Day 5 Q34".

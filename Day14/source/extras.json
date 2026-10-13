@@ -1,28 +1,213 @@
 {
-  "_about": "Build extras for Day 14 (read by tools/build_day.py). Several Calculation Drill problems ask for two quantities; calc_parts gives one answer box per quantity (values from the document's worked answers, arithmetic re-checked). calc_questions reword two-part prompts so each asked quantity is explicit.",
+  "_about": "Build extras for Day 14 (read by tools/build_day.py). Several Calculation Drill problems ask for two quantities; calc_parts gives one answer box per quantity (values from the document's worked answers, arithmetic re-checked). calc_questions reword two-part prompts so each asked quantity is explicit. The Distractor Rewrite Working Edition overwrote the correct option of Q12, Q21, Q23, Q34, Q40 and Q50 (the keyed letter now holds a distractor); keep_questions takes those six whole from the previous edition. Its placeholder why-not lines (\"Distractor revised …\") are dropped.",
   "title": "Nutrition & Micronutrients",
-  "station_images": {
-    "Visual Station 1": [{"mask": [[20, 112, 436, 162], [340, 262, 436, 312], [20, 412, 436, 462]], "text": [[320, 118, "Band 1", 30], [320, 268, "Band 2", 30], [320, 418, "Band 3", 30]]}],
-    "Visual Station 2": [{"mask": [[300, 4, 1655, 60]]}],
-    "Visual Station 3": [{"mask": [[220, 125, 670, 175], [1140, 125, 1470, 175]], "text": [[400, 128, "Left", 32], [1265, 128, "Right", 32]]}]
+  "keep_questions": {
+    "from": "Day14_NEETSS_ICP_Nutrition_Integrated_Indian_Protocol_Enhanced.docx",
+    "nums": [
+      12,
+      21,
+      23,
+      34,
+      40,
+      50
+    ]
   },
-  "calc_questions": [    {"title": "F-75 volumes in complicated SAM", "question": "A 7.5-kg child with complicated SAM (no gross oedema) needs F-75 at 130 mL/kg/day given as 12 feeds. What is the daily volume, and what volume is given per feed?"},
-    {"title": "F-75 volume and energy with gross oedema", "question": "An 8-kg child with gross oedema starts F-75 at 100 mL/kg/day. F-75 contains 75 kcal/100 mL. What is the total daily volume, and how many kcal/day does it provide?"},
-    {"title": "MAM energy target", "question": "A 9-kg child with MAM targets a total intake of 130 kcal/kg/day. How many kcal/day is that?"},
-    {"title": "F-100 volume in rehabilitation", "question": "A 10-kg child in rehabilitation targets 160 kcal/kg/day and receives F-100 (100 kcal/100 mL) as the only illustrative feed. What volume per day is needed?"},
-    {"title": "Iron syrup volume", "question": "A 14-kg child is prescribed elemental iron 3 mg/kg/day. The syrup contains 20 mg elemental iron per mL. What volume of syrup is given per day?"},
-    {"title": "Dextrose bolus in SAM hypoglycaemia", "question": "A 6.5-kg child with symptomatic hypoglycaemia in SAM needs 10% dextrose 5 mL/kg IV (IAP 2026). What volume is given, and how many grams of glucose does it contain?"},
-    {"title": "GIR", "question": "A 1.5-kg preterm infant receives D10 at 120 mL/kg/day. What is the glucose infusion rate (GIR)?"},
-    {"title": "Catch-up energy and F-100 equivalent", "question": "A 12-kg 2-year-old is set a monitored catch-up target of 150 kcal/kg/day. What is the total energy per day, and what F-100 volume (about 1 kcal/mL) would supply it, for arithmetic only?"}
+  "station_images": {
+    "Visual Station 1": [
+      {
+        "mask": [
+          [
+            20,
+            112,
+            436,
+            162
+          ],
+          [
+            340,
+            262,
+            436,
+            312
+          ],
+          [
+            20,
+            412,
+            436,
+            462
+          ]
+        ],
+        "text": [
+          [
+            320,
+            118,
+            "Band 1",
+            30
+          ],
+          [
+            320,
+            268,
+            "Band 2",
+            30
+          ],
+          [
+            320,
+            418,
+            "Band 3",
+            30
+          ]
+        ]
+      }
+    ],
+    "Visual Station 2": [
+      {
+        "mask": [
+          [
+            300,
+            4,
+            1655,
+            60
+          ]
+        ]
+      }
+    ],
+    "Visual Station 3": [
+      {
+        "mask": [
+          [
+            220,
+            125,
+            670,
+            175
+          ],
+          [
+            1140,
+            125,
+            1470,
+            175
+          ]
+        ],
+        "text": [
+          [
+            400,
+            128,
+            "Left",
+            32
+          ],
+          [
+            1265,
+            128,
+            "Right",
+            32
+          ]
+        ]
+      }
+    ]
+  },
+  "calc_questions": [
+    {
+      "title": "F-75 volumes in complicated SAM",
+      "question": "A 7.5-kg child with complicated SAM (no gross oedema) needs F-75 at 130 mL/kg/day given as 12 feeds. What is the daily volume, and what volume is given per feed?"
+    },
+    {
+      "title": "F-75 volume and energy with gross oedema",
+      "question": "An 8-kg child with gross oedema starts F-75 at 100 mL/kg/day. F-75 contains 75 kcal/100 mL. What is the total daily volume, and how many kcal/day does it provide?"
+    },
+    {
+      "title": "MAM energy target",
+      "question": "A 9-kg child with MAM targets a total intake of 130 kcal/kg/day. How many kcal/day is that?"
+    },
+    {
+      "title": "F-100 volume in rehabilitation",
+      "question": "A 10-kg child in rehabilitation targets 160 kcal/kg/day and receives F-100 (100 kcal/100 mL) as the only illustrative feed. What volume per day is needed?"
+    },
+    {
+      "title": "Iron syrup volume",
+      "question": "A 14-kg child is prescribed elemental iron 3 mg/kg/day. The syrup contains 20 mg elemental iron per mL. What volume of syrup is given per day?"
+    },
+    {
+      "title": "Dextrose bolus in SAM hypoglycaemia",
+      "question": "A 6.5-kg child with symptomatic hypoglycaemia in SAM needs 10% dextrose 5 mL/kg IV (IAP 2026). What volume is given, and how many grams of glucose does it contain?"
+    },
+    {
+      "title": "GIR",
+      "question": "A 1.5-kg preterm infant receives D10 at 120 mL/kg/day. What is the glucose infusion rate (GIR)?"
+    },
+    {
+      "title": "Catch-up energy and F-100 equivalent",
+      "question": "A 12-kg 2-year-old is set a monitored catch-up target of 150 kcal/kg/day. What is the total energy per day, and what F-100 volume (about 1 kcal/mL) would supply it, for arithmetic only?"
+    }
   ],
   "calc_parts": [
-    [{"label": "Daily volume", "answer": 975, "unit": "mL/day"}, {"label": "Volume per feed", "answer": 81.25, "unit": "mL per feed"}],
-    [{"label": "Daily volume", "answer": 800, "unit": "mL/day"}, {"label": "Energy", "answer": 600, "unit": "kcal/day"}],
-    [{"answer": 1170, "unit": "kcal/day"}],
-    [{"answer": 1600, "unit": "mL/day"}],
-    [{"answer": 2.1, "unit": "mL/day"}],
-    [{"label": "Volume of D10", "answer": 32.5, "unit": "mL"}, {"label": "Glucose", "answer": 3.25, "unit": "g"}],
-    [{"answer": 8.33, "unit": "mg/kg/min"}],
-    [{"label": "Total energy", "answer": 1800, "unit": "kcal/day"}, {"label": "F-100 equivalent volume", "answer": 1800, "unit": "mL/day"}]
+    [
+      {
+        "label": "Daily volume",
+        "answer": 975,
+        "unit": "mL/day"
+      },
+      {
+        "label": "Volume per feed",
+        "answer": 81.25,
+        "unit": "mL per feed"
+      }
+    ],
+    [
+      {
+        "label": "Daily volume",
+        "answer": 800,
+        "unit": "mL/day"
+      },
+      {
+        "label": "Energy",
+        "answer": 600,
+        "unit": "kcal/day"
+      }
+    ],
+    [
+      {
+        "answer": 1170,
+        "unit": "kcal/day"
+      }
+    ],
+    [
+      {
+        "answer": 1600,
+        "unit": "mL/day"
+      }
+    ],
+    [
+      {
+        "answer": 2.1,
+        "unit": "mL/day"
+      }
+    ],
+    [
+      {
+        "label": "Volume of D10",
+        "answer": 32.5,
+        "unit": "mL"
+      },
+      {
+        "label": "Glucose",
+        "answer": 3.25,
+        "unit": "g"
+      }
+    ],
+    [
+      {
+        "answer": 8.33,
+        "unit": "mg/kg/min"
+      }
+    ],
+    [
+      {
+        "label": "Total energy",
+        "answer": 1800,
+        "unit": "kcal/day"
+      },
+      {
+        "label": "F-100 equivalent volume",
+        "answer": 1800,
+        "unit": "mL/day"
+      }
+    ]
   ]
 }

@@ -249,7 +249,8 @@ BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the sing
                'would require a different clinical or data pattern', 'This stage does not match the severity pattern in the stem',
                'This numerical choice results from a unit, decimal, frequency or fluid-allocation error',
                'This option proposes “', 'This prioritizes “', 'This delays or de-escalates care despite',
-               'Although superficially plausible, this choice conflicts', 'This would fit a different clinical setting')
+               'Although superficially plausible, this choice conflicts', 'This would fit a different clinical setting',
+               'Distractor revised to be closer to the tested concept')
 RETEST = re.compile(r'^EXTRA NOTEBOOK RETEST\b', re.I)
 RETEST_LABEL = re.compile(r'^EXTRA NOTEBOOK RETEST\s*[—–-]\s*NOT PART OF (?:THE )?(?:BASE )?\d+(?: MCQS)?\s*[.:]?\s*(?:[—–-]\s*)?', re.I)
 
