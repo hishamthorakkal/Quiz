@@ -139,7 +139,7 @@ def blocks_from(doc, elements):
             if not t:
                 continue
             st = doc.style(el)
-            if st.startswith('heading 2') or st.startswith('heading 3'):
+            if st.startswith('heading 2') or st.startswith('heading 3') or st == 'h1x':
                 sections.append({'title': t, 'blocks': []})
                 lst = None
                 continue
@@ -175,7 +175,7 @@ def split_h1(doc):
                 title = ' '.join(x.text or '' for x in el.iter(W + 't') if True)
                 title = re.sub(r'\s+', ' ', ''.join((x.text or '') if x.tag == W + 't' else ' ' for x in el.iter() if x.tag in (W + 't', W + 'br'))).strip()
                 continue
-            if st.startswith('heading 1'):
+            if st.startswith('heading 1') or st == 'part':      # some packs style their part headings "part"
                 cur = (text(el), [])
                 parts.append(cur)
                 continue
@@ -333,7 +333,14 @@ def parse_mcqs(doc, parts, aliases=None):
         any(el.tag == W + 'p' and re.match(r'^[A-D]\.\s', text(el)) for el in els)
     A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
     B, C = find(r'^SECTION B'), find(r'^SECTION C')
-    if A is None and B is not None and not any(el.tag == W + 'tbl' for el in B) and \
+    named = next((els for h, els in parts if re.search(r'question booklet|\bmcqs?\b|questions\b|revision test', h, re.I)
+                  and not re.search(r'explanation|answer', h, re.I) and has_q(els)), None)
+    if A is None and named is not None and (B is None or not has_q(B)):
+        A, B = named, None
+    expl = next((els for h, els in parts if re.search(r'explanation', h, re.I)), None)
+    if expl is not None:
+        C = expl
+    if A is None and B is not None and has_q(B) and not any(el.tag == W + 'tbl' for el in B) and \
             any(el.tag == W + 'p' and re.match(r'^Q\d+\.', text(el)) for el in B):
         A, B = B, None                 # questions are in Section B; answer key comes from Section C
     problems, qs, cur, fixed = [], [], None, []
@@ -400,9 +407,9 @@ def parse_mcqs(doc, parts, aliases=None):
     for h, els in parts:
         if re.search(r'\bANSWER KEY\b', h, re.I) and not re.search(r'EXPLANATION', h, re.I):
             for el in els:
-                if el.tag == W + 'p':
-                    for n_, a_ in re.findall(r'\bQ(\d+)\s+([A-D])\b', text(el)):
-                        key[int(n_)] = a_
+                t_ = text(el) if el.tag == W + 'p' else ' '.join(text(p_) for p_ in el.iter(W + 'p'))
+                for n_, a_ in re.findall(r'\bQ(\d+)\s+([A-D])\b', t_) + re.findall(r'\b(\d+)\s*:\s*([A-D])\b', t_):
+                    key[int(n_)] = a_
     Q = {q['num']: q for q in qs}
     ex, e, pearl_labels = {}, None, {}
     for el in C or []:
@@ -412,6 +419,13 @@ def parse_mcqs(doc, parts, aliases=None):
             if m:
                 e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
+                continue
+            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\.\s*(.+)$', t)
+            if m:
+                e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
+                ex[int(m[1])] = e
+                if e['q'] and e['q']['options']['ABCD'.index(m[2])].rstrip('.') != m[3].strip().rstrip('.'):
+                    problems.append(f"Q{m[1]}: header answer text does not match option {m[2]}")
                 continue
             m = re.match(r'^Q(\d+)\s+Answer\s+([A-D])\b\s*(.*)$', t)
             if m:
@@ -444,6 +458,7 @@ def parse_mcqs(doc, parts, aliases=None):
                 reason = m[2].strip()
                 if re.match(r'^correct\b', reason, re.I):
                     e['marked'].append(m[1])
+                    e['correct_reason'] = re.sub(r'^correct\b[.:!]?\s*', '', reason, flags=re.I)
                 else:
                     e['labelled'] = e.get('labelled') or bool(re.match(r'^(Incorrect|Wrong)\b', reason, re.I))
                     reason = re.sub(r'^(Incorrect|Wrong)[.:]\s*', '', reason)
@@ -463,6 +478,7 @@ def parse_mcqs(doc, parts, aliases=None):
                 reason = rest[len(opt) + 3:].strip()
                 if re.match(r'^correct\b', reason, re.I):
                     e['marked'].append(m[1])
+                    e['correct_reason'] = re.sub(r'^correct\b[.:!]?\s*', '', reason, flags=re.I)
                 else:
                     if re.match(r'^(Incorrect|Wrong)\b', reason, re.I):
                         e['labelled'] = True
@@ -483,11 +499,11 @@ def parse_mcqs(doc, parts, aliases=None):
                 e['retest_from'] = re.split(r'\s*[•;]\s*', body)[0].strip().rstrip(' —–-')
                 e['stage'] = st[1] if st else None
                 continue
-            m = re.match(r'^EXAM PEARL\s*[—:-]\s*(.+)$', t)
+            m = re.match(r'^EXAM PEARL\s*[—:-]\s*(.+)$', t, re.I)
             if m:
                 e['pearl'] = m[1].strip()
                 continue
-            m = re.match(r'^WHY THIS QUESTION MATTERS\s*[:—-]\s*(.+)$', t)
+            m = re.match(r'^WHY THIS QUESTION MATTERS\s*[:—-]\s*(.+)$', t, re.I)
             if m:
                 e['why'] = m[1].strip()
                 continue
@@ -543,7 +559,7 @@ def parse_mcqs(doc, parts, aliases=None):
         pearl = pearl_labels.get(n) or e.get('pearl', '')
         if n in pearl_labels and e.get('pearl_in_block') != pearl_labels[n]:
             shifted.append(n)
-        core = ' '.join(e['core']).strip()
+        core = ' '.join(e['core']).strip() or e.get('correct_reason', '')   # no core paragraph: use the keyed option's "Correct:" reason
         # why_not is keyed by option INDEX so it survives option shuffling; compose_explanation() adds letters.
         why_not = {'ABCD'.index(k): v for k, v in e['why_not'].items()}
         if e.get('disc'):

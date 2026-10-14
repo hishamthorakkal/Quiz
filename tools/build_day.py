@@ -15,7 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ACRONYMS = {'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
             'NICU', 'ELBW', 'VLBW', 'PPHN', 'TSB', 'TCB', 'DAT', 'ICP', 'NEET-SS', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX',
             'XI', 'XII', 'XIII', 'K/C/R/G/S', 'R1', 'R2', 'R3', 'QA', 'MCQS', 'CPAP', 'NIV', 'PIP', 'EOS', 'LOS',
-            'NEC', 'TPN', 'PN', 'NNF', 'SIP', 'GIR', 'PDHM', 'MOM', 'HMF', 'IUGR', 'SGA', 'IV/PN'}
+            'NEC', 'TPN', 'PN', 'NNF', 'IEM', 'ASD', 'ADHD', 'CHD', 'CCHD', 'ECG', 'CXR', 'IAP-NNF', 'SIP', 'GIR', 'PDHM', 'MOM', 'HMF', 'IUGR', 'SGA', 'IV/PN'}
 SMALL = {'and', 'of', 'the', 'vs', 'in', 'for', 'to', 'a', 'an', 'on', 'or', 'with', '&'}
 
 
@@ -36,14 +36,15 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
+    (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
     (r'calculation drill', 'calc'), (r'answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data|data-interpretation', 'data'),
     (r'objective|learning outcomes', 'overview'), (r'(study|teaching) plan', 'overview'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases|case discriminators|teaching cases|integrated cases', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
-    (r'^section [abc]\b.*(mcq|question|answer key|explanation|\bq\d+\s*[–-]\s*q\d+|retest|\btest\b)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
+    (r'^section [a-z]\b.*(mcq|question|answer key|explanation|\bq\d+\s*[–-]\s*q\d+|retest|\btest\b)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
     (r'cross-day connection', 'connections'),
     (r'error[- ]notebook|self-assessment|r1 / r2|r1-r2|weak-concept triage|spaced revision', 'plan'),
-    (r'reference|guideline verification|source frameworks|source notes|source comparison|editorial audit|source map|editorial summary|verification status', 'references'), (r'document qa', 'references'),
+    (r'reference|guideline verification|source frameworks|source notes|source comparison|editorial audit|source map|editorial summary|verification status|guideline register|limitations and how to use', 'references'), (r'document qa', 'references'),
 ]
 PAGES = {  # id: (title, group, kind)
     'overview': ('Overview', 'Start', 'overview'),
@@ -147,6 +148,7 @@ def build(day, docx, keep_order=False):
     recall_answers = None
     calc = None
     doc_mcq_imgs = set()
+    station_answers = None
     # Optional per-day extras (DayN/source/extras.json): generated images for image-based MCQs and visual stations,
     # and reworded Calculation Drill questions. See NEET_SS_QUIZ_REPO_UPDATE_AGENT_RULES.md.
     xf = f'{D}/source/extras.json'
@@ -168,14 +170,26 @@ def build(day, docx, keep_order=False):
     total_blocks += sum(len(s['blocks']) for s in pre_secs)
     for h1, els in parts:
         secs = dp.blocks_from(doc, els)
+        pp_ = extras.get('part_pages')
+        if pp_ and re.search(pp_['pattern'], h1):
+            pid = f'part-{len(notes) + 1}'
+            notes.append(pid)
+            total_blocks += sum(len(s['blocks']) for s in secs)
+            pages[pid] = {'id': pid, 'title': nice(re.sub(pp_['pattern'], '', h1).strip(' —–-')), 'eyebrow': '',
+                          'group': pp_['group'], 'kind': 'notes', 'sections': secs}
+            continue
         kind = next((k for pat, k in RULES if re.search(pat, h1, re.I)), None)
         if kind == 'mcq':
+            continue
+        if kind == 'stationanswers':          # "Station N: answer" lines -> hidden interpretation of station N
+            station_answers = secs
+            total_blocks += sum(len(s['blocks']) for s in secs)
             continue
         if kind == 'calc':                 # numeric drill -> its own page under Quizzes (calc.html), not a study page
             calc = dp.parse_calc(secs)
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
-        if kind == 'recall' and re.search(r'\banswers?\b', h1, re.I):
+        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b|\banswers?\s*$', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
@@ -188,6 +202,15 @@ def build(day, docx, keep_order=False):
             pages[pid] = {'id': pid, 'title': ptitle, 'eyebrow': f'Part {m[1]}' if m else '', 'group': 'Study Notes', 'kind': 'notes', 'sections': secs}
             continue
         add(kind, h1, secs, as_section=kind in ('overview', 'tables', 'plan', 'references'))
+    if station_answers and 'data' in pages:
+        for s_ in station_answers:
+            for b in s_['blocks']:
+                t_ = re.sub(r'<[^>]+>', '', b.get('html', '')) if b['t'] == 'p' else ''
+                m_ = re.match(r'^(Station \d+)\s*:\s*(.+)$', t_)
+                tgt = m_ and next((s for s in pages['data']['sections'] if s['title'].startswith(m_[1] + ' ')), None)
+                if not tgt:
+                    raise SystemExit(f'Station answer without a matching station: {t_[:60]}')
+                tgt['blocks'].append({'t': 'p', 'html': '<strong>Interpretation:</strong> ' + b['html'].split(':', 1)[1].strip()})
     if 'data' in pages:
         dsecs = pages['data']['sections']
         moved = [s for s in dsecs if re.match(r'^Case \d+\b', s['title']) or re.search(r'case workbook', s['title'], re.I)]
@@ -196,6 +219,21 @@ def build(day, docx, keep_order=False):
             pages.setdefault('cases', {'id': 'cases', 'title': PAGES['cases'][0], 'group': PAGES['cases'][1], 'kind': 'cases', 'sections': []})
             pages['cases']['sections'] += [s for s in moved if s['blocks'] or not re.search(r'case workbook', s['title'], re.I)]
     if 'recall' in pages:
+        for s_ in pages['recall']['sections']:
+            nb_, merged = [], 0
+            for b in s_['blocks']:
+                prev = nb_[-1] if nb_ else None
+                if b['t'] == 'p' and re.match(r'^(<[^>]+>)*\s*Answer\s*:', b['html']) and prev and prev['t'] == 'list':
+                    prev['items'][-1] += '<br>' + b['html']
+                    merged += 1
+                elif b['t'] == 'list' and prev and prev['t'] == 'list' and prev['ordered'] == b['ordered']:
+                    prev['items'] += b['items']
+                    merged += 1
+                else:
+                    nb_.append(b)
+            if merged:
+                s_['blocks'] = nb_
+                total_blocks -= merged
         # Active Recall given as two-column tables (prompt | answer), possibly several (e.g. a carry-over table):
         # all rows become ONE card list (ratings are kept per card index); rows whose "prompt" just repeats the
         # answer (no question in the document) are listed separately as facts to recall
@@ -262,6 +300,9 @@ def build(day, docx, keep_order=False):
                 if q.get('retest'):
                     old['retest'] = q['retest']
                 qs[i] = old
+    for n, src in extras.get('retests', {}).items():
+        q = next(q for q in qs if q['num'] == int(n))
+        q['retest'] = {'stage': 'R1', 'from': src} if isinstance(src, str) else src
     # extras "answer_fixes": {"50": {"answer": "C", "why": "…"}} — correct a key the document itself contradicts
     for n, fx in extras.get('answer_fixes', {}).items():
         q = next(q for q in qs if q['num'] == int(n))
@@ -337,6 +378,10 @@ def build(day, docx, keep_order=False):
         if bad:
             raise SystemExit(f'extras.json plan_links: unknown page ids {bad}')
         portal['planLinks'] = extras['plan_links']
+    if extras.get('calc_items'):
+        calc = [dict({'num': i + 1, 'tol': None}, **c) for i, c in enumerate(extras['calc_items'])]
+        for c in calc:
+            c.setdefault('answer', c['parts'][0]['answer']); c.setdefault('unit', c['parts'][0]['unit'])
     if calc:
         for i, q in enumerate(extras.get('calc_questions', [])):
             if q and i < len(calc):          # reworded as a complete question (str) or {"title", "question"}; answer/working stay from the source
