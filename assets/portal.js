@@ -86,8 +86,8 @@
       lines.push(l);
     }
     const title = `Day ${P.day} — Active Recall: revise again (${again.length})`;
-    fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=repeat`, { method: 'POST', body: lines.join('\n') })
-      .then(() => LS.set('recallSent', sig)).catch(() => {});
+    LS.set('recallSent', sig);  // Notify queues and retries a failed send, so it is never lost or sent twice
+    Notify.send(title, 'repeat', lines.join('\n'));
   }
 
   // ---------- shell ----------

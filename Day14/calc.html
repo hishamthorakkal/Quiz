@@ -68,11 +68,11 @@ function finish(){
   try{const p=JSON.parse(localStorage.getItem(KEY))||{best:0,attempts:0};localStorage.setItem(KEY,JSON.stringify({n,best:Math.max(p.best||0,ok),last:ok,attempts:(p.attempts||0)+1,at:Date.now()}));}catch(e){}
   const wrong=CALC.map((c,k)=>[c,res[k]]).filter(([,r])=>!r.ok);
   const lines=[`Score: ${ok} / ${n}`,...(wrong.length?['','Wrong: Day → Problem → Entered → Correct',...wrong.map(([c,r])=>`Day ${DAY} → C${c.num} ${c.title} → ${r.raw} → ${parts(c).map(p=>fmt(p.answer)+' '+p.unit).join(' · ')}`)]:['All correct'])];
-  fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(`Day ${DAY} — Calculation Drill: ${ok}/${n}`)}&tags=abacus`,{method:'POST',body:lines.join('\n')}).catch(()=>{});
+  Notify.send(`Day ${DAY} — Calculation Drill: ${ok}/${n}`,'abacus',lines.join('\n'));
   document.getElementById('app').innerHTML=`<h2 style="margin-top:0">Drill finished</h2>
   <div class="stats"><div class="stat"><strong>${ok}/${n}</strong>Correct</div><div class="stat"><strong>${n-ok}</strong>Wrong</div><div class="stat"><strong>${Math.round(ok/n*100)}%</strong>Accuracy</div></div>
   ${CALC.map((c,k)=>`<div class="row ${res[k].ok?'ok':'no'}"><b>C${c.num}. ${esc(c.title)}</b> — ${res[k].ok?'✓':'✗'} you: ${esc(res[k].raw)} · answer: <b>${parts(c).map(p=>fmt(p.answer)+' '+esc(p.unit)).join(' · ')}</b><br><span style="color:#475569">${esc(c.working)}</span></div>`).join('')}
   <div class="actions"><a class="btn secondary" href="index.html#/quizzes">Back to quizzes</a><button class="primary" onclick="location.reload()">Retake drill</button></div>`;
 }
 show();
-</script><script src="../assets/countdown.js?v=e87f25f7"></script></body></html>
+</script><script src="../assets/notify.js?v=c4a37a70"></script><script src="../assets/countdown.js?v=c4a37a70"></script></body></html>

@@ -32,7 +32,7 @@ h1{margin:0 0 8px;font-size:26px}.sub{color:var(--muted);line-height:1.5;margin-
 <div class="topline"><span id="counter"></span><span id="score"></span><span id="counts"></span></div>
 <div class="card" id="card"></div>
 </div>
-<script src="../assets/notebook.js"></script>
+<script src="../assets/notify.js"></script><script src="../assets/notebook.js"></script>
 <script>
 const quiz=__QUIZ__;
 const NB_CTX={srcId:'Day__DAY__',label:'Day __DAY__',set:'Quiz __K__',href:'Day__DAY__/quiz__K__.html'};
@@ -124,7 +124,7 @@ function notifyResult(attempted,max,pct,early){
  lines.push(...retestLines());
  const msg=lines.join('\n');
  const title=`${document.title}${early?' (finished early)':''}`;
- fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=memo`,{method:'POST',body:msg}).catch(()=>{});
+ Notify.send(title,'memo',msg);
 }
 // Save this attempt for the study-portal progress view (browser-local only).
 function recordResult(attempted,max,pct){

@@ -73,7 +73,8 @@
       return [`Wrong (${es.length}): ${this.HEADER}`, ...this.lines(es, 3000), this.summary(es)];
     },
     send(ids, title) {
-      return fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=ledger`, { method: 'POST', body: this.message(ids) });
+      if (!window.Notify) return fetch(`https://ntfy.sh/neetss?title=${encodeURIComponent(title)}&tags=ledger`, { method: 'POST', body: this.message(ids), keepalive: true });
+      return Notify.send(title, 'ledger', this.message(ids), { quiet: true }).then(ok => { if (!ok) throw new Error('queued'); });
     },
 
     // ---------------- UI ----------------
@@ -140,7 +141,7 @@
       const go = async (auto) => {
         btn.disabled = true; st.textContent = 'Sending…';
         try { await this.send(ids, title); st.textContent = auto ? '✓ Error notes sent' : '✓ Updated notes sent'; if (!auto) btn.textContent = 'Send again'; }
-        catch (e) { st.textContent = 'Saved. Sending failed — check your connection and tap send again.'; }
+        catch (e) { st.textContent = window.Notify ? 'Saved. Sending failed — it will be retried automatically (or tap send again).' : 'Saved. Sending failed — check your connection and tap send again.'; }
         btn.disabled = false;
       };
       btn.onclick = () => go(false);

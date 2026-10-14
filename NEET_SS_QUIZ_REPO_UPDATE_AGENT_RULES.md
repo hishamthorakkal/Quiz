@@ -2540,6 +2540,8 @@ Day 11 format (09 Oct 2026):
 
 Content rules still apply: show the document text faithfully; do not rewrite medical content. Generic boilerplate "why not" lines are dropped from quiz explanations; pearls labelled "Qn pearl" are matched to question n even if printed under another question. Report such source issues in the update summary.
 
+Notifications (`assets/notify.js`, 14 Oct 2026): never call `fetch('https://ntfy.sh/…')` directly — use `Notify.send(title, tags, body)`. It sends with `keepalive` (survives leaving the page), caps the body below ntfy's 4096-byte limit (over it, ntfy delivers a file attachment instead of text), shows a "Notification sent" / "will retry" toast, and keeps failed sends in the `neetss:ntfy:outbox` localStorage queue, resent on the next page load or when the device comes back online ("(sent N min late)" added to the title). Every page that sends, plus the home page, loads `notify.js`; it is part of the `?v=` asset hash.
+
 Error notebook (`assets/notebook.js`, shared by every quiz page, mock and grand mock): wrong answers are recorded automatically when a test finishes (repeat mistakes counted, retest date +48–72 h, later correct answers mark the entry fixed). The result screen shows a K/C/R/G/S tagging panel; "Save error notes & send" posts a second ntfy message:
 
 Every error-note entry uses exactly this format, one mistake per line:

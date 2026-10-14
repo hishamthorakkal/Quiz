@@ -9,6 +9,8 @@ notebook.html              Combined K/C/R/G/S error notebook (all days and mocks
 assets/
   portal.css, portal.js    Shared study-portal UI (every day uses these two files)
   countdown.js             Exam countdowns: ICP 22 Nov 2026 + NEET-SS 11 Dec 2026 (home banners; chip on portal/quiz pages shows the next exam); dates at the top of the file
+  notify.js                Every ntfy notification goes through Notify.send(): keepalive request, body capped under 4096 bytes,
+                           "Notification sent" / "will retry" toast, failed sends kept in an outbox and resent on the next page load
   notebook.js              Automatic error notebook: records wrong answers when any quiz/mock finishes,
                            K/C/R/G/S tagging panel on result screens, "Error notes" ntfy message, notebook pages
 tools/
