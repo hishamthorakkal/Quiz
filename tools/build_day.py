@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import docx_parse as dp
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ACRONYMS = {'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
+ACRONYMS = {'PDA', 'VSD', 'AVSD', 'PAPVC', 'PVR', 'PVRI', 'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
             'NICU', 'ELBW', 'VLBW', 'PPHN', 'TSB', 'TCB', 'DAT', 'ICP', 'NEET-SS', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX',
             'XI', 'XII', 'XIII', 'K/C/R/G/S', 'R1', 'R2', 'R3', 'QA', 'MCQS', 'CPAP', 'NIV', 'PIP', 'EOS', 'LOS',
             'NEC', 'TPN', 'PN', 'NNF', 'IEM', 'ASD', 'ADHD', 'CHD', 'CCHD', 'ECG', 'CXR', 'IAP-NNF', 'SIP', 'GIR', 'PDHM', 'MOM', 'HMF', 'IUGR', 'SGA', 'IV/PN'}
@@ -38,7 +38,9 @@ def nice(title):
 RULES = [
     (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
     (r'calculation drill', 'calc'), (r'answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data|data-interpretation', 'data'),
-    (r'objective|learning outcomes', 'overview'), (r'(study|teaching) plan', 'overview'),
+    (r'objective|learning outcomes', 'overview'), (r'(study|teaching|learning) plan', 'overview'), (r'^editorial comparison', 'overview'),
+    (r'^\d+\.\s*mcqs?\b|option-by-option explanations', 'mcq'), (r'exam traps', 'pearls'),
+    (r'source register|^appendix\b.*(critique|quality-control)', 'references'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases|case discriminators|teaching cases|integrated cases', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
     (r'^section [a-z]\b.*(mcq|question|answer key|explanation|\bq\d+\s*[–-]\s*q\d+|retest|\btest\b)', 'mcq'), (r'last 15|rapid revision', 'revision'), (r'active recall', 'recall'),
@@ -155,6 +157,7 @@ def build(day, docx, keep_order=False):
     extras = json.load(open(xf, encoding='utf-8')) if os.path.exists(xf) else {}
 
     def add(pid, h1, sections, as_section=True):
+        h1 = re.sub(r'^\d+[A-Z]?\.\s+', '', h1)   # numbered parts "16. Error-notebook …": number dropped from the heading
         p = pages.setdefault(pid, {'id': pid, 'title': PAGES[pid][0], 'group': PAGES[pid][1], 'kind': PAGES[pid][2], 'sections': []})
         if as_section:
             # merge: an h1 becomes a section heading; its h2s become sub-sections
@@ -189,11 +192,11 @@ def build(day, docx, keep_order=False):
             calc = dp.parse_calc(secs)
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
-        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b|\banswers?\s*$', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
+        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|\banswers?\s*$', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
-            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—-]\s*(.+)$', h1)
+            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1)
             pid = f'part-{len(notes) + 1}'
             if not m:
                 warnings.append(f'Unrecognised heading kept as a notes page: {h1}')
@@ -201,6 +204,13 @@ def build(day, docx, keep_order=False):
             notes.append(pid)
             pages[pid] = {'id': pid, 'title': ptitle, 'eyebrow': f'Part {m[1]}' if m else '', 'group': 'Study Notes', 'kind': 'notes', 'sections': secs}
             continue
+        if kind == 'pearls' and 'pearls' in pages and re.search(r'trap', h1, re.I):
+            for s0 in pages['pearls']['sections'][:1]:
+                s0['title'] = s0['title'] or nice(re.sub(r'^\d+[A-Z]?\.\s+', '', pages['pearls'].pop('h1', '')))
+            add(kind, re.sub(r'^\d+[A-Z]?\.\s+', '', h1), secs)
+            continue
+        if kind == 'pearls':
+            pages.setdefault('pearls', {'id': 'pearls', 'title': PAGES['pearls'][0], 'group': PAGES['pearls'][1], 'kind': 'pearls', 'sections': []})['h1'] = h1
         add(kind, h1, secs, as_section=kind in ('overview', 'tables', 'plan', 'references'))
     if station_answers and 'data' in pages:
         for s_ in station_answers:
@@ -212,12 +222,30 @@ def build(day, docx, keep_order=False):
                     raise SystemExit(f'Station answer without a matching station: {t_[:60]}')
                 tgt['blocks'].append({'t': 'p', 'html': '<strong>Interpretation:</strong> ' + b['html'].split(':', 1)[1].strip()})
     if 'data' in pages:
+        # Day 17: "Station 1 — Figure 1 | question" + "Answer / interpretation: …" paragraphs. The linked study-note
+        # figure is labelled with the lesion, so the reference moves into the hidden interpretation.
+        for s_ in pages['data']['sections']:
+            bl = s_['blocks']
+            for j, b in enumerate(bl):
+                m_ = b['t'] == 'p' and re.match(r'^(<[^>]+>)*\s*Station (\d+)\s*[—–-]\s*([^|<]+?)\s*\|\s*(.+)$', b['html'])
+                if m_:
+                    b['html'] = f'<strong>Station {m_[2]}</strong> — {m_[4]}'
+                    if re.match(r'^Figure \d+$', m_[3]) and j + 1 < len(bl) and bl[j + 1]['t'] == 'p':
+                        bl[j + 1]['html'] += f' <em>(Linked: {m_[3]} in the study notes.)</em>'
+                    elif not re.match(r'^Figure \d+$', m_[3]):
+                        b['html'] = f'<strong>Station {m_[2]}</strong> — <em>{m_[3]}:</em> {m_[4]}'
         dsecs = pages['data']['sections']
         moved = [s for s in dsecs if re.match(r'^Case \d+\b', s['title']) or re.search(r'case workbook', s['title'], re.I)]
         if moved:
             pages['data']['sections'] = [s for s in dsecs if s not in moved]
             pages.setdefault('cases', {'id': 'cases', 'title': PAGES['cases'][0], 'group': PAGES['cases'][1], 'kind': 'cases', 'sections': []})
             pages['cases']['sections'] += [s for s in moved if s['blocks'] or not re.search(r'case workbook', s['title'], re.I)]
+    if 'recall' in pages and not recall_answers:
+        rs = pages['recall']['sections']
+        ak = [s_ for s_ in rs if re.search(r'answer key|answers?\b.*separate', s_['title'], re.I)]
+        if len(ak) == 1 and [b['t'] for b in ak[0]['blocks']] == ['list']:
+            recall_answers = [ak[0]]
+            pages['recall']['sections'] = [s_ for s_ in rs if s_ is not ak[0]]
     if 'recall' in pages:
         for s_ in pages['recall']['sections']:
             nb_, merged = [], 0
@@ -342,6 +370,8 @@ def build(day, docx, keep_order=False):
     sets = dp.split_sets(qs)   # 5 x 15 by default; grows to 20 per set, then adds sets (sizes within ±1)
     pages['quizzes'] = {'id': 'quizzes', 'title': 'Quizzes', 'group': 'Practice', 'kind': 'quizzes', 'sections': []}
     pages['notebook'] = {'id': 'notebook', 'title': 'Error Notebook', 'group': 'Revise', 'kind': 'notebook', 'sections': []}
+    for p in pages.values():
+        p.pop('h1', None)
     order = []
     for o in ORDER:
         order += notes if o == 'NOTES' else ([o] if o in pages else [])
@@ -366,7 +396,7 @@ def build(day, docx, keep_order=False):
                 os.remove(f'{D}/img/{f}')
     lines = [dp.text(p) for p in pre if p.tag == dp.W + 'p' and dp.text(p)]
     portal = {
-        'day': day, 'title': extras.get('title') or nice(re.sub(r'^DAY\s*\d+\s*[—-]?\s*', '', title)) or f'Day {day}',
+        'day': day, 'title': extras.get('title') or nice(re.sub(r'^DAY\s*\d+\s*[—|-]?\s*', '', title)) or f'Day {day}',
         'docTitle': title, 'subtitle': lines[:2] or extras.get('subtitle', []), 'source': f'source/{src_name}',
         'pages': [pages[i] for i in order],
         'quizSets': [{'k': k + 1, 'from': s[0]['num'], 'to': s[-1]['num'], 'n': len(s)} for k, s in enumerate(sets)],

@@ -329,7 +329,7 @@ def parse_mcqs(doc, parts, aliases=None):
     find = lambda pat: next((els for h, els in parts if re.match(pat, h, re.I)), None)
     # Questions: the first "SECTION A/B" part that really holds "1. [Level] …" / "Qn. …" lines (some documents
     # also name study-note parts "SECTION A — …"); explanations: SECTION C.
-    has_q = lambda els: sum(1 for el in els if el.tag == W + 'p' and re.match(r'^Q?\d+\.\s*(\[|\S)', text(el))) >= 5 and \
+    has_q = lambda els: sum(1 for el in els if el.tag == W + 'p' and (re.match(r'^Q?\d+\.\s*(\[|\S)', text(el)) or re.match(r'^Q\d+\s+\[', text(el)))) >= 5 and \
         any(el.tag == W + 'p' and re.match(r'^[A-D]\.\s', text(el)) for el in els)
     A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
     B, C = find(r'^SECTION B'), find(r'^SECTION C')
@@ -364,7 +364,8 @@ def parse_mcqs(doc, parts, aliases=None):
             cur['doc_caption'] = t                 # caption of that picture, not part of the stem
             continue
         m = (re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t) or re.match(r'^Q(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t)
-             or re.match(r'^Q(\d+)\.\s*()(.+)$', t))
+             or re.match(r'^Q(\d+)\.\s*()(.+)$', t)
+             or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*\S.*$', t))   # Day 17: "Q01  [Level]  Topic" heading, stem below
         if m:
             stem, retest = m[3].strip(), False
             if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75 [— stem]": label dropped
@@ -427,6 +428,11 @@ def parse_mcqs(doc, parts, aliases=None):
                 if e['q'] and e['q']['options']['ABCD'.index(m[2])].rstrip('.') != m[3].strip().rstrip('.'):
                     problems.append(f"Q{m[1]}: header answer text does not match option {m[2]}")
                 continue
+            m = re.match(r'^Q(\d+)\s*[—–-]\s*Correct\s+([A-D])\b', t)      # Day 17: "Q1 — Correct C | Topic"
+            if m:
+                e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
+                ex[int(m[1])] = e
+                continue
             m = re.match(r'^Q(\d+)\s+Answer\s+([A-D])\b\s*(.*)$', t)
             if m:
                 tag = m[3].strip()
@@ -452,6 +458,16 @@ def parse_mcqs(doc, parts, aliases=None):
             m = re.match(r'^Source:\s*(Day\s*\d+)(?:\s*Q(\d+))?', t)
             if m:
                 e['retest_from'] = m[1] + (f' Q{m[2]}' if m[2] else '')
+                continue
+            m = re.match(r'^([A-D])\s*\((CORRECT|Incorrect|Wrong)\)\s*:\s*(.+)$', t, re.I)   # Day 17: "A (Incorrect): …"
+            if m and e['q']:
+                if m[2].lower() == 'correct':
+                    e['marked'].append(m[1])
+                    e['correct_reason'] = m[3].strip()
+                else:
+                    e['labelled'] = True
+                    if not any(b in m[3] for b in BOILERPLATE):
+                        e['why_not'][m[1]] = m[3].strip()
                 continue
             m = re.match(r'^Option ([A-D])\s*[—–-]\s*(.+)$', t) or re.match(r'^([A-D]):\s+(.+)$', t)
             if m and e['q']:
@@ -505,7 +521,7 @@ def parse_mcqs(doc, parts, aliases=None):
                 continue
             m = re.match(r'^WHY THIS QUESTION MATTERS\s*[:—-]\s*(.+)$', t, re.I)
             if m:
-                e['why'] = m[1].strip()
+                e['why'] = re.sub(r'\s*Distinguish the nearest plausible competing option using [^.]*\.', '', m[1]).strip()
                 continue
             m = re.match(r'^Closest[- ]distractor discriminator\s*:\s*(?:Closest distractor:\s*)?(.+)$', t, re.I)
             if m:
