@@ -1,8 +1,0 @@
-{
-  "_about": "Build extras for Day 13 (read by tools/build_day.py). Station 4 and 5 chart titles state the answer (obstructive event; loss of attained skills = regression); they are masked, originals behind the reveal. Stations 1-3 are plain data plots.",
-  "title": "Growth & Development",
-  "station_images": {
-    "Visual Station 4": [{"mask": [[150, 0, 1130, 45]]}],
-    "Visual Station 5": [{"mask": [[250, 8, 1110, 56]]}]
-  }
-}

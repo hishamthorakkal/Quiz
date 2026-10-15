@@ -17,7 +17,7 @@ tools/
   build_day.py             Builds a day's portal + quiz sets from its source docx
   docx_parse.py            Docx reader (headings, tables, callout boxes, MCQs)
   templates/quiz.html      Shared quiz-set template (set sizes: rules §4)
-Day13/, Day14/
+Day15/, Day16/, Day17/
   source/<day docx>        Original document (kept for audit/regeneration)
   index.html               Study portal (overview, notes, cases, pearls, revision, quizzes)
   content.js               Portal content generated from the docx — do not edit by hand
