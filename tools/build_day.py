@@ -27,7 +27,7 @@ def nice(title):
     for i, w in enumerate(title.split()):
         if re.sub(r'[^\w/+-]', '', w).upper() in ACRONYMS:
             out.append(w)
-        elif i and w.lower() in SMALL:
+        elif i and w.lower() in SMALL and not (w == 'A' and re.match(r'(?i)algorithm|station|part|table|figure|section', title.split()[i - 1])):
             out.append(w.lower())
         else:
             out.append(re.sub(r'[^\W_]+', lambda m: m[0] if m[0].upper() in ACRONYMS else m[0][:1].upper() + m[0][1:].lower(), w))
@@ -37,9 +37,10 @@ def nice(title):
 # h1 text -> (page id, kind, group, title)
 RULES = [
     (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
-    (r'calculation drill', 'calc'), (r'answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data|data-interpretation', 'data'),
+    (r'calculation drill|calculation solutions|calculation-error retests', 'calc'), (r'answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data|data-interpretation', 'data'),
     (r'objective|learning outcomes', 'overview'), (r'(study|teaching|learning) plan', 'overview'), (r'^editorial comparison', 'overview'),
-    (r'^\d+\.\s*mcqs?\b|option-by-option explanations', 'mcq'), (r'exam traps', 'pearls'),
+    (r'^\d+\.\s*mcqs?\b|option-by-option explanations', 'mcq'), (r'exam traps|close-distractor traps', 'pearls'),
+    (r'question-level answer|release decision', 'references'), (r'r1[–-]r3 audit|scoring and error log', 'plan'),
     (r'source register|^appendix\b.*(critique|quality-control)', 'references'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases|case discriminators|teaching cases|integrated cases', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
@@ -157,7 +158,7 @@ def build(day, docx, keep_order=False):
     extras = json.load(open(xf, encoding='utf-8')) if os.path.exists(xf) else {}
 
     def add(pid, h1, sections, as_section=True):
-        h1 = re.sub(r'^\d+[A-Z]?\.\s+', '', h1)   # numbered parts "16. Error-notebook …": number dropped from the heading
+        h1 = re.sub(r'\s*\(restart numbering\)', '', re.sub(r'^\d+[A-Z]?\.\s+', '', h1), flags=re.I)   # numbered parts "16. Error-notebook …": number dropped from the heading
         p = pages.setdefault(pid, {'id': pid, 'title': PAGES[pid][0], 'group': PAGES[pid][1], 'kind': PAGES[pid][2], 'sections': []})
         if as_section:
             # merge: an h1 becomes a section heading; its h2s become sub-sections
@@ -216,18 +217,26 @@ def build(day, docx, keep_order=False):
         for s_ in station_answers:
             for b in s_['blocks']:
                 t_ = re.sub(r'<[^>]+>', '', b.get('html', '')) if b['t'] == 'p' else ''
-                m_ = re.match(r'^(Station \d+)\s*:\s*(.+)$', t_)
+                m_ = re.match(r'^(Station \d+)\s*:\s*(.+)$', t_) or re.match(r'^(V\d+)\.\s*(.+)$', t_)   # Day 18: "V1. answer"
+                ans = {'t': 'p', 'html': '<strong>Interpretation:</strong> ' + re.sub(r'^(<[^>]+>)*\s*(Station \d+\s*:|V\d+\.)\s*', '', b['html'])}
                 tgt = m_ and next((s for s in pages['data']['sections'] if s['title'].startswith(m_[1] + ' ')), None)
-                if not tgt:
+                if tgt:
+                    tgt['blocks'].append(ans)
+                    continue
+                # station written as a paragraph ("Station V1 (Figure 1): question"): answer goes right after it
+                at = m_ and next(((s, j) for s in pages['data']['sections'] for j, x in enumerate(s['blocks'])
+                                  if x['t'] == 'p' and re.match(rf'^(<[^>]+>)*\s*Station {m_[1].replace("Station ", "")}\b', x['html'])), None)
+                if not at:
                     raise SystemExit(f'Station answer without a matching station: {t_[:60]}')
-                tgt['blocks'].append({'t': 'p', 'html': '<strong>Interpretation:</strong> ' + b['html'].split(':', 1)[1].strip()})
+                at[0]['blocks'].insert(at[1] + 1, ans)
     if 'data' in pages:
         # Day 17: "Station 1 — Figure 1 | question" + "Answer / interpretation: …" paragraphs. The linked study-note
         # figure is labelled with the lesion, so the reference moves into the hidden interpretation.
         for s_ in pages['data']['sections']:
             bl = s_['blocks']
             for j, b in enumerate(bl):
-                m_ = b['t'] == 'p' and re.match(r'^(<[^>]+>)*\s*Station (\d+)\s*[—–-]\s*([^|<]+?)\s*\|\s*(.+)$', b['html'])
+                m_ = b['t'] == 'p' and (re.match(r'^(<[^>]+>)*\s*Station (\d+)\s*[—–-]\s*([^|<]+?)\s*\|\s*(.+)$', b['html'])
+                                        or re.match(r'^(<[^>]+>)*\s*Station (V?\d+)\s*\(([^)]+)\)\s*:\s*(.+)$', b['html']))
                 if m_:
                     b['html'] = f'<strong>Station {m_[2]}</strong> — {m_[4]}'
                     if re.match(r'^Figure \d+$', m_[3]) and j + 1 < len(bl) and bl[j + 1]['t'] == 'p':

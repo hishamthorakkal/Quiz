@@ -329,12 +329,15 @@ def parse_mcqs(doc, parts, aliases=None):
     find = lambda pat: next((els for h, els in parts if re.match(pat, h, re.I)), None)
     # Questions: the first "SECTION A/B" part that really holds "1. [Level] …" / "Qn. …" lines (some documents
     # also name study-note parts "SECTION A — …"); explanations: SECTION C.
-    has_q = lambda els: sum(1 for el in els if el.tag == W + 'p' and (re.match(r'^Q?\d+\.\s*(\[|\S)', text(el)) or re.match(r'^Q\d+\s+\[', text(el)))) >= 5 and \
+    has_q = lambda els: sum(1 for el in els if el.tag == W + 'p' and (re.match(r'^Q?\d+\.\s*(\[|\S)', text(el)) or re.match(r'^Q\d+\s+\[', text(el))
+                                                        or re.match(r'^Q\d+\s*[—–-]\s*Spaced revision\b', text(el), re.I))) >= 5 and \
         any(el.tag == W + 'p' and re.match(r'^[A-D]\.\s', text(el)) for el in els)
     A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
     B, C = find(r'^SECTION B'), find(r'^SECTION C')
     named = next((els for h, els in parts if re.search(r'question booklet|\bmcqs?\b|questions\b|revision test', h, re.I)
                   and not re.search(r'explanation|answer', h, re.I) and has_q(els)), None)
+    if A is not None and B is not None and has_q(B) and not any(el.tag == W + 'tbl' for el in B):
+        A, B = A + B, None             # Day 18: base MCQs in Section A, notebook retests in Section B
     if A is None and named is not None and (B is None or not has_q(B)):
         A, B = named, None
     expl = next((els for h, els in parts if re.search(r'explanation', h, re.I)), None)
@@ -365,13 +368,14 @@ def parse_mcqs(doc, parts, aliases=None):
             continue
         m = (re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t) or re.match(r'^Q(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t)
              or re.match(r'^Q(\d+)\.\s*()(.+)$', t)
-             or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*\S.*$', t))   # Day 17: "Q01  [Level]  Topic" heading, stem below
+             or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*\S.*$', t)    # Day 17: "Q01  [Level]  Topic" heading, stem below
+             or re.match(r'^Q(\d+)\s*[—–-]\s*(Spaced revision)()\s*$', t, re.I))   # Day 18: "Q76 — Spaced revision" = notebook retest
         if m:
             stem, retest = m[3].strip(), False
             if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75 [— stem]": label dropped
                 stem, retest = RETEST_LABEL.sub('', stem).strip(), True
             lev = m[2].strip()
-            if re.search(r'retest', lev, re.I):
+            if re.search(r'retest|spaced revision', lev, re.I):
                 retest, lev = True, ''
             elif re.match(r'^(base|extra[ -]gap[- ]fill|gap[- ]fill|extra)$', lev, re.I):
                 lev = ''
@@ -428,7 +432,8 @@ def parse_mcqs(doc, parts, aliases=None):
                 if e['q'] and e['q']['options']['ABCD'.index(m[2])].rstrip('.') != m[3].strip().rstrip('.'):
                     problems.append(f"Q{m[1]}: header answer text does not match option {m[2]}")
                 continue
-            m = re.match(r'^Q(\d+)\s*[—–-]\s*Correct\s+([A-D])\b', t)      # Day 17: "Q1 — Correct C | Topic"
+            m = (re.match(r'^Q(\d+)\s*[—–-]\s*Correct\s+([A-D])\b', t)      # Day 17: "Q1 — Correct C | Topic"
+                 or re.match(r'^Q(\d+)\s*[—–-].*\|\s*Correct:?\s*([A-D])\s*$', t))   # Day 18: "Q01 — Topic | Correct: D"
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
@@ -458,6 +463,21 @@ def parse_mcqs(doc, parts, aliases=None):
             m = re.match(r'^Source:\s*(Day\s*\d+)(?:\s*Q(\d+))?', t)
             if m:
                 e['retest_from'] = m[1] + (f' Q{m[2]}' if m[2] else '')
+                continue
+            m = re.match(r'^([A-D])\s*([×✗✓])\s*(.+)$', t)     # Day 18: "A × <option text>: reason" / "D ✓ <option text>: reason"
+            if m and e['q']:
+                opt, rest = e['q']['options']['ABCD'.index(m[1])], m[3].strip()
+                if not rest.startswith(opt + ':'):
+                    problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
+                    continue
+                rest = rest[len(opt) + 1:].strip()
+                if m[2] == '✓':
+                    e['marked'].append(m[1])
+                    e['correct_reason'] = rest
+                else:
+                    e['labelled'] = True
+                    if not any(b in rest for b in BOILERPLATE):
+                        e['why_not'][m[1]] = rest
                 continue
             m = re.match(r'^([A-D])\s*\((CORRECT|Incorrect|Wrong)\)\s*:\s*(.+)$', t, re.I)   # Day 17: "A (Incorrect): …"
             if m and e['q']:

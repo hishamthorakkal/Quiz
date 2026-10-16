@@ -1,0 +1,193 @@
+{
+  "title": "Tetralogy of Fallot & Cyanotic CHD",
+  "retests": {
+    "76": {
+      "stage": "R1",
+      "from": "Day 10 Q8"
+    },
+    "77": {
+      "stage": "R1",
+      "from": "Day 11 Q25"
+    },
+    "78": {
+      "stage": "R1",
+      "from": "Day 11 Q46"
+    },
+    "79": {
+      "stage": "R1",
+      "from": "Day 11 Q55"
+    },
+    "80": {
+      "stage": "R1",
+      "from": "Day 13 Q5"
+    },
+    "81": {
+      "stage": "R1",
+      "from": "Day 14 Q30"
+    },
+    "82": {
+      "stage": "R1",
+      "from": "Day 5 Q53"
+    },
+    "83": {
+      "stage": "R2",
+      "from": "Day 7 Q34"
+    },
+    "84": {
+      "stage": "R2",
+      "from": "Day 8 Q41"
+    }
+  },
+  "calc_items": [
+    {
+      "title": "Fluid bolus volume",
+      "question": "An 8.2-kg infant is prescribed 10 mL/kg of isotonic fluid after specialist assessment. Calculate the ordered volume.",
+      "working": "8.2 × 10 = 82 mL",
+      "trap": "",
+      "parts": [
+        {
+          "answer": 82,
+          "unit": "mL"
+        }
+      ]
+    },
+    {
+      "title": "RV systolic pressure from TR jet",
+      "question": "TR jet velocity is 4.0 m/s and estimated RA pressure is 8 mmHg. Estimate RV systolic pressure using 4v² + RAP.",
+      "working": "4 × 4.0² + 8 = 72 mmHg",
+      "trap": "",
+      "parts": [
+        {
+          "answer": 72,
+          "unit": "mmHg"
+        }
+      ]
+    },
+    {
+      "title": "Arterial O₂ content",
+      "question": "Hb is 18 g/dL and SpO₂ is 80%. Estimate arterial O₂ content using 1.34 × Hb × SpO₂ (ignore dissolved O₂).",
+      "working": "1.34 × 18 × 0.80 = 19.3 mL O₂/dL",
+      "trap": "",
+      "parts": [
+        {
+          "answer": 19.3,
+          "unit": "mL O₂/dL"
+        }
+      ]
+    },
+    {
+      "title": "Fluid rate per kg",
+      "question": "A 12-kg child has 150 mL of fluid intake over 2 hours. Express the rate in mL/kg/hour.",
+      "working": "150 ÷ 12 ÷ 2 = 6.25 mL/kg/h",
+      "trap": "",
+      "parts": [
+        {
+          "answer": 6.25,
+          "unit": "mL/kg/h"
+        }
+      ]
+    },
+    {
+      "title": "RV/systemic pressure ratio",
+      "question": "A patient has systemic BP 95 mmHg and RV systolic pressure 76 mmHg. Calculate the RV/systemic pressure ratio.",
+      "working": "76 ÷ 95 = 0.80",
+      "trap": "",
+      "parts": [
+        {
+          "answer": 0.8,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "title": "Indexed RVEDV",
+      "question": "CMR RVEDV is 310 mL and BSA is 1.80 m². Calculate the indexed RVEDV.",
+      "working": "310 ÷ 1.8 = 172.2 mL/m²",
+      "trap": "",
+      "parts": [
+        {
+          "answer": 172.2,
+          "unit": "mL/m²"
+        }
+      ]
+    },
+    {
+      "title": "Qp:Qs",
+      "question": "Qp is 4.2 L/min and Qs is 3.0 L/min. Calculate Qp:Qs.",
+      "working": "4.2 ÷ 3.0 = 1.4",
+      "trap": "",
+      "parts": [
+        {
+          "answer": 1.4,
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "title": "Pre/postductal SpO₂ difference",
+      "question": "Preductal SpO₂ is 91% and postductal SpO₂ is 86%. Calculate the absolute percentage-point difference.",
+      "working": "91 − 86 = 5 percentage points",
+      "trap": "",
+      "parts": [
+        {
+          "answer": 5,
+          "unit": "percentage points"
+        }
+      ]
+    },
+    {
+      "title": "F-100 catch-up intake (Day 14 retest)",
+      "question": "A 9-kg child has an ordered catch-up intake of 150 kcal/kg/day. At 1 kcal/mL of F-100, calculate the kcal/day and the corresponding feed volume.",
+      "working": "9 × 150 = 1350 kcal/day; at 1 kcal/mL = 1350 mL/day. A mathematical scenario, not an individual feeding prescription.",
+      "trap": "",
+      "parts": [
+        {
+          "label": "Energy",
+          "answer": 1350,
+          "unit": "kcal/day"
+        },
+        {
+          "label": "F-100 volume",
+          "answer": 1350,
+          "unit": "mL/day"
+        }
+      ]
+    },
+    {
+      "title": "10% dextrose volume and glucose (Day 14 retest)",
+      "question": "A protocol explicitly orders 2 mL/kg of 10% dextrose for a 4.5-kg child. Calculate the volume and the glucose mass.",
+      "working": "2 × 4.5 = 9 mL; 10% = 0.1 g/mL, so 9 × 0.1 = 0.9 g glucose. Check the dose against the local SAM protocol before clinical use.",
+      "trap": "",
+      "parts": [
+        {
+          "label": "Volume",
+          "answer": 9,
+          "unit": "mL"
+        },
+        {
+          "label": "Glucose",
+          "answer": 0.9,
+          "unit": "g"
+        }
+      ]
+    },
+    {
+      "title": "Rehabilitation energy (Day 14 retest)",
+      "question": "180 kcal/kg/day is prescribed for an 11-kg child. Calculate the kcal/day and the equivalent F-100 volume at 1 kcal/mL.",
+      "working": "11 × 180 = 1980 kcal/day; at 1 kcal/mL = 1980 mL/day. Not a recommended feeding prescription.",
+      "trap": "",
+      "parts": [
+        {
+          "label": "Energy",
+          "answer": 1980,
+          "unit": "kcal/day"
+        },
+        {
+          "label": "F-100 volume",
+          "answer": 1980,
+          "unit": "mL/day"
+        }
+      ]
+    }
+  ]
+}
