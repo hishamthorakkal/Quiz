@@ -1,0 +1,13 @@
+{
+  "calc_items": [
+    {"title": "F-100 rehabilitation energy (Day 14 C4 repair)", "question": "A 9-kg child has a hypothetical rehabilitation energy target of 150 kcal/kg/day. If F-100 is 1 kcal/mL, calculate the energy per day and the theoretical volume per day. This is arithmetic, not a feeding order.",
+     "working": "9 × 150 = 1350 kcal/day; ÷ 1 kcal/mL = 1350 mL/day.", "trap": "",
+     "parts": [{"label": "Energy", "answer": 1350, "unit": "kcal/day"}, {"label": "Volume", "answer": 1350, "unit": "mL/day"}]},
+    {"title": "D10 bolus volume and glucose (Day 14 C6 repair)", "question": "A 7-kg child receives a hypothetical D10 bolus of 5 mL/kg under a clinician order. Find the volume (mL) and the glucose mass (g).",
+     "working": "7 × 5 = 35 mL; D10 = 0.1 g/mL, so 35 × 0.1 = 3.5 g.", "trap": "",
+     "parts": [{"label": "Volume", "answer": 35, "unit": "mL"}, {"label": "Glucose", "answer": 3.5, "unit": "g"}]},
+    {"title": "F-100 energy goal (Day 14 C8 repair)", "question": "An 11-kg child has a hypothetical 140 kcal/kg/day energy goal. Calculate the kcal/day and the F-100 energy-equivalent mL/day (1 kcal/mL).",
+     "working": "11 × 140 = 1540 kcal/day; at 1 kcal/mL = 1540 mL/day.", "trap": "",
+     "parts": [{"label": "Energy", "answer": 1540, "unit": "kcal/day"}, {"label": "Volume", "answer": 1540, "unit": "mL/day"}]}
+  ]
+}

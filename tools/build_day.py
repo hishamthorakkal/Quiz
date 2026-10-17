@@ -36,6 +36,10 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
+    (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
+    (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
+    (r'active-recall answers', 'recall'), (r'session map', 'overview'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
+    (r'review stages|qa ledger|qa controls', 'references'),
     (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
     (r'calculation drill|calculation solutions|calculation-error retests', 'calc'), (r'answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data|data-interpretation', 'data'),
     (r'objective|learning outcomes', 'overview'), (r'(study|teaching|learning) plan', 'overview'), (r'^editorial comparison', 'overview'),
@@ -149,6 +153,7 @@ def build(day, docx, keep_order=False):
     pages, notes, warnings = {}, [], []
     total_blocks = 0
     recall_answers = None
+    recall_key = None
     calc = None
     doc_mcq_imgs = set()
     station_answers = None
@@ -184,6 +189,22 @@ def build(day, docx, keep_order=False):
             continue
         kind = next((k for pat, k in RULES if re.search(pat, h1, re.I)), None)
         if kind == 'mcq':
+            # Day 19: teaching ("Advanced addition — …" headings) placed before Q01 in the MCQ part -> its own notes page
+            lead = []
+            for el in els:
+                if el.tag == dp.W + 'p' and re.match(r'^[QR]\d+\s{2,}\S', dp.text(el)):
+                    break
+                lead.append(el)
+            hs = [i for i, el in enumerate(lead) if el.tag == dp.W + 'p' and doc.style(el).startswith('heading 2')]
+            if hs and len(lead) < len(els):
+                asecs = dp.blocks_from(doc, lead[hs[0]:])
+                pid = f'part-{len(notes) + 1}'
+                notes.append(pid)
+                total_blocks += sum(len(s['blocks']) for s in asecs)
+                pages[pid] = {'id': pid, 'title': 'Advanced Additions', 'eyebrow': '', 'group': 'Study Notes', 'kind': 'notes', 'sections': asecs}
+            continue
+        if kind == 'recallkey':                # Day 19: answers for the overdue Day 13 recall prompts, paired below
+            recall_key = secs
             continue
         if kind == 'stationanswers':          # "Station N: answer" lines -> hidden interpretation of station N
             station_answers = secs
@@ -193,12 +214,17 @@ def build(day, docx, keep_order=False):
             calc = dp.parse_calc(secs)
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
-        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|\banswers?\s*$', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
+        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )\banswers?\s*$|recall answers\b', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
             m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1)
+            mm = re.match(r'^Module (\d+)\s*[—–-]\s*(.+)$', h1)          # Day 19: "Module 2 — d-TGA: the mixing problem"
             pid = f'part-{len(notes) + 1}'
+            if mm:
+                notes.append(pid)
+                pages[pid] = {'id': pid, 'title': mm[2].strip(), 'eyebrow': f'Module {mm[1]}', 'group': 'Study Notes', 'kind': 'notes', 'sections': secs}
+                continue
             if not m:
                 warnings.append(f'Unrecognised heading kept as a notes page: {h1}')
             ptitle = nice(m[2]) if m else nice(h1)
@@ -232,6 +258,17 @@ def build(day, docx, keep_order=False):
     if 'data' in pages:
         # Day 17: "Station 1 — Figure 1 | question" + "Answer / interpretation: …" paragraphs. The linked study-note
         # figure is labelled with the lesion, so the reference moves into the hidden interpretation.
+        for s_ in pages['data']['sections']:
+            nb_ = []
+            for b in s_['blocks']:
+                m_ = b['t'] == 'p' and re.match(r'^(<[^>]+>)*\s*Station (\d+)\s*[—–-]\s*([^|<]+?)\s*\|\s*DATA:\s*(.+?)\s*\|\s*INTERPRETATION:\s*(.+)$', b['html'])
+                if m_:
+                    nb_ += [{'t': 'p', 'html': f'<strong>Station {m_[2]}</strong> — <em>{m_[3]}:</em> {m_[4]}'},
+                            {'t': 'p', 'html': f'<strong>Interpretation:</strong> {m_[5]}'}]
+                    total_blocks += 1
+                else:
+                    nb_.append(b)
+            s_['blocks'] = nb_
         for s_ in pages['data']['sections']:
             bl = s_['blocks']
             for j, b in enumerate(bl):
@@ -306,6 +343,27 @@ def build(day, docx, keep_order=False):
         for s in pages['recall']['sections']:
             if s['title'].upper().startswith('ACTIVE RECALL'):
                 s['title'] = ''
+    if recall_key and 'recall' in pages:
+        ans = {}
+        for s_ in recall_key:
+            for b in s_['blocks']:
+                m_ = b['t'] == 'p' and re.match(r'^(<[^>]+>)*\s*(Day \d+ P\d+)\s*:\s*(.+)$', b['html'])
+                if m_:
+                    ans[m_[2]] = m_[3]
+        ql = next((b for s_ in pages['recall']['sections'] for b in s_['blocks'] if b['t'] == 'list'), None)
+        for s_ in pages['recall']['sections']:
+            keep_ = []
+            for b in s_['blocks']:
+                m_ = b['t'] == 'p' and re.match(r'^(<[^>]+>)*\s*(Day \d+ P\d+)\s*:\s*(.+)$', b['html'])
+                if m_ and ql is not None and m_[2] in ans:
+                    ql['items'].append(f'{m_[2]} (overdue): {m_[3]}<br>Answer: {ans.pop(m_[2])}')
+                    total_blocks -= 1
+                else:
+                    keep_.append(b)
+            s_['blocks'] = keep_
+        if ans:
+            raise SystemExit(f'Recall answers without a prompt: {list(ans)}')
+        pages['recall']['sections'] = [s_ for s_ in pages['recall']['sections'] if s_['blocks']]
     qs, problems, stats = dp.parse_mcqs(doc, parts, extras.get('explanation_option_text'))
     # extras "stale_key": [n, …] — the document's separate quick key was not updated after its own (audited) key
     # corrections; for these questions the Section C header answer is used and the quick-key mismatch is not an error

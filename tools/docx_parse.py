@@ -331,7 +331,8 @@ def parse_mcqs(doc, parts, aliases=None):
     # Questions: the first "SECTION A/B" part that really holds "1. [Level] …" / "Qn. …" lines (some documents
     # also name study-note parts "SECTION A — …"); explanations: SECTION C.
     has_q = lambda els: sum(1 for el in els if el.tag == W + 'p' and (re.match(r'^Q?\d+\.\s*(\[|\S)', text(el)) or re.match(r'^Q\d+\s+\[', text(el))
-                                                        or re.match(r'^Q\d+\s*[—–-]\s*Spaced revision\b', text(el), re.I))) >= 5 and \
+                                                        or re.match(r'^Q\d+\s*[—–-]\s*Spaced revision\b', text(el), re.I)
+                                                        or re.match(r'^[QR]\d+\s{2,}[^|\s]', text(el)))) >= 5 and \
         any(el.tag == W + 'p' and re.match(r'^[A-D]\.\s', text(el)) for el in els)
     A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
     B, C = find(r'^SECTION B'), find(r'^SECTION C')
@@ -341,7 +342,15 @@ def parse_mcqs(doc, parts, aliases=None):
         A, B = A + B, None             # Day 18: base MCQs in Section A, notebook retests in Section B
     if A is None and named is not None and (B is None or not has_q(B)):
         A, B = named, None
+        # Day 19: notebook retests ("R01  stem") in their own part after the base MCQs
+        rp = next((els for h, els in parts if re.search(r'notebook retests', h, re.I) and not re.search(r'answer', h, re.I)
+                   and els is not named), None)
+        if rp is not None:
+            A = A + rp
     expl = next((els for h, els in parts if re.search(r'explanation', h, re.I)), None)
+    if expl is None:   # Day 19: "Full A/B/C/D rationale — every base MCQ" + "Notebook retest answers …"
+        ex_parts = [els for h, els in parts if re.search(r'\brationale\b|retest answers', h, re.I)]
+        expl = [el for els in ex_parts for el in els] or None
     if expl is not None:
         C = expl
     if A is None and B is not None and has_q(B) and not any(el.tag == W + 'tbl' for el in B) and \
@@ -349,6 +358,7 @@ def parse_mcqs(doc, parts, aliases=None):
         A, B = B, None                 # questions are in Section B; answer key comes from Section C
     problems, qs, cur, fixed = [], [], None, []
     pending_retest = False
+    rbase = 0          # Day 19: retest "R01" is numbered after the last base question (R01 -> Q76)
     for el in A or []:
         if el.tag != W + 'p':
             continue
@@ -371,6 +381,14 @@ def parse_mcqs(doc, parts, aliases=None):
              or re.match(r'^Q(\d+)\.\s*()(.+)$', t)
              or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*\S.*$', t)    # Day 17: "Q01  [Level]  Topic" heading, stem below
              or re.match(r'^Q(\d+)\s*[—–-]\s*(Spaced revision)()\s*$', t, re.I))   # Day 18: "Q76 — Spaced revision" = notebook retest
+        m19 = not m and re.match(r'^([QR])(\d+)\s{2,}([^|\s].*)$', t)   # Day 19: "Q01  stem"; "R01  stem" = notebook retest
+        if m19:
+            if m19[1] == 'Q':
+                rbase = max(rbase, int(m19[2]))
+            cur = {'num': int(m19[2]) + (rbase if m19[1] == 'R' else 0), 'level': '', 'question': m19[3].strip(), 'options': [],
+                   'retest': m19[1] == 'R'}
+            qs.append(cur)
+            continue
         if m:
             stem, retest = m[3].strip(), False
             if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75 [— stem]": label dropped
@@ -411,11 +429,13 @@ def parse_mcqs(doc, parts, aliases=None):
             for n_, a_ in re.findall(r'\b(\d+)\s*([A-D])\b', text(el)):
                 key[int(n_)] = a_
     for h, els in parts:
-        if re.search(r'\bANSWER KEY\b', h, re.I) and not re.search(r'EXPLANATION', h, re.I):
+        if re.search(r'\bANSWER KEY\b', h, re.I) and not re.search(r'EXPLANATION|recall', h, re.I):
             for el in els:
                 t_ = text(el) if el.tag == W + 'p' else ' '.join(text(p_) for p_ in el.iter(W + 'p'))
                 for n_, a_ in re.findall(r'\bQ(\d+)\s+([A-D])\b', t_) + re.findall(r'\b(\d+)\s*:\s*([A-D])\b', t_):
                     key[int(n_)] = a_
+                for l_, n_, a_ in re.findall(r'\b([QR])(\d+)\s*:\s*([A-D])\b', t_):    # Day 19: "Q01:C", "R01:B"
+                    key[int(n_) + (rbase if l_ == 'R' else 0)] = a_
     Q = {q['num']: q for q in qs}
     ex, e, pearl_labels = {}, None, {}
     for el in C or []:
@@ -440,6 +460,33 @@ def parse_mcqs(doc, parts, aliases=None):
                 if m.lastindex >= 3 and m[3]:
                     e['retest'], e['retest_from'] = True, m[3].strip()
                 ex[int(m[1])] = e
+                continue
+            # Day 19: "Q01  |  TGA  |  Core  |  Best: C" and "R01 — R1 repeat repair — Best: B"
+            m = re.match(r'^Q(\d+)\s*\|.*\|\s*Best:\s*([A-D])\s*$', t) or re.match(r'^R(\d+)\s*[—–-]\s*(?:(R\d)\b[^—–]*[—–-]\s*)?Best:\s*([A-D])\s*$', t)
+            if m:
+                rr = t.startswith('R')
+                n_ = int(m[1]) + (rbase if rr else 0)
+                e = {'ans': m[3] if rr else m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_)}
+                if rr:
+                    e['retest'], e['stage'] = True, m[2]
+                ex[n_] = e
+                continue
+            m = re.match(r'^ORIGINAL FAILED QUESTION:\s*([^|]+)', t, re.I)
+            if m and e:
+                e['retest_from'] = m[1].strip()
+                continue
+            m = re.match(r'^([A-D]):\s+(.+?)\s+—\s+(Correct|Not best)\s+—\s+(.+)$', t)   # Day 19: "A: <option> — Not best — reason"
+            if m and e and e['q']:
+                if m[2].rstrip('.') != e['q']['options']['ABCD'.index(m[1])].rstrip('.'):
+                    problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
+                    continue
+                if m[3] == 'Correct':
+                    e['marked'].append(m[1])
+                    e['correct_reason'] = m[4].strip()
+                else:
+                    e['labelled'] = True
+                    if not any(b in m[4] for b in BOILERPLATE):
+                        e['why_not'][m[1]] = m[4].strip()
                 continue
             m = re.match(r'^Q(\d+)\s+Answer\s+([A-D])\b\s*(.*)$', t)
             if m:
@@ -538,11 +585,11 @@ def parse_mcqs(doc, parts, aliases=None):
                 e['retest_from'] = re.split(r'\s*[•;]\s*', body)[0].strip().rstrip(' —–-')
                 e['stage'] = st[1] if st else None
                 continue
-            m = re.match(r'^EXAM PEARL\s*[—:-]\s*(.+)$', t, re.I)
+            m = re.match(r'^(?:EXAM )?PEARL\s*[—:-]\s*(.+)$', t, re.I)
             if m:
                 e['pearl'] = m[1].strip()
                 continue
-            m = re.match(r'^WHY THIS QUESTION MATTERS\s*[:—-]\s*(.+)$', t, re.I)
+            m = re.match(r'^WHY THIS (?:QUESTION )?MATTERS\s*[:—-]\s*(.+)$', t, re.I)
             if m:
                 e['why'] = re.sub(r'\s*Distinguish the nearest plausible competing option using [^.]*\.', '', m[1]).strip()
                 continue
