@@ -110,8 +110,9 @@ function wrongLines(list,lines,label){if(!list.length)return;const L=i=>String.f
 function retestLines(){
  const rq=quiz.filter(q=>q.retest);if(!rq.length)return[];
  return['','Retests:',...rq.map(q=>{const a=answers.find(x=>x.num===q.num),st=q.retest.stage||'R1';
-  const src=(String(q.retest.from||'').match(/Day\s*\d+(?:\s*Q\d+)?/)||[''])[0].replace(/\s+/g,' ');
-  const id=`Day __DAY__ Q${q.num}${src?` retest ${src}`:' retest'}`;
+  const full=String(q.retest.from||''),sm=full.match(/Day\s*\d+(?:\s*Q\d+)?/),src=sm?sm[0].replace(/\s+/g,' '):'';
+  const name=sm?full.slice(sm.index+sm[0].length).replace(/^[\s—–:-]+/,'').trim():'';   // "Day 10 Q8 — Neonatal hypoglycemia …"
+  const id=`Day __DAY__ Q${q.num}${src?` retest ${src}`:' retest'}${name?` (${name})`:''}`;
   if(!a)return`${id} → Not answered → ${st} → Pending`;
   if(a.correct)return a.conf==='guessed'?`${id} → Correct + guessed → ${st} → Not secure (repeat ${st})`:`${id} → Correct + understood → ${st} → Improving`;
   return`${id} → Wrong + ${a.tag||'?'} → ${st} → Repeat failure ×2`;})];

@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import docx_parse as dp
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ACRONYMS = {'PDA', 'VSD', 'AVSD', 'PAPVC', 'PVR', 'PVRI', 'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
+ACRONYMS = {'TOF', 'RVOT', 'RVOTO', 'MAPCA', 'MAPCAS', 'DORV', 'CMR', 'PGE1', 'PDA', 'VSD', 'AVSD', 'PAPVC', 'PVR', 'PVRI', 'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
             'NICU', 'ELBW', 'VLBW', 'PPHN', 'TSB', 'TCB', 'DAT', 'ICP', 'NEET-SS', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX',
             'XI', 'XII', 'XIII', 'K/C/R/G/S', 'R1', 'R2', 'R3', 'QA', 'MCQS', 'CPAP', 'NIV', 'PIP', 'EOS', 'LOS',
             'NEC', 'TPN', 'PN', 'NNF', 'IEM', 'ASD', 'ADHD', 'CHD', 'CCHD', 'ECG', 'CXR', 'IAP-NNF', 'SIP', 'GIR', 'PDHM', 'MOM', 'HMF', 'IUGR', 'SGA', 'IV/PN'}
@@ -40,7 +40,7 @@ RULES = [
     (r'calculation drill|calculation solutions|calculation-error retests', 'calc'), (r'answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data|data-interpretation', 'data'),
     (r'objective|learning outcomes', 'overview'), (r'(study|teaching|learning) plan', 'overview'), (r'^editorial comparison', 'overview'),
     (r'^\d+\.\s*mcqs?\b|option-by-option explanations', 'mcq'), (r'exam traps|close-distractor traps', 'pearls'),
-    (r'question-level answer|release decision', 'references'), (r'r1[–-]r3 audit|scoring and error log', 'plan'),
+    (r'question-level answer|release decision|release review|qa decision', 'references'), (r'r1[–-]r3 audit|scoring and error log', 'plan'),
     (r'source register|^appendix\b.*(critique|quality-control)', 'references'),
     (r'must-know numbers', 'numbers'), (r'comparison tables|algorithm', 'tables'),
     (r'clinical cases|case discriminators|teaching cases|integrated cases', 'cases'), (r'^PART [IVXLC]+\s*[—-]\s*DATA\b', 'data'), (r'pearls', 'pearls'),
@@ -296,10 +296,13 @@ def build(day, docx, keep_order=False):
         # Pair prompt i with answer i as "prompt<br>Answer: ..." (same shape as docs that print answers inline).
         ql = next((b for s in pages.get('recall', {}).get('sections', []) for b in s['blocks'] if b['t'] == 'list'), None)
         al = [b for s in recall_answers for b in s['blocks'] if b['t'] == 'list']
-        if not ql or len(al) != 1 or len(al[0]['items']) != len(ql['items'])                 or sum(len(s['blocks']) for s in recall_answers) != 1:
+        if not ql or len(al) != 1 or len(al[0]['items']) != len(ql['items']):
             raise SystemExit('Active Recall answers do not line up with the prompts')
         ql['items'] = [f'{q}<br>Answer: {a}' for q, a in zip(ql['items'], al[0]['items'])]
         total_blocks -= 1
+        extra = [b for s in recall_answers for b in s['blocks'] if b is not al[0]]   # notes after the answer list stay on the page
+        if extra:
+            pages['recall']['sections'].append({'title': '', 'blocks': extra})
         for s in pages['recall']['sections']:
             if s['title'].upper().startswith('ACTIVE RECALL'):
                 s['title'] = ''

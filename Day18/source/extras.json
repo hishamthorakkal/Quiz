@@ -3,39 +3,39 @@
   "retests": {
     "76": {
       "stage": "R1",
-      "from": "Day 10 Q8"
+      "from": "Day 10 Q8 — Neonatal hypoglycemia — CPS versus PES transition windows"
     },
     "77": {
       "stage": "R1",
-      "from": "Day 11 Q25"
+      "from": "Day 11 Q25 — ROP — ETROP Type 1 criteria"
     },
     "78": {
       "stage": "R1",
-      "from": "Day 11 Q46"
+      "from": "Day 11 Q46 — Corrected age versus postmenstrual age"
     },
     "79": {
       "stage": "R1",
-      "from": "Day 11 Q55"
+      "from": "Day 11 Q55 — ROP — AAP 2018 first screening timing"
     },
     "80": {
       "stage": "R1",
-      "from": "Day 13 Q5"
+      "from": "Day 13 Q5 — BEARS paediatric sleep history"
     },
     "81": {
       "stage": "R1",
-      "from": "Day 14 Q30"
+      "from": "Day 14 Q30 — Complicated SAM — F-75 daily feed-volume calculation"
     },
     "82": {
       "stage": "R1",
-      "from": "Day 5 Q53"
+      "from": "Day 5 Q53 — BPD — Jensen support-based grading"
     },
     "83": {
       "stage": "R2",
-      "from": "Day 7 Q34"
+      "from": "Day 7 Q34 — Neonatal aEEG — seizure interpretation"
     },
     "84": {
       "stage": "R2",
-      "from": "Day 8 Q41"
+      "from": "Day 8 Q41 — Preterm nutrition — enteral calories and protein"
     }
   },
   "calc_items": [
@@ -132,60 +132,6 @@
         {
           "answer": 5,
           "unit": "percentage points"
-        }
-      ]
-    },
-    {
-      "title": "F-100 catch-up intake (Day 14 retest)",
-      "question": "A 9-kg child has an ordered catch-up intake of 150 kcal/kg/day. At 1 kcal/mL of F-100, calculate the kcal/day and the corresponding feed volume.",
-      "working": "9 × 150 = 1350 kcal/day; at 1 kcal/mL = 1350 mL/day. A mathematical scenario, not an individual feeding prescription.",
-      "trap": "",
-      "parts": [
-        {
-          "label": "Energy",
-          "answer": 1350,
-          "unit": "kcal/day"
-        },
-        {
-          "label": "F-100 volume",
-          "answer": 1350,
-          "unit": "mL/day"
-        }
-      ]
-    },
-    {
-      "title": "10% dextrose volume and glucose (Day 14 retest)",
-      "question": "A protocol explicitly orders 2 mL/kg of 10% dextrose for a 4.5-kg child. Calculate the volume and the glucose mass.",
-      "working": "2 × 4.5 = 9 mL; 10% = 0.1 g/mL, so 9 × 0.1 = 0.9 g glucose. Check the dose against the local SAM protocol before clinical use.",
-      "trap": "",
-      "parts": [
-        {
-          "label": "Volume",
-          "answer": 9,
-          "unit": "mL"
-        },
-        {
-          "label": "Glucose",
-          "answer": 0.9,
-          "unit": "g"
-        }
-      ]
-    },
-    {
-      "title": "Rehabilitation energy (Day 14 retest)",
-      "question": "180 kcal/kg/day is prescribed for an 11-kg child. Calculate the kcal/day and the equivalent F-100 volume at 1 kcal/mL.",
-      "working": "11 × 180 = 1980 kcal/day; at 1 kcal/mL = 1980 mL/day. Not a recommended feeding prescription.",
-      "trap": "",
-      "parts": [
-        {
-          "label": "Energy",
-          "answer": 1980,
-          "unit": "kcal/day"
-        },
-        {
-          "label": "F-100 volume",
-          "answer": 1980,
-          "unit": "mL/day"
         }
       ]
     }

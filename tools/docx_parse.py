@@ -175,7 +175,8 @@ def split_h1(doc):
                 title = ' '.join(x.text or '' for x in el.iter(W + 't') if True)
                 title = re.sub(r'\s+', ' ', ''.join((x.text or '') if x.tag == W + 't' else ' ' for x in el.iter() if x.tag in (W + 't', W + 'br'))).strip()
                 continue
-            if st.startswith('heading 1') or st == 'part':      # some packs style their part headings "part"
+            if st.startswith('heading 1') or st == 'part' or (st == 'title' and re.match(r'^SECTION [A-Z]\b', text(el))):
+                # some packs style their part headings "part"; Day 18 five-hour edition styles "SECTION N — …" as Title
                 cur = (text(el), [])
                 parts.append(cur)
                 continue
@@ -433,9 +434,11 @@ def parse_mcqs(doc, parts, aliases=None):
                     problems.append(f"Q{m[1]}: header answer text does not match option {m[2]}")
                 continue
             m = (re.match(r'^Q(\d+)\s*[—–-]\s*Correct\s+([A-D])\b', t)      # Day 17: "Q1 — Correct C | Topic"
-                 or re.match(r'^Q(\d+)\s*[—–-].*\|\s*Correct:?\s*([A-D])\s*$', t))   # Day 18: "Q01 — Topic | Correct: D"
+                 or re.match(r'^Q(\d+)\s*[—–-][^|]*\|\s*Correct:?\s*([A-D])\b\s*(?:\|\s*Original failed question:\s*(.+))?$', t))   # Day 18: "Q01 — Topic | Correct: D [| Original failed question: Day 10 Q8 — name]"
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
+                if m.lastindex >= 3 and m[3]:
+                    e['retest'], e['retest_from'] = True, m[3].strip()
                 ex[int(m[1])] = e
                 continue
             m = re.match(r'^Q(\d+)\s+Answer\s+([A-D])\b\s*(.*)$', t)
