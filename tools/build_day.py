@@ -38,7 +38,8 @@ def nice(title):
 RULES = [
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
     (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
-    (r'active-recall answers', 'recall'), (r'session map', 'overview'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
+    (r'active-recall answers', 'recall'), (r'session map|study timetable', 'overview'), (r'visual/data stations\b', 'data'),
+    (r'six-control ledger|four-stage qa', 'references'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
     (r'review stages|qa ledger|qa controls', 'references'),
     (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
     (r'calculation drill|calculation solutions|calculation-error retests', 'calc'), (r'answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data|data-interpretation', 'data'),
@@ -245,7 +246,12 @@ def build(day, docx, keep_order=False):
                 t_ = re.sub(r'<[^>]+>', '', b.get('html', '')) if b['t'] == 'p' else ''
                 m_ = re.match(r'^(Station \d+)\s*:\s*(.+)$', t_) or re.match(r'^(V\d+)\.\s*(.+)$', t_)   # Day 18: "V1. answer"
                 ans = {'t': 'p', 'html': '<strong>Interpretation:</strong> ' + re.sub(r'^(<[^>]+>)*\s*(Station \d+\s*:|V\d+\.)\s*', '', b['html'])}
-                tgt = m_ and next((s for s in pages['data']['sections'] if s['title'].startswith(m_[1] + ' ')), None)
+                tgt = m_ and next((s for s in pages['data']['sections'] if s['title'].startswith(m_[1] + ' ')
+                                   or re.match(rf'^{m_[1]}\s*:', s['title'])), None)   # Day 20: section "Station 1: Figure 1"
+                if tgt and re.match(rf'^{m_[1]}\s*:', tgt['title']):
+                    # answer "Station 1: Figure 1: <answer>" repeats the section label: drop it
+                    lab = re.sub(rf'^{m_[1]}\s*:\s*', '', tgt['title'])
+                    ans['html'] = re.sub(rf'^(<strong>Interpretation:</strong> )(<[^>]+>)*\s*{re.escape(lab)}\s*:\s*', r'\1', ans['html'])
                 if tgt:
                     tgt['blocks'].append(ans)
                     continue
@@ -258,6 +264,17 @@ def build(day, docx, keep_order=False):
     if 'data' in pages:
         # Day 17: "Station 1 — Figure 1 | question" + "Answer / interpretation: …" paragraphs. The linked study-note
         # figure is labelled with the lesion, so the reference moves into the hidden interpretation.
+        for s_ in pages['data']['sections']:
+            # Day 20: section "Station 1: Figure 1" — the study-note figure prints the answer, so the title shows only
+            # "Station 1" and the figure link sits inside the hidden interpretation
+            mt = re.match(r'^(Station \d+)\s*:\s*(.+)$', s_['title'])
+            if mt:
+                s_['title'] = mt[1]
+                ib = next((b for b in s_['blocks'] if b['t'] == 'p' and b['html'].startswith('<strong>Interpretation:')), None)
+                if re.match(r'^Figure \d+$', mt[2]) and ib:
+                    ib['html'] += f' <em>(Linked: {mt[2]} in the study notes.)</em>'
+                elif s_['blocks'] and s_['blocks'][0]['t'] == 'p':
+                    s_['blocks'][0]['html'] = f'<em>{mt[2]}:</em> ' + s_['blocks'][0]['html']
         for s_ in pages['data']['sections']:
             nb_ = []
             for b in s_['blocks']:
@@ -288,7 +305,7 @@ def build(day, docx, keep_order=False):
             pages['cases']['sections'] += [s for s in moved if s['blocks'] or not re.search(r'case workbook', s['title'], re.I)]
     if 'recall' in pages and not recall_answers:
         rs = pages['recall']['sections']
-        ak = [s_ for s_ in rs if re.search(r'answer key|answers?\b.*separate', s_['title'], re.I)]
+        ak = [s_ for s_ in rs if re.search(r'answer key|answers?\b.*separate|^active recall answers$', s_['title'], re.I)]
         if len(ak) == 1 and [b['t'] for b in ak[0]['blocks']] == ['list']:
             recall_answers = [ak[0]]
             pages['recall']['sections'] = [s_ for s_ in rs if s_ is not ak[0]]

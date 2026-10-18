@@ -379,7 +379,7 @@ def parse_mcqs(doc, parts, aliases=None):
             continue
         m = (re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t) or re.match(r'^Q(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t)
              or re.match(r'^Q(\d+)\.\s*()(.+)$', t)
-             or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*\S.*$', t)    # Day 17: "Q01  [Level]  Topic" heading, stem below
+             or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*(?:\S.*)?$', t)    # Day 17: "Q01  [Level]  Topic" heading, stem below (Day 20: no topic)
              or re.match(r'^Q(\d+)\s*[—–-]\s*(Spaced revision)()\s*$', t, re.I))   # Day 18: "Q76 — Spaced revision" = notebook retest
         m19 = not m and re.match(r'^([QR])(\d+)\s{2,}([^|\s].*)$', t)   # Day 19: "Q01  stem"; "R01  stem" = notebook retest
         if m19:
@@ -446,6 +446,11 @@ def parse_mcqs(doc, parts, aliases=None):
                 e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
                 continue
+            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t)          # Day 20: "Q01 — A | Topic"
+            if m:
+                e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
+                ex[int(m[1])] = e
+                continue
             m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\.\s*(.+)$', t)
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
@@ -471,7 +476,12 @@ def parse_mcqs(doc, parts, aliases=None):
                     e['retest'], e['stage'] = True, m[2]
                 ex[n_] = e
                 continue
-            m = re.match(r'^ORIGINAL FAILED QUESTION:\s*([^|]+)', t, re.I)
+            m = re.match(r'^ORIGINAL FAILED QUESTION(?:\s*/\s*NOTIFICATION)?:\s*([^|]+)(.*)$', t, re.I)
+            if m and e and m[2]:     # Day 20: "Day 15 — Q61 — name | ERR-D15-Q61 | Retest R1 | …"
+                st = re.search(r'\bRetest\s+(R\d)\b', m[2])
+                e['retest'], e['stage'] = True, st[1] if st else e.get('stage')
+                e['retest_from'] = re.sub(r'^(Day\s*\d+)\s*[—–-]\s*(Q\d+)\b', r'\1 \2', m[1].strip())
+                continue
             if m and e:
                 e['retest_from'] = m[1].strip()
                 continue
@@ -513,6 +523,16 @@ def parse_mcqs(doc, parts, aliases=None):
             m = re.match(r'^Source:\s*(Day\s*\d+)(?:\s*Q(\d+))?', t)
             if m:
                 e['retest_from'] = m[1] + (f' Q{m[2]}' if m[2] else '')
+                continue
+            m = re.match(r'^([A-D])\s*([×✗✓])\s*[—–]\s*(.+)$', t)     # Day 20: "A ✓ — reason" (no option text)
+            if m and e and e['q']:
+                if m[2] == '✓':
+                    e['marked'].append(m[1])
+                    e['correct_reason'] = m[3].strip()
+                else:
+                    e['labelled'] = True
+                    if not any(b in m[3] for b in BOILERPLATE):
+                        e['why_not'][m[1]] = m[3].strip()
                 continue
             m = re.match(r'^([A-D])\s*([×✗✓])\s*(.+)$', t)     # Day 18: "A × <option text>: reason" / "D ✓ <option text>: reason"
             if m and e['q']:
@@ -670,6 +690,7 @@ def parse_mcqs(doc, parts, aliases=None):
             item['retest'] = {'stage': e.get('stage') or 'R1', 'from': src}
         item['explanation'] = compose_explanation(item)
         out.append(item)
+    out.sort(key=lambda q: q['num'])      # Day 20 interleaves the retests (Q76 after Q08); sets run in number order
     nums = [q['num'] for q in out]
     if nums != list(range(1, len(nums) + 1)):
         problems.append('question numbering not contiguous')

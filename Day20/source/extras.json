@@ -1,0 +1,21 @@
+{
+  "calc_items": [
+    {"title": "PVR", "question": "At catheterisation, mPAP is 42 mmHg, PAWP is 12 mmHg and Qp is 5 L/min. Calculate the pulmonary vascular resistance.",
+     "working": "PVR = (mPAP − PAWP) / Qp = (42 − 12) / 5 = 6 WU", "trap": "", "parts": [{"answer": 6, "unit": "WU"}]},
+    {"title": "PVRI", "question": "A child has PVR 6 WU and BSA 0.75 m². Calculate the indexed PVR (PVRI).",
+     "working": "PVRI = PVR × BSA = 6 × 0.75 = 4.5 WU·m²", "trap": "", "parts": [{"answer": 4.5, "unit": "WU·m²"}]},
+    {"title": "Cardiac index", "question": "Cardiac output is 3.6 L/min and BSA is 1.2 m². Calculate the cardiac index.",
+     "working": "CI = CO / BSA = 3.6 / 1.2 = 3 L/min/m²", "trap": "", "parts": [{"answer": 3, "unit": "L/min/m²"}]},
+    {"title": "Stroke volume", "question": "Cardiac output is 3.0 L/min and heart rate is 120/min. Calculate the stroke volume.",
+     "working": "SV = CO / HR = 3000 mL/min ÷ 120/min = 25 mL/beat", "trap": "", "parts": [{"answer": 25, "unit": "mL/beat"}]},
+    {"title": "Furosemide dose arithmetic", "question": "An order states furosemide 1 mg/kg per dose for an 18-kg child. Calculate the dose. (Arithmetic only — confirm the order and clinical context.)",
+     "working": "18 × 1 = 18 mg/dose; confirm the order and context.", "trap": "", "parts": [{"answer": 18, "unit": "mg/dose"}]},
+    {"title": "Infusion rate arithmetic", "question": "An infusion is ordered at 0.5 microgram/kg/min for a 12-kg child. Calculate the rate in microgram/min.",
+     "working": "0.5 × 12 = 6 microgram/min", "trap": "", "parts": [{"answer": 6, "unit": "microgram/min"}]},
+    {"title": "F-75 per-feed volume (notebook transfer)", "question": "An 8-kg child is ordered F-75 at 130 mL/kg/day, split into 12 feeds. Calculate the daily volume and the volume per feed.",
+     "working": "8 × 130 = 1040 mL/day; 1040 ÷ 12 = 86.7 mL/feed", "trap": "",
+     "parts": [{"label": "Daily volume", "answer": 1040, "unit": "mL/day"}, {"label": "Per feed", "answer": 86.7, "unit": "mL/feed"}]},
+    {"title": "Arteriovenous O₂ difference", "question": "O₂ consumption is 200 mL/min and cardiac output is 4 L/min. Calculate the arteriovenous O₂ content difference in mL/dL.",
+     "working": "200 / 4 = 50 mL O₂ per L of blood = 5 mL/dL (Fick: VO₂ = CO × a–v O₂ difference)", "trap": "", "parts": [{"answer": 5, "unit": "mL/dL"}]}
+  ]
+}
