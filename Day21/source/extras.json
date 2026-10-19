@@ -1,0 +1,41 @@
+{
+  "title": "Cardiology System Revision — Arrhythmias & ECG",
+  "retests": {
+    "121": {"stage": "R1", "from": "Day 10 Q8 — Neonatal hypoglycemia — CPS 72 h vs PES 48 h"},
+    "122": {"stage": "R2", "from": "Day 5 Q34 — Ventilator DOPE — circuit disconnection/equipment failure"},
+    "123": {"stage": "R1", "from": "Day 5 Q53 — Jensen BPD grade at 36 weeks PMA"},
+    "124": {"stage": "R2", "from": "Day 6 Q60 — G6PD neonatal unconjugated jaundice with DAT-negative hemolysis"},
+    "125": {"stage": "R2", "from": "Day 10 Q15 — Early neonatal extracellular fluid contraction and natriuresis"},
+    "126": {"stage": "R2", "from": "Day 10 Q47 — GIR to dextrose percentage at restricted fluids"},
+    "127": {"stage": "R2", "from": "Day 10 Q50 — Hyperinsulinism critical sample — suppressed BOHB/FFA, glucagon response"},
+    "128": {"stage": "R2", "from": "Day 10 Q65 — OTC versus CPS1/NAGS — urinary orotic acid"},
+    "129": {"stage": "R1", "from": "Day 11 Q25 — ROP ETROP Type 1 — zone II stage 2 plus disease"},
+    "130": {"stage": "R1", "from": "Day 11 Q46 — Corrected age vs PMA in preterm infant"},
+    "131": {"stage": "R1", "from": "Day 11 Q55 — AAP 2018 ROP first-screen timing for GA 24 weeks"},
+    "132": {"stage": "R1", "from": "Day 13 Q5 — BEARS paediatric sleep-history mnemonic"},
+    "133": {"stage": "R1", "from": "Day 14 Q30 — F-75 starter feed weight × prescribed mL/kg/day"},
+    "134": {"stage": "R1", "from": "Day 15 Q31 — Wolf–Hirschhorn syndrome — 4p deletion / Greek-warrior helmet"},
+    "135": {"stage": "R1", "from": "Day 15 Q61 — Galactokinase GALK1 vs classic GALT galactosemia"},
+    "136": {"stage": "R1", "from": "Day 15 Q77 — MCAD ACADM — fasting hypoketotic hypoglycemia with C8"}
+  },
+  "calc_items": [
+    {"title": "Dextrose % from GIR (Day 10 repair)", "question": "A neonate needs a GIR of 7 mg/kg/min at a total fluid of 120 mL/kg/day. What dextrose concentration (%) is required?",
+     "working": "Dextrose % = GIR × 144 / fluid (mL/kg/day) = 7 × 144 / 120 = 8.4% (D8.4)", "trap": "", "parts": [{"answer": 8.4, "unit": "%"}]},
+    {"title": "F-75 daily volume (Day 14 repair)", "question": "F-75 is ordered at 130 mL/kg/day for a 7.5-kg child. Calculate the daily volume.",
+     "working": "7.5 × 130 = 975 mL/day", "trap": "", "parts": [{"answer": 975, "unit": "mL/day"}]},
+    {"title": "F-100 energy equivalent (Day 14 repair)", "question": "A 9-kg child has a theoretical energy target of 150 kcal/kg/day with F-100 at 1 kcal/mL. Calculate the kcal/day and the equivalent volume.",
+     "working": "9 × 150 = 1350 kcal/day ≡ 1350 mL/day at 1 kcal/mL; not an unconditional fluid prescription.", "trap": "",
+     "parts": [{"label": "Energy", "answer": 1350, "unit": "kcal/day"}, {"label": "Volume", "answer": 1350, "unit": "mL/day"}]},
+    {"title": "D10 bolus volume and glucose (Day 14 repair)", "question": "D10 is given at 5 mL/kg to a 6-kg child. Calculate the bolus volume and the glucose mass.",
+     "working": "6 × 5 = 30 mL; D10 = 0.1 g/mL, so 30 × 0.1 = 3 g glucose", "trap": "",
+     "parts": [{"label": "Volume", "answer": 30, "unit": "mL"}, {"label": "Glucose", "answer": 3, "unit": "g"}]},
+    {"title": "First adenosine dose", "question": "Using the AHA dosing, calculate the first adenosine dose for an 18-kg child with stable SVT.",
+     "working": "0.1 mg/kg × 18 kg = 1.8 mg (first dose; maximum 6 mg)", "trap": "", "parts": [{"answer": 1.8, "unit": "mg"}]},
+    {"title": "Second adenosine dose", "question": "Using the AHA dosing, calculate the second adenosine dose for a 32-kg child.",
+     "working": "0.2 mg/kg × 32 kg = 6.4 mg (second dose; maximum 12 mg)", "trap": "", "parts": [{"answer": 6.4, "unit": "mg"}]},
+    {"title": "First defibrillation energy", "question": "Calculate the first defibrillation shock energy (teaching dose) for a 22-kg child in VF.",
+     "working": "2 J/kg × 22 kg = 44 J", "trap": "", "parts": [{"answer": 44, "unit": "J"}]},
+    {"title": "QTc (Bazett)", "question": "QT is 0.36 s and the RR interval is 0.81 s. Calculate the QTc using Bazett's formula.",
+     "working": "QTc = QT / √RR = 0.36 / 0.9 = 0.40 s", "trap": "", "parts": [{"answer": 0.4, "unit": "s"}]}
+  ]
+}

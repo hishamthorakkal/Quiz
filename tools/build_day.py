@@ -38,7 +38,8 @@ def nice(title):
 RULES = [
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
     (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
-    (r'active-recall answers', 'recall'), (r'session map|study timetable', 'overview'), (r'visual/data stations\b', 'data'),
+    (r'active-recall answers', 'recall'), (r'session map|study timetable|study schedule', 'overview'), (r'visual/data stations\b', 'data'),
+    (r'^section [a-z]\b.*active recall', 'recall'), (r'repair calculations', 'calc'), (r'visual/data interpretation stations', 'data'),   # Day 21
     (r'six-control ledger|four-stage qa', 'references'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
     (r'review stages|qa ledger|qa controls', 'references'),
     (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
@@ -303,6 +304,25 @@ def build(day, docx, keep_order=False):
             pages['data']['sections'] = [s for s in dsecs if s not in moved]
             pages.setdefault('cases', {'id': 'cases', 'title': PAGES['cases'][0], 'group': PAGES['cases'][1], 'kind': 'cases', 'sections': []})
             pages['cases']['sections'] += [s for s in moved if s['blocks'] or not re.search(r'case workbook', s['title'], re.I)]
+    # Day 21: case titles "3 • Incessant long-RP" name the answer -> "Case 3 — …" (the portal hides the topic until the reveal);
+    # station titles "S2 — P/QRS dissociation" -> "Visual Station 2 — …" (same)
+    for s_ in pages.get('cases', {}).get('sections', []):
+        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title'])
+        if m_:
+            s_['title'] = f'Case {m_[1]} — {m_[2]}'
+    for s_ in pages.get('data', {}).get('sections', []):
+        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title'])
+        if m_:
+            s_['title'] = f'Visual Station {m_[1]} — {m_[2]}'
+    if 'recall' in pages:
+        for s_ in pages['recall']['sections']:
+            for b in s_['blocks']:
+                if b['t'] == 'list':
+                    b['items'] = [re.sub(r'\s*\[Secure / Revise\]\s*$', '', it) for it in b['items']]
+        rr = [s_ for s_ in pages['recall']['sections'] if re.match(r'^Rapid revision\b', s_['title'], re.I)]
+        if rr and 'revision' in pages:          # Day 21: a rapid-revision block placed under Active Recall
+            pages['recall']['sections'] = [s_ for s_ in pages['recall']['sections'] if s_ not in rr]
+            pages['revision']['sections'] += rr
     if 'recall' in pages and not recall_answers:
         rs = pages['recall']['sections']
         ak = [s_ for s_ in rs if re.search(r'answer key|answers?\b.*separate|^active recall answers$', s_['title'], re.I)]

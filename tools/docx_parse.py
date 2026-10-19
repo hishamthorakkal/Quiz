@@ -446,7 +446,7 @@ def parse_mcqs(doc, parts, aliases=None):
                 e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
                 continue
-            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t)          # Day 20: "Q01 — A | Topic"
+            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t) or re.match(r'^Q(\d+)\s*•\s*([A-D])\s*•', t)   # Day 20 "Q01 — A | Topic"; Day 21 "Q001 • A • Topic"
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
@@ -523,6 +523,23 @@ def parse_mcqs(doc, parts, aliases=None):
             m = re.match(r'^Source:\s*(Day\s*\d+)(?:\s*Q(\d+))?', t)
             if m:
                 e['retest_from'] = m[1] + (f' Q{m[2]}' if m[2] else '')
+                continue
+            m = re.match(r'^([A-D])\.\s+(BEST|NOT BEST)\s+—\s+(.+)$', t)   # Day 21: "A. BEST — <option text>. reason"
+            if m and e and e['q']:
+                opt = e['q']['options']['ABCD'.index(m[1])]
+                if not m[3].startswith(opt):
+                    problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
+                    continue
+                reason = m[3][len(opt):].lstrip(' .:—–-').strip()
+                if m[2] == 'BEST':
+                    e['marked'].append(m[1])
+                    e['correct_reason'] = reason
+                else:
+                    e['labelled'] = True
+                    if reason and not any(b in reason for b in BOILERPLATE):
+                        e['why_not'][m[1]] = reason
+                continue
+            if e and re.match(r'^Competing-option check:', t):   # Day 21: generated restatement of the stem, not an explanation
                 continue
             m = re.match(r'^([A-D])\s*([×✗✓])\s*[—–]\s*(.+)$', t)     # Day 20: "A ✓ — reason" (no option text)
             if m and e and e['q']:
