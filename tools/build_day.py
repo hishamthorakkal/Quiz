@@ -40,7 +40,7 @@ RULES = [
     (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
     (r'active-recall answers', 'recall'), (r'session map|study timetable|study schedule', 'overview'), (r'visual/data stations\b', 'data'),
     (r'^section [a-z]\b.*active recall', 'recall'), (r'blind mcq paper', 'mcq'), (r'eeg / data stations|^part [ivx]+ — .*data stations', 'data'), (r'^at a glance|five-hour schedule', 'overview'), (r'repair calculations', 'calc'), (r'visual/data interpretation stations', 'data'),   # Day 21
-    (r'six-control ledger|four-stage qa', 'references'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
+    (r'six-control ledger|four-stage qa|mandatory stages|six-control audit|certification ledger|release checklist', 'references'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
     (r'review stages|qa ledger|qa controls', 'references'),
     (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
     (r'calculation drill|calculation solutions|calculation-error retests', 'calc'), (r'answer key\b', 'mcq'), (r'^day \d+\b', 'overview'), (r'exam stations|image / tracing|interpretation stations|visual / data|data-interpretation', 'data'),
