@@ -349,7 +349,7 @@ def parse_mcqs(doc, parts, aliases=None):
             A = A + rp
     expl = next((els for h, els in parts if re.search(r'explanation', h, re.I)), None)
     if expl is None:   # Day 19: "Full A/B/C/D rationale — every base MCQ" + "Notebook retest answers …"
-        ex_parts = [els for h, els in parts if re.search(r'\brationale\b|retest answers', h, re.I)]
+        ex_parts = [els for h, els in parts if re.search(r'\brationales?\b|retest answers', h, re.I)]
         expl = [el for els in ex_parts for el in els] or None
     if expl is not None:
         C = expl
@@ -446,7 +446,7 @@ def parse_mcqs(doc, parts, aliases=None):
                 e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
                 continue
-            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t) or re.match(r'^Q(\d+)\s*•\s*([A-D])\s*•', t)   # Day 20 "Q01 — A | Topic"; Day 21 "Q001 • A • Topic"
+            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t) or re.match(r'^Q(\d+)\s*•\s*([A-D])\s*•', t) or re.match(r'^Q(\d+)\s*[—–-][^|]*\|\s*Best answer:\s*([A-D])\b', t)   # Day 22 "Q01 — CAE | Best answer: B | …"; Day 20 "Q01 — A | Topic"; Day 21 "Q001 • A • Topic"
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
@@ -476,9 +476,9 @@ def parse_mcqs(doc, parts, aliases=None):
                     e['retest'], e['stage'] = True, m[2]
                 ex[n_] = e
                 continue
-            m = re.match(r'^ORIGINAL FAILED QUESTION(?:\s*/\s*NOTIFICATION)?:\s*([^|]+)(.*)$', t, re.I)
+            m = re.match(r'^ORIGINAL FAILED QUESTION(?:\s*/\s*NOTIFICATION|\s*\(post-answer\))?:\s*([^|]+)(.*)$', t, re.I)
             if m and e and m[2]:     # Day 20: "Day 15 — Q61 — name | ERR-D15-Q61 | Retest R1 | …"
-                st = re.search(r'\bRetest\s+(R\d)\b', m[2])
+                st = re.search(r'\bRetest\s+(R\d)\b', m[2]) or re.search(r'\|\s*(?:repeat\s+)?(R\d)\b', m[2])
                 e['retest'], e['stage'] = True, st[1] if st else e.get('stage')
                 e['retest_from'] = re.sub(r'^(Day\s*\d+)\s*[—–-]\s*(Q\d+)\b', r'\1 \2', m[1].strip())
                 continue
@@ -543,13 +543,21 @@ def parse_mcqs(doc, parts, aliases=None):
                 continue
             m = re.match(r'^([A-D])\s*([×✗✓])\s*[—–]\s*(.+)$', t)     # Day 20: "A ✓ — reason" (no option text)
             if m and e and e['q']:
+                reason = m[3].strip()
+                opt = e['q']['options']['ABCD'.index(m[1])]
+                if reason.startswith(opt + ':'):          # Day 22: "A × — <option text>: reason"
+                    reason = reason[len(opt) + 1:].strip()
                 if m[2] == '✓':
                     e['marked'].append(m[1])
-                    e['correct_reason'] = m[3].strip()
+                    e['correct_reason'] = reason
                 else:
                     e['labelled'] = True
-                    if not any(b in m[3] for b in BOILERPLATE):
-                        e['why_not'][m[1]] = m[3].strip()
+                    if not any(b in reason for b in BOILERPLATE):
+                        e['why_not'][m[1]] = reason
+                continue
+            m = re.match(r'^Correction rule:\s*(.+)$', t)   # Day 22 retests: used as the pearl when there is none
+            if m and e:
+                e['rule'] = m[1].strip()
                 continue
             m = re.match(r'^([A-D])\s*([×✗✓])\s*(.+)$', t)     # Day 18: "A × <option text>: reason" / "D ✓ <option text>: reason"
             if m and e['q']:
@@ -679,7 +687,7 @@ def parse_mcqs(doc, parts, aliases=None):
         if klev and not (q['level'] == klev.get(n) == (e['lev'] or q['level'])):
             problems.append(f'Q{n}: level mismatch {q["level"]}/{klev.get(n)}/{e["lev"]}')
         # Pearls labelled "Qn pearl — ..." are matched by their label (some docs print them under the wrong question).
-        pearl = pearl_labels.get(n) or e.get('pearl', '')
+        pearl = pearl_labels.get(n) or e.get('pearl', '') or e.get('rule', '')
         if n in pearl_labels and e.get('pearl_in_block') != pearl_labels[n]:
             shifted.append(n)
         core = ' '.join(e['core']).strip() or e.get('correct_reason', '')   # no core paragraph: use the keyed option's "Correct:" reason

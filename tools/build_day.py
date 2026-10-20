@@ -39,7 +39,7 @@ RULES = [
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
     (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
     (r'active-recall answers', 'recall'), (r'session map|study timetable|study schedule', 'overview'), (r'visual/data stations\b', 'data'),
-    (r'^section [a-z]\b.*active recall', 'recall'), (r'repair calculations', 'calc'), (r'visual/data interpretation stations', 'data'),   # Day 21
+    (r'^section [a-z]\b.*active recall', 'recall'), (r'blind mcq paper', 'mcq'), (r'eeg / data stations|^part [ivx]+ — .*data stations', 'data'), (r'^at a glance|five-hour schedule', 'overview'), (r'repair calculations', 'calc'), (r'visual/data interpretation stations', 'data'),   # Day 21
     (r'six-control ledger|four-stage qa', 'references'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
     (r'review stages|qa ledger|qa controls', 'references'),
     (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
@@ -216,7 +216,7 @@ def build(day, docx, keep_order=False):
             calc = dp.parse_calc(secs)
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
-        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )\banswers?\s*$|recall answers\b', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
+        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )(?<!\+ )\banswers?\s*$|recall answers\b', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
@@ -268,14 +268,17 @@ def build(day, docx, keep_order=False):
         for s_ in pages['data']['sections']:
             # Day 20: section "Station 1: Figure 1" — the study-note figure prints the answer, so the title shows only
             # "Station 1" and the figure link sits inside the hidden interpretation
-            mt = re.match(r'^(Station \d+)\s*:\s*(.+)$', s_['title'])
+            # Day 22: "Station 3 — EEG report: 2-Hz slow spike-wave …" — the title carries the station data (and can
+            # name the pattern), so it becomes the first visible line and the heading shows only "Station 3"
+            mt = re.match(r'^(Station \d+)\s*:\s*(.+)$', s_['title']) or re.match(r'^(Station \d+)\s*[—–]\s*([^:]{3,40}:\s*.+)$', s_['title'])
             if mt:
                 s_['title'] = mt[1]
-                ib = next((b for b in s_['blocks'] if b['t'] == 'p' and b['html'].startswith('<strong>Interpretation:')), None)
+                ib = next((b for b in s_['blocks'] if b['t'] == 'p' and re.match(r'^(<[^>]+>)*\s*Interpretation\b', b['html'])), None)
+                fp = next((b for b in s_['blocks'] if b['t'] == 'p' and b.get('html', '').strip() and b is not ib), None)
                 if re.match(r'^Figure \d+$', mt[2]) and ib:
                     ib['html'] += f' <em>(Linked: {mt[2]} in the study notes.)</em>'
-                elif s_['blocks'] and s_['blocks'][0]['t'] == 'p':
-                    s_['blocks'][0]['html'] = f'<em>{mt[2]}:</em> ' + s_['blocks'][0]['html']
+                elif fp:
+                    fp['html'] = f'<em>{mt[2]}:</em> ' + fp['html']
         for s_ in pages['data']['sections']:
             nb_ = []
             for b in s_['blocks']:
