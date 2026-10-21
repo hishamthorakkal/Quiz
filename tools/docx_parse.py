@@ -332,7 +332,8 @@ def parse_mcqs(doc, parts, aliases=None):
     # also name study-note parts "SECTION A — …"); explanations: SECTION C.
     has_q = lambda els: sum(1 for el in els if el.tag == W + 'p' and (re.match(r'^Q?\d+\.\s*(\[|\S)', text(el)) or re.match(r'^Q\d+\s+\[', text(el))
                                                         or re.match(r'^Q\d+\s*[—–-]\s*Spaced revision\b', text(el), re.I)
-                                                        or re.match(r'^[QR]\d+\s{2,}[^|\s]', text(el)))) >= 5 and \
+                                                        or re.match(r'^[QR]\d+\s{2,}[^|\s]', text(el))
+                                                        or re.match(r'^[QR]\d+\s*\|', text(el)))) >= 5 and \
         any(el.tag == W + 'p' and re.match(r'^[A-D]\.\s', text(el)) for el in els)
     A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
     B, C = find(r'^SECTION B'), find(r'^SECTION C')
@@ -382,6 +383,17 @@ def parse_mcqs(doc, parts, aliases=None):
              or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*(?:\S.*)?$', t)    # Day 17: "Q01  [Level]  Topic" heading, stem below (Day 20: no topic)
              or re.match(r'^Q(\d+)\s*[—–-]\s*(Spaced revision)()\s*$', t, re.I))   # Day 18: "Q76 — Spaced revision" = notebook retest
         m19 = not m and re.match(r'^([QR])(\d+)\s{2,}([^|\s].*)$', t)   # Day 19: "Q01  stem"; "R01  stem" = notebook retest
+        m23 = not m and not m19 and re.match(r'^([QR])(\d+)\s*\|\s*(.+)$', t)   # Day 23: "Q01  |  Basic  |  Topic" / "R01  |  ERR-… — Day 16 Q41 — name", stem below
+        if m23:
+            if m23[1] == 'Q':
+                rbase = max(rbase, int(m23[2]))
+            lev = m23[3].split('|')[0].strip() if m23[1] == 'Q' else ''
+            cur = {'num': int(m23[2]) + (rbase if m23[1] == 'R' else 0), 'level': lev, 'question': '', 'options': [], 'retest': m23[1] == 'R'}
+            if m23[1] == 'R':          # the original-question label is tracked, never shown
+                src = re.sub(r'^ERR-\S+\s*[—–-]\s*', '', m23[3]).strip()
+                cur['retest_from'] = re.sub(r'\s*[—–-]\s*OVERDUE\s+R\d\s*$', '', src, flags=re.I)
+            qs.append(cur)
+            continue
         if m19:
             if m19[1] == 'Q':
                 rbase = max(rbase, int(m19[2]))
@@ -436,6 +448,8 @@ def parse_mcqs(doc, parts, aliases=None):
                     key[int(n_)] = a_
                 for l_, n_, a_ in re.findall(r'\b([QR])(\d+)\s*:\s*([A-D])\b', t_):    # Day 19: "Q01:C", "R01:B"
                     key[int(n_) + (rbase if l_ == 'R' else 0)] = a_
+                for n_, a_ in re.findall(r'\bR(\d+)\s+([A-D])\b', t_):                    # Day 23: "R01 D"
+                    key[int(n_) + rbase] = a_
     Q = {q['num']: q for q in qs}
     ex, e, pearl_labels = {}, None, {}
     for el in C or []:
@@ -458,7 +472,13 @@ def parse_mcqs(doc, parts, aliases=None):
                 if e['q'] and e['q']['options']['ABCD'.index(m[2])].rstrip('.') != m[3].strip().rstrip('.'):
                     problems.append(f"Q{m[1]}: header answer text does not match option {m[2]}")
                 continue
-            m = (re.match(r'^Q(\d+)\s*[—–-]\s*Correct\s+([A-D])\b', t)      # Day 17: "Q1 — Correct C | Topic"
+            m = re.match(r'^R(\d+)\s*[—–-]\s*Correct:\s*([A-D])\b', t)      # Day 23: "R01 — Correct: D  |  topic"
+            if m:
+                n_ = int(m[1]) + rbase
+                e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_), 'retest': True}
+                ex[n_] = e
+                continue
+            m = (re.match(r'^Q(\d+)\s*[—–-]\s*Correct:?\s+([A-D])\b', t)      # Day 17: "Q1 — Correct C | Topic"; Day 23 "Q01 — Correct: C | Topic"
                  or re.match(r'^Q(\d+)\s*[—–-][^|]*\|\s*Correct:?\s*([A-D])\b\s*(?:\|\s*Original failed question:\s*(.+))?$', t))   # Day 18: "Q01 — Topic | Correct: D [| Original failed question: Day 10 Q8 — name]"
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
@@ -574,15 +594,21 @@ def parse_mcqs(doc, parts, aliases=None):
                     if not any(b in rest for b in BOILERPLATE):
                         e['why_not'][m[1]] = rest
                 continue
-            m = re.match(r'^([A-D])\s*\((CORRECT|Incorrect|Wrong)\)\s*:\s*(.+)$', t, re.I)   # Day 17: "A (Incorrect): …"
+            if e and re.match(r'^Reference pointer\b', t):   # Day 23: source pointer, not part of the explanation
+                continue
+            m = re.match(r'^([A-D])\s*\((CORRECT|Incorrect|Wrong|Not best)\)\s*:\s*(.+)$', t, re.I)   # Day 17: "A (Incorrect): …"; Day 23 "A (Not best): <option>. reason"
             if m and e['q']:
+                reason = m[3].strip()
+                opt = e['q']['options']['ABCD'.index(m[1])].rstrip('.')
+                if reason.startswith(opt + '.'):
+                    reason = reason[len(opt) + 1:].strip()
                 if m[2].lower() == 'correct':
                     e['marked'].append(m[1])
-                    e['correct_reason'] = m[3].strip()
+                    e['correct_reason'] = reason
                 else:
                     e['labelled'] = True
-                    if not any(b in m[3] for b in BOILERPLATE):
-                        e['why_not'][m[1]] = m[3].strip()
+                    if not any(b in reason for b in BOILERPLATE):
+                        e['why_not'][m[1]] = reason
                 continue
             m = re.match(r'^Option ([A-D])\s*[—–-]\s*(.+)$', t) or re.match(r'^([A-D]):\s+(.+)$', t)
             if m and e['q']:
@@ -708,7 +734,7 @@ def parse_mcqs(doc, parts, aliases=None):
                 item[k] = q[k]
         if q.get('retest') or e.get('retest') or RETEST.match(e['lev'] or ''):
             # notebook retest: shown as a normal question, tracked internally (stage defaults to R1 = first retest)
-            src = e.get('retest_from', '')
+            src = e.get('retest_from', '') or q.get('retest_from', '')
             if not src:   # older docs: "WHY THIS QUESTION MATTERS: Spaced repair of Day 5 — DOPE" / "retrieval of the Day 5 Q34 …"
                 m = re.search(r'(?:repair|retrieval) of (?:the )?(Day\s*\d+(?:\s*Q\d+)?(?:\s*[—-]\s*[^.;]+)?)', e.get('why', ''))
                 src = m[1].strip() if m else ''

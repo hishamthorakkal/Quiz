@@ -39,7 +39,7 @@ RULES = [
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
     (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
     (r'active-recall answers', 'recall'), (r'session map|study timetable|study schedule', 'overview'), (r'visual/data stations\b', 'data'),
-    (r'^section [a-z]\b.*active recall', 'recall'), (r'blind mcq paper', 'mcq'), (r'eeg / data stations|^part [ivx]+ — .*data stations', 'data'), (r'^at a glance|five-hour schedule', 'overview'), (r'repair calculations', 'calc'), (r'visual/data interpretation stations', 'data'),   # Day 21
+    (r'^section [a-z]\b.*active recall', 'recall'), (r'blind mcq paper|examination paper|^[a-z]\. notebook retests|full four-option explanations', 'mcq'), (r'clinician certification', 'references'), (r'eeg / data stations|^part [ivx]+ — .*data stations', 'data'), (r'^at a glance|five-hour schedule', 'overview'), (r'repair calculations', 'calc'), (r'visual/data interpretation stations', 'data'),   # Day 21
     (r'six-control ledger|four-stage qa|mandatory stages|six-control audit|certification ledger|release checklist', 'references'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
     (r'review stages|qa ledger|qa controls', 'references'),
     (r'station answers', 'stationanswers'), (r'editorial decision|traceability', 'overview'),
@@ -216,11 +216,11 @@ def build(day, docx, keep_order=False):
             calc = dp.parse_calc(secs)
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
-        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )(?<!\+ )\banswers?\s*$|recall answers\b', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
+        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )(?<!\+ )\banswers?\s*$|recall answers\b|recall answer check', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
-            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1)
+            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1) or re.match(r'^([A-Z])\.\s+(.+)$', h1)
             mm = re.match(r'^Module (\d+)\s*[—–-]\s*(.+)$', h1)          # Day 19: "Module 2 — d-TGA: the mixing problem"
             pid = f'part-{len(notes) + 1}'
             if mm:
@@ -310,13 +310,26 @@ def build(day, docx, keep_order=False):
     # Day 21: case titles "3 • Incessant long-RP" name the answer -> "Case 3 — …" (the portal hides the topic until the reveal);
     # station titles "S2 — P/QRS dissociation" -> "Visual Station 2 — …" (same)
     for s_ in pages.get('cases', {}).get('sections', []):
-        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title'])
+        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Case (\d+)\s*[—–-]\s*(.+)$', s_['title'])   # Day 23: "1. Case 1 — rural clinic"
         if m_:
             s_['title'] = f'Case {m_[1]} — {m_[2]}'
     for s_ in pages.get('data', {}).get('sections', []):
-        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title'])
+        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
         if m_:
             s_['title'] = f'Visual Station {m_[1]} — {m_[2]}'
+    # extras "reveal_images": {"image2.png": "Visual Station 1"} — a document picture above the stations that labels a
+    # station's answer moves into that station, hidden with its interpretation
+    for name, st_title in extras.get('reveal_images', {}).items():
+        secs_ = pages.get('data', {}).get('sections', [])
+        img = next(((s_, b) for s_ in secs_ for b in s_['blocks'] if b['t'] == 'img' and b['src'].endswith('/' + name)), None)
+        tgt = next((s_ for s_ in secs_ if s_['title'].startswith(st_title)), None)
+        if not img or not tgt:
+            raise SystemExit(f'extras.json reveal_images: {name} or {st_title} not found on the data page')
+        img[0]['blocks'].remove(img[1])
+        img[1]['reveal'] = True
+        tgt['blocks'].append(img[1])
+    if 'data' in pages:
+        pages['data']['sections'] = [s_ for s_ in pages['data']['sections'] if s_['blocks'] or s_['title']]
     if 'recall' in pages:
         for s_ in pages['recall']['sections']:
             for b in s_['blocks']:
