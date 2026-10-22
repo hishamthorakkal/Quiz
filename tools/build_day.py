@@ -5,7 +5,7 @@ Usage:  python tools/build_day.py <day-number> <path-to-docx>
 Writes DayN/source/<docx>, DayN/content.js, DayN/index.html (portal shell) and DayN/quizK.html.
 The portal UI itself is shared: assets/portal.css + assets/portal.js.
 """
-import json, os, re, shutil, sys
+import html, json, os, re, shutil, sys
 from collections import Counter
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -36,6 +36,8 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
+    (r'^\d+\. questions\b|all-option explanations', 'mcq'), (r'learner route', 'overview'), (r'case stations', 'cases'),   # Day 24
+    (r'error-notebook .*traceability', 'plan'), (r'source / evidence register|^iteration \d|^four stages and six controls|clinician sign-off', 'references'),
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
     (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
     (r'active-recall answers', 'recall'), (r'session map|study timetable|study schedule', 'overview'), (r'visual/data stations\b', 'data'),
@@ -216,7 +218,7 @@ def build(day, docx, keep_order=False):
             calc = dp.parse_calc(secs)
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
-        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )(?<!\+ )\banswers?\s*$|recall answers\b|recall answer check', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
+        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )(?<!\+ )\banswers?\s*$|recall answers\b|recall answer check|recall answer guide', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
@@ -310,7 +312,7 @@ def build(day, docx, keep_order=False):
     # Day 21: case titles "3 • Incessant long-RP" name the answer -> "Case 3 — …" (the portal hides the topic until the reveal);
     # station titles "S2 — P/QRS dissociation" -> "Visual Station 2 — …" (same)
     for s_ in pages.get('cases', {}).get('sections', []):
-        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Case (\d+)\s*[—–-]\s*(.+)$', s_['title'])   # Day 23: "1. Case 1 — rural clinic"
+        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Case (\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Case (\d+):\s*(.+)$', s_['title'])   # Day 23: "1. Case 1 — rural clinic"
         if m_:
             s_['title'] = f'Case {m_[1]} — {m_[2]}'
     for s_ in pages.get('data', {}).get('sections', []):
@@ -328,6 +330,13 @@ def build(day, docx, keep_order=False):
         img[0]['blocks'].remove(img[1])
         img[1]['reveal'] = True
         tgt['blocks'].append(img[1])
+    # extras "added_station_answers": {"Station 1": "…"} — the document gives the station task but no answer
+    for st_title, txt in extras.get('added_station_answers', {}).items():
+        tgt = next((s_ for s_ in pages.get('data', {}).get('sections', []) if s_['title'] == st_title or s_['title'].startswith(st_title + ' ')), None)
+        if not tgt:
+            raise SystemExit(f'extras.json added_station_answers: {st_title} not found on the data page')
+        tgt['blocks'].append({'t': 'p', 'html': '<strong>Interpretation (added — not from source):</strong> ' + html.escape(txt)})
+        total_blocks += 1
     if 'data' in pages:
         pages['data']['sections'] = [s_ for s_ in pages['data']['sections'] if s_['blocks'] or s_['title']]
     if 'recall' in pages:
@@ -454,6 +463,20 @@ def build(day, docx, keep_order=False):
     for n, src in extras.get('retests', {}).items():
         q = next(q for q in qs if q['num'] == int(n))
         q['retest'] = {'stage': 'R1', 'from': src} if isinstance(src, str) else src
+    # extras "added_why_not": {"<option text>": "reason"} — the document's wrong-option explanations are placeholders
+    # ("EXPLANATION INCOMPLETE"); reasons written for the site, keyed by option text (shared by repeated questions)
+    # and shown as "Why not the others (added — not from source)"
+    awn = extras.get('added_why_not', {})
+    if awn:
+        for q in qs:
+            wn = {i: awn[o] for i, o in enumerate(q['options']) if i != q['answer'] and o in awn and i not in q['why_not']}
+            if wn:
+                q['why_not'].update(wn)
+                q['why_not_added'] = True
+                q['explanation'] = dp.compose_explanation(q)
+        gap = [f"Q{q['num']} {'ABCD'[i]}" for q in qs for i in range(4) if i != q['answer'] and i not in q['why_not']]
+        if gap:
+            raise SystemExit('extras.json added_why_not: no reason for ' + ', '.join(gap))
     # extras "answer_fixes": {"50": {"answer": "C", "why": "…"}} — correct a key the document itself contradicts
     for n, fx in extras.get('answer_fixes', {}).items():
         q = next(q for q in qs if q['num'] == int(n))

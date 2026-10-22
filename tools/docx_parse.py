@@ -210,7 +210,7 @@ def compose_explanation(q):
     """Core reasoning + 'Why not the others' with the CURRENT option letters (works after shuffling)."""
     expl = q['core']
     if q['why_not']:
-        expl += ' Why not the others: ' + '; '.join(f"{'ABCD'[i]}. {q['options'][i]} — {v}" for i, v in sorted(q['why_not'].items()))
+        expl += (' Why not the others (added — not from source): ' if q.get('why_not_added') else ' Why not the others: ') + '; '.join(f"{'ABCD'[i]}. {q['options'][i]} — {v}" for i, v in sorted(q['why_not'].items()))
     return expl
 
 
@@ -378,6 +378,11 @@ def parse_mcqs(doc, parts, aliases=None):
         if cur is not None and re.match(r'^Question-linked\b', t, re.I):
             cur['doc_caption'] = t                 # caption of that picture, not part of the stem
             continue
+        mh = doc.style(el).startswith('heading') and not re.search(r'\[', t) and re.match(r'^Q(\d+)\.\s*(.{1,60})$', t)
+        if mh:     # Day 24: heading "Q1. Early asymmetry" (topic, not shown) with the stem in the next paragraph
+            cur = {'num': int(mh[1]), 'level': '', 'question': '', 'options': [], 'retest': bool(re.search(r'retest', mh[2], re.I))}
+            qs.append(cur)
+            continue
         m = (re.match(r'^(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t) or re.match(r'^Q(\d+)\.\s*\[([^\]]+)\]\s*(.+)$', t)
              or re.match(r'^Q(\d+)\.\s*()(.+)$', t)
              or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*(?:\S.*)?$', t)    # Day 17: "Q01  [Level]  Topic" heading, stem below (Day 20: no topic)
@@ -450,6 +455,8 @@ def parse_mcqs(doc, parts, aliases=None):
                     key[int(n_) + (rbase if l_ == 'R' else 0)] = a_
                 for n_, a_ in re.findall(r'\bR(\d+)\s+([A-D])\b', t_):                    # Day 23: "R01 D"
                     key[int(n_) + rbase] = a_
+                for n_, a_ in re.findall(r'(?:^|\|)\s*(\d+)\s+([A-D])\s*(?=\||$)', t_):     # Day 24: "1 C  |  2 A  |  …"
+                    key[int(n_)] = a_
     Q = {q['num']: q for q in qs}
     ex, e, pearl_labels = {}, None, {}
     for el in C or []:
@@ -460,7 +467,7 @@ def parse_mcqs(doc, parts, aliases=None):
                 e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
                 continue
-            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t) or re.match(r'^Q(\d+)\s*•\s*([A-D])\s*•', t) or re.match(r'^Q(\d+)\s*[—–-][^|]*\|\s*Best answer:\s*([A-D])\b', t)   # Day 22 "Q01 — CAE | Best answer: B | …"; Day 20 "Q01 — A | Topic"; Day 21 "Q001 • A • Topic"
+            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t) or re.match(r'^Q(\d+)\s*•\s*([A-D])\s*•', t) or re.match(r'^Q(\d+)\s*[—–]\s*([A-D])\s*[—–]\s', t) or re.match(r'^Q(\d+)\s*[—–-][^|]*\|\s*Best answer:\s*([A-D])\b', t)   # Day 22 "Q01 — CAE | Best answer: B | …"; Day 20 "Q01 — A | Topic"; Day 21 "Q001 • A • Topic"
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
@@ -544,7 +551,11 @@ def parse_mcqs(doc, parts, aliases=None):
             if m:
                 e['retest_from'] = m[1] + (f' Q{m[2]}' if m[2] else '')
                 continue
-            m = re.match(r'^([A-D])\.\s+(BEST|NOT BEST)\s+—\s+(.+)$', t)   # Day 21: "A. BEST — <option text>. reason"
+            m = re.match(r'^([A-D])\.\s+(BEST|NOT BEST)\s+—\s+(.+)$', t) or re.match(r'^([A-D])\s+(CORRECT|Not best):\s+(.+)$', t)   # Day 21 "A. BEST — <option>. reason"; Day 24 "A Not best: <option>. reason"
+            if m and m[2] in ('CORRECT', 'Not best'):
+                m = re.match(r'^([A-D])\s+(CORRECT|Not best):\s+(.+)$', t)
+                m = (m[1], 'BEST' if m[2] == 'CORRECT' else 'NOT BEST', re.sub(r'\s*EXPLANATION INCOMPLETE:.*$', '', m[3]))   # placeholder rebuttal dropped
+                m = dict(zip((1, 2, 3), m))
             if m and e and e['q']:
                 opt = e['q']['options']['ABCD'.index(m[1])]
                 if not m[3].startswith(opt):
