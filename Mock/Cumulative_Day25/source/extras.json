@@ -1,0 +1,759 @@
+{
+ "why_not": {
+  "1": {
+   "A": "Slowing the heart rate prolongs diastolic filling and enlarges LV cavity size, so beta blockade reduces dynamic obstruction and is a mainstay of HCM therapy.",
+   "B": "Greater preload distends the LV cavity and separates the septum from the anterior mitral leaflet, lessening rather than worsening the outflow gradient.",
+   "C": "Raised afterload increases LV cavity size and reduces the outflow gradient, which is why phenylephrine is used in acute obstructive crises."
+  },
+  "2": {
+   "A": "A dilated coronary sinus is seen with a persistent left SVC or unroofed sinus and does not distort the LV outflow tract into a gooseneck shape.",
+   "B": "Coarctation narrows the aortic isthmus distal to the LVOT; the gooseneck sign arises from the abnormal AV junction itself, not from arch obstruction.",
+   "C": "The gooseneck deformity is a left ventricular outflow appearance on LV angiography, not a feature of right-sided subpulmonary narrowing."
+  },
+  "3": {
+   "A": "A murmur may be absent with a large unrestrictive duct and present with a small insignificant one, so it cannot by itself establish haemodynamic significance.",
+   "C": "Duct diameter ignores shunt direction, pulmonary overcirculation and systemic steal; size must be interpreted alongside echo physiology and clinical effects.",
+   "D": "BNP or NT-proBNP is only a supportive marker influenced by age and other conditions; a single value cannot replace integrated clinical and echo assessment."
+  },
+  "4": {
+   "A": "Feeding maturation does not explain new abdominal distension, hypothermia and worsening apnoea, which are warning signs of sepsis or NEC.",
+   "B": "Escalating caffeine treats the symptom while missing a potentially life-threatening cause such as sepsis or NEC that needs urgent evaluation.",
+   "C": "A changing apnoea pattern with new systemic signs demands closer monitoring and investigation, not withdrawal of cardiorespiratory surveillance."
+  },
+  "5": {
+   "A": "This underestimates the rate; it would correspond to roughly D5 at the given volume, not D12.5 at 96 mL/kg/day.",
+   "C": "This simply equates the dextrose percentage with the GIR and omits the fluid-volume conversion factor of 144.",
+   "D": "This figure does not follow from the formula; 12.5 x 96 / 144 gives about 8.3 mg/kg/min."
+  },
+  "6": {
+   "A": "Accessory pathway re-entry produces tachyarrhythmias such as SVT, not persistent bradycardia from complete AV block.",
+   "B": "Hypocalcaemia may prolong QTc but does not cause persistent complete heart block; the maternal anti-Ro history points to immune injury.",
+   "D": "Sinus bradycardia preserves 1:1 AV conduction, whereas complete AV block shows AV dissociation that persists rather than resolving."
+  },
+  "7": {
+   "A": "Electrophysiology input is appropriate for pre-excited AF and later ablation planning; it is not a drug class to be avoided.",
+   "B": "Synchronised cardioversion is the recommended treatment when pre-excited AF causes haemodynamic instability.",
+   "C": "Procainamide slows accessory pathway conduction and is an accepted option for stable pre-excited AF under specialist guidance."
+  },
+  "8": {
+   "A": "CRP is nonspecific and rises late; it supports decisions about duration of therapy but cannot confirm or exclude neonatal sepsis.",
+   "B": "Stool culture has no role in the initial evaluation of suspected early-onset neonatal sepsis.",
+   "D": "Congenital malaria is rare and a blood film alone does not address the far more likely bacterial sepsis requiring blood culture."
+  },
+  "9": {
+   "A": "Adenosine is ineffective for AF and AV nodal blockade can accelerate accessory pathway conduction, risking ventricular fibrillation.",
+   "B": "Haemodynamic instability with hypotension and confusion requires immediate cardioversion; waiting risks degeneration to VF and arrest.",
+   "D": "Digoxin shortens accessory pathway refractoriness and blocks the AV node, which can precipitate VF in pre-excited AF."
+  },
+  "10": {
+   "A": "Stable normal saturation after ductal closure argues against duct-dependent pulmonary flow rather than raising concern for it.",
+   "B": "Normal and equal saturations and pulses are reassuring and do not suggest dependence on the ductus for pulmonary blood flow.",
+   "C": "Isolated regurgitation is a common nonspecific finding and does not reflect reduced pulmonary blood flow with ductal constriction."
+  },
+  "11": {
+   "A": "Normal cognition with 3-Hz spike-wave characterises typical childhood absence epilepsy, not Lennox-Gastaut syndrome.",
+   "B": "Adolescent-onset myoclonic jerks suggest juvenile myoclonic epilepsy; LGS typically begins between about 3 and 5 years.",
+   "C": "Brief isolated staring without falls fits typical absences, whereas LGS is defined by tonic and atonic seizures with drop attacks."
+  },
+  "12": {
+   "A": "Epinephrine is indicated only if heart rate stays below 60/min despite 30 seconds of compressions with effective ventilation.",
+   "B": "Compressions start only when heart rate remains below 60/min after 30 seconds of effective ventilation, and here it is 74/min.",
+   "D": "Apnoea with heart rate below 100/min after initial steps mandates PPV within the first minute; delay worsens hypoxia."
+  },
+  "13": {
+   "A": "Congenital lobar overinflation causes focal hyperlucency of one lobe with mediastinal shift, not bilateral hyperinflation with fissural fluid.",
+   "B": "Pulmonary interstitial emphysema is a complication of ventilated, usually preterm, lungs and is not expected in a term infant with mild oxygen need.",
+   "D": "Surfactant-deficient RDS shows low lung volumes with ground-glass and air bronchograms, not hyperinflation, and is uncommon at 38 weeks."
+  },
+  "14": {
+   "A": "Inattention in a single situation does not meet DSM-5 criteria, which require persistent symptoms for at least six months across settings.",
+   "B": "Normal behaviour at home argues against ADHD, because symptoms must be present in two or more settings.",
+   "C": "Rating scales support but do not establish the diagnosis; clinical assessment and exclusion of differentials are required."
+  },
+  "15": {
+   "B": "D5 at 96 mL/kg/day gives only about 3.3 mg/kg/min, far below the target GIR of 8.",
+   "C": "D15 at 96 mL/kg/day gives about 10 mg/kg/min, overshooting the target and risking hyperglycaemia.",
+   "D": "This confuses the GIR value with the dextrose concentration; D8 at this volume yields only about 5.3 mg/kg/min."
+  },
+  "16": {
+   "A": "Free air with shock is an indication for urgent surgery; waiting for culture results delays resuscitation, antibiotics and source control.",
+   "B": "Laxatives are contraindicated in NEC; management requires bowel rest with gastric decompression, not stimulation of the gut.",
+   "C": "Perforated NEC requires nil by mouth with gastric decompression; enteral feeds would worsen ischaemic bowel injury."
+  },
+  "17": {
+   "B": "Severe hypothyroidism usually causes declining growth velocity, with markedly delayed bone age and other hypothyroid features.",
+   "C": "Chronic kidney disease causes growth deceleration with falling velocity, unlike the normal velocity described here.",
+   "D": "GH deficiency is characterised by subnormal growth velocity crossing centiles downward, which this boy does not show."
+  },
+  "18": {
+   "A": "Reducing tidal volume lowers alveolar ventilation, because dead space is fixed, and would further increase PaCO2.",
+   "C": "FiO2 influences oxygenation, which is already acceptable, and has no direct effect on CO2 clearance.",
+   "D": "Lowering alveolar ventilation would raise PaCO2 further and worsen the respiratory acidosis."
+  },
+  "19": {
+   "A": "Breast-milk jaundice appears after the first week, is DAT-negative and does not cause reticulocytosis or a rapid rise at 36 hours.",
+   "B": "Obstructive cholestasis produces conjugated hyperbilirubinaemia, not a rapidly rising unconjugated level with a positive DAT.",
+   "C": "Physiological jaundice is not DAT-positive, rarely rises rapidly in the first 36 hours and is not associated with reticulocytosis."
+  },
+  "20": {
+   "A": "CPS1 deficiency also gives low citrulline, but urinary orotic acid is low or normal because carbamoyl phosphate is not formed.",
+   "B": "Argininosuccinate synthetase deficiency (citrullinaemia type 1) produces markedly elevated, not low, citrulline.",
+   "D": "NAGS deficiency mimics CPS1 deficiency, with low citrulline and normal or low orotic acid, unlike the high orotic acid here."
+  },
+  "21": {
+   "B": "AVNRT-type tachycardia is the opposite of the heart block caused by maternal anti-Ro antibodies, which produces fetal bradycardia.",
+   "C": "Complete heart block by definition disrupts 1:1 AV conduction, producing independent atrial and ventricular rates.",
+   "D": "Fetal hiccups are a normal finding and are not a marker of immune-mediated conduction disease."
+  },
+  "22": {
+   "A": "Isolated expressive language delay does not involve regression of acquired skills or loss of purposeful hand use.",
+   "C": "Loss of previously acquired language and hand skills is never typical development and always needs evaluation.",
+   "D": "Specific learning disorder is diagnosed at school age and does not cause early regression or hand stereotypies."
+  },
+  "23": {
+   "A": "Children with SAM have sodium retention and impaired cardiac reserve; IV fluids are reserved for shock and given cautiously.",
+   "B": "Aggressive early feeding before stabilisation risks refeeding syndrome, heart failure and death in complicated SAM.",
+   "D": "Nutritional oedema resolves with dietary treatment; diuretics are contraindicated as they worsen electrolyte depletion."
+  },
+  "24": {
+   "A": "Bilateral pitting pedal oedema with wasting is always pathological and never part of normal toddler body composition.",
+   "B": "Visible wasting, poor appetite and recurrent infections indicate undernutrition, not obesity from overeating.",
+   "C": "Any bilateral pitting oedema of nutritional origin classifies the child as SAM, not moderate acute malnutrition."
+  },
+  "25": {
+   "B": "VLCAD deficiency elevates long-chain species such as C14:1 and often causes cardiomyopathy and rhabdomyolysis, not predominant C8.",
+   "C": "Propionic acidaemia raises propionylcarnitine (C3) with metabolic acidosis, ketosis and hyperammonaemia rather than hypoketotic hypoglycaemia.",
+   "D": "MSUD shows raised branched-chain amino acids and alloisoleucine with a characteristic odour, not a C8 acylcarnitine elevation."
+  },
+  "26": {
+   "B": "BNP reflects ventricular strain and helps follow trends but cannot measure pulmonary pressures, resistance or vasoreactivity.",
+   "C": "Pulse oximetry only measures saturation and cannot quantify pulmonary artery pressure or vascular resistance.",
+   "D": "A chest radiograph may show cardiomegaly or prominent pulmonary arteries but gives no haemodynamic measurement."
+  },
+  "27": {
+   "A": "Amiodarone is reserved for refractory SVT under expert guidance; it is not used before vagal manoeuvres and adenosine in a stable child.",
+   "C": "Unsynchronised defibrillation is for pulseless VT or VF; a stable child with SVT does not need electrical therapy first.",
+   "D": "Oral digoxin acts slowly, is unsuitable for acute conversion and is avoided when pre-excitation has not been excluded."
+  },
+  "28": {
+   "A": "Marked hyperparathyroidism with low 25-OH vitamin D indicates nutritional rickets, which is the pattern XLH lacks.",
+   "B": "Acute hypercalcaemia after trauma reflects immobilisation or other causes and is not a feature of any form of rickets.",
+   "D": "Very high 25-OH vitamin D suggests excess supplementation and does not distinguish XLH, where 25-OH D is usually normal."
+  },
+  "29": {
+   "A": "A partial AVSD has a primum ASD with two AV valve orifices but no ventricular-level shunt, whereas a small inlet VSD is present here.",
+   "C": "A complete AVSD has a single common AV valve orifice and usually a large unrestrictive inlet VSD.",
+   "D": "A secundum ASD lies in the fossa ovalis region and lacks the AV junction abnormality and inlet VSD described."
+  },
+  "30": {
+   "B": "BPD evolves gradually over weeks and does not cause sudden collapse with unilateral absent breath sounds.",
+   "C": "Physiological ductal shunting does not cause sudden desaturation, hypotension or unilateral loss of air entry.",
+   "D": "TTN is a mild self-limiting condition of the first hours and does not produce acute unilateral signs or haemodynamic collapse."
+  },
+  "31": {
+   "A": "Bilirubin may matter for a poorly fed infant, but omitting serial sodium misses the key risk of too-rapid correction.",
+   "B": "Urine colour is a crude hydration marker and cannot guide safe sodium correction or detect neurological complications.",
+   "D": "Hypernatraemic dehydration needs frequent sodium checks during correction, typically aiming for a fall of no more than about 10-12 mmol/L per day."
+  },
+  "32": {
+   "B": "Urine glucose after correction gives no information about the hormonal or metabolic state at the moment of hypoglycaemia.",
+   "C": "Insulin measured during euglycaemia is uninterpretable, because hyperinsulinism is defined by inappropriate insulin when glucose is low.",
+   "D": "HbA1c reflects average glycaemia and is unreliable in neonates with high fetal haemoglobin; it cannot diagnose hyperinsulinism."
+  },
+  "33": {
+   "A": "A single brief generalised febrile seizure at 4 years with no sequelae is a simple febrile seizure, not Dravet syndrome.",
+   "B": "A normal EEG after a single simple febrile seizure is expected and does not point towards Dravet syndrome.",
+   "D": "Dravet syndrome is defined by recurrent seizures that later occur without fever, so a single febrile event argues against it."
+  },
+  "34": {
+   "B": "Periventricular white-matter injury affects motor tracts, not the middle ear; conductive hearing loss is unrelated.",
+   "C": "Biliary atresia is a hepatobiliary condition with no link to preterm white-matter injury.",
+   "D": "Hypertrophic cardiomyopathy is a cardiac disorder and not a sequela of periventricular leukomalacia."
+  },
+  "35": {
+   "B": "Benign neonatal sleep myoclonus occurs in neonates during sleep with a normal EEG, not as daytime staring in a 7-year-old.",
+   "C": "Focal impaired-awareness seizures last longer, may have automatisms and postictal confusion, and show focal rather than 3-Hz generalised discharges.",
+   "D": "LGS shows slow spike-wave below 2.5 Hz with tonic and atonic seizures and cognitive impairment, unlike this presentation."
+  },
+  "36": {
+   "A": "Prolonged convulsions persisting after benzodiazepines and a second-line agent are an emergency, not a simple febrile seizure.",
+   "C": "Benign sleep myoclonus is a non-epileptic neonatal phenomenon and does not cause refractory convulsive status.",
+   "D": "Typical absence epilepsy causes brief non-convulsive spells; ethosuximide has no role in convulsive status epilepticus."
+  },
+  "37": {
+   "A": "TTN causes mild transient tachypnoea and does not produce severe hypoxaemia or differential pre- and postductal saturations.",
+   "B": "Left-to-right ductal shunting does not cause cyanosis or a lower postductal saturation, which requires right-to-left flow.",
+   "C": "Left-sided obstruction typically causes poor systemic perfusion, and the echo here shows raised pulmonary pressures in a meconium setting."
+  },
+  "38": {
+   "A": "Infantile epileptic spasms occur in infancy with hypsarrhythmia and developmental regression, not in a developmentally normal 9-year-old.",
+   "C": "Absence epilepsy causes brief daytime staring with generalised 3-Hz spike-wave, not nocturnal orofacial focal seizures.",
+   "D": "Progressive myoclonic epilepsies feature myoclonus with neurological and cognitive decline, unlike this normally developing child."
+  },
+  "39": {
+   "A": "Waiting for a radiograph in an unstable infant with clinical tension pneumothorax risks cardiac arrest; decompress first.",
+   "B": "Surfactant does not relieve trapped pleural air and delays the decompression that is immediately needed.",
+   "C": "Increasing PEEP raises intrathoracic pressure and can enlarge the air leak, worsening venous return and hypotension."
+  },
+  "40": {
+   "A": "A unilateral cortical infarct suggests perinatal arterial ischaemic stroke and hemiplegia, not bilirubin neurotoxicity.",
+   "B": "Periventricular cystic lesions indicate periventricular leukomalacia in preterm infants, not kernicterus.",
+   "D": "Kernicterus classically involves the globus pallidus and subthalamic nuclei; isolated vermis atrophy is not its typical pattern."
+  },
+  "41": {
+   "A": "Urinary organic acids screen for inborn errors of metabolism and cannot detect a chromosomal aneuploidy.",
+   "B": "EEG assesses cortical electrical activity and has no role in identifying a chromosomal abnormality.",
+   "C": "TSH screens for congenital hypothyroidism, which is commoner in Down syndrome, but cannot establish the chromosomal mechanism."
+  },
+  "42": {
+   "A": "Closing the duct in duct-dependent systemic circulation removes the only route for systemic flow and precipitates shock.",
+   "B": "Elective ASD closure would remove left atrial decompression and has no role in acute stabilisation of critical aortic stenosis.",
+   "C": "Inhaled nitric oxide lowers pulmonary vascular resistance and can steal flow from the systemic circulation, without addressing the obstruction."
+  },
+  "43": {
+   "B": "Thin-catheter administration still needs close monitoring for desaturation, bradycardia and reflux during and after the procedure.",
+   "C": "The technique is designed for spontaneously breathing infants on CPAP; apnoeic infants need intubation and ventilation.",
+   "D": "Surfactant treats surfactant deficiency; it is not a direct pulmonary vasodilator therapy for pulmonary hypertension."
+  },
+  "44": {
+   "A": "Benzodiazepines have no role in ADHD and can worsen disinhibition and attention, with dependence risk.",
+   "C": "In preschool children, stimulants are second-line, used only if behavioural therapy is insufficient and impairment is significant.",
+   "D": "Antiepileptic drugs are not treatments for ADHD in the absence of seizures and carry cognitive and behavioural adverse effects."
+  },
+  "45": {
+   "B": "Indomethacin closes the ductus arteriosus and has no effect on a VSD shunt in a 4-month-old.",
+   "C": "Adenosine is a short-acting antiarrhythmic for SVT and has no role in treating heart failure from a VSD.",
+   "D": "Beta agonists do not treat left-to-right shunt failure, and increasing the shunt would worsen pulmonary overcirculation."
+  },
+  "46": {
+   "A": "Stage 5 denotes total retinal detachment, whereas this infant has stage 2 ridge disease.",
+   "C": "Mature vascularisation means retinal vessels have reached the ora serrata with no active ROP, which is not the case here.",
+   "D": "Type 2 ROP is disease without plus (for example zone II stage 3); the presence of plus disease upgrades this to Type 1."
+  },
+  "47": {
+   "A": "Severe failure to thrive and pulmonary oedema reflect a large left-to-right shunt typical of a nonrestrictive VSD.",
+   "B": "Near-equal ventricular pressures indicate a large nonrestrictive defect with no pressure gradient across it.",
+   "D": "Eisenmenger physiology develops after prolonged pulmonary overcirculation from a large VSD, not a small restrictive one."
+  },
+  "48": {
+   "A": "Sedation is appropriate when feasible, provided it is brief and does not postpone cardioversion.",
+   "C": "ECG monitoring is required to synchronise the shock and does not delay it.",
+   "D": "Airway support is part of resuscitating an obtunded hypotensive child and proceeds alongside cardioversion."
+  },
+  "49": {
+   "A": "AAP 2022 thresholds are hour-specific, so the same total bilirubin carries different significance at different postnatal ages.",
+   "B": "Phototherapy and exchange thresholds use total serum bilirubin; direct bilirubin is not subtracted or used to set them.",
+   "D": "AAP 2022 nomograms are stratified by gestational age and neurotoxicity risk factors, not by birth weight."
+  },
+  "50": {
+   "A": "Jensen Grade 3 requires invasive mechanical ventilation at 36 weeks PMA, which this infant does not need.",
+   "B": "Jensen Grade 1 is nasal cannula flow of 2 L/min or less; 3 L/min exceeds that threshold.",
+   "D": "An infant needing respiratory support at 36 weeks PMA meets the Jensen definition of BPD."
+  },
+  "51": {
+   "B": "Pulmonary vascular resistance normally falls after birth; a rise would reduce left-to-right shunting and is a late Eisenmenger change, not the cause of early heart failure.",
+   "C": "Functional foramen ovale closure does not affect ventricular-level shunting, and a large VSD continues to shunt according to the PVR-SVR gradient.",
+   "D": "A large VSD causes left-to-right shunting with acyanotic overcirculation; cyanosis from reduced systemic venous return does not explain tachypnoea and plethoric lung fields."
+  },
+  "52": {
+   "A": "Adenosine has an ultrashort half-life and only rarely precipitates ventricular fibrillation, mainly with pre-excited atrial fibrillation; it is not an expected or diagnostic response.",
+   "C": "Adenosine acts on AV nodal conduction and does not abolish the QT interval; any ECG effect is transient, lasting seconds.",
+   "D": "Adenosine reliably causes transient AV nodal block; failure to alter conduction suggests inadequate dose or delivery rather than helping identify flutter."
+  },
+  "53": {
+   "A": "Oxygen need at 36 weeks PMA defines bronchopulmonary dysplasia in preterm infants, not transient tachypnoea in a term baby, which resolves within days.",
+   "B": "Sudden unilateral hyperresonance with shock indicates tension pneumothorax, a complication requiring urgent drainage, not the expected benign course of TTN.",
+   "C": "Progressive low-volume atelectasis with ground-glass lungs suggests surfactant deficiency, whereas TTN shows hyperinflation and fissural fluid that clear spontaneously."
+  },
+  "54": {
+   "A": "Antibiotics are indicated only when sepsis is suspected; sepsis has been assessed here and prophylactic antibiotics do not treat apnoea of prematurity.",
+   "B": "Phenobarbital is a respiratory depressant used for seizures and may worsen central apnoea; it has no role in apnoea of prematurity.",
+   "D": "Furosemide is a loop diuretic used for fluid overload or BPD and does not stimulate respiratory drive or reduce apnoea frequency."
+  },
+  "55": {
+   "A": "Osteogenesis imperfecta causes fragile bones from collagen defects with normal mineral biochemistry, not widened metaphyses with raised ALP and PTH.",
+   "B": "PTH deficiency causes hypocalcaemia with hyperphosphataemia and low PTH, the opposite of the elevated PTH and low phosphate seen here.",
+   "D": "Isolated renal phosphate wasting, as in X-linked hypophosphataemia, typically has normal or only mildly raised PTH, whereas this child has clear secondary hyperparathyroidism."
+  },
+  "56": {
+   "B": "Convulsive status should be treated once seizures last about 5 minutes; waiting to 30 minutes increases neuronal injury and drug resistance.",
+   "C": "Ethosuximide is an oral absence-seizure drug with no role in aborting convulsive status, and the oral route is unsuitable in an actively seizing child.",
+   "D": "Maintenance prophylaxis does not stop an ongoing seizure; levetiracetam is used intravenously as a second-line agent only after benzodiazepines fail."
+  },
+  "57": {
+   "A": "Salt-wasting disorders cause hyponatraemia, not hypernatraemia, and the history of poor milk transfer points to inadequate intake as the cause.",
+   "B": "SIADH causes free-water retention and hyponatraemia, which is incompatible with a serum sodium of 158 mmol/L and significant weight loss.",
+   "C": "A sodium of 158 mmol/L is pathological; hypernatraemic dehydration risks seizures, cerebral injury and thrombosis and needs active management."
+  },
+  "58": {
+   "A": "Phenytoin is a sodium-channel blocker that is ineffective for absence seizures and may aggravate generalised spike-wave discharges.",
+   "B": "Phenobarbital is not effective against typical absence seizures and causes sedation and behavioural adverse effects in school-age children.",
+   "C": "Carbamazepine can worsen absence seizures and may precipitate absence status, so it is contraindicated in childhood absence epilepsy."
+  },
+  "59": {
+   "A": "Vitamin K deficiency is mainly a neonatal risk prevented by birth prophylaxis; it is not the classic nutrient depleted by delayed complementary feeding.",
+   "B": "Fluoride supplementation relates to dental caries prevention and is not the key deficiency driving declining iron indices in late infancy.",
+   "D": "Breast milk provides adequate sodium for infants, and added salt is discouraged in infancy; sodium is not the at-risk nutrient here."
+  },
+  "60": {
+   "A": "A single loud S2 suggests pulmonary hypertension or a single semilunar valve, not normal physiological splitting.",
+   "B": "An unchanging split in both phases describes fixed splitting, the hallmark of ASD, rather than normal physiology.",
+   "D": "Paradoxical splitting, widening in expiration, reflects delayed aortic closure such as LBBB or severe LV outflow obstruction, which is pathological."
+  },
+  "61": {
+   "B": "An innocent murmur does not cause chest pain, troponin elevation or ventricular dysfunction.",
+   "C": "Stable idiopathic DCM would not explain an acute viral prodrome with rising troponin; the acute inflammatory picture favours myocarditis.",
+   "D": "A pericardial cyst is usually asymptomatic and incidental and does not cause troponin rise or new LV dysfunction."
+  },
+  "62": {
+   "A": "Bilirubin encephalopathy occurs in the first week with severe jaundice and does not cause neutrophilic CSF pleocytosis or fever.",
+   "C": "Congenital hypothyroidism causes lethargy and prolonged jaundice, not fever, bulging fontanelle or inflammatory CSF changes.",
+   "D": "Neonatal CSF may have mildly raised cells and protein, but 1500 neutrophil-predominant cells with low glucose ratio is clearly abnormal."
+  },
+  "63": {
+   "A": "G6PD deficiency causes unconjugated hyperbilirubinaemia, and a normal enzyme level says nothing about conjugated bilirubin.",
+   "B": "Deliberate oxidant exposure would provoke dangerous haemolysis and is never used as a diagnostic test.",
+   "C": "Young red cells and reticulocytes have higher G6PD activity, so a normal result during haemolysis can be falsely reassuring and cannot exclude deficiency."
+  },
+  "64": {
+   "A": "Calcium should be checked, but a single value without EEG cannot detect ongoing electrographic seizures under anaesthetic agents.",
+   "B": "Fundoscopy has no role in titrating anaesthetic infusions or detecting nonconvulsive seizures during refractory status.",
+   "C": "Home oximetry is irrelevant to inpatient refractory status, where continuous EEG and haemodynamic monitoring are required."
+  },
+  "65": {
+   "A": "Normal prepubertal growth velocity is expected in constitutional delay and supports rather than challenges the benign diagnosis.",
+   "B": "Delayed bone age is typical of constitutional delay of growth and puberty and indicates remaining growth potential.",
+   "D": "A family history of late puberty is a characteristic supporting feature of constitutional delay."
+  },
+  "66": {
+   "A": "Reviewing medication doses is appropriate good practice, not an error to avoid.",
+   "B": "Checking glucose and electrolytes is part of standard status epilepticus evaluation and should be done.",
+   "D": "Airway protection is a correct priority in a child with impaired consciousness after seizures."
+  },
+  "67": {
+   "B": "Isolated left atrial enlargement suggests left-sided volume or pressure load, and a normal RV argues against significant pulmonary hypertension.",
+   "C": "A normal septal contour and RV size do not suggest RV pressure overload.",
+   "D": "Aortic arch sidedness is an anatomical detail unrelated to RV pressure loading."
+  },
+  "68": {
+   "A": "Exercise testing is unsafe and irrelevant when acute device erosion or tamponade is suspected.",
+   "C": "Delaying imaging for a month risks death from tamponade; suspected erosion needs urgent assessment.",
+   "D": "Pulmonary function testing does not evaluate pericardial effusion, device position or haemodynamic compromise."
+  },
+  "69": {
+   "B": "Prostaglandin only maintains ductal patency and cannot create or open an obstructed pulmonary venous pathway.",
+   "C": "The obstruction is anatomical in the descending vertical vein and requires urgent surgical repair, not ductal dilation.",
+   "D": "PGE1 dilates the ductus arteriosus and does not close the pulmonary arteries."
+  },
+  "70": {
+   "A": "Nasal cannula at 2 L/min or less corresponds to Jensen Grade 1; only invasive mechanical ventilation at 36 weeks PMA defines Grade 3.",
+   "B": "Breathing room air at 36 weeks PMA does not meet the Jensen definition of BPD at all.",
+   "D": "Low-flow nasal cannula at 2 L/min or less defines Jensen Grade 1, not Grade 3."
+  },
+  "71": {
+   "A": "Poractant 100 mg/kg is acceptable for repeat doses, but European consensus favours 200 mg/kg for the first rescue dose because outcomes are better.",
+   "B": "A 300 mg/kg initial dose is not a recommended standard and exceeds the evidence-supported first dose.",
+   "D": "Poractant 50 mg/kg is a subtherapeutic initial dose for established RDS."
+  },
+  "72": {
+   "A": "Transcatheter VSD closure does not address left ventricular outflow obstruction from a stenotic aortic valve.",
+   "C": "Pulmonary artery banding limits pulmonary blood flow in shunt lesions and would not relieve aortic valve obstruction.",
+   "D": "Balloon mitral valvotomy treats mitral stenosis, not the aortic valve lesion causing LV failure here."
+  },
+  "73": {
+   "A": "Increasing oxygen does not help if no air reaches the lungs; ventilation must first be made effective.",
+   "B": "Volume expansion is reserved for suspected hypovolaemia after effective ventilation and compressions fail, not for ineffective PPV.",
+   "D": "Compressions are started only after at least 30 seconds of effective, chest-moving ventilation; without chest rise the priority is MR SOPA."
+  },
+  "74": {
+   "A": "Fixed prolonged courses irrespective of cultures promote resistance and harms such as NEC; antibiotics should be reviewed at about 36-48 hours.",
+   "B": "CRP rises late and has poor early sensitivity, so waiting for it delays treatment in a clinically unstable neonate.",
+   "D": "Neonatal sepsis often presents with hypothermia or temperature instability rather than high fever, so a fever threshold would miss most cases."
+  },
+  "75": {
+   "B": "Trisomy 13 typically shows holoprosencephaly, cleft lip/palate, polydactyly and microphthalmia rather than the classic AVSD-hypotonia-upslanting phenotype.",
+   "C": "Monosomy X is associated with lymphoedema, coarctation and bicuspid aortic valve rather than complete AVSD.",
+   "D": "47,XXY is usually phenotypically subtle in infancy and not associated with complete AVSD."
+  },
+  "76": {
+   "B": "Spontaneous VSD closure would remove the need for intervention rather than indicate failure of medical therapy.",
+   "C": "Softening of an innocent murmur has no bearing on a large haemodynamically significant VSD.",
+   "D": "Normal growth with a tiny restrictive VSD indicates a benign course managed by observation, not surgery."
+  },
+  "77": {
+   "A": "Pulmonary venous stenosis causes pulmonary venous hypertension and oedema, not systemic diastolic runoff with bounding pulses.",
+   "C": "A right-to-left atrial shunt causes cyanosis and does not lower aortic diastolic pressure.",
+   "D": "Rheumatic aortic regurgitation can widen pulse pressure but is not relevant to a premature infant with a large PDA."
+  },
+  "78": {
+   "A": "Spontaneous remission by adolescence is the expected benign course of self-limited epilepsy with centrotemporal spikes.",
+   "C": "Normal cognition with infrequent nocturnal seizures is typical of the benign syndrome.",
+   "D": "Typical centrotemporal spikes with preserved schooling support the self-limited diagnosis rather than an encephalopathy."
+  },
+  "79": {
+   "B": "Unmodified cow milk is unsuitable for preterm infants, with inappropriate protein and electrolytes and higher NEC risk.",
+   "C": "Adult enteral formulas are not designed for preterm nutritional needs and may be hyperosmolar.",
+   "D": "Hyperosmolar juices can injure immature bowel and provide no adequate nutrition for preterm infants."
+  },
+  "80": {
+   "A": "Routine tracheal suction in vigorous meconium-exposed newborns does not reduce meconium aspiration syndrome and can cause harm.",
+   "C": "Direct laryngoscopy is unnecessary in a vigorous baby and risks bradycardia and trauma.",
+   "D": "Elective intubation is not indicated for a vigorous infant and delays skin-to-skin contact."
+  },
+  "81": {
+   "A": "Metabolic alkalosis would cause alkalaemia with high bicarbonate, whereas this gas shows acidaemia with normal bicarbonate.",
+   "B": "Respiratory alkalosis requires low PaCO2 and high pH, the opposite of these values.",
+   "C": "Primary metabolic acidosis needs low bicarbonate; here bicarbonate is normal and the raised PaCO2 explains the acidaemia."
+  },
+  "82": {
+   "A": "Bilirubin measurement does not establish or exclude meningitis, nor guide antibiotic choice or duration.",
+   "B": "A urine dipstick without culture is inadequate for diagnosing neonatal infection and cannot replace CSF analysis.",
+   "D": "A chest radiograph cannot diagnose meningitis; CSF analysis determines the diagnosis, organism and treatment duration."
+  },
+  "83": {
+   "A": "Benign sleep myoclonus occurs only during sleep with normal EEG and is not a sign of bilirubin neurotoxicity.",
+   "C": "A normal Moro reflex indicates intact neurological function rather than acute bilirubin encephalopathy.",
+   "D": "Acrocyanosis is a benign peripheral circulatory finding unrelated to bilirubin encephalopathy."
+  },
+  "84": {
+   "A": "An uncomplicated ASD causes no duct-dependent circulation and does not produce femoral pulse or upper-lower BP discrepancy.",
+   "C": "Mild pulmonary stenosis is usually asymptomatic and does not cause systemic shock on duct closure.",
+   "D": "A small restrictive VSD causes a loud murmur but no shock or differential limb pressures."
+  },
+  "85": {
+   "B": "Fasciculations with hypotonia indicate lower motor neuron disease, such as SMA, rather than spastic CP.",
+   "C": "Progressive loss of acquired strength suggests a progressive neuromuscular or neurodegenerative disease, whereas CP is non-progressive.",
+   "D": "Absent reflexes and distal wasting are lower motor neuron signs typical of peripheral neuropathy."
+  },
+  "86": {
+   "A": "Electrographic-only seizures are common in encephalopathic neonates and contribute to brain injury, so they should not be ignored.",
+   "B": "Seizures during cooling should be treated promptly; delaying treatment until rewarming risks further neuronal injury.",
+   "D": "Movement or electrode artefacts must be distinguished from true seizures to avoid unnecessary antiseizure exposure."
+  },
+  "87": {
+   "B": "Caffeine treats apnoea of prematurity and has no role in neonatal resuscitation for bradycardia.",
+   "C": "Obtaining a blood gas delays life-saving compressions when the heart rate stays below 60/min.",
+   "D": "Persistent HR below 60/min despite 30 seconds of effective ventilation mandates compressions, not prolonged ventilation alone."
+  },
+  "88": {
+   "B": "Femoral venous patency does not affect the decision to start inhaled nitric oxide.",
+   "C": "PDA size is relevant to shunt direction but does not exclude duct-dependent CHD or pulmonary venous obstruction.",
+   "D": "Renal size is irrelevant to the decision to use pulmonary vasodilators."
+  },
+  "89": {
+   "A": "Pneumatosis is intramural gas; free peritoneal air indicates perforation through the bowel wall.",
+   "C": "Free air signifies progression to perforation, not resolution of inflammation.",
+   "D": "Portal venous gas is a separate radiological sign of severe NEC, while free peritoneal air indicates perforation."
+  },
+  "90": {
+   "B": "Benign neonatal sleep myoclonus occurs in neonates, only during sleep, with normal EEG and development.",
+   "C": "Juvenile myoclonic epilepsy presents in adolescence with morning myoclonic jerks and normal development.",
+   "D": "Childhood absence epilepsy starts at school age with brief staring and 3-Hz spike-wave, not infantile spasms."
+  },
+  "91": {
+   "A": "Athetosis consists of slow writhing movements without premonitory urge or voluntary suppressibility.",
+   "B": "Sydenham chorea is random, flowing and not suppressible, and is not preceded by a premonitory urge.",
+   "D": "Fixed dystonia causes sustained abnormal postures rather than brief suppressible movements and sounds."
+  },
+  "92": {
+   "A": "Fortification provides protein, energy, calcium and phosphate rather than water.",
+   "C": "Fortification supports growth and bone mineralisation but does not treat or cure NEC.",
+   "D": "Human milk contains immunological factors such as IgA and lactoferrin; fortification addresses nutrient adequacy instead."
+  },
+  "93": {
+   "A": "Biliary atresia causes conjugated hyperbilirubinaemia with pale stools, usually after the first week, not DAT-negative unconjugated jaundice.",
+   "B": "ABO isoimmunisation usually has a positive DAT, whereas this baby's DAT is negative.",
+   "C": "Congenital hypothyroidism causes prolonged mild jaundice but not the fava-bean family history or haemolytic pattern."
+  },
+  "94": {
+   "A": "A small duct without chamber enlargement indicates a haemodynamically insignificant PDA.",
+   "B": "Absence of left-heart volume load argues against a large left-to-right ductal shunt.",
+   "C": "Normal antegrade diastolic flow suggests no significant ductal runoff."
+  },
+  "95": {
+   "A": "Hereditary fructose intolerance presents with hypoglycaemia and liver dysfunction after fructose exposure and does not cause cataracts.",
+   "B": "Classic GALT deficiency causes severe liver dysfunction, sepsis risk and coagulopathy rather than an isolated cataract phenotype.",
+   "D": "Tyrosinaemia type I causes liver failure, coagulopathy and renal tubulopathy rather than isolated cataracts."
+  },
+  "96": {
+   "A": "ARVC mainly affects the right ventricle with ventricular arrhythmias and does not cause asymmetric septal hypertrophy or LVOT obstruction.",
+   "B": "Restrictive cardiomyopathy has non-dilated, non-hypertrophied ventricles with marked atrial enlargement and diastolic dysfunction, not LVOT obstruction.",
+   "C": "Dilated cardiomyopathy has thin dilated ventricles with systolic failure rather than hypertrophy and outflow obstruction."
+  },
+  "97": {
+   "A": "Markedly elevated citrulline suggests citrullinaemia or argininosuccinic aciduria, which are distal urea-cycle defects.",
+   "C": "High orotic acid with low citrulline indicates OTC deficiency, which is the pattern already described in the stem.",
+   "D": "Succinylacetone is diagnostic of tyrosinaemia type I, not a proximal urea-cycle defect."
+  },
+  "98": {
+   "B": "Brief suppressible vocalisations are typical of tics, not dystonia.",
+   "C": "Reduction during concentration is a recognised feature of tics.",
+   "D": "Transient eye blinking preceded by an urge is a typical simple motor tic."
+  },
+  "99": {
+   "A": "RVOT obstruction worsens during a hypercyanotic spell because of infundibular spasm; it does not resolve.",
+   "B": "Sudden aortic stenosis is not part of TOF spell physiology and would not explain the softer RVOT murmur.",
+   "C": "Pulmonary blood flow falls during a spell, which causes the cyanosis; increased flow would intensify the murmur."
+  },
+  "100": {
+   "A": "A small VSD produces a harsh holosystolic murmur at the lower left sternal border with normal S2 splitting.",
+   "C": "Mitral valve prolapse gives a mid-systolic click and late systolic murmur at the apex, not fixed splitting.",
+   "D": "Coarctation causes upper-limb hypertension, weak femoral pulses and an interscapular murmur, not fixed splitting of S2."
+  },
+  "101": {
+   "B": "Hypocalcaemia is one possible precipitant worth checking, but a calcium level cannot show whether electrographic seizure activity is continuing in the brain.",
+   "C": "Head size reflects chronic brain growth or hydrocephalus and gives no information about current cortical seizure activity in an encephalopathic child.",
+   "D": "Skull radiographs show bony injury at best and have no role in detecting nonconvulsive status; only EEG demonstrates ongoing electrographic seizures."
+  },
+  "102": {
+   "A": "Mitral valvotomy treats congenital mitral stenosis; the problem in d-TGA is inadequate intercirculatory mixing at atrial level, not left-sided inflow obstruction.",
+   "C": "Closing a VSD would remove a potential mixing site and worsen hypoxaemia in parallel TGA circulation; it is never an emergency rescue here.",
+   "D": "Banding restricts pulmonary blood flow for overcirculation; it does not improve atrial mixing and would worsen hypoxaemia in a cyanosed TGA neonate."
+  },
+  "103": {
+   "A": "Periventricular leukomalacia is a white-matter injury of preterm infants producing lower-limb spasticity, not the basal ganglia and auditory pattern of kernicterus.",
+   "B": "A posterior fossa tumour causes acquired progressive ataxia, not a static cerebral palsy, and bilirubin toxicity does not produce cerebellar tumours.",
+   "D": "Arterial ischaemic stroke causes unilateral spasticity; bilirubin targets the globus pallidus, subthalamic nucleus and auditory nuclei, causing dyskinesia and hearing loss."
+  },
+  "104": {
+   "A": "Two separate AV valve orifices without an inlet VSD describes partial (primum) AVSD, which is the opposite of the complete form.",
+   "B": "A muscular VSD lies in the trabecular septum and is unrelated to the atrioventricular junction; it does not define any AVSD subtype.",
+   "C": "An intact atrial septum excludes the primum component; complete AVSD characteristically has a primum ASD with a large inlet VSD and common valve."
+  },
+  "105": {
+   "A": "Fully separate aortic and pulmonary roots exclude truncus, which by definition has one arterial trunk from which both circulations arise.",
+   "C": "Truncus has a single, often dysplastic truncal valve; two normal semilunar valves imply separate great arteries and a different diagnosis.",
+   "D": "Duct-supplied or collateral pulmonary arteries characterise pulmonary atresia with VSD; in truncus the pulmonary arteries arise from the trunk itself."
+  },
+  "106": {
+   "A": "Oxygen does not close the foramen ovale or atrial septum; atrial restriction is anatomical, not an oxygen-mediated effect.",
+   "C": "Oxygen is a pulmonary vasodilator and lowers rather than raises PVR, which is exactly why it promotes pulmonary overcirculation.",
+   "D": "Although high oxygen tension promotes ductal constriction over time, the main problem here is PVR fall increasing Qp, not a direct block of ductal flow."
+  },
+  "107": {
+   "A": "Corticosteroids have no proven neuroprotective benefit in HIE and are not an accepted substitute for therapeutic hypothermia.",
+   "B": "Benefit of cooling depends on starting within the first 6 hours; waiting for MRI would lose the therapeutic window.",
+   "C": "Evidence for cooling is for moderate-to-severe encephalopathy; routine cooling of all mild HIE is not established, and this infant already qualifies."
+  },
+  "108": {
+   "B": "aEEG is compressed and filtered, so amplitude changes can reflect artefact or state change; they must be confirmed on the raw EEG trace.",
+   "C": "Electrode movement artefact mimics a rise in the aEEG band and is a classic false positive, not evidence of seizure.",
+   "D": "Sleep-wake cycling is a sign of a reassuring background and does not indicate seizure activity."
+  },
+  "109": {
+   "A": "Mitral valve replacement addresses left AV valve disease and has no role in augmenting pulmonary blood flow in TOF.",
+   "C": "Pulmonary vein stenting treats pulmonary venous stenosis, which is not the lesion in TOF with RVOT obstruction.",
+   "D": "Closing the atrial septum does not increase pulmonary blood flow and is irrelevant to RVOT-obstructed TOF palliation."
+  },
+  "110": {
+   "A": "Intramuscular absorption is unreliable and slow in a poorly perfused newborn and is not a recommended route for resuscitation epinephrine.",
+   "B": "The gastric route delivers no reliable systemic absorption; epinephrine must be given intravascularly (or endotracheally only while access is obtained).",
+   "C": "Subcutaneous absorption is negligible during circulatory collapse and is not used for neonatal resuscitation drugs."
+  },
+  "111": {
+   "A": "Prader-Willi presents with neonatal hypotonia and feeding difficulty, later hyperphagia, and is not associated with conotruncal defects or thymic aplasia.",
+   "B": "Williams syndrome is linked to supravalvar aortic stenosis and hypercalcaemia, not truncus, hypocalcaemia or thymic hypoplasia.",
+   "D": "Turner syndrome is associated with coarctation and bicuspid aortic valve in girls, without hypocalcaemia or T-cell deficiency."
+  },
+  "112": {
+   "B": "Stiripentol, usually added to valproate and clobazam, is specifically approved and beneficial in Dravet syndrome.",
+   "C": "Clobazam is a recommended first- or second-line agent for Dravet syndrome and is commonly combined with valproate and stiripentol.",
+   "D": "Valproate is a first-line drug for Dravet syndrome and does not aggravate seizures as sodium-channel blockers do."
+  },
+  "113": {
+   "B": "Exclusive right-to-left ductal flow in PPHN causes cyanosis and differential saturations, not systemic diastolic steal or bounding pulses.",
+   "C": "Coarctation reduces lower-body pulses and pressure; it does not produce bounding pulses with diastolic flow reversal into the lungs.",
+   "D": "Pulmonary venous obstruction causes pulmonary oedema and cyanosis with poor output, not a wide pulse pressure from a left-to-right duct."
+  },
+  "114": {
+   "A": "Imaging never precedes seizure control; delaying second-line therapy increases benzodiazepine-refractory status and neuronal injury.",
+   "C": "Recovery of saturation does not mean seizures have stopped; ongoing status needs escalation and observation, not discharge.",
+   "D": "Beyond two benzodiazepine doses efficacy falls and respiratory depression rises, so guidelines move to a second-line agent with airway support."
+  },
+  "115": {
+   "B": "High ketones and free fatty acids indicate appropriate lipolysis and ketogenesis, which argues against insulin excess.",
+   "C": "Ketotic hypoglycaemia with no glucagon response suggests depleted glycogen or a glycogenolysis defect, not hyperinsulinism.",
+   "D": "Urinary orotic acid points to a urea cycle disorder such as OTC deficiency and has no relation to insulin action."
+  },
+  "116": {
+   "A": "Adenosine treats re-entrant SVT; this infant has duct-dependent systemic obstruction such as coarctation, not a tachyarrhythmia.",
+   "C": "Ibuprofen closes the duct and would further reduce lower-body perfusion in a duct-dependent systemic circulation.",
+   "D": "Diuretics may help congestion but do not restore ductal flow; shock from duct closure needs PGE1 to reopen the duct."
+  },
+  "117": {
+   "B": "Exercise testing is contraindicated during acute myocarditis because exertion may provoke arrhythmia and worsen myocardial injury.",
+   "C": "A lipid profile has no role in assessing acute ventricular dysfunction from viral myocarditis.",
+   "D": "Barium swallow evaluates the oesophagus and does not assess cardiac function or haemodynamics."
+  },
+  "118": {
+   "B": "Around 36.5-37 C is normothermia, used for rewarming and avoiding hyperthermia, not therapeutic cooling.",
+   "C": "Temperatures near 30 C are excessively low and risk arrhythmia, coagulopathy and death; deeper cooling trials showed no added benefit.",
+   "D": "Hyperthermia increases cerebral metabolic demand and worsens hypoxic-ischaemic injury, so fever must be actively avoided rather than induced in HIE."
+  },
+  "119": {
+   "A": "Ataxic CP results from cerebellar involvement, whereas periventricular white-matter injury affects corticospinal tracts causing spasticity.",
+   "B": "Peripheral neuropathy produces hypotonia and reduced reflexes, not increased tone and scissoring with MRI white-matter injury.",
+   "D": "Dyskinetic CP follows basal ganglia or thalamic injury, typically term HIE or kernicterus, not preterm PVL."
+  },
+  "120": {
+   "A": "IgE measurement does not assess the thymic T-cell defect that determines live-vaccine safety in 22q11.2 deletion.",
+   "B": "Platelet function is not the relevant immune issue; live-vaccine risk relates to T-cell deficiency.",
+   "D": "Oxidative burst testing screens for chronic granulomatous disease, which is not the immune defect of 22q11.2 deletion."
+  },
+  "121": {
+   "A": "Discharge with bilirubin near exchange threshold risks acute bilirubin encephalopathy and kernicterus.",
+   "B": "Sunlight is uncontrolled, irradiance-variable and unsafe; it is not a substitute for intensive phototherapy.",
+   "C": "Stopping phototherapy at near-exchange levels removes the main bilirubin-lowering therapy and can allow a dangerous rise."
+  },
+  "122": {
+   "B": "Benzodiazepines are not first-line for infantile spasms and do not reliably achieve spasm cessation or EEG resolution.",
+   "C": "Carbamazepine is ineffective for infantile spasms and may aggravate generalised seizure types.",
+   "D": "Ethosuximide is used for absence seizures and has no established efficacy for infantile spasms."
+  },
+  "123": {
+   "A": "No pneumothorax is present; prophylactic chest drains are not indicated in RDS and add harm.",
+   "B": "RDS is due to surfactant deficiency, not fluid overload, so diuretics do not address the cause.",
+   "D": "Removing CPAP in worsening RDS removes end-expiratory pressure, promoting alveolar collapse, rising oxygen need and respiratory failure."
+  },
+  "124": {
+   "A": "Pulse oximetry detects hypoxaemia and is a useful screen but cannot identify the cardiac anatomy responsible.",
+   "C": "The hyperoxia test helps separate cardiac from pulmonary cyanosis but provides no structural diagnosis.",
+   "D": "ECG gives axis and chamber clues but cannot define structural cyanotic heart lesions."
+  },
+  "125": {
+   "A": "PGE1 does not relieve pulmonary venous obstruction and increasing pulmonary flow can worsen pulmonary oedema in obstructed TAPVC.",
+   "B": "Obstructed TAPVC causes progressive hypoxaemia and pulmonary oedema; waiting is fatal and surgery is an emergency.",
+   "C": "The interatrial communication is the only route for pulmonary venous blood to reach the systemic circulation; closing it would be lethal."
+  },
+  "126": {
+   "A": "Contrast enema is contraindicated in suspected NEC because of perforation risk and does not help initial management.",
+   "B": "Probiotics are a preventive strategy in some units, not treatment of established NEC, and discharge is dangerous.",
+   "D": "Feeding an inflamed, ischaemic bowel worsens injury and risks perforation; bowel rest with gastric decompression is the cornerstone of NEC care."
+  },
+  "127": {
+   "B": "Most heat is lost from the large head surface; head covering should be kept, not removed.",
+   "C": "Cold fluids accelerate evaporative and conductive heat loss and are inappropriate in an extremely preterm baby.",
+   "D": "Exposing and drying extremely preterm infants delays wrapping and increases heat loss; they are placed wet into plastic."
+  },
+  "128": {
+   "A": "Pulmonary arteries in truncus arise from the trunk, so pulmonary flow does not depend on the duct.",
+   "B": "Pulmonary arteries remain patent in truncus; the problem is excessive, not absent, pulmonary flow.",
+   "C": "Mixing in truncus occurs at the large VSD and common trunk, not at the atrial septum."
+  },
+  "129": {
+   "B": "Vagal manoeuvres are appropriate only in stable SVT; prolonged attempts in shock delay definitive therapy.",
+   "C": "Unsynchronised shocks are for pulseless VF or VT; synchronisation avoids delivering energy on the T wave in a perfusing rhythm.",
+   "D": "Oral beta-blockers act too slowly and may worsen hypotension in an unstable child needing immediate cardioversion."
+  },
+  "130": {
+   "A": "Pyloric stenosis presents at 2-8 weeks with projectile non-bilious vomiting, not pneumatosis or bloody stool.",
+   "B": "Milk intolerance does not produce pneumatosis intestinalis, which signifies intramural gas from bowel injury.",
+   "D": "Hirschsprung enterocolitis is rare in extremely preterm infants and pneumatosis with bloody stool fits Bell stage II NEC."
+  },
+  "131": {
+   "A": "Pulmonary valve dysplasia is a congenital lesion and not a device complication presenting with new effusion and pain.",
+   "B": "Physiological splitting of S2 is benign and cannot explain chest pain and a new pericardial effusion.",
+   "C": "A haemodynamically insignificant residual shunt does not cause pericardial effusion or pain."
+  },
+  "132": {
+   "A": "Maternal blood group concerns haemolytic disease and does not influence RV decompression safety.",
+   "C": "Bilirubin concentration has no bearing on whether decompressing the right ventricle will compromise coronary perfusion via sinusoids or fistulae.",
+   "D": "Left atrial appendage size is irrelevant; RV size, tricuspid annulus and RV-dependent coronary circulation decide strategy."
+  },
+  "133": {
+   "A": "Withdrawing support in persistent RDS with high FiO2 risks collapse and respiratory failure.",
+   "B": "Diuretics do not treat surfactant deficiency and other causes must be evaluated first.",
+   "C": "iNO is not routinely recommended for preterm RDS; it is reserved for selected pulmonary hypertension."
+  },
+  "134": {
+   "A": "A pulmonary venous varix is a rare incidental finding that is unrelated to the left-sided valve and outflow anatomy relevant to AVSD repair.",
+   "C": "Coronary aneurysms are characteristic of Kawasaki disease and are not part of the gooseneck LVOT anatomy of atrioventricular septal defect.",
+   "D": "The gooseneck deformity is a pathological feature of AVSD, not a normal variant."
+  },
+  "135": {
+   "B": "This corresponds to about 173 mL/kg/day for 9 kg, exceeding the prescribed 130 mL/kg/day.",
+   "C": "130 mL is only the per-kilogram daily figure; omitting multiplication by the 9-kg weight underfeeds the child about ninefold.",
+   "D": "900 mL/day equals 100 mL/kg/day for a 9-kg child, which underestimates the prescribed 130 mL/kg/day starter volume."
+  },
+  "136": {
+   "A": "Hypoketotic fasting hypoglycaemia with raised C8 acylcarnitine points to MCAD deficiency, a fatty acid oxidation defect unrelated to galactose exposure.",
+   "B": "Isolated lens opacity with normal liver tests suggests galactokinase deficiency rather than classic GALT galactosemia.",
+   "C": "Symptoms appearing only after fructose or sucrose introduction suggest hereditary fructose intolerance rather than galactosemia, which presents with milk feeds."
+  },
+  "137": {
+   "A": "Diuresis reduces preload and RV filling, which can worsen RVOT obstruction during a spell.",
+   "C": "Exercise lowers systemic vascular resistance and increases oxygen demand, worsening right-to-left shunting.",
+   "D": "Leg elevation alone without calming is less effective than knee-chest positioning with comfort and oxygen."
+  },
+  "138": {
+   "A": "Isolated C3 (propionylcarnitine) elevation suggests propionic or methylmalonic acidaemia, an organic acidaemia rather than a long-chain oxidation defect.",
+   "B": "Alloisoleucine is the pathognomonic marker of maple syrup urine disease, a branched-chain amino acid disorder, not a fatty acid oxidation defect.",
+   "C": "Succinylacetone is the diagnostic marker of tyrosinaemia type 1, which presents with liver failure and renal tubulopathy, not VLCAD deficiency."
+  },
+  "139": {
+   "B": "Periventricular haemorrhagic infarction involves the parenchyma and is distinct from IVH with dilatation alone.",
+   "C": "Papile grade II describes intraventricular blood without ventricular dilatation, whereas this scan clearly shows ventricular enlargement.",
+   "D": "Grade I is confined to the germinal matrix without intraventricular extension or dilatation."
+  },
+  "140": {
+   "A": "ACE inhibitors are afterload reducers for heart failure and do nothing to maintain duct-dependent pulmonary blood flow.",
+   "B": "Closing the duct would cut off pulmonary blood flow in a duct-dependent lesion and be lethal.",
+   "C": "Adenosine treats re-entrant SVT; it has no role in maintaining ductal patency."
+  },
+  "141": {
+   "A": "Cold stress and hypoxaemia raise pulmonary vascular resistance rather than lowering it.",
+   "C": "Cold stress, with associated hypoxaemia and acidosis, impairs surfactant synthesis and function, so it worsens rather than improves RDS.",
+   "D": "Cold stress increases, not suppresses, oxygen consumption and glucose utilisation because brown-fat nonshivering thermogenesis is activated."
+  },
+  "142": {
+   "A": "Saturations of 100% in parallel circulation imply excessive pulmonary flow and steal from the systemic circulation.",
+   "B": "Systemic venous return is essential for cardiac output and cannot be eliminated.",
+   "C": "In duct-dependent single-ventricle lesions the shunt may be the sole source of pulmonary or systemic flow; closure can be fatal."
+  },
+  "143": {
+   "A": "Radiography delays effective ventilation, which is the priority in a nonvigorous neonate.",
+   "B": "Routine suction in every meconium delivery is no longer recommended and can delay ventilation.",
+   "D": "Chest compressions are futile when the lungs are not being ventilated; NRP prioritises airway correction and effective PPV before compressions."
+  },
+  "144": {
+   "A": "PGE1 acts on ductal smooth muscle and has no effect on bilirubin metabolism; jaundice is irrelevant to d-TGA stabilisation.",
+   "B": "In parallel TGA circulation the duct is a mixing site, so closing it reduces intercirculatory mixing and worsens hypoxaemia.",
+   "D": "Pulmonary venous obstruction is a feature of obstructed TAPVC, not TGA, and PGE1 does not relieve it."
+  },
+  "145": {
+   "A": "Delaying evaluation of regression misses treatable or genetically important conditions such as Rett syndrome.",
+   "C": "Speech therapy alone ignores the underlying neurological or genetic disorder, such as Rett syndrome, and delays a needed diagnostic workup.",
+   "D": "A single IQ score measures current ability and cannot exclude loss of previously acquired skills, which is defined by history and serial assessment."
+  },
+  "146": {
+   "A": "Coarctation balloon dilation relieves aortic arch obstruction and does nothing to increase pulmonary blood flow in TOF.",
+   "C": "Balloon mitral valvotomy treats left AV valve stenosis and does not address RVOT obstruction or augment pulmonary blood flow.",
+   "D": "ASD closure reduces atrial-level shunting and does not augment pulmonary blood flow in TOF."
+  },
+  "147": {
+   "A": "Childhood absence epilepsy shows 3-Hz spike-wave with normal development and a single seizure type.",
+   "B": "Self-limited centrotemporal epilepsy shows centrotemporal spikes with normal cognition and remits by adolescence, unlike this encephalopathic picture.",
+   "C": "A simple febrile seizure is a single provoked event with fever, without slow spike-wave or cognitive impairment."
+  },
+  "148": {
+   "B": "Gestational age determines who is screened for ROP, but treatment decisions under ETROP depend on zone, stage and plus disease.",
+   "C": "Posterior vitreous detachment is not a component of the ICROP or ETROP classification used to decide ROP treatment.",
+   "D": "Birth weight determines screening eligibility, not ETROP treatment class, which is based on zone, stage and plus disease."
+  },
+  "149": {
+   "B": "75 mL per feed gives 900 mL/day, below the prescribed 1170 mL/day.",
+   "C": "108 mL per feed gives about 1296 mL/day, exceeding the prescribed volume.",
+   "D": "130 mL is the per-kilogram daily figure; 130 mL per feed for 12 feeds would give 1560 mL/day, well above the prescription."
+  },
+  "150": {
+   "A": "Diluted cow milk is inappropriate before 12 months; it is iron-poor and causes occult GI blood loss.",
+   "B": "Fruit juice contains negligible iron and is not recommended as a main food in infancy.",
+   "D": "Delaying solids beyond about 6 months, when breast-milk iron no longer meets needs, worsens iron deficiency and growth faltering."
+  }
+ },
+ "review_concerns": {
+  "7": "Stem asks which drug class to avoid, but options A-C are not drug classes; it reads as an odd-one-out, and adenosine is a drug rather than a class.",
+  "47": "Stem says the infant has a large VSD, then asks what finding would suggest a small restrictive VSD, so the clinical vignette conflicts with the question asked.",
+  "143": "Stem merges two scenarios (vigorous infant, then a nonvigorous infant with obstructed PPV); question is answerable but the first sentence is confusing."
+ }
+}

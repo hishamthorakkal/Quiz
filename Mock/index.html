@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="../favicon.ico?v=3" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png?v=3"><meta name="theme-color" content="#1e3a8a"><meta name="color-scheme" content="only light">
+<title>Mock Tests — NEET-SS + ICP Paediatrics</title>
+<style>
+:root{color-scheme:only light;--bg:#f4f7fb;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--blue:#2563eb;--blue2:#1d4ed8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--ink)}
+.wrap{max-width:900px;margin:auto;padding:28px 16px 48px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 30px rgba(15,23,42,.07);margin-bottom:18px}
+h1{margin:0 0 8px;font-size:28px}.sub{color:var(--muted);line-height:1.5;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.item{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}
+.item h2{margin:0 0 8px;font-size:20px}.small{font-size:13px;color:var(--muted)}
+.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px;text-decoration:none;display:inline-block;background:var(--blue);color:#fff}
+.btn:hover{background:var(--blue2)}.secondary{background:#e2e8f0;color:#1e293b}
+@media(max-width:650px){.grid{grid-template-columns:1fr}}
+</style></head>
+<body><div class="wrap">
+<a class="btn secondary" href="../index.html" style="font-size:14px;padding:9px 14px;margin-bottom:16px">← Home</a>
+<h1>Mock Tests</h1>
+<div class="sub">Timed NEET-SS exam simulations: three sections of 50 questions, 50 minutes each, +4 / −1 / 0. Answers and explanations appear only after the last section.</div>
+<div class="card"><div class="grid">
+<div class="item">
+<h2>Cumulative Mock — Day 25 Checkpoint</h2>
+<p>Days 1–24: neonatology, growth/nutrition/genetics, cardiology, neurology</p>
+<p class="small">150 MCQs · 3 × 50 min · max 600 · <span id="st-Cumulative_Day25"></span></p>
+<a class="btn" href="Cumulative_Day25/index.html">Open Mock</a>
+</div>
+</div></div>
+</div>
+<script>
+document.querySelectorAll('[id^="st-"]').forEach(el=>{
+ try{const s=JSON.parse(localStorage.getItem('gm:'+el.id.slice(3)+':v2'));
+  el.textContent=!s?'not attempted':s.finished?'completed':'in progress';}catch(e){}
+});
+</script>
+</body></html>
