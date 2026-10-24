@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import docx_parse as dp
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ACRONYMS = {'TOF', 'RVOT', 'RVOTO', 'MAPCA', 'MAPCAS', 'DORV', 'CMR', 'PGE1', 'PDA', 'VSD', 'AVSD', 'PAPVC', 'PVR', 'PVRI', 'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
+ACRONYMS = {'LP', 'ADEM', 'MOGAD', 'NMOSD', 'TBM', 'AES', 'JE', 'CSF', 'TOF', 'RVOT', 'RVOTO', 'MAPCA', 'MAPCAS', 'DORV', 'CMR', 'PGE1', 'PDA', 'VSD', 'AVSD', 'PAPVC', 'PVR', 'PVRI', 'ABG', 'HIE', 'EEG', 'AEEG', 'MRI', 'TH', 'CT', 'CNS', 'SIADH', 'HSV', 'R1', 'R2', 'R3', 'BPD', 'HFOV', 'AAP', 'IVIG', 'ABE', 'NRS', 'RDS', 'DOPE', 'PIE', 'VTV', 'HDFN', 'G6PD', 'HS', 'PEEP', 'CO2',
             'NICU', 'ELBW', 'VLBW', 'PPHN', 'TSB', 'TCB', 'DAT', 'ICP', 'NEET-SS', 'II', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX',
             'XI', 'XII', 'XIII', 'K/C/R/G/S', 'R1', 'R2', 'R3', 'QA', 'MCQS', 'CPAP', 'NIV', 'PIP', 'EOS', 'LOS',
             'NEC', 'TPN', 'PN', 'NNF', 'IEM', 'ASD', 'ADHD', 'CHD', 'CCHD', 'ECG', 'CXR', 'IAP-NNF', 'SIP', 'GIR', 'PDHM', 'MOM', 'HMF', 'IUGR', 'SGA', 'IV/PN'}
@@ -41,6 +41,7 @@ RULES = [
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
     (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
     (r'active-recall answers', 'recall'), (r'session map|study timetable|study schedule', 'overview'), (r'visual/data stations\b', 'data'),
+    (r'^part [ivx]+ \| .*(mcqs|retests|answer key)', 'mcq'), (r'^six controls|five-stage gates|machine-checked audit|adversarial screening ledger|release blockers|verified source ledger|release ledger|stage and control disposition', 'references'),   # Day 26
     (r'^section [a-z]\b.*active recall', 'recall'), (r'^section a2\b.*retests|retest explanation', 'mcq'), (r'supplementary calculations', 'calc'), (r'qa register|mandatory qa stages', 'references'),   # Day 25
     (r'blind mcq paper|examination paper|^[a-z]\. notebook retests|full four-option explanations', 'mcq'), (r'clinician certification', 'references'), (r'eeg / data stations|^part [ivx]+ — .*data stations', 'data'), (r'^at a glance|five-hour schedule', 'overview'), (r'repair calculations', 'calc'), (r'visual/data interpretation stations', 'data'),   # Day 21
     (r'six-control ledger|four-stage qa|mandatory stages|six-control audit|certification ledger|release checklist', 'references'), (r'examiner traps', 'pearls'), (r'notebook audit', 'plan'),
@@ -197,11 +198,11 @@ def build(day, docx, keep_order=False):
             # Day 19: teaching ("Advanced addition — …" headings) placed before Q01 in the MCQ part -> its own notes page
             lead = []
             for el in els:
-                if el.tag == dp.W + 'p' and re.match(r'^[QR]\d+\s{2,}\S', dp.text(el)):
+                if el.tag == dp.W + 'p' and re.match(r'^(?:[QR]|RT)\d+\s{2,}\S|^Q\d+\s+\[', dp.text(el)):
                     break
                 lead.append(el)
             hs = [i for i, el in enumerate(lead) if el.tag == dp.W + 'p' and doc.style(el).startswith('heading 2')]
-            if hs and len(lead) < len(els):
+            if hs and len(lead) < len(els) and any(el.tag == dp.W + 'p' and dp.text(el) and not doc.style(el).startswith('heading') for el in lead[hs[0]:]):
                 asecs = dp.blocks_from(doc, lead[hs[0]:])
                 pid = f'part-{len(notes) + 1}'
                 notes.append(pid)
@@ -223,7 +224,7 @@ def build(day, docx, keep_order=False):
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
-            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1) or re.match(r'^([A-Z])\.\s+(.+)$', h1)
+            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—|-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1) or re.match(r'^([A-Z])\.\s+(.+)$', h1)
             mm = re.match(r'^Module (\d+)\s*[—–-]\s*(.+)$', h1)          # Day 19: "Module 2 — d-TGA: the mixing problem"
             pid = f'part-{len(notes) + 1}'
             if mm:
@@ -310,7 +311,46 @@ def build(day, docx, keep_order=False):
             pages['data']['sections'] = [s for s in dsecs if s not in moved]
             pages.setdefault('cases', {'id': 'cases', 'title': PAGES['cases'][0], 'group': PAGES['cases'][1], 'kind': 'cases', 'sections': []})
             pages['cases']['sections'] += [s for s in moved if s['blocks'] or not re.search(r'case workbook', s['title'], re.I)]
-    # Day 25: whole case / station on one paragraph with its answer inline ("Case 1. stem Key discriminator: answer",
+    # Day 26: one combined "ACTIVE RECALL, EXAM TRAPS AND RAPID REVISION" part (landed on Pearls): recall and rapid-revision
+    # sections move to their own pages; "AR01. prompt" + "Answer: …" paragraphs become recall cards
+    if 'pearls' in pages:
+        for s_ in list(pages['pearls']['sections']):
+            dest = 'recall' if re.search(r'active recall', s_['title'], re.I) else 'revision' if re.match(r'^rapid revision', s_['title'], re.I) else None
+            if not dest:
+                continue
+            pages['pearls']['sections'].remove(s_)
+            pages.setdefault(dest, {'id': dest, 'title': PAGES[dest][0], 'group': PAGES[dest][1], 'kind': PAGES[dest][2], 'sections': []})
+            if dest == 'recall':
+                items, rest_, pend = [], [], None
+                for b in s_['blocks']:
+                    tx = re.sub(r'<[^>]+>', '', b.get('html', '')) if b['t'] == 'p' else ''
+                    m_ = re.match(r'^AR\d+\.\s*(.+)$', tx)
+                    if m_:
+                        pend = html.escape(m_[1].strip())
+                        continue
+                    if pend is not None and re.match(r'^Answer:', tx):
+                        items.append(f'{pend}<br>{b["html"]}')
+                        pend = None
+                        continue
+                    rest_.append(b)
+                if items:
+                    total_blocks -= 2 * len(items) - 1
+                    s_ = {**s_, 'title': '', 'blocks': [{'t': 'list', 'ordered': True, 'items': items}] + rest_}
+            pages[dest]['sections'].append(s_)
+    # Day 26: a case or station given as ONE paragraph (stem and answer run together): the first sentence stays visible,
+    # the rest is hidden behind the reveal
+    for pid_, lab_ in (('cases', 'Answer'), ('data', 'Interpretation')):
+        for s_ in pages.get(pid_, {}).get('sections', []):
+            if re.match(r'^(Case|Station) \d+\s*[—–]', s_['title']) and len(s_['blocks']) == 1 and s_['blocks'][0]['t'] == 'p':
+                h_ = s_['blocks'][0]['html']
+                m_ = re.match(r'^(.+?[.?])\s+(?=[A-Z])(.+)$', h_)
+                if m_:
+                    s_['blocks'] = [{'t': 'p', 'html': m_[1]}, {'t': 'p', 'html': f'<strong>{lab_}:</strong> ' + m_[2]}]
+                    total_blocks += 1
+            if pid_ == 'data':
+                ms_ = re.match(r'^Station (\d+)\s*[—–]\s*(.+)$', s_['title'])
+                if ms_:
+                    s_['title'] = f'Visual Station {ms_[1]} — {ms_[2]}'
     # "Station 1: data. Interpretation: answer") -> one section each, answer hidden behind the reveal
     for pid_, rx_, lab_ in (('cases', r'^Case (\d+)\.\s*(.+?)\s*Key discriminator:\s*(.+)$', 'Answer'),
                             ('data', r'^Station (\d+):\s*(.+?)\s*Interpretation:\s*(.+)$', 'Interpretation')):
