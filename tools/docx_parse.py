@@ -340,13 +340,13 @@ def parse_mcqs(doc, parts, aliases=None):
     A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
     B, C = find(r'^SECTION B'), find(r'^SECTION C')
     named = next((els for h, els in parts if re.search(r'question booklet|\bmcqs?\b|questions\b|revision test', h, re.I)
-                  and not re.search(r'explanation|answer(?!s withheld)', h, re.I) and has_q(els)), None)
+                  and not re.search(r'explanation|answer(?!s withheld| before)', h, re.I) and has_q(els)), None)
     if A is not None and B is not None and has_q(B) and not any(el.tag == W + 'tbl' for el in B):
         A, B = A + B, None             # Day 18: base MCQs in Section A, notebook retests in Section B
     if A is None and named is not None and (B is None or not has_q(B)):
         A, B = named, None
         # Day 19: notebook retests ("R01  stem") in their own part after the base MCQs
-        rp = next((els for h, els in parts if re.search(r'notebook (?:mcq )?retests', h, re.I) and not re.search(r'answer', h, re.I)
+        rp = next((els for h, els in parts if re.search(r'notebook (?:mcq )?retests|error-notebook retests', h, re.I) and not re.search(r'answer', h, re.I)
                    and els is not named), None)
         if rp is not None:
             A = A + rp
@@ -403,11 +403,11 @@ def parse_mcqs(doc, parts, aliases=None):
              or re.match(r'^Q(\d+)\s+\[([^\]]+)\]()\s*(?:\S.*)?$', t)    # Day 17: "Q01  [Level]  Topic" heading, stem below (Day 20: no topic)
              or re.match(r'^Q(\d+)\s*[—–-]\s*(Spaced revision)()\s*$', t, re.I))   # Day 18: "Q76 — Spaced revision" = notebook retest
         m19 = not m and (re.match(r'^([QR])(\d+)\s{2,}([^|\s].*)$', t) or re.match(r'^(R)T(\d+)\s{2,}([^|\s].*)$', t))   # Day 26: "RT01  stem"   # Day 19: "Q01  stem"; "R01  stem" = notebook retest
-        m23 = not m and not m19 and re.match(r'^([QR])(\d+)\s*\|\s*(.+)$', t)   # Day 23: "Q01  |  Basic  |  Topic" / "R01  |  ERR-… — Day 16 Q41 — name", stem below
+        m23 = not m and not m19 and (re.match(r'^([QR])(\d+)\s*\|\s*(.+)$', t) or re.match(r'^(R)T(\d+)\s*\|\s*(.+)$', t))   # Day 27: "RT01  |  NOTEBOOK  |  Retest"   # Day 23: "Q01  |  Basic  |  Topic" / "R01  |  ERR-… — Day 16 Q41 — name", stem below
         if m23:
             if m23[1] == 'Q':
                 rbase = max(rbase, int(m23[2]))
-            lev = m23[3].split('|')[0].strip() if m23[1] == 'Q' else ''
+            lev = next((f.strip() for f in m23[3].split('|') if re.match(r'^\s*(basic|recall|conceptual|clinical|application|high|integrated|core|moderate|advanced)', f, re.I)), '') if m23[1] == 'Q' else ''
             cur = {'num': int(m23[2]) + (rbase if m23[1] == 'R' else 0), 'level': lev, 'question': '', 'options': [], 'retest': m23[1] == 'R'}
             if m23[1] == 'R':          # the original-question label is tracked, never shown
                 src = re.sub(r'^ERR-\S+\s*[—–-]\s*', '', m23[3]).strip()
@@ -468,7 +468,7 @@ def parse_mcqs(doc, parts, aliases=None):
                     key[int(n_)] = a_
                 for l_, n_, a_ in re.findall(r'\b([QR])(\d+)\s*:\s*([A-D])\b', t_):    # Day 19: "Q01:C", "R01:B"
                     key[int(n_) + (rbase if l_ == 'R' else 0)] = a_
-                for n_, a_ in re.findall(r'\bR(\d+)\s+([A-D])\b', t_):                    # Day 23: "R01 D"
+                for n_, a_ in re.findall(r'\bRT?(\d+)\s+([A-D])\b', t_):                    # Day 23: "R01 D"
                     key[int(n_) + rbase] = a_
                 for n_, a_ in re.findall(r'(?:^|\|)\s*(\d+)\s+([A-D])\s*(?=\||$)', t_):     # Day 24: "1 C  |  2 A  |  …"
                     key[int(n_)] = a_
@@ -482,7 +482,7 @@ def parse_mcqs(doc, parts, aliases=None):
                 e = {'ans': m[2], 'lev': m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
                 continue
-            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t) or re.match(r'^Q(\d+)\s*•\s*([A-D])\s*•', t) or re.match(r'^Q(\d+)\s*[—–]\s*([A-D])\s*[—–]\s', t) or re.match(r'^Q(\d+)\s*[—–-][^|]*\|\s*Best answer:\s*([A-D])\b', t)   # Day 22 "Q01 — CAE | Best answer: B | …"; Day 20 "Q01 — A | Topic"; Day 21 "Q001 • A • Topic"
+            m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\s*\|', t) or re.match(r'^Q(\d+)\s*•\s*([A-D])\s*•', t) or re.match(r'^Q(\d+)\s*[—–]\s*([A-D])\s*[—–]\s', t) or re.match(r'^Q(\d+)\s*[—–]\s*([A-D])\s*[—–]\s', t) or re.match(r'^Q(\d+)\s*[—–-][^|]*\|\s*Best answer:\s*([A-D])\b', t)   # Day 22 "Q01 — CAE | Best answer: B | …"; Day 20 "Q01 — A | Topic"; Day 21 "Q001 • A • Topic"
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
@@ -498,6 +498,12 @@ def parse_mcqs(doc, parts, aliases=None):
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
+                continue
+            m = re.match(r'^RT(\d+)\s*•\s*([A-D])\s*•', t)     # Day 27: "RT01  •  C  •  NOTEBOOK  •  Retest" (source from extras)
+            if m:
+                n_ = int(m[1]) + rbase
+                e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_), 'retest': True}
+                ex[n_] = e
                 continue
             m = re.match(r'^RT(\d+)\s+([A-D])\s*\|\s*ERR-D(\d+)-Q(\d+)\s*\|\s*(?:repeat\s+)?(R\d)[^|]*\|\s*(.+)$', t)   # Day 26: "RT08  B  |  ERR-D18-Q33  |  R1 overdue  |  name"
             if m:
@@ -534,6 +540,8 @@ def parse_mcqs(doc, parts, aliases=None):
                 if rr:
                     e['retest'], e['stage'] = True, m[2]
                 ex[n_] = e
+                continue
+            if re.match(r'^(Original failed question:\s*ERR-|Source mapping:)', t):   # Day 27: precedes the NEXT retest / audit note
                 continue
             m = re.match(r'^ORIGINAL FAILED QUESTION(?:\s*/\s*NOTIFICATION|\s*\(post-answer\))?:\s*([^|]+)(.*)$', t, re.I)
             if m and e and m[2]:     # Day 20: "Day 15 — Q61 — name | ERR-D15-Q61 | Retest R1 | …"
@@ -677,16 +685,26 @@ def parse_mcqs(doc, parts, aliases=None):
                 if alias and rest.startswith(alias + ' — '):   # explanation words the option differently (known, reviewed)
                     rest = opt + rest[len(alias):]
                 if not rest.startswith(opt + ' — '):
-                    problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
-                    continue
+                    # Day 27: the line paraphrases the option ("A. Monitoring without … — Incorrect: …"); accepted when the
+                    # reason is explicitly labelled or the letter is the keyed one
+                    pr_ = rest.split(' — ', 1)
+                    if len(pr_) == 2 and (re.match(r'^(Incorrect|Wrong)\b', pr_[1], re.I) or m[1] == e['ans']):
+                        rest = opt + ' — ' + pr_[1]
+                        if m[1] == e['ans'] and not re.match(r'^(correct|incorrect|wrong)\b', pr_[1], re.I):
+                            rest = opt + ' — Correct. ' + pr_[1]
+                    else:
+                        problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
+                        continue
                 reason = rest[len(opt) + 3:].strip()
+                if m[1] == e['ans'] and e.get('para_ok') is None and not re.match(r'^(correct|incorrect|wrong)\b', reason, re.I) and e.get('labelled'):
+                    reason = 'Correct. ' + reason      # Day 27: keyed line carries no label while the others say "Incorrect:"
                 if re.match(r'^correct\b', reason, re.I):
                     e['marked'].append(m[1])
                     e['correct_reason'] = re.sub(r'^correct\b[.:!]?\s*', '', reason, flags=re.I)
                 else:
                     if re.match(r'^(Incorrect|Wrong)\b', reason, re.I):
                         e['labelled'] = True
-                    reason = re.sub(r'^(Incorrect|Wrong)\.\s*', '', reason)
+                    reason = re.sub(r'^(Incorrect|Wrong)[.:]\s*', '', reason)
                     if not any(b in reason for b in BOILERPLATE):
                         e['why_not'][m[1]] = reason
                 continue
@@ -760,7 +778,9 @@ def parse_mcqs(doc, parts, aliases=None):
             problems.append(f'Q{n}: no option marked Correct in the explanation')
         if not e['marked'] and not e.get('labelled'):
             unlabelled.append(n)
-            e['why_not'].pop(e['ans'], None)       # keyed option's line explains why it is right
+            kr_ = e['why_not'].pop(e['ans'], None)       # keyed option's line explains why it is right
+            if kr_ and not e.get('correct_reason'):
+                e['correct_reason'] = kr_    # Day 27: used as the explanation when there is no core paragraph       # keyed option's line explains why it is right
         if not q['level']:
             q['level'] = '' if RETEST.match(e['lev'] or '') else (e['lev'] or '')
         if e['marked'] and e['marked'] != [e['ans']]:

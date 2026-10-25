@@ -41,6 +41,8 @@ RULES = [
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
     (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
     (r'active-recall answers', 'recall'), (r'session map|study timetable|study schedule', 'overview'), (r'visual/data stations\b', 'data'),
+    (r'new base mcqs|error-notebook retests|option-by-option teaching explanations', 'mcq'), (r'rank-differentiating traps', 'pearls'), (r'must-know cutoffs', 'numbers'),   # Day 27
+    (r'five-stage audit|review-loop outcomes|directly checked external guidance|five-stage qa status|final acceptance disposition', 'references'),
     (r'^part [ivx]+ \| .*(mcqs|retests|answer key)', 'mcq'), (r'^six controls|five-stage gates|machine-checked audit|adversarial screening ledger|release blockers|verified source ledger|release ledger|stage and control disposition', 'references'),   # Day 26
     (r'^section [a-z]\b.*active recall', 'recall'), (r'^section a2\b.*retests|retest explanation', 'mcq'), (r'supplementary calculations', 'calc'), (r'qa register|mandatory qa stages', 'references'),   # Day 25
     (r'blind mcq paper|examination paper|^[a-z]\. notebook retests|full four-option explanations', 'mcq'), (r'clinician certification', 'references'), (r'eeg / data stations|^part [ivx]+ — .*data stations', 'data'), (r'^at a glance|five-hour schedule', 'overview'), (r'repair calculations', 'calc'), (r'visual/data interpretation stations', 'data'),   # Day 21
@@ -220,7 +222,7 @@ def build(day, docx, keep_order=False):
             calc = dp.parse_calc(secs)
             continue
         total_blocks += sum(len(s['blocks']) for s in secs)
-        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )(?<!\+ )(?<!prompts and )\banswers?\s*$|recall answers\b|recall answer check|recall answer guide', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
+        if kind == 'recall' and re.search(r'[—–-]\s*answers?\b(?!\s+without)|(?<!revealing )(?<!\+ )(?<!prompts and )(?<!cover the )\banswers?\s*$|recall answers\b|recall answer check|recall answer guide', h1, re.I):   # "ACTIVE RECALL — ANSWERS", not "(answers immediately beneath)"
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
@@ -374,11 +376,11 @@ def build(day, docx, keep_order=False):
     # Day 21: case titles "3 • Incessant long-RP" name the answer -> "Case 3 — …" (the portal hides the topic until the reveal);
     # station titles "S2 — P/QRS dissociation" -> "Visual Station 2 — …" (same)
     for s_ in pages.get('cases', {}).get('sections', []):
-        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Case (\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Case (\d+):\s*(.+)$', s_['title'])   # Day 23: "1. Case 1 — rural clinic"
+        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title']) or re.match(r'^Case (\d+)\.\s+(.+)$', s_['title']) or re.match(r'^\d+\.\s+Case (\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Case (\d+):\s*(.+)$', s_['title'])   # Day 23: "1. Case 1 — rural clinic"
         if m_:
             s_['title'] = f'Case {m_[1]} — {m_[2]}'
     for s_ in pages.get('data', {}).get('sections', []):
-        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
+        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Station (\d+)\.\s+(.+)$', s_['title']) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
         if m_:
             s_['title'] = f'Visual Station {m_[1]} — {m_[2]}'
     # extras "reveal_images": {"image2.png": "Visual Station 1"} — a document picture above the stations that labels a
@@ -414,6 +416,14 @@ def build(day, docx, keep_order=False):
         if rr and 'revision' in pages:          # Day 21: a rapid-revision block placed under Active Recall
             pages['recall']['sections'] = [s_ for s_ in pages['recall']['sections'] if s_ not in rr]
             pages['revision']['sections'] += rr
+    if 'recall' in pages:      # Day 27: "AR01. prompt?Answer: answer" as plain paragraphs -> one card list
+        for s_ in pages['recall']['sections']:
+            ms_ = [b['t'] == 'p' and re.match(r'^(?:<[^>]+>)*AR\d+\.\s*(.+?)\s*Answer:\s*(.+)$', b['html']) for b in s_['blocks']]
+            if sum(1 for x in ms_ if x) >= 5:
+                items = [re.sub(r'(<br>\s*)+$', '', x[1].strip()) + f'<br>Answer: {x[2].strip()}' for x in ms_ if x]
+                rest_ = [b for b, x in zip(s_['blocks'], ms_) if not x]
+                total_blocks -= len(items) - 1
+                s_['blocks'] = [{'t': 'list', 'ordered': True, 'items': items}] + rest_
     if 'recall' in pages and not recall_answers:
         rs = pages['recall']['sections']
         ak = [s_ for s_ in rs if re.search(r'answer key|answers?\b.*separate|^active recall answers$', s_['title'], re.I)]

@@ -1,0 +1,22 @@
+{
+  "title": "Neurocutaneous Syndromes, Leukodystrophies, Headache & Brain Tumours",
+  "retests": {
+    "76": {"stage": "R1", "from": "Day 10 Q8 — Neonatal hypoglycaemia — CPS 72 h versus PES 48 h"},
+    "77": {"stage": "R1", "from": "Day 14 Q30 — Complicated SAM — F-75 daily feed volume"},
+    "78": {"stage": "R1", "from": "Day 15 Q61 — Galactokinase versus GALT versus hereditary fructose intolerance"},
+    "79": {"stage": "R1", "from": "Day 15 Q77 — MCAD deficiency — C8 acylcarnitine"},
+    "80": {"stage": "R1", "from": "Day 16 Q41 — Physiological versus fixed S2 splitting"},
+    "81": {"stage": "R1", "from": "Day 16 Q74 — Obstructed infracardiac TAPVC"},
+    "82": {"stage": "R1", "from": "Day 17 Q17 — ASD device erosion"},
+    "83": {"stage": "R1", "from": "Day 17 Q22 — Common VSD anatomy"},
+    "84": {"stage": "R1", "from": "Day 17 Q44 — Krichenko PDA classification"},
+    "85": {"stage": "R1", "from": "Day 17 Q56 — AVSD gooseneck LVOT"},
+    "86": {"stage": "R1", "from": "Day 17 Q58 — Transitional AVSD"},
+    "87": {"stage": "R1", "from": "Day 18 Q33 — TOF RVOT palliation"}
+  },
+  "calc_items": [
+    {"title": "Arterial O₂ content (Day 18 repair)", "question": "A child has haemoglobin 15.2 g/dL and arterial oxygen saturation 86%. Ignoring dissolved oxygen, calculate CaO₂ (mL O₂/dL) using 1.34 × Hb × SaO₂ (fraction), to one decimal place.",
+     "working": "1.34 × 15.2 × 0.86 = 17.516 ≈ 17.5 mL O₂/dL (Hb-bound oxygen only).",
+     "trap": "Convert the saturation percentage to a fraction before multiplying.", "parts": [{"answer": 17.5, "unit": "mL O₂/dL"}]}
+  ]
+}
