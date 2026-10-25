@@ -18,7 +18,7 @@ tools/
   docx_parse.py            Docx reader (headings, tables, callout boxes, MCQs)
   templates/quiz.html      Shared quiz-set template (set sizes: rules §4)
 Mock/                      Timed mock tests (tools/build_mock.py); Mock/index.html lists them
-Day17/ … Day25/
+Day19/ … Day26/
   source/<day docx>        Original document (kept for audit/regeneration)
   index.html               Study portal (overview, notes, cases, pearls, revision, quizzes)
   content.js               Portal content generated from the docx — do not edit by hand
