@@ -180,7 +180,7 @@
   // ---------- pages ----------
   const CASE_T = /^\s*(Case \d+)\s*[—–-]\s*(.+)$/i;
   const STATION = /^\s*((?:Visual|Practice) Station \d+)\s*[—–-]\s*(.+)$/i;
-  const DATA_ANS = /^(<strong>)?\s*(Interpretation|Closest distractor|Discriminator|Decisive visual|Next management step|Next step|Exam trap|Trap|Trace-back|Answer)\b/i;
+  const DATA_ANS = /^(<strong>)?\s*(Interpretation|Resolution|Closest distractor|Discriminator|Decisive visual|Next management step|Next step|Exam trap|Trap|Trace-back|Answer)\b/i;
   function sectionHTML(page, s, i) {
     const ctx = { page, sec: s };
     let inner;
@@ -188,7 +188,7 @@
       // Answer part of a case = first "Reasoning/Answer/Trap…" line or "What would you do next?" box onward.
       // Some documents put the whole case (patient, labs, question, reasoning) in one paragraph with line breaks,
       // so such paragraphs are split at the first answer line.
-      const ANS = /^(<strong>)?\s*(Structured reasoning|Reasoned answer|Reasoning|Answer|Trap identified|Management|Next step|Approach|Explanation)\b/i;
+      const ANS = /^(<strong>)?\s*(Structured reasoning|Reasoned answer|Examiner resolution|Reasoning|Answer|Trap identified|Management|Next step|Approach|Explanation)\b/i;
       const bl = [];
       s.blocks.forEach(b => {
         if (b.t === 'p' && b.html.includes('<br>')) {

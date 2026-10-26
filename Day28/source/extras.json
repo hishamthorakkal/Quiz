@@ -1,0 +1,20 @@
+{
+  "title": "Neurology System Revision (Days 22–27)",
+  "calc_items": [
+    {"title": "Corrected age and PMA", "question": "An infant was born at 30 weeks and is now 18 weeks old (chronological). Calculate the corrected age and the current postmenstrual age.",
+     "working": "Corrected age = 18 − (40 − 30) = 8 weeks; PMA = 30 + 18 = 48 weeks.", "trap": "",
+     "parts": [{"label": "Corrected age", "answer": 8, "unit": "weeks"}, {"label": "PMA", "answer": 48, "unit": "weeks"}]},
+    {"title": "CSF/serum glucose ratio", "question": "CSF glucose is 32 mg/dL and simultaneous serum glucose is 96 mg/dL. Calculate the CSF:serum glucose ratio.",
+     "working": "32 / 96 = 0.333 ≈ 0.33; a low ratio is concerning in the right clinical context.", "trap": "", "parts": [{"answer": 0.33, "unit": ""}]},
+    {"title": "EEG frequency", "question": "A generalized spike-wave trace contains 18 complete cycles in 6 seconds. What is the frequency?",
+     "working": "18 / 6 = 3 Hz", "trap": "", "parts": [{"answer": 3, "unit": "Hz"}]},
+    {"title": "GBS IVIg arithmetic", "question": "IVIg is ordered at 0.4 g/kg/day for 5 days for a 12-kg child. Calculate the daily and the total mass.",
+     "working": "Daily = 0.4 × 12 = 4.8 g; total over 5 days = 24 g (arithmetic on an explicitly prescribed regimen).", "trap": "",
+     "parts": [{"label": "Daily", "answer": 4.8, "unit": "g/day"}, {"label": "Total", "answer": 24, "unit": "g"}]},
+    {"title": "Test scoring", "question": "In a 100-question test marked +4/−1/0, a candidate has 72 correct, 18 incorrect and 10 unanswered. Calculate the score (out of 400).",
+     "working": "72 × 4 − 18 × 1 = 288 − 18 = 270 / 400", "trap": "", "parts": [{"answer": 270, "unit": "/ 400"}]},
+    {"title": "PMA and corrected age", "question": "A child born at 28 weeks is now 16 weeks after birth. Calculate the PMA and the corrected age.",
+     "working": "PMA = 28 + 16 = 44 weeks; corrected age = 16 − (40 − 28) = 4 weeks.", "trap": "",
+     "parts": [{"label": "PMA", "answer": 44, "unit": "weeks"}, {"label": "Corrected age", "answer": 4, "unit": "weeks"}]}
+  ]
+}

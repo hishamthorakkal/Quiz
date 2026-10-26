@@ -360,7 +360,7 @@ def parse_mcqs(doc, parts, aliases=None):
         ex_parts = [els for h, els in parts if re.search(r'\brationales?\b|retest answers', h, re.I)]
         expl = [el for els in ex_parts for el in els] or None
     if expl is not None:
-        rx = [els for h, els in parts if re.search(r'retest explanation', h, re.I) and els is not expl]   # Day 25: separate retest part
+        rx = [els for h, els in parts if re.search(r'retest explanation|retest answer key', h, re.I) and els is not expl]   # Day 25: separate retest part
         C = expl + [el for els in rx for el in els] if rx else expl
     if A is None and B is not None and has_q(B) and not any(el.tag == W + 'tbl' for el in B) and \
             any(el.tag == W + 'p' and re.match(r'^Q\d+\.', text(el)) for el in B):
@@ -388,6 +388,10 @@ def parse_mcqs(doc, parts, aliases=None):
             continue
         m25 = not doc.style(el).startswith('heading') and (re.match(r'^Q(\d+) \[[^\]]+\] (\S.{20,})$', t) or re.match(r'^Q(\d+) ([A-Z][^\[|].{20,})$', t))
         m25 = m25 or re.match(r'^Q(\d+)\s+\[[^\]]+\]\s+(\S.{30,}\?)\s*$', t)   # Day 26: heading "Q01  [Clinical]  <stem ending in ?>"
+        mnb = cur is not None and re.match(r'^Notebook:\s*(Day\s*\d+\s*Q\d+)\s*-\s*([^|]+?)\s*\|.*?\bStage\b[^|]*?\b(R\d)\b', t)
+        if mnb:     # Day 28: retest identity under the stem (tracked, not shown)
+            cur['retest'], cur['retest_from'], cur['stage'] = True, f'{mnb[1]} — {mnb[2]}', mnb[3]
+            continue
         if m25:    # Day 25: "Q01 [DMD] stem" (topic tag dropped) / "Q76 stem" on one paragraph (single spaces)
             rbase = max(rbase, int(m25[1]))
             cur = {'num': int(m25[1]), 'level': '', 'question': m25[2].strip(), 'options': [], 'retest': False}
@@ -461,7 +465,7 @@ def parse_mcqs(doc, parts, aliases=None):
             for n_, a_ in re.findall(r'\b(\d+)\s*([A-D])\b', text(el)):
                 key[int(n_)] = a_
     for h, els in parts:
-        if re.search(r'\bANSWER KEY\b', h, re.I) and not re.search(r'recall', h, re.I) and (not re.search(r'EXPLANATION', h, re.I) or re.match(r'^PART [IVX]+ \|', h)):
+        if re.search(r'\b(ANSWER|EXAMINER) KEY\b', h, re.I) and not re.search(r'recall', h, re.I) and (not re.search(r'EXPLANATION', h, re.I) or re.match(r'^PART [IVX]+ \|', h)):
             for el in els:
                 t_ = text(el) if el.tag == W + 'p' else ' '.join(text(p_) for p_ in el.iter(W + 'p'))
                 for n_, a_ in re.findall(r'\bQ(\d+)\s+([A-D])\b', t_) + re.findall(r'\b(\d+)\s*:\s*([A-D])\b', t_):
@@ -498,6 +502,21 @@ def parse_mcqs(doc, parts, aliases=None):
             if m:
                 e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
                 ex[int(m[1])] = e
+                continue
+            m = re.match(r'^Q(\d+)\s*\|\s*[^|]*\|\s*Key\s+([A-D])\s*$', t)     # Day 28: "Q001 | S22 | Key C"
+            if m:
+                e = {'ans': m[2], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(int(m[1]))}
+                ex[int(m[1])] = e
+                continue
+            m = re.match(r'^RT(\d+)\s*\|\s*(Day\s*\d+\s*Q\d+)\s*-\s*(.+?)\s*\|\s*Key\s+([A-D])\s*$', t)     # Day 28: "RT01 | Day 19 Q6 - name | Key A"
+            if m:
+                n_ = int(m[1]) + rbase
+                e = {'ans': m[4], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_), 'retest': True, 'retest_from': f'{m[2]} — {m[3]}'}
+                ex[n_] = e
+                continue
+            if e and e.get('q') and re.sub(r'\s+', ' ', t) == re.sub(r'\s+', ' ', e['q']['question']):   # Day 28: stem repeated under the header
+                continue
+            if e and re.match(r'^Status:\s', t):
                 continue
             m = re.match(r'^RT(\d+)\s*•\s*([A-D])\s*•', t)     # Day 27: "RT01  •  C  •  NOTEBOOK  •  Retest" (source from extras)
             if m:
@@ -680,7 +699,7 @@ def parse_mcqs(doc, parts, aliases=None):
             m = re.match(r'^([A-D])\.\s+(.+)$', t)
             if m and e['q']:
                 opt = e['q']['options']['ABCD'.index(m[1])]
-                rest = m[2]
+                rest = re.sub(r'\s+—\s+', ' — ', m[2])       # Day 28: "A. option  —  reason"
                 alias = ((aliases or {}).get(str(e['q']['num'])) or {}).get(m[1])
                 if alias and rest.startswith(alias + ' — '):   # explanation words the option differently (known, reviewed)
                     rest = opt + rest[len(alias):]

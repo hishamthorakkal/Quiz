@@ -39,8 +39,10 @@ RULES = [
     (r'^\d+\. questions\b|all-option explanations', 'mcq'), (r'learner route', 'overview'), (r'case stations', 'cases'),   # Day 24
     (r'error-notebook .*traceability', 'plan'), (r'source / evidence register|^iteration \d|^four stages and six controls|clinician sign-off', 'references'),
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
-    (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*(answer key|post-answer)', 'recallkey'),
+    (r'targeted numerical repair|numerical repair answers', 'calc'), (r'active recall\b.*post-answer', 'recallkey'),
     (r'active-recall answers', 'recall'), (r'session map|study timetable|study schedule', 'overview'), (r'visual/data stations\b', 'data'),
+    (r'^part [ivx]+ \| active recall with answer key', 'recall'), (r'arithmetic drills', 'calc'), (r'^part [ivx]+ \|.*high-yield traps', 'pearls'), (r'examiner explanations', 'mcq'),   # Day 28
+    (r'section/stage totals|audit passes performed|measurable findings|five-stage and six-control|automated editorial ledger', 'references'),
     (r'new base mcqs|error-notebook retests|option-by-option teaching explanations', 'mcq'), (r'rank-differentiating traps', 'pearls'), (r'must-know cutoffs', 'numbers'),   # Day 27
     (r'five-stage audit|review-loop outcomes|directly checked external guidance|five-stage qa status|final acceptance disposition', 'references'),
     (r'^part [ivx]+ \| .*(mcqs|retests|answer key)', 'mcq'), (r'^six controls|five-stage gates|machine-checked audit|adversarial screening ledger|release blockers|verified source ledger|release ledger|stage and control disposition', 'references'),   # Day 26
@@ -380,7 +382,7 @@ def build(day, docx, keep_order=False):
         if m_:
             s_['title'] = f'Case {m_[1]} — {m_[2]}'
     for s_ in pages.get('data', {}).get('sections', []):
-        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Station (\d+)\.\s+(.+)$', s_['title']) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
+        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Station (\d+)\.\s+(.+)$', s_['title']) or (lambda m: m and (m[0], str('ABCDEFGH'.index(m[1]) + 1), m[2]))(re.match(r'^Station ([A-H])\s*[—–-]\s*(.+)$', s_['title'])) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
         if m_:
             s_['title'] = f'Visual Station {m_[1]} — {m_[2]}'
     # extras "reveal_images": {"image2.png": "Visual Station 1"} — a document picture above the stations that labels a
