@@ -1,0 +1,43 @@
+{
+  "title": "AKI, Fluids & Electrolytes",
+  "retests": {
+    "76": {"stage": "R1", "from": "Day 19 Q6 — valvular LVOT obstruction"},
+    "77": {"stage": "R1", "from": "Day 19 Q11 — obstructed infracardiac TAPVC"},
+    "78": {"stage": "R2", "from": "Day 11 Q55 — ROP screening timing"},
+    "79": {"stage": "R2", "from": "Day 13 Q5 — BEARS sleep screen"},
+    "80": {"stage": "R2", "from": "Day 10 Q15 — neonatal postnatal natriuresis"},
+    "81": {"stage": "R2", "from": "Day 10 Q47 — GIR to dextrose concentration"},
+    "82": {"stage": "R2", "from": "Day 11 Q25 — ETROP Type 1 ROP"}
+  },
+  "station_images": {
+    "Visual Station 1": {"crop_top": 70},
+    "Visual Station 3": {"crop_top": 45},
+    "Visual Station 5": {"crop_top": 45}
+  },
+  "calc_items": [
+    {"title": "Holliday–Segar maintenance", "question": "A stable 16-kg child: calculate the routine 24-h maintenance volume using 100/50/20.",
+     "working": "1000 + (16−10)×50 = 1300 mL/day. This is a starting estimate, not an automatic prescription in AKI.", "trap": "",
+     "parts": [{"answer": 1300, "unit": "mL/day"}]},
+    {"title": "Urine-output staging", "question": "A 15-kg child makes 54 mL of urine in 12 h. Calculate the urine output in mL/kg/h and the KDIGO urine-output stage.",
+     "working": "54/(15×12) = 0.30 mL/kg/h. It is <0.5 for ≥12 h → stage 2; stage 3 requires <0.3 for ≥24 h or anuria ≥12 h.", "trap": "",
+     "parts": [{"label": "Urine output", "answer": 0.30, "unit": "mL/kg/h"}, {"label": "KDIGO stage", "answer": 2, "unit": ""}]},
+    {"title": "Fluid overload", "question": "Weight was 12.0 kg before illness and is now 13.5 kg. Calculate the % fluid overload relative to baseline.",
+     "working": "(13.5−12.0)/12.0×100 = 12.5%.", "trap": "",
+     "parts": [{"answer": 12.5, "unit": "%"}]},
+    {"title": "GIR repair", "question": "At 100 mL/kg/day, what dextrose percentage is required for a GIR of 7 mg/kg/min?",
+     "working": "Dextrose (%) = GIR×144/fluid mL/kg/day = 7×144/100 = 10.08 (approximately D10).", "trap": "",
+     "parts": [{"answer": 10.08, "unit": "%"}]},
+    {"title": "D10 mass repair (CALC-D14-C6)", "question": "For an 8-kg child, a hypothetical 5 mL/kg D10 bolus is ordered. Calculate the volume and the glucose mass separately.",
+     "working": "8×5 = 40 mL. D10 = 10 g/100 mL = 0.1 g/mL; 40×0.1 = 4 g. Exercise only; actual hypoglycaemia treatment varies by clinical setting/protocol.", "trap": "",
+     "parts": [{"label": "Volume", "answer": 40, "unit": "mL"}, {"label": "Glucose", "answer": 4.0, "unit": "g"}]},
+    {"title": "Fractional excretion of sodium", "question": "Urine Na 20 mmol/L, plasma Na 140 mmol/L, urine creatinine 50 mg/dL, plasma creatinine 2 mg/dL. Calculate the FeNa.",
+     "working": "FeNa = UNa×PCr/(PNa×UCr)×100 = 20×2/(140×50)×100 = 0.571%. Interpretation is context-dependent.", "trap": "",
+     "parts": [{"answer": 0.57, "unit": "%"}]},
+    {"title": "Arterial oxygen content repair (CALC-D18-C3)", "question": "Hb 15 g/dL, saturation 92%, ignoring dissolved O₂. Calculate the CaO₂.",
+     "working": "CaO₂ = 1.34×15×0.92 = 18.492 mL O₂/dL; saturation is 0.92, not 92.", "trap": "",
+     "parts": [{"answer": 18.49, "unit": "mL O₂/dL"}]},
+    {"title": "Guideline-specific hypertonic saline arithmetic", "question": "Under NICE NG29, a 2.7% saline 2 mL/kg bolus is considered for acute symptomatic hyponatraemia. What volume for an 18-kg child (maximum 100 mL)?",
+     "working": "2 mL/kg × 18 kg = 36 mL, below the 100-mL maximum. This is NICE-specific; local protocols may use 3% with different volumes.", "trap": "",
+     "parts": [{"answer": 36, "unit": "mL"}]}
+  ]
+}

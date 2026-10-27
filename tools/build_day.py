@@ -36,6 +36,8 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
+    (r'four-option explanations and examination pearls|^examiner key\b', 'mcq'), (r'^section [a-z] — examination traps', 'pearls'), (r'^red / amber notebook', 'plan'),   # Day 29
+    (r'^exam blueprint and study flow', 'overview'), (r'^clinical reference hierarchy|^five stage and six controls', 'references'),
     (r'^\d+\. questions\b|all-option explanations', 'mcq'), (r'learner route', 'overview'), (r'case stations', 'cases'),   # Day 24
     (r'error-notebook .*traceability', 'plan'), (r'source / evidence register|^iteration \d|^four stages and six controls|clinician sign-off', 'references'),
     (r'^75 base mcqs|^notebook retests\b|notebook retest answers|full a/b/c/d rationale', 'mcq'),          # Day 19
@@ -382,7 +384,7 @@ def build(day, docx, keep_order=False):
         if m_:
             s_['title'] = f'Case {m_[1]} — {m_[2]}'
     for s_ in pages.get('data', {}).get('sections', []):
-        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Station (\d+)\.\s+(.+)$', s_['title']) or (lambda m: m and (m[0], str('ABCDEFGH'.index(m[1]) + 1), m[2]))(re.match(r'^Station ([A-H])\s*[—–-]\s*(.+)$', s_['title'])) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
+        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Station (\d+)\.\s+(.+)$', s_['title']) or (lambda m: m and (m[0], str('ABCDEFGH'.index(m[1]) + 1), m[2]))(re.match(r'^Station ([A-H])\s*[—–-]\s*(.+)$', s_['title'])) or re.match(r'^Station (\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
         if m_:
             s_['title'] = f'Visual Station {m_[1]} — {m_[2]}'
     # extras "reveal_images": {"image2.png": "Visual Station 1"} — a document picture above the stations that labels a

@@ -188,7 +188,7 @@
       // Answer part of a case = first "Reasoning/Answer/Trap…" line or "What would you do next?" box onward.
       // Some documents put the whole case (patient, labs, question, reasoning) in one paragraph with line breaks,
       // so such paragraphs are split at the first answer line.
-      const ANS = /^(<strong>)?\s*(Structured reasoning|Reasoned answer|Examiner resolution|Reasoning|Answer|Trap identified|Management|Next step|Approach|Explanation)\b/i;
+      const ANS = /^(<strong>)?\s*(Structured reasoning|Reasoned answer|Examiner resolution|Examiner decision|Reasoning|Answer|Trap identified|Management|Next step|Approach|Explanation)\b/i;
       const bl = [];
       s.blocks.forEach(b => {
         if (b.t === 'p' && b.html.includes('<br>')) {

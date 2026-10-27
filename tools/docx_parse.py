@@ -335,7 +335,8 @@ def parse_mcqs(doc, parts, aliases=None):
     has_q = lambda els: sum(1 for el in els if el.tag == W + 'p' and (re.match(r'^Q?\d+\.\s*(\[|\S)', text(el)) or re.match(r'^Q\d+\s+\[', text(el))
                                                         or re.match(r'^Q\d+\s*[—–-]\s*Spaced revision\b', text(el), re.I)
                                                         or re.match(r'^[QR]\d+\s{2,}[^|\s]', text(el))
-                                                        or re.match(r'^[QR]\d+\s*\|', text(el)))) >= 5 and \
+                                                        or re.match(r'^[QR]\d+\s*\|', text(el))
+                                                        or re.match(r'^RT\d+\s+\[Retest\]\s*$', text(el)))) >= 5 and \
         any(el.tag == W + 'p' and re.match(r'^[A-D]\.\s', text(el)) for el in els)
     A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
     B, C = find(r'^SECTION B'), find(r'^SECTION C')
@@ -391,6 +392,16 @@ def parse_mcqs(doc, parts, aliases=None):
         mnb = cur is not None and re.match(r'^Notebook:\s*(Day\s*\d+\s*Q\d+)\s*-\s*([^|]+?)\s*\|.*?\bStage\b[^|]*?\b(R\d)\b', t)
         if mnb:     # Day 28: retest identity under the stem (tracked, not shown)
             cur['retest'], cur['retest_from'], cur['stage'] = True, f'{mnb[1]} — {mnb[2]}', mnb[3]
+            continue
+        mrt = re.match(r'^RT(\d+)\s+\[Retest\]\s*$', t)
+        if mrt:    # Day 29: heading "RT01  [Retest]", stem below (numbered after the base questions)
+            rbase = max([rbase] + [q_['num'] for q_ in qs if not q_['retest']])
+            cur = {'num': int(mrt[1]) + rbase, 'level': '', 'question': '', 'options': [], 'retest': True}
+            qs.append(cur)
+            continue
+        mof = cur is not None and re.match(r'^Original failed item:\s*ERR-\S+\s*[—–-]\s*(Day\s*\d+\s*Q\d+\s*[—–-]\s*.+)$', t)
+        if mof:    # Day 29: caption under the retest options (tracked, not shown)
+            cur['retest'], cur['retest_from'] = True, mof[1].strip()
             continue
         if m25:    # Day 25: "Q01 [DMD] stem" (topic tag dropped) / "Q76 stem" on one paragraph (single spaces)
             rbase = max(rbase, int(m25[1]))
@@ -517,6 +528,32 @@ def parse_mcqs(doc, parts, aliases=None):
             if e and e.get('q') and re.sub(r'\s+', ' ', t) == re.sub(r'\s+', ' ', e['q']['question']):   # Day 28: stem repeated under the header
                 continue
             if e and re.match(r'^Status:\s', t):
+                continue
+            m = re.match(r'^Q(\d+)\s*\|\s*Correct:\s*([A-D])\s*\|\s*(.+)$', t) or re.match(r'^(RT)(\d+)\s*\|\s*Correct:\s*([A-D])\s*\|', t)
+            if m:      # Day 29: "Q01  |  Correct: C  |  Basic" / "RT01  |  Correct: B  |  Retest"
+                rt_ = m[1] == 'RT'
+                n_ = int(m[2]) + rbase if rt_ else int(m[1])
+                e = {'ans': m[3] if rt_ else m[2], 'lev': None if rt_ else m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_), 'day29': True}
+                if rt_:
+                    e['retest'] = True
+                ex[n_] = e
+                continue
+            if e and e.get('day29') and re.match(r'^(Source anchor\b|Original failed-question identity:)', t):
+                continue       # Day 29: topic-level source pointer / retest identity (already read from the question caption)
+            m = e and e.get('day29') and e['q'] and re.match(r'^([A-D])\s+—\s+(.+)$', t)
+            if m:      # Day 29: "A — <option text>: reason" (no Correct/Incorrect label; the header letter is the key)
+                opt = e['q']['options']['ABCD'.index(m[1])]
+                if not m[2].startswith(opt + ':'):
+                    problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
+                    continue
+                reason = m[2][len(opt) + 1:].strip()
+                if m[1] == e['ans']:
+                    e['marked'].append(m[1])
+                    e['correct_reason'] = reason
+                else:
+                    e['labelled'] = True
+                    if not any(b in reason for b in BOILERPLATE):
+                        e['why_not'][m[1]] = reason
                 continue
             m = re.match(r'^RT(\d+)\s*•\s*([A-D])\s*•', t)     # Day 27: "RT01  •  C  •  NOTEBOOK  •  Retest" (source from extras)
             if m:
@@ -813,6 +850,8 @@ def parse_mcqs(doc, parts, aliases=None):
         if n in pearl_labels and e.get('pearl_in_block') != pearl_labels[n]:
             shifted.append(n)
         core = ' '.join(e['core']).strip() or e.get('correct_reason', '')   # no core paragraph: use the keyed option's "Correct:" reason
+        if e.get('day29') and pearl == core:
+            pearl = ''           # Day 29: "Exam pearl:" repeats the keyed option's reason word for word
         # why_not is keyed by option INDEX so it survives option shuffling; compose_explanation() adds letters.
         why_not = {'ABCD'.index(k): v for k, v in e['why_not'].items()}
         if e.get('disc'):
