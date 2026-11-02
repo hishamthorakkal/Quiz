@@ -1,0 +1,760 @@
+{
+ "why_not": {
+  "1": {
+   "A": "Epinephrine is indicated only if HR stays below 60/min despite effective ventilation and 60 seconds of compressions; here HR is 85 and no ventilation has been given, and the umbilical vein, not a peripheral vein, is the preferred route.",
+   "C": "Apnoea with HR below 100/min after initial steps mandates PPV within the first minute; blow-by oxygen cannot ventilate an apnoeic baby and further observation wastes critical time.",
+   "D": "Compressions start only when HR remains below 60/min after at least 30 seconds of ventilation that moves the chest; HR 85 with no ventilation yet does not qualify."
+  },
+  "2": {
+   "A": "Neonatal bradycardia is almost always hypoxic sinus bradycardia, not a shockable rhythm, and cardioversion has no place in the NRP algorithm.",
+   "C": "Thirty seconds of effective PPV with chest rise has already been given; persistent HR below 60/min is the defined trigger to add compressions, so more PPV alone delays circulatory support.",
+   "D": "Compressions come first; epinephrine is given only if HR stays below 60/min after 60 seconds of coordinated compressions with effective ventilation."
+  },
+  "3": {
+   "A": "With a poor seal, raising pressure mainly increases leak; MR SOPA corrects mask seal and head position before pressure is increased.",
+   "B": "An oral airway is an occasional adjunct, not the first correction; a leaking mask is fixed by reapplying it and repositioning the head.",
+   "C": "An alternative airway is indicated only after the simple corrective steps (mask, reposition, suction, open mouth, pressure) fail; a fixable mask leak should be corrected first."
+  },
+  "4": {
+   "A": "Starting in air is right, but skin colour is an unreliable guide to oxygenation; NRP titrates oxygen to target preductal SpO2 from a right-hand oximeter.",
+   "C": "21-30% oxygen is the starting range for infants below 35 weeks; a 39-week baby should start in room air (21%) to avoid unnecessary hyperoxia.",
+   "D": "Resuscitating term infants with 100% oxygen is associated with higher mortality and oxidative injury than air; 100% is reserved for when chest compressions begin."
+  },
+  "5": {
+   "A": "The umbilical artery is used for blood pressure monitoring and sampling, not for resuscitation drugs or volume, and it is harder to place quickly.",
+   "B": "IO access is an acceptable alternative when a UVC cannot be placed, but it is not preferred over the umbilical vein in the delivery room.",
+   "C": "Femoral arterial access is technically difficult, risks limb ischaemia and is not a route for neonatal resuscitation drugs."
+  },
+  "6": {
+   "A": "Waiting for FiO2 0.50 delays rescue surfactant; European consensus advises treatment when FiO2 exceeds about 0.30 on CPAP of at least 6 cm H2O with worsening RDS.",
+   "B": "A spontaneously breathing infant on CPAP does not need intubation and ventilation for surfactant; LISA/MIST avoids positive-pressure ventilation and reduces BPD or death.",
+   "D": "Raising CPAP may aid recruitment, but FiO2 0.38 on 6 cm H2O with worsening RDS already meets rescue surfactant criteria; deferring it increases CPAP failure and intubation."
+  },
+  "7": {
+   "B": "A 26-week infant already intubated with classic RDS gains most from surfactant; extubating without it risks rapid CPAP failure and reintubation.",
+   "C": "Once intubated with RDS, surfactant should be given early; waiting for FiO2 above 0.50 increases air leak, ventilator days and BPD.",
+   "D": "Caffeine treats apnoea of prematurity and aids extubation but does nothing for alveolar surface tension; it cannot replace surfactant."
+  },
+  "8": {
+   "A": "Surfactant excess is not a disease mechanism, and the film shows low lung volumes, not hyperinflation.",
+   "B": "Ductal closure reduces pulmonary blood flow; congestion comes from a patent duct shunting left to right and does not give low-volume reticulogranular lungs with air bronchograms.",
+   "D": "Aspiration gives patchy, often asymmetric infiltrates with air trapping; this film is diffuse, symmetrical and low-volume."
+  },
+  "9": {
+   "A": "Meconium aspiration needs meconium-stained liquor, usually in term or post-term babies, and gives coarse patchy opacities rather than fissural fluid.",
+   "C": "Diaphragmatic hernia shows bowel loops in a hemithorax with mediastinal shift and a scaphoid abdomen, not bilateral fissural fluid.",
+   "D": "Surfactant-deficiency RDS gives low lung volumes with ground-glass opacity and air bronchograms; hyperinflation with fissural fluid after elective caesarean favours retained lung fluid."
+  },
+  "10": {
+   "B": "FiO2 is a key marker but depends on CPAP level and recruitment; escalation decisions combine it with work of breathing, gas exchange and imaging.",
+   "C": "Respiratory rate is non-specific and varies with state, temperature and handling; it cannot alone define CPAP failure.",
+   "D": "A single gas can mislead through sampling error or transient fluctuation; the trend together with clinical signs guides escalation."
+  },
+  "11": {
+   "A": "Tube displacement or blockage is part of DOPE and must be checked, but asymmetric transillumination indicates intrapleural air, pointing to pneumothorax.",
+   "C": "Pulmonary haemorrhage presents with pink frothy secretions from the tube and diffuse opacification, not asymmetric transillumination.",
+   "D": "Atelectasis may reduce breath sounds but does not increase transillumination on one side and rarely causes such abrupt collapse."
+  },
+  "12": {
+   "A": "Right main bronchus intubation reduces left-sided air entry with preserved airway pressure; it does not cause loss of circuit pressure with a disconnection alarm.",
+   "B": "Tube obstruction loses ETCO2 but typically triggers high-pressure or low-volume alarms with rising pressure, not loss of airway pressure and a disconnection alarm.",
+   "C": "Pneumothorax causes desaturation, asymmetry and haemodynamic compromise; it does not drop circuit pressure or trigger a disconnection alarm."
+  },
+  "13": {
+   "B": "Metabolic alkalosis raises pH; this infant is acidaemic and a bicarbonate of 27 reflects acute renal buffering of the raised CO2.",
+   "C": "Respiratory alkalosis requires low PaCO2 with alkalaemia; here PaCO2 is 65 mmHg and pH 7.24.",
+   "D": "Metabolic acidosis needs a low bicarbonate with compensatory hypocapnia; here bicarbonate is high-normal and PaCO2 is raised."
+  },
+  "14": {
+   "A": "Jensen grade 3 requires invasive mechanical ventilation at 36 weeks PMA.",
+   "B": "Jensen grade 2 requires nasal cannula above 2 L/min or non-invasive positive pressure such as CPAP or NIPPV; low-flow cannula alone does not meet it.",
+   "D": "Under Jensen 2019 any nasal cannula support at 36 weeks PMA defines BPD; low flow sets the grade, it does not exclude the diagnosis."
+  },
+  "15": {
+   "A": "As compliance improves the same pressure delivers larger volumes; raising the volume target would directly worsen volutrauma.",
+   "C": "Holding the same PIP while delivered volume rises is exactly how volutrauma happens; pressure must fall as compliance improves.",
+   "D": "PEEP is set for recruitment and oxygenation; raising it after surfactant, when lungs are more compliant, risks overdistension and impaired venous return."
+  },
+  "16": {
+   "A": "Oxygen may reduce hypoxic episodes but does not treat the immature respiratory drive that causes apnoea of prematurity.",
+   "B": "CPAP helps mainly obstructive and mixed apnoea and is an adjunct when caffeine fails, not routine maintenance therapy for central apnoea.",
+   "D": "Doxapram has limited evidence and concerning adverse effects such as hypertension and GI and neurological effects; it is not first-line or long-term therapy."
+  },
+  "17": {
+   "A": "Humidity helps after admission, but during stabilisation an occlusive polyethylene wrap under radiant warming is the proven measure for very preterm infants.",
+   "C": "Blankets and a cap reduce conductive and radiant loss but are far less effective than an occlusive wrap against evaporative loss through immature ELBW skin.",
+   "D": "Skin-to-skin care suits stable infants; delaying radiant warmth in an unstable ELBW infant worsens hypothermia and its morbidity."
+  },
+  "18": {
+   "A": "Raising caffeine without evaluating the infant risks missing sepsis or NEC; new apnoea with lethargy and temperature instability needs prompt workup first.",
+   "B": "Apnoea of prematurity is a diagnosis of exclusion; new events with systemic signs after a period of improvement suggest a secondary cause.",
+   "D": "Reflux is rarely a proven cause of apnoea, and lethargy with temperature instability point to systemic illness such as sepsis."
+  },
+  "19": {
+   "A": "Chronological age alone ignores birth gestation; ROP screening timing combines postnatal age with postmenstrual age.",
+   "B": "PMA alone is insufficient; protocols use a postnatal-age criterion (for example 4 weeks, earlier in Indian guidance) together with a PMA threshold such as 31 weeks.",
+   "D": "Corrected age after term is used for growth and developmental follow-up, not for ROP screening, which begins well before term."
+  },
+  "20": {
+   "A": "Bradycardia confined to feeds suggests vagal or suck-swallow-breathe incoordination rather than central apnoea; extra caffeine does not address it.",
+   "B": "Evidence does not support acid suppression for presumed reflux bradycardia, and it carries risks such as infection and NEC; feeding assessment comes first.",
+   "C": "Monitoring alone misses a treatable feeding problem and ongoing aspiration risk; feed-related events need direct evaluation."
+  },
+  "21": {
+   "A": "LP and imaging must not delay antibiotics in an ill neonate; give the first dose once blood culture is drawn and do LP when stable.",
+   "B": "Oral antibiotics give unreliable levels in a sick neonate; suspected sepsis needs IV therapy such as ampicillin with gentamicin, adding cefotaxime if meningitis is suspected.",
+   "C": "CRP is non-specific and lags behind infection; waiting for serial results delays treatment in an ill-appearing febrile neonate."
+  },
+  "22": {
+   "A": "A sterile repeat blood culture does not exclude meningitis; seizures and a bulging fontanelle demand CSF analysis to set drug dosing and duration.",
+   "C": "MRI may later define complications, but meningitis is diagnosed on CSF; imaging should not substitute for LP.",
+   "D": "Meningitis needs meningitic dosing, a longer course (typically 14 days or more for GBS) and follow-up; treating as bacteraemia risks undertreatment."
+  },
+  "23": {
+   "B": "Treating every maternal-fever exposure categorically gives many well infants unnecessary antibiotics; AAP supports risk calculators or enhanced serial observation instead.",
+   "C": "A single CRP has poor negative predictive value early in sepsis and should not be the main basis for ending observation.",
+   "D": "Fixed observation without quantified risk and structured examinations misses the evolving clinical picture that should drive decisions."
+  },
+  "24": {
+   "A": "RBC-to-WBC correction formulas are unreliable in neonates and can misclassify meningitis; the corrected count alone should not decide management.",
+   "B": "Prior antibiotics do reduce CSF culture yield, and a traumatic tap distorts the cell count; neither should be relied on alone.",
+   "D": "Traumatic CSF still yields useful culture, glucose and protein data; it should be interpreted cautiously, not discarded."
+  },
+  "25": {
+   "A": "Continuing full therapy regardless of organism ignores stewardship; a single skin commensal in an improving infant often represents contamination.",
+   "B": "Stopping without reassessment could miss true infection, such as CoNS in a line-dependent preterm; clinical review and repeat cultures guide the decision.",
+   "D": "Reflexively adding vancomycin for any single skin-flora isolate promotes resistance and toxicity; it is justified only when true infection is likely."
+  },
+  "26": {
+   "B": "AAP 2022 defines escalation of care at 2 mg/dL below the exchange threshold, not 1 mg/dL; waiting longer shortens time to prepare for exchange.",
+   "C": "At the exchange threshold, exchange transfusion itself is indicated; escalation starts earlier, at 2 mg/dL below it.",
+   "D": "Escalation is defined relative to the exchange threshold, not the phototherapy threshold."
+  },
+  "27": {
+   "A": "Direct bilirubin is not plotted against phototherapy thresholds; it is used to detect cholestasis.",
+   "B": "There is no role for averaging values; AAP thresholds are applied to total serum bilirubin.",
+   "C": "AAP 2022 advises not subtracting the direct fraction; using indirect bilirubin would under-treat."
+  },
+  "28": {
+   "A": "Spherocytosis is also DAT-negative, but jaundice precipitated by oxidant exposure is the hallmark of G6PD deficiency.",
+   "B": "Pyruvate kinase deficiency causes non-immune haemolysis but is not precipitated by oxidant exposure.",
+   "D": "Elliptocytosis is usually mild and is not linked to oxidant-triggered haemolysis."
+  },
+  "29": {
+   "A": "A rise above about 0.2 mg/dL/h in the first 24 hours suggests haemolysis; it is not physiological, and waiting 24 hours is unsafe.",
+   "C": "Exchange decisions need TSB plotted against hour-specific, risk-adjusted thresholds; rate of rise alone does not justify exchange.",
+   "D": "When treatment is being considered, TSB must be measured; transcutaneous values are unreliable near treatment thresholds and during phototherapy."
+  },
+  "30": {
+   "A": "IV fluids are not routinely needed when the infant is not dehydrated; improving enteral intake is preferred.",
+   "B": "Prolonged interruptions reduce intensive phototherapy effectiveness; brief breaks for feeds are fine, but extended stops slow bilirubin decline.",
+   "C": "Supplementation may help, but only after assessing breastfeeding and hydration; routine formula irrespective of assessment is not recommended."
+  },
+  "31": {
+   "A": "Cooling benefit is time-critical; waiting for aEEG or MRI confirmation risks missing the 6-hour window.",
+   "B": "Passive cooling without core temperature monitoring risks overcooling; therapeutic hypothermia must be servo-controlled and protocolised.",
+   "C": "Benefit of cooling started after 6 hours is uncertain; an eligible infant at 3 hours should start now."
+  },
+  "32": {
+   "B": "Treating non-epileptic movements exposes the infant to sedating, potentially neurotoxic drugs without benefit.",
+   "C": "aEEG can miss brief, focal or low-amplitude seizures; it cannot replace continuous EEG for seizure exclusion.",
+   "D": "HIE infants have high seizure risk over the first days; one non-epileptic event does not justify stopping monitoring."
+  },
+  "33": {
+   "A": "Many neonatal seizures are electrographic-only, especially during cooling; they add to brain injury and need treatment.",
+   "B": "Higher seizure burden is associated with worse outcome; electrographic seizures should be treated promptly, not after an arbitrary duration.",
+   "C": "Treatment should not wait for MRI; seizures are treated immediately while imaging is planned."
+  },
+  "34": {
+   "A": "Watershed injury affects parasagittal cortex and white matter after prolonged partial asphyxia, typically sparing the deep grey nuclei.",
+   "C": "Kernicterus targets the globus pallidus and subthalamic nuclei, usually without thalamic diffusion restriction; it does not explain this HIE pattern.",
+   "D": "Hypoglycaemic injury typically involves parieto-occipital cortex and white matter, not the basal ganglia and thalami."
+  },
+  "35": {
+   "B": "Sinus bradycardia is expected during hypothermia; atropine is not indicated when perfusion is preserved.",
+   "C": "A lower heart rate during cooling is physiological; stopping treatment would forfeit neuroprotection.",
+   "D": "Rapid rewarming can provoke seizures and hypotension; with preserved perfusion, cooling should continue with controlled rewarming at the protocol time."
+  },
+  "36": {
+   "A": "Pyloric stenosis presents at 2-8 weeks with projectile non-bilious vomiting, not bloody stool or pneumatosis.",
+   "C": "Lactose intolerance does not cause bloody stool, distension or pneumatosis intestinalis.",
+   "D": "Reflux does not produce pneumatosis, bloody stool or abdominal distension."
+  },
+  "37": {
+   "A": "Free air indicates perforation, which needs surgical management; medical treatment alone is insufficient.",
+   "B": "Needle decompression may temporarily relieve tense pneumoperitoneum, but it is not definitive treatment.",
+   "D": "Feeds are withheld in perforated NEC; restarting enteral feeds would be dangerous."
+  },
+  "38": {
+   "A": "Unfortified human milk cannot meet VLBW protein, calcium and phosphate needs even at higher volumes.",
+   "B": "Maternal milk protects against NEC and sepsis; it should be fortified, not replaced by formula.",
+   "C": "Carbohydrate alone adds fat mass without lean growth; protein and minerals are the main deficits."
+  },
+  "39": {
+   "A": "6.0 mg/kg/min would require about 86 mL/kg/day of 10% dextrose; it underestimates the GIR.",
+   "C": "12.0 mg/kg/min would require about 173 mL/kg/day of 10% dextrose; it overestimates the GIR.",
+   "D": "4.2 mg/kg/min corresponds to about 60 mL/kg/day of 10% dextrose, half the given rate."
+  },
+  "40": {
+   "A": "Excess dextrose promotes hepatic steatosis and worsens liver injury; it does not address cholestasis.",
+   "B": "Prolonged minimal enteral feeding perpetuates PN dependence and cholestasis; feeds should advance when tolerated.",
+   "C": "Soybean-oil lipid is linked to PN-associated liver disease; increasing it can worsen cholestasis."
+  },
+  "41": {
+   "A": "Ductal diameter alone does not define significance; flow pattern, left heart volume loading and clinical status matter.",
+   "B": "Prophylactic treatment based on gestation alone has not improved long-term outcomes; treatment should be selective.",
+   "D": "A murmur is not an indication for ligation; surgery is reserved for persistent significant PDA after medical treatment fails or is contraindicated."
+  },
+  "42": {
+   "B": "Parallel circulation such as transposition causes cyanosis that does not depend on right-to-left ductal shunting; a higher preductal saturation with right-to-left ductal flow points to raised pulmonary vascular resistance.",
+   "C": "A left-to-right shunt causes pulmonary overcirculation, not hypoxaemia with right-to-left ductal flow.",
+   "D": "Lung disease without extrapulmonary shunting does not produce a pre-postductal saturation difference."
+  },
+  "43": {
+   "A": "Hyperventilation to low PaCO2 reduces cerebral blood flow, risks periventricular leukomalacia and hearing loss, and causes volutrauma; it is no longer recommended.",
+   "B": "Sustained alkalosis with bicarbonate has no proven benefit and carries metabolic and neurological risks.",
+   "D": "Fixed 100% oxygen causes oxidative injury and can worsen pulmonary vasoconstriction; oxygen should be titrated to targets."
+  },
+  "44": {
+   "B": "Oxygenation index grades severity, but LV function and pulmonary venous drainage determine whether vasodilators are safe.",
+   "C": "RV pressure is important, but excluding pulmonary venous obstruction such as obstructed TAPVR is essential before vasodilator therapy.",
+   "D": "Ductal shunt direction helps, but LV dysfunction or venous obstruction would make pulmonary vasodilators harmful."
+  },
+  "45": {
+   "A": "Right-to-left ductal shunting does not cause diastolic flow reversal in the descending aorta.",
+   "B": "Normal closure abolishes ductal shunting and diastolic reversal.",
+   "D": "Tricuspid regurgitation does not alter descending aortic diastolic flow."
+  },
+  "46": {
+   "A": "GH deficiency can cause hypoglycaemia, but ketones and free fatty acids are typically raised, not suppressed.",
+   "B": "Cortisol deficiency usually allows lipolysis and ketogenesis; suppressed fatty acids and ketones point to insulin action.",
+   "D": "Fatty-acid oxidation defects give low ketones but with raised free fatty acids, not suppressed ones."
+  },
+  "47": {
+   "A": "A GIR of 13 mg/kg/min strongly suggests hyperinsulinism; deferring evaluation risks recurrent neuroglycopenia.",
+   "B": "Abruptly cutting glucose provokes dangerous hypoglycaemia; any diagnostic fast must be controlled and supervised.",
+   "C": "A critical sample is needed before treatment to confirm hyperinsulinism, and diazoxide contraindications such as fluid overload or pulmonary hypertension must be considered."
+  },
+  "48": {
+   "A": "Respiratory acidosis requires a raised PaCO2; here PaCO2 is low at 28 mmHg.",
+   "B": "Metabolic alkalosis raises pH and bicarbonate; here both are low.",
+   "D": "Respiratory alkalosis requires an alkaline pH; this infant is acidaemic with a low bicarbonate."
+  },
+  "49": {
+   "A": "Symptomatic hypocalcaemia with seizures needs urgent correction; waiting for a repeat EEG delays treatment.",
+   "C": "Bicarbonate does not replace calcium and can lower ionised calcium further by raising pH.",
+   "D": "Oral calcium is too slow for active seizures; IV calcium gluconate with ECG monitoring is needed."
+  },
+  "50": {
+   "A": "Transitional thresholds apply to the first 48-72 hours; at day 5 persistent low glucose needs older-infant targets and evaluation.",
+   "B": "Persistent hypoglycaemia needs evaluation regardless of symptoms; neurological injury can occur without obvious signs.",
+   "C": "The critical sample must be drawn while the infant is hypoglycaemic, typically during a supervised fast; samples taken at normal glucose are uninterpretable."
+  },
+  "51": {
+   "A": "Under ETROP, plus disease in zone II upgrades stage 2 to type 1; observation is reserved for type 2 disease without plus.",
+   "B": "The stem states plus disease is present, so the 'absence of plus' condition for type 2 is not met; zone II stage 2 with plus is type 1.",
+   "C": "Aggressive ROP (A-ROP) is a distinct phenotype of rapidly progressive posterior disease with flat neovascularisation; plus alone does not define it, and conventional staging here gives type 1."
+  },
+  "52": {
+   "A": "A self-limiting respiratory condition of term or late-preterm infants caused by delayed lung fluid clearance; it is unrelated to intraventricular haemorrhage.",
+   "C": "Congenital cataract is a developmental lens disorder (infection, genetic, metabolic), not a sequela of germinal matrix haemorrhage.",
+   "D": "Pyloric stenosis is a gastric outlet hypertrophy presenting at 2-8 weeks; it has no relationship to IVH and needs no targeted surveillance here."
+  },
+  "53": {
+   "A": "Diffuse noncystic white-matter injury lacks cyst formation and tissue loss by definition; the stem describes cystic evolution.",
+   "B": "Porencephaly follows a unilateral periventricular haemorrhagic infarction communicating with the ventricle; the stem describes bilateral cystic white-matter injury, typical of PVL.",
+   "C": "Basal ganglia-thalamic injury follows acute profound asphyxia in term infants; this preterm infant has periventricular white-matter cysts."
+  },
+  "54": {
+   "A": "This is chronological age; it ignores the 12 weeks of prematurity (40 minus 28) that must be subtracted.",
+   "C": "Birth at 28 weeks is 12 weeks early, not 8; 12 minus 12 gives a corrected age of 0 weeks.",
+   "D": "Birth at 28 weeks is 12 weeks early, not 4; the infant is now at 40 weeks postmenstrual age, i.e. term-equivalent, corrected age 0."
+  },
+  "55": {
+   "B": "ROP review intervals range from under a week to 2-3 weeks depending on zone, stage and plus; a fixed weekly schedule ignores this risk stratification.",
+   "C": "PMA guides when screening starts and when it can end, but the interval between examinations is set by the findings of the last examination.",
+   "D": "Stopping oxygen does not end ROP risk; surveillance continues until retinal vascularisation is complete or regression criteria are met."
+  },
+  "56": {
+   "B": "A normal discharge examination does not exclude later cerebral palsy or cognitive deficits; severe IVH itself mandates structured follow-up.",
+   "C": "Severe IVH is already a high-risk indication; follow-up should not depend on a further imaging lesion, and imaging does not fully predict outcome.",
+   "D": "Routine primary-care checks lack standardised neurodevelopmental assessments; severe IVH warrants a structured high-risk programme to enable early intervention."
+  },
+  "57": {
+   "A": "Cranial ultrasound shows structural lesions but provides no information on electrical seizure activity.",
+   "B": "Hyponatraemia can provoke seizures, but a sodium level cannot detect ongoing electrographic seizures, which are frequent after medication.",
+   "C": "After antiseizure drugs many neonatal seizures become electrographic only (electroclinical uncoupling), so observation alone misses most of the seizure burden."
+  },
+  "58": {
+   "A": "Raising pressure and oxygen before checking for displacement, obstruction, pneumothorax or equipment failure delays the real fix and risks barotrauma.",
+   "B": "A radiograph delays restoring ventilation; sudden loss of chest movement after repositioning suggests tube displacement or obstruction needing immediate bedside correction.",
+   "D": "Paralysing an infant with a possibly displaced or blocked tube removes spontaneous breathing and can be catastrophic; tube position must be confirmed first."
+  },
+  "59": {
+   "A": "Bilious aspirates with abdominal wall discolouration are not benign residuals; they signal possible NEC or obstruction requiring feeds to be stopped.",
+   "C": "Continuing feeds in suspected NEC worsens bowel injury; feeds should be stopped while imaging and assessment proceed.",
+   "D": "Changing the feeding mode does not address possible NEC or obstruction; bilious output with discolouration requires stopping feeds and urgent evaluation."
+  },
+  "60": {
+   "B": "Polycythaemia can contribute to PPHN but is identified on a haematocrit and does not mimic it anatomically; the essential exclusion is structural heart disease on echocardiography.",
+   "C": "Reflux does not cause persistent cyanosis unresponsive to oxygen and is not a differential of PPHN.",
+   "D": "Vitamin D deficiency does not produce neonatal cyanosis or pulmonary hypertension physiology."
+  },
+  "61": {
+   "A": "Familial short stature has normal growth velocity and height within the midparental target range; a velocity of 2 cm/year and height below -3 SDS point to pathology.",
+   "C": "GH stimulation testing comes only after excluding hypothyroidism, systemic disease, malnutrition and Turner syndrome, and after bone age assessment.",
+   "D": "Delayed bone age also occurs with GH deficiency, hypothyroidism and chronic disease; constitutional delay requires normal growth velocity, which is absent here."
+  },
+  "62": {
+   "B": "GH deficiency shows falling growth velocity with crossing of centiles; here velocity is normal.",
+   "C": "Turner syndrome must be considered in any short girl, but normal velocity with a family history of late puberty fits constitutional delay far better.",
+   "D": "Hypothyroidism causes falling growth velocity, often with weight gain; normal velocity argues against it."
+  },
+  "63": {
+   "A": "Constitutional delay shows normal growth velocity after early childhood and usually proportionate weight, not slowing growth with relative overweight.",
+   "B": "Systemic illness and undernutrition usually reduce weight more than height, giving low weight-for-height, the opposite of this stem.",
+   "C": "Skeletal dysplasia presents with disproportionate body segments, which the stem does not describe; preserved weight with slowing growth points to endocrine causes."
+  },
+  "64": {
+   "A": "Midparental height estimates the genetic target but cannot by itself show whether the child is currently growing abnormally.",
+   "B": "A normal appetite does not exclude endocrine or systemic disease and does not measure growth.",
+   "D": "A single head circumference gives no information about the trend of linear growth."
+  },
+  "65": {
+   "A": "Regression requires etiologic assessment (EEG, metabolic and genetic causes, Landau-Kleffner, Rett) alongside therapy; deferring it risks missing treatable disease.",
+   "B": "Hearing testing is part of the work-up but does not explain loss of social engagement; regression needs a full urgent evaluation.",
+   "D": "Loss of acquired skills is a red flag; watchful waiting is inappropriate and delays diagnosis of progressive or treatable disorders."
+  },
+  "66": {
+   "B": "Autism screening without hearing and global developmental assessment may miss hearing loss or broader delay that can mimic or coexist with autism.",
+   "C": "Hearing loss can delay language but does not usually abolish joint attention and pointing; social communication needs assessment too.",
+   "D": "Starting therapy alone delays diagnosis; reduced joint attention requires autism and developmental evaluation along with audiology."
+  },
+  "67": {
+   "A": "Persistent fisting and scissoring indicate abnormal increased tone, so this is not a benign isolated delay with normal tone.",
+   "B": "Peripheral neuromuscular disease causes hypotonia with reduced reflexes, not scissoring and fisting, which are upper motor neurone signs.",
+   "C": "Rickets causes bowing, hypotonia and delayed milestones but not spastic scissoring or persistent cortical thumb posture."
+  },
+  "68": {
+   "B": "Excessive daytime sleepiness is the 'E' in BEARS, so it is part of the tool.",
+   "C": "Snoring is the 'S' in BEARS, screening for sleep-disordered breathing.",
+   "D": "Bedtime problems is the 'B' in BEARS, its first domain."
+  },
+  "69": {
+   "B": "F-100 is the catch-up feed for the rehabilitation phase; high energy and protein during stabilisation risk refeeding syndrome and heart failure.",
+   "C": "RUTF is used once the child is stable with appetite returning; medically unstable children start on F-75.",
+   "D": "Children with SAM tolerate IV fluids poorly and risk overload and heart failure; IV fluids are reserved for shock, with enteral F-75 as the main approach."
+  },
+  "70": {
+   "A": "This equals 12 x 130 divided by 10; the daily total of 1560 mL must be divided by 8 feeds, not 10.",
+   "B": "This is the per-kilogram daily volume, not the per-feed volume for a 12-kg child.",
+   "D": "This does not match the calculation; 1560 mL divided by 8 feeds is 195 mL."
+  },
+  "71": {
+   "A": "Coeliac disease is triggered by gluten, not milk, and causes chronic enteropathy rather than immediate urticaria and wheeze.",
+   "B": "Lactase deficiency causes osmotic diarrhoea and bloating, not urticaria or wheeze; congenital lactase deficiency is also very rare.",
+   "D": "FPIES causes delayed repetitive vomiting 1-4 hours after ingestion without urticaria or wheeze; immediate skin and respiratory signs indicate IgE-mediated allergy."
+  },
+  "72": {
+   "B": "A fissure is diagnosed on perianal inspection; a normal examination makes it unlikely here.",
+   "C": "Intussusception presents with episodic pain, vomiting, lethargy or a mass; a thriving, well infant with streaks of blood does not fit.",
+   "D": "Infectious colitis usually causes fever, diarrhoea and systemic illness, all absent in this well infant."
+  },
+  "73": {
+   "A": "B12 deficiency causes megaloblastic anaemia and neuropathy, not night blindness or conjunctival xerosis.",
+   "C": "Vitamin C deficiency causes scurvy with gum bleeding, perifollicular haemorrhages and bone pain, not xerophthalmia.",
+   "D": "Vitamin D deficiency causes rickets and hypocalcaemia; it does not affect rhodopsin or the conjunctival epithelium."
+  },
+  "74": {
+   "A": "Hypophosphatasia is defined by low ALP, which contradicts the raised ALP here.",
+   "C": "Hypophosphatasia has low ALP and osteogenesis imperfecta usually has normal mineral biochemistry with fractures; neither fits hypophosphataemic rickets with high ALP.",
+   "D": "Scurvy causes subperiosteal bleeding without hypophosphataemia, and hypothyroidism causes growth delay; neither explains rickets with low phosphate."
+  },
+  "75": {
+   "B": "B12 is a cofactor for methionine synthase, so deficiency raises homocysteine rather than lowering it.",
+   "C": "Orotic acid relates to urea-cycle defects and hereditary orotic aciduria, not B12 deficiency.",
+   "D": "Ferritin reflects iron stores and inflammation; an isolated rise does not support B12 deficiency."
+  },
+  "76": {
+   "A": "Turner syndrome shows lymphoedema, webbed neck and left-sided lesions such as coarctation or bicuspid valve, not AVSD with marked hypotonia.",
+   "C": "Trisomy 18 shows clenched overlapping fingers, rocker-bottom feet and VSD or polyvalvular disease; hypotonia, single crease and AVSD are classic for trisomy 21.",
+   "D": "22q11.2 deletion is linked to conotruncal defects, hypocalcaemia and palatal anomalies rather than AVSD."
+  },
+  "77": {
+   "A": "Trisomy 13 shows holoprosencephaly, cleft lip/palate, polydactyly and scalp defects; the 'Greek warrior helmet' face is specific to 4p deletion.",
+   "B": "Cri-du-chat (5p deletion) presents with a high-pitched cat-like cry, microcephaly and round face, not a 'Greek warrior helmet' profile.",
+   "C": "22q11.2 deletion presents with conotruncal heart defects, hypocalcaemia and immunodeficiency, not this facial pattern with severe growth failure."
+  },
+  "78": {
+   "A": "7q11.23 deletion is Williams syndrome, with supravalvular aortic stenosis, hypercalcaemia and elfin facies, the opposite calcium disturbance.",
+   "C": "Fragile X causes intellectual disability, macro-orchidism and a long face, not neonatal cleft palate, conotruncal defects and hypocalcaemia.",
+   "D": "15q11-q13 imprinting defects cause Prader-Willi or Angelman syndromes, which do not feature conotruncal heart disease or hypocalcaemia."
+  },
+  "79": {
+   "B": "VLCAD typically elevates C14:1 and often causes cardiomyopathy or rhabdomyolysis; C8 elevation is characteristic of MCAD.",
+   "C": "Propionic acidaemia raises C3 and causes ketoacidosis with hyperammonaemia, not hypoketotic hypoglycaemia with high C8.",
+   "D": "MSUD raises branched-chain amino acids with ketoacidosis and maple-syrup odour, not hypoketotic hypoglycaemia with C8 elevation."
+  },
+  "80": {
+   "A": "MMA causes metabolic acidosis with ketosis and high C3; this stem has respiratory alkalosis and no acidosis.",
+   "B": "MSUD presents with encephalopathy, ketoacidosis and raised leucine, with little hyperammonaemia and no orotic aciduria.",
+   "D": "CPS1 deficiency gives similar hyperammonaemia but low or normal orotic acid, because carbamoyl phosphate is not produced in excess."
+  },
+  "81": {
+   "A": "HFI needs fructose, sucrose or sorbitol exposure; milk lactose does not trigger it, and the option itself specifies no fructose exposure.",
+   "B": "MCAD presents with fasting hypoketotic hypoglycaemia, not jaundice, coagulopathy and reducing substances after milk feeds.",
+   "C": "Galactokinase deficiency mainly causes cataracts without vomiting, liver failure or coagulopathy."
+  },
+  "82": {
+   "A": "Galactosemia presents after milk (lactose) feeds; this child was well on exclusive milk and became ill only after fruit juice.",
+   "B": "Pompe disease (GSD II) is a lysosomal disorder with cardiomyopathy and hypotonia; it causes neither hypoglycaemia nor fruit-related symptoms.",
+   "C": "Galactokinase deficiency mainly causes cataracts after galactose exposure, not vomiting, hypoglycaemia or lactic acidosis after fruit."
+  },
+  "83": {
+   "A": "Methylmalonic acidaemia shares raised C3, ketoacidosis and hyperammonaemia; separating it needs urine organic acids showing methylmalonic acid, which the stem does not provide.",
+   "B": "OTC deficiency causes hyperammonaemia with respiratory alkalosis, no ketoacidosis and normal C3.",
+   "D": "MSUD causes ketoacidosis with raised branched-chain amino acids and alloisoleucine, not raised C3 with marked hyperammonaemia."
+  },
+  "84": {
+   "A": "There is no tachyarrhythmia; differential limb pressures and weak femoral pulses as the duct closes point to duct-dependent systemic circulation.",
+   "C": "Diuretics do not restore lower-body perfusion; reopening the duct with PGE1 is the life-saving step.",
+   "D": "Closing the duct would remove the remaining systemic blood flow in critical coarctation and worsen shock."
+  },
+  "85": {
+   "B": "Pulmonary valvotomy treats pulmonary valve stenosis; d-TGA cyanosis is due to parallel circulations with inadequate mixing.",
+   "C": "Coarctation stenting relieves aortic arch obstruction and does not improve atrial mixing.",
+   "D": "Closing the duct removes a mixing site and would worsen cyanosis in d-TGA."
+  },
+  "86": {
+   "B": "PGE1 does not relieve pulmonary venous obstruction and may worsen pulmonary oedema by increasing pulmonary flow; it is not definitive.",
+   "C": "In infracardiac TAPVC the obstruction lies in the descending vertical vein or ductus venosus, so atrial septostomy does not relieve it.",
+   "D": "iNO can increase pulmonary blood flow and worsen oedema against a fixed venous obstruction; only surgical repair addresses the cause."
+  },
+  "87": {
+   "A": "Plastic bronchitis causes airway casts with cough and respiratory distress, not hypoalbuminaemia with raised faecal alpha-1 antitrypsin.",
+   "C": "Fontan liver disease causes fibrosis and portal hypertension; it does not explain enteric protein loss shown by faecal alpha-1 antitrypsin.",
+   "D": "Chylothorax causes a lymphocyte-rich pleural effusion; it does not raise faecal alpha-1 antitrypsin clearance."
+  },
+  "88": {
+   "B": "Sinus venosus defects lie at the caval-atrial junction outside the fossa ovalis and are associated with anomalous pulmonary veins.",
+   "C": "Primum defects sit low at AV valve level near the crux, often with a cleft mitral valve, not centrally at the fossa ovalis.",
+   "D": "A PFO has no significant shunt, so it would not cause RV volume loading or fixed S2 splitting."
+  },
+  "89": {
+   "A": "Small muscular VSDs have high spontaneous closure rates in early childhood; persistence is the less likely outcome.",
+   "B": "Aortic cusp prolapse with regurgitation complicates perimembranous and outlet defects, not muscular ones.",
+   "C": "A small restrictive shunt does not raise pulmonary pressures; early pulmonary vascular disease complicates large unrestrictive VSDs."
+  },
+  "90": {
+   "A": "The stem includes a restrictive inlet VSD, so the ventricular component excludes a pure partial (primum-only) AVSD.",
+   "C": "A complete AVSD has a common AV valve orifice and a large non-restrictive inlet VSD; here there are two orifices and a small VSD.",
+   "D": "A secundum defect lies at the fossa ovalis; a primum defect with an inlet VSD and AV-valve involvement is an AVSD, not an incidental combination."
+  },
+  "91": {
+   "A": "Uncomplicated pericarditis rarely causes hypotension; chest pain, effusion and shock after device closure require erosion to be excluded first.",
+   "B": "Device thrombus causes stroke or systemic embolism rather than pericardial effusion with hypotension.",
+   "C": "A residual shunt causes gradual volume overload, not acute chest pain, effusion and hypotension."
+  },
+  "92": {
+   "A": "Fluids help raise preload but come after immediate positioning and calming; delaying the knee-chest manoeuvre loses the quickest way to raise SVR.",
+   "C": "IV beta-blockade is reserved for spells persisting after positioning, calming, oxygen and other first measures.",
+   "D": "PGE1 is not spell treatment; hypercyanotic spells result from dynamic infundibular obstruction and falling SVR."
+  },
+  "93": {
+   "A": "Type D ducts show multiple constrictions along their length; this duct tapers smoothly from a broad aortic ampulla.",
+   "B": "Type B (window) ducts are very short with a narrow aortic end; this duct has a broad aortic ampulla.",
+   "D": "Type C (tubular) ducts have no constriction and a uniform diameter, unlike this tapering conical duct."
+  },
+  "94": {
+   "B": "ASD closure does not increase pulmonary blood flow and has no role in palliating TOF with severe RVOT obstruction.",
+   "C": "Pulmonary vein stenting treats pulmonary vein stenosis and is irrelevant when the veins are normal and the problem is RVOT obstruction.",
+   "D": "Mitral valvotomy treats mitral stenosis, which is unrelated to cyanosis from RVOT obstruction in TOF."
+  },
+  "95": {
+   "A": "Residual RVOT obstruction causes pressure overload and RV hypertrophy rather than the progressive volume-driven RV dilation typical after repair.",
+   "B": "Branch PA stenosis can aggravate pulmonary regurgitation but is a less common primary cause; the dominant driver of late RV dilation is pulmonary regurgitation.",
+   "D": "A small haemodynamically insignificant VSD does not produce progressive RV volume overload."
+  },
+  "96": {
+   "A": "Focal impaired-awareness seizures last longer, with aura, automatisms and postictal confusion, and focal EEG changes rather than generalised 3-Hz spike-wave.",
+   "B": "Lennox-Gastaut syndrome has slow (under 2.5 Hz) spike-wave, multiple seizure types including tonic seizures, and intellectual disability.",
+   "D": "JME begins in adolescence with morning myoclonus and generalised 4-6 Hz polyspike-wave; this 7-year-old fits childhood absence epilepsy."
+  },
+  "97": {
+   "A": "Self-limited epilepsy with centrotemporal spikes affects school-age children with nocturnal focal facial seizures and normal development.",
+   "B": "Benign sleep myoclonus occurs only during sleep in neonates, stops on waking, with normal EEG and development.",
+   "C": "Childhood absence epilepsy begins at 4-10 years with staring spells and 3-Hz spike-wave, not flexor spasms with hypsarrhythmia."
+  },
+  "98": {
+   "B": "Panayiotopoulos syndrome affects young children with autonomic features and vomiting during sleep, not adolescent morning myoclonus.",
+   "C": "Infantile spasms occur in infancy with hypsarrhythmia, not in adolescents with morning myoclonus.",
+   "D": "Dravet syndrome begins in infancy with prolonged febrile hemiclonic seizures and developmental decline, not adolescent-onset myoclonus."
+  },
+  "99": {
+   "B": "A brief duration is a feature of simple febrile seizures; complex seizures are prolonged (15 minutes or more), focal or recurrent within 24 hours.",
+   "C": "Rapid return to baseline is consistent with a simple febrile seizure; prolonged postictal deficit or focality suggest complex.",
+   "D": "Age 6 months to 5 years with a single generalised event is the textbook simple febrile seizure."
+  },
+  "100": {
+   "A": "After two appropriately dosed benzodiazepines, further doses add respiratory depression without benefit; guidelines move to a second-line agent.",
+   "B": "Anaesthetic infusion is for refractory status, after failure of a second-line agent such as levetiracetam, fosphenytoin or valproate.",
+   "D": "Imaging should never delay treatment; status needs urgent seizure control, with neuroimaging once the child is stabilised."
+  },
+  "101": {
+   "A": "Valproate hyperammonaemia occurs in many patients, including urea-cycle defects, and is usually manageable; it is not the catastrophic, POLG-specific risk that makes valproate contraindicated in mitochondrial disease.",
+   "B": "Dose-related thrombocytopenia can occur with any patient on valproate and is monitored routinely; it has no special link to POLG mutations and is rarely fatal.",
+   "C": "Pancreatitis is an idiosyncratic valproate reaction seen irrespective of genotype; POLG disease specifically predisposes to fulminant, often fatal liver failure, not pancreatitis."
+  },
+  "102": {
+   "A": "Glucose of 34 mg/dL is itself a cause of the seizure and of ongoing neuronal injury; anticonvulsants will not terminate a hypoglycaemic seizure, so correction cannot be postponed.",
+   "B": "Empirical calcium is not indicated without evidence of hypocalcaemia; the documented, immediately reversible abnormality here is hypoglycaemia, which must be treated first.",
+   "D": "Hypertonic saline is reserved for proven symptomatic hyponatraemia; no sodium value is given, whereas the measured glucose of 34 mg/dL demands immediate dextrose."
+  },
+  "103": {
+   "A": "Hippocampal sclerosis is linked to prolonged febrile seizures and temporal lobe epilepsy, not to spastic diplegia of prematurity.",
+   "C": "Vermian agenesis produces hypotonia and ataxia (e.g., Joubert, Dandy-Walker), not bilateral leg-predominant spasticity with brisk reflexes.",
+   "D": "Unilateral cortical dysplasia causes focal epilepsy or hemiparesis, not symmetric leg-predominant spasticity; the prematurity history points to periventricular leukomalacia."
+  },
+  "104": {
+   "A": "Stable handedness normally does not emerge until about 18 months to 3 years; a definite hand preference before 12 months is a red flag for weakness of the other hand.",
+   "C": "Brachial plexus palsy is evident from birth with a characteristic limb posture and would not be the default without a birth history; asymmetric motor function first needs evaluation for central hemiparesis.",
+   "D": "Motor asymmetry with early hand preference suggests a central cause; skipping neurological examination risks missing unilateral cerebral palsy and delaying early intervention."
+  },
+  "105": {
+   "B": "SMA type 1 presents in early infancy with severe hypotonia, tongue fasciculations and areflexia; CK is normal or only mildly raised and there is no calf pseudohypertrophy.",
+   "C": "CMT is a distal neuropathy with foot deformity, distal wasting and reduced reflexes; CK is normal and Gowers sign from proximal weakness is not typical.",
+   "D": "Congenital myasthenic syndromes cause fatigable ptosis and weakness with normal CK; they do not cause calf pseudohypertrophy."
+  },
+  "106": {
+   "B": "Spastic diplegia is an upper motor neuron disorder with increased tone and brisk reflexes, the opposite of areflexia and fasciculations.",
+   "C": "Central hypotonia keeps reflexes preserved or brisk and is often accompanied by poor alertness; areflexia with tongue fasciculations localises to the anterior horn cell.",
+   "D": "Duchenne is rarely symptomatic at birth and does not cause tongue fasciculations or areflexia in infancy; profound neonatal weakness with fasciculations is SMA."
+  },
+  "107": {
+   "A": "HSV encephalitis outcome depends on early treatment; acyclovir must start on clinical suspicion, as early CSF PCR can be falsely negative and waiting worsens morbidity and mortality.",
+   "B": "Antibacterials alone leave HSV untreated; fever, focal seizures and temporal lobe signal require acyclovir, added to bacterial cover if meningitis is still possible.",
+   "C": "Steroids are not empirical therapy for presumed viral encephalitis and, without antiviral cover, may worsen HSV replication; acyclovir is the essential treatment."
+  },
+  "108": {
+   "A": "IIH causes headache and papilloedema with normal mental state and normal parenchymal imaging; it does not produce encephalopathy or multifocal white-matter lesions.",
+   "C": "Absence epilepsy causes brief staring spells with a normal neurological examination and normal MRI, not ataxia, multifocal deficits or demyelinating lesions.",
+   "D": "SMA is a lower motor neuron disease without encephalopathy or brain white-matter lesions on MRI."
+  },
+  "109": {
+   "A": "TSC skin signs are ash-leaf macules, facial angiofibromas and shagreen patches; its CNS lesions are tubers and SEGAs, not optic pathway gliomas.",
+   "C": "Ataxia-telangiectasia presents with progressive ataxia, oculocutaneous telangiectasia and immunodeficiency, not axillary freckling or optic glioma.",
+   "D": "Sturge-Weber has a facial port-wine stain with leptomeningeal angioma, seizures and glaucoma; café-au-lait macules and optic glioma are not features."
+  },
+  "110": {
+   "A": "Papilloedema and a posterior fossa mass are red flags for raised intracranial pressure; treating as migraine with delayed review risks herniation or death.",
+   "B": "With obstructive hydrocephalus and a posterior fossa mass, lumbar puncture can trigger tonsillar herniation; imaging and neurosurgery come first and LP is contraindicated.",
+   "C": "IIH is diagnosed only after imaging excludes a mass and hydrocephalus; here a structural cause is present and needs urgent neurosurgical management, not acetazolamide."
+  },
+  "111": {
+   "B": "CKD requires abnormality persisting for more than 3 months; an acute rise within 48 hours after dehydration is AKI.",
+   "C": "Stage 3 needs creatinine three times baseline, ≥4 mg/dL or initiation of KRT (or eGFR <35 in under-18s); a rise from 0.40 to 0.75 is under twice baseline.",
+   "D": "Paediatric creatinine is low at baseline, so KDIGO uses change from baseline; a rise of 0.35 mg/dL within 48 hours meets AKI criteria regardless of absolute value."
+  },
+  "112": {
+   "A": "This is half the correct figure, as if the volume were divided over 24 hours; 90 ÷ (18 × 12) = 0.42 mL/kg/h.",
+   "B": "This overstates output; 90 mL divided by 216 kg·h is 0.42 mL/kg/h, not 0.63.",
+   "D": "This is double the correct value, as if calculated over 6 hours; over 12 hours output is 0.42 mL/kg/h."
+  },
+  "113": {
+   "A": "Fanconi syndrome is a chronic proximal tubulopathy with glucosuria, phosphaturia and polyuria, not an acute prerenal picture with concentrated urine.",
+   "C": "Glomerulonephritis presents with haematuria, oedema and hypertension; this child is volume-depleted with tachycardia and concentrated urine, indicating hypoperfusion.",
+   "D": "Bilateral ureteric obstruction is rare and causes post-renal AKI with hydronephrosis; gastroenteritis with clinical dehydration and a high urea/creatinine ratio point to prerenal AKI."
+  },
+  "114": {
+   "A": "Insulin with dextrose shifts potassium into cells but takes 15–30 minutes; with QRS widening the myocardium must be stabilised with IV calcium first.",
+   "C": "Salbutamol lowers potassium by intracellular shift but does not protect the myocardium; ECG toxicity needs immediate IV calcium first.",
+   "D": "Dialysis takes time to arrange; QRS widening risks imminent arrhythmia, so calcium is given at once while shifting and removal measures, including KRT, are organised."
+  },
+  "115": {
+   "B": "Diuretics may help fluid overload in responsive patients, but refractory hyperkalaemia and uraemic encephalopathy are indications for KRT that diuretics cannot address.",
+   "C": "Bicarbonate is at most an adjunct for hyperkalaemia, mainly with acidosis, and adds sodium and fluid in a child with pulmonary oedema; it is not definitive.",
+   "D": "KRT decisions are driven by life-threatening complications such as fluid overload, refractory hyperkalaemia and encephalopathy, not by waiting for a creatinine cut-off."
+  },
+  "116": {
+   "A": "HUS presents with microangiopathic anaemia, thrombocytopenia and AKI, usually after diarrhoea, not isolated heavy proteinuria with hypoalbuminaemia.",
+   "B": "Nephritic syndrome features haematuria, hypertension and reduced GFR; this child has none of these, and the proteinuria is in the nephrotic range.",
+   "D": "Orthostatic proteinuria is low-grade, absent in early-morning urine and never causes hypoalbuminaemia or oedema."
+  },
+  "117": {
+   "A": "IPNA reserves initial biopsy for atypical features (age under 1 year, persistent haematuria, hypertension, low C3, raised creatinine); typical childhood nephrotic syndrome is treated with steroids first.",
+   "B": "Genetic testing is indicated for steroid resistance, congenital or infantile onset, or syndromic features, not for a typical 3-year-old before the first steroid course.",
+   "D": "Calcineurin inhibitors are second-line agents for frequently relapsing, steroid-dependent or steroid-resistant disease; first-episode treatment is oral glucocorticoids."
+  },
+  "118": {
+   "A": "Proteinuria monitoring defines remission and steroid response; stopping it would make it impossible to classify the disease or detect resistance.",
+   "B": "Relapse can only follow a complete remission; failure to reach remission after 4 weeks of daily prednisolone suggests steroid resistance, not relapse.",
+   "C": "Steroid sensitivity is defined by complete remission of proteinuria (UPCR ≤0.2 g/g or negative dipstick for 3 days), not by reduced oedema."
+  },
+  "119": {
+   "B": "Alport syndrome causes persistent haematuria with family history, sensorineural deafness or eye changes and normal complement, not an acute post-infectious nephritis with low C3.",
+   "C": "Minimal change disease causes nephrotic syndrome without gross haematuria, hypertension or low complement.",
+   "D": "IgA nephropathy causes haematuria within 1–2 days of infection with normal C3; a 2-week latent period after impetigo with low C3 indicates PSGN."
+  },
+  "120": {
+   "B": "Membranous nephropathy is uncommon in children and presents with nephrotic-range proteinuria, not recurrent synpharyngitic gross haematuria.",
+   "C": "Congenital nephrotic syndrome presents within the first 3 months with massive proteinuria and oedema, not recurrent haematuria with URIs.",
+   "D": "PSGN follows infection after a 1–3 week latent period, causes transient low C3 and rarely recurs; concurrent haematuria with normal complement favours IgA nephropathy."
+  },
+  "121": {
+   "A": "TTP from ADAMTS13 deficiency is rare in toddlers and typically lacks a bloody diarrhoeal prodrome; this triad after bloody diarrhoea is classic STEC-HUS.",
+   "C": "Atypical HUS usually has no diarrhoeal prodrome, may recur and often runs in families; bloody diarrhoea before the TMA points to Shiga toxin.",
+   "D": "DIC would show prolonged PT/aPTT and low fibrinogen in a septic child; HUS typically has normal coagulation, and the bloody diarrhoea prodrome favours STEC."
+  },
+  "122": {
+   "A": "ITP causes isolated thrombocytopenia without haemolysis, schistocytes, renal failure or low C3.",
+   "B": "Minimal change disease causes nephrotic syndrome without thrombotic microangiopathy or hypocomplementaemia.",
+   "D": "Vitamin K deficiency causes bleeding with prolonged PT; it does not cause microangiopathic haemolysis, renal TMA or low C3."
+  },
+  "123": {
+   "A": "Proximal RTA can acidify urine (pH below 5.5) once bicarbonate falls below the reduced threshold, and nephrocalcinosis is uncommon; urine pH 6.5 during acidosis indicates distal RTA.",
+   "B": "Type 4 RTA causes hyperkalaemia from hypoaldosteronism or aldosterone resistance, not hypokalaemia, and is not associated with nephrocalcinosis.",
+   "D": "Lactic acidosis causes a high anion gap acidosis; this child has a normal anion gap with alkaline urine and nephrocalcinosis."
+  },
+  "124": {
+   "A": "SIADH causes euvolaemic hyponatraemia with concentrated urine; it does not cause glucosuria, phosphaturia or bicarbonate wasting.",
+   "C": "Isolated distal RTA impairs acid excretion only; glucosuria with normal blood glucose and phosphaturia indicate generalised proximal tubular dysfunction.",
+   "D": "Glomerular proteinuria involves loss of albumin across the filter; it does not cause tubular loss of glucose, phosphate and bicarbonate."
+  },
+  "125": {
+   "B": "This figure does not follow from the values; 140 − (112 + 16) = 12 mmol/L.",
+   "C": "This results from subtracting only chloride (140 − 112) and omitting bicarbonate; the correct gap is 140 − (112 + 16) = 12 mmol/L.",
+   "D": "This value would indicate a high anion gap; with Cl 112 and HCO3 16 the gap is 12, a normal-gap (hyperchloraemic) acidosis."
+  },
+  "126": {
+   "A": "In CKD, EPO production is inappropriately low for the degree of anaemia and phosphate excretion falls; both abnormalities are central here.",
+   "B": "EPO deficiency is correct, but CKD reduces renal phosphate excretion, causing the hyperphosphataemia that drives secondary hyperparathyroidism.",
+   "C": "Hyperparathyroidism in CKD is secondary to phosphate retention, low calcitriol and hypocalcaemia; primary hyperparathyroidism would cause low, not high, phosphate."
+  },
+  "127": {
+   "B": "Bladder-bowel dysfunction is a common UTI risk factor, but hydronephrosis on ultrasound points to a structural problem that must be investigated first.",
+   "C": "Stones are an uncommon cause of paediatric febrile UTI; recurrent febrile UTI with hydronephrosis most often reflects VUR or obstructive CAKUT.",
+   "D": "Glomerular disease causes haematuria and proteinuria, not febrile UTI or hydronephrosis; this picture suggests a urinary tract anomaly."
+  },
+  "128": {
+   "A": "Bag specimens have high contamination rates; a positive bag culture cannot confirm UTI and should not be used for culture before antibiotics.",
+   "B": "Catheterisation is invasive and reserved for children who cannot void on request; a toilet-trained girl can give a clean-catch midstream sample.",
+   "C": "Suprapubic aspiration is the least contaminated but invasive and mainly used in infants; it is not first choice in a cooperative toilet-trained child."
+  },
+  "129": {
+   "A": "The static 130/80 threshold applies from age 13; at 7 years hypertension is defined by percentiles for age, sex and height.",
+   "B": "An elevated oscillometric reading should be confirmed by auscultation, and the diagnosis needs persistent elevation on repeated visits, not a single reading.",
+   "C": "Home readings are supportive only; diagnosis rests on repeated properly obtained office readings with percentile interpretation, often with ambulatory monitoring."
+  },
+  "130": {
+   "A": "Growth hormone works best, and is recommended, only after acidosis, CKD-MBD and nutritional deficits are corrected; starting it first ignores reversible causes.",
+   "B": "Excess protein increases the acid and phosphate load and may hasten CKD progression; intake should meet recommended requirements with dietitian monitoring.",
+   "D": "Growth lost in CKD is hard to recover; deferring evaluation until dialysis or transplant misses the period when correcting modifiable factors helps."
+  },
+  "131": {
+   "A": "IV fluids are for severe dehydration, shock or failed oral rehydration; an alert child who is drinking with some dehydration is treated with ORS.",
+   "C": "Diluting ORS alters its glucose-sodium balance and reduces sodium replacement; low-osmolarity ORS is already optimised and is used undiluted.",
+   "D": "Withholding fluids worsens dehydration; WHO Plan B gives ORS over 4 hours with reassessment, plus continued feeding."
+  },
+  "132": {
+   "A": "750 mL corresponds to about 83 mL/kg or a 10-kg child; the plan is 75 × 9 = 675 mL.",
+   "B": "450 mL equals 50 mL/kg, which underestimates the prescribed volume; 75 × 9 = 675 mL.",
+   "C": "900 mL equals 100 mL/kg, more than prescribed; 75 × 9 = 675 mL over 4 hours."
+  },
+  "133": {
+   "B": "10 mg daily is the WHO dose for infants under 6 months; an 8-month-old should receive 20 mg.",
+   "C": "The dose is correct but the duration is too short; WHO recommends 10–14 days to restore zinc and reduce recurrence.",
+   "D": "40 mg is twice the WHO dose, increases vomiting and offers no extra benefit."
+  },
+  "134": {
+   "A": "Zinc for diarrhoea is given daily for 10–14 days; a weekly dose is not part of WHO guidance.",
+   "B": "40 mg is four times the recommended dose for an infant under 6 months and increases vomiting.",
+   "C": "20 mg is the dose for children 6 months and older; under 6 months WHO recommends 10 mg daily."
+  },
+  "135": {
+   "A": "Plan B ORS is for some dehydration without shock; lethargy, weak pulse and prolonged capillary refill indicate shock, needing IV or IO resuscitation first.",
+   "B": "Nasogastric ORS is an option for severe dehydration when IV access fails, but it cannot restore circulating volume fast enough to treat shock.",
+   "C": "Maintenance fluids do not correct the circulating volume deficit in shock; isotonic boluses with frequent reassessment are needed first."
+  },
+  "136": {
+   "B": "Uncomplicated watery diarrhoea is mostly viral; routine azithromycin adds no benefit and promotes resistance, with antibiotics reserved for dysentery, suspected cholera or other defined indications.",
+   "C": "Stool frequency is not an antibiotic indication; without blood, systemic toxicity or other defined criteria, rehydration and zinc are the treatment.",
+   "D": "Metronidazole is used only for confirmed giardiasis or amoebiasis; acute watery diarrhoea should not be presumed protozoal."
+  },
+  "137": {
+   "A": "Acute diarrhoea lasts less than 14 days; classification depends on duration, not stool frequency.",
+   "B": "Chronic diarrhoea usually means 4 weeks or more (often 30 days); 17 days falls in the WHO persistent category of 14 days or more.",
+   "C": "Dysentery is defined by visible blood in stool, not duration; this child has no reported blood."
+  },
+  "138": {
+   "A": "DGP-IgG is the second-line test in IgA deficiency; when IgA is normal, tTG-IgA is more accurate, so total IgA must be known first.",
+   "B": "EMA-IgA is observer-dependent and used for confirmation; without total IgA, a false negative from IgA deficiency cannot be recognised.",
+   "D": "HLA-DQ2/DQ8 is common in the general population; its value is a high negative predictive value, not positive diagnosis, so it is not a screening test."
+  },
+  "139": {
+   "A": "ESPGHAN 2020 removed HLA testing from the no-biopsy criteria; HLA positivity is common and does not confirm coeliac disease.",
+   "B": "Even with typical symptoms and tTG-IgA ≥10× ULN, ESPGHAN requires a positive EMA-IgA in a second sample to protect against lab or sample error.",
+   "C": "Repeating tTG-IgA on the same sample does not guard against sample mix-up or provide independent confirmation; EMA-IgA on a separate sample is required."
+  },
+  "140": {
+   "A": "Starting a gluten-free diet before confirmation can normalise serology and histology and prevent a firm diagnosis; biopsy should be done while eating gluten.",
+   "B": "HLA typing cannot confirm coeliac disease; it only helps exclude it when negative, and does not replace histology.",
+   "D": "The no-biopsy route needs tTG-IgA ≥10× ULN; a positive EMA at 4× ULN does not qualify, so biopsy is still needed."
+  },
+  "141": {
+   "B": "IgA deficiency makes all IgA-based tests unreliable; a negative tTG-IgA is expected and does not exclude coeliac disease.",
+   "C": "HLA-DQ2/DQ8 has only negative predictive value; a positive result cannot replace serology or diagnose coeliac disease.",
+   "D": "Biopsy is guided by a positive IgG-based test (DGP-IgG, tTG-IgG or EMA-IgG); skipping serology loses an important pre-biopsy step."
+  },
+  "142": {
+   "B": "Without alarm features, colonoscopy has very low yield and exposes the child to an invasive procedure; Rome IV supports a positive clinical diagnosis.",
+   "C": "Routine CT or MRI is not indicated without alarm features; it is low-yield, costly and CT adds radiation.",
+   "D": "Acid suppression is not a diagnostic test for functional abdominal pain and has risks; it may be tried only for dyspeptic symptoms."
+  },
+  "143": {
+   "A": "Coeliac disease should be screened for, but nocturnal diarrhoea with raised faecal calprotectin indicates intestinal inflammation and points to IBD as the main diagnosis to exclude.",
+   "C": "IBS is a functional diagnosis excluded by alarm features such as nocturnal symptoms, weight loss, growth deceleration and raised calprotectin.",
+   "D": "Functional abdominal pain requires absence of alarm features; this child has several plus raised calprotectin, so organic disease must be excluded."
+  },
+  "144": {
+   "A": "Coeliac disease affects the small-bowel mucosa and does not cause continuous colitis or bloody diarrhoea with urgency.",
+   "C": "IBS is functional with normal mucosa and no rectal bleeding; endoscopic continuous colitis excludes it.",
+   "D": "Crohn disease shows skip lesions and may spare the rectum; continuous inflammation extending proximally from the rectum is typical of UC."
+  },
+  "145": {
+   "A": "Microscopic colitis is rare in children, causes watery diarrhoea with normal-looking mucosa and does not cause perianal fistulae or segmental ulceration.",
+   "B": "Functional constipation does not cause weight loss, fistulae or ulceration on endoscopy.",
+   "C": "UC involves continuous mucosal inflammation from the rectum; perianal fistulae, segmental lesions and ileal involvement point to Crohn disease."
+  },
+  "146": {
+   "A": "Crohn disease can involve the terminal ileum or proximal small bowel while the colon looks normal, and microscopic inflammation can be present without visible changes.",
+   "C": "Calprotectin is non-specific and cannot localise or confirm IBD; persistent weight loss and raised inflammatory markers need tissue diagnosis and small-bowel evaluation.",
+   "D": "Weight loss and raised inflammatory markers are alarm features against a functional disorder; a normal colon does not exclude small-bowel Crohn disease."
+  },
+  "147": {
+   "B": "IgE-mediated reactions usually occur within minutes to an hour with urticaria, angioedema or wheeze; isolated delayed repetitive vomiting with pallor fits FPIES.",
+   "C": "Cyclic vomiting syndrome causes stereotyped episodes not tied to a specific food; reproducible vomiting 1–4 hours after one food is typical of FPIES.",
+   "D": "Hereditary fructose intolerance only causes symptoms after fructose or sucrose exposure, with hypoglycaemia and liver dysfunction; it cannot occur before such foods are introduced."
+  },
+  "148": {
+   "A": "Cow's milk protein allergy is immune-mediated and would be triggered by yogurt too, as it contains the same proteins; better yogurt tolerance indicates a lactose problem.",
+   "B": "Pancreatic insufficiency causes steatorrhoea with fat malabsorption regardless of dairy type, not bloating and watery stools linked to milk.",
+   "D": "Coeliac disease is triggered by gluten, not milk, and would not explain improved tolerance of yogurt, which contains less lactose and bacterial lactase."
+  },
+  "149": {
+   "A": "Maintenance laxatives alone with a large faecal mass can increase overflow soiling and pain; NASPGHAN/ESPGHAN advise disimpaction first.",
+   "B": "Long-term enemas are invasive and distressing; after disimpaction, maintenance should be oral PEG with toilet training and behavioural measures.",
+   "D": "Most childhood constipation is functional and responds to medical therapy; surgery is only for refractory cases after full evaluation."
+  },
+  "150": {
+   "A": "Even partial gluten reduction can lower antibody titres and improve histology, causing false-negative tests; normal gluten intake should continue.",
+   "C": "A gluten-free diet before confirmation can mask the diagnosis, and clinical response is not diagnostic; it commits the child to lifelong restriction without proof.",
+   "D": "Dairy elimination does not help diagnose coeliac disease; diagnosis is by serology and, where needed, biopsy while eating gluten."
+  }
+ },
+ "review_concerns": {
+  "50": "Option C ('critical sample after glucose support has been stopped') is loosely worded: a supervised diagnostic fast does involve withdrawing glucose support before the critical sample, so it could be read as a correct step. Consider rewording C.",
+  "35": "Stem says 'marked bradycardia'; cooling typically lowers HR to about 80-100/min, but HR persistently below about 80 is often flagged in protocols. Calling it 'marked' slightly undercuts key A; consider 'mild' or 'expected' bradycardia.",
+  "83": "Raised C3 with ketoacidosis and hyperammonaemia fits methylmalonic acidaemia (option A) equally well; nothing in the stem separates propionic from methylmalonic acidaemia (needs urine organic acids). Two options defensible.",
+  "90": "Terminology: many sources call primum ASD + small restrictive inlet VSD with two orifices 'transitional', and reserve 'intermediate' for a common annulus divided by a tongue; using them as synonyms is common but imprecise."
+ }
+}

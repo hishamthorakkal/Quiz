@@ -5,12 +5,16 @@ Format (Cumulative Mock Day 25, 23 Oct 2026):
   ANSWER KEY: "1: D     2: D …"
   DETAILED EXPLANATIONS: "Q1 — D. <option text>", "Rationale: …", "Why not A? <option> — <reason>",
   "EXAM PEARL: …", "WHY THIS QUESTION MATTERS: …", "Reference family: …"
+Day 35 checkpoint (2 Nov 2026): "TIMED SECTION A  •  Q1–Q50"; key "PART II  •  COMPLETE ANSWER KEY" as
+  "001 B   |   002 B …"; "PART III  •  EXPLANATIONS AND DISCRIMINATORS": "Q1  •  B. <option text>", "Why best: …",
+  "Why A is less appropriate: <option>. This is a plausible alternative …" (placeholder), "Exam pearl: …".
 Wrong-option reasons that are placeholders ("…requires independent source audit") are dropped.
 """
 import re
 import docx_parse as dp
 
-PLACEHOLDER = ('exact distractor rationale requires independent source audit', 'less appropriate than the keyed option')
+PLACEHOLDER = ('exact distractor rationale requires independent source audit', 'less appropriate than the keyed option',
+               'This is a plausible alternative in a related setting')
 
 
 def parse(path):
@@ -19,7 +23,7 @@ def parse(path):
     qs, problems, cur, sec = [], [], None, -1
     key, ex = {}, {}
     for h, els in parts:
-        ms = re.match(r'^SECTION ([ABC])\b', h)
+        ms = re.match(r'^(?:TIMED )?SECTION ([ABC])\b', h)
         if ms:
             sec = 'ABC'.index(ms[1])
             for el in els:
@@ -43,31 +47,31 @@ def parse(path):
                     continue
                 if t and cur is not None and not cur['options'] and not t.startswith('Answer:'):
                     cur['question'] += ' ' + t
-        elif re.match(r'^ANSWER KEY', h):
+        elif re.search(r'ANSWER KEY', h):
             for el in els:
                 if el.tag == dp.W + 'p':
-                    for n, a in re.findall(r'\b(\d+)\s*:\s*([A-D])\b', dp.text(el)):
+                    for n, a in re.findall(r'\b(\d+)\s*:\s*([A-D])\b', dp.text(el)) + re.findall(r'\b(\d{3})\s+([A-D])\b', dp.text(el)):
                         key[int(n)] = a
-        elif re.match(r'^DETAILED EXPLANATIONS', h):
+        elif re.match(r'^DETAILED EXPLANATIONS', h) or re.search(r'EXPLANATIONS AND DISCRIMINATORS', h):
             e = None
             for el in els:
                 if el.tag != dp.W + 'p':
                     continue
                 t = dp.text(el)
-                m = re.match(r'^Q(\d+)\s*[—–-]\s*([A-D])\.\s*(.+)$', t)
+                m = re.match(r'^Q(\d+)\s*[—–•-]\s*([A-D])\.\s*(.+)$', t)
                 if m:
                     e = {'ans': m[2], 'text': m[3].strip(), 'why_not': {}, 'core': '', 'pearl': ''}
                     ex[int(m[1])] = e
                     continue
                 if e is None:
                     continue
-                m = re.match(r'^Rationale:\s*(.+)$', t)
+                m = re.match(r'^(?:Rationale|Why best):\s*(.+)$', t)
                 if m:
                     e['core'] = m[1].strip()
                     continue
-                m = re.match(r'^Why not ([A-D])\?\s*(.+)$', t)
+                m = re.match(r'^Why not ([A-D])\?\s*(.+)$', t) or re.match(r'^Why ([A-D]) is less appropriate:\s*(.+)$', t)
                 if m:
-                    reason = m[2].split(' — ', 1)[1].strip() if ' — ' in m[2] else ''
+                    reason = m[2].split(' — ', 1)[1].strip() if ' — ' in m[2] else m[2].strip() if 'less appropriate' in t else ''
                     if reason and not any(p in reason for p in PLACEHOLDER):
                         e['why_not'][m[1]] = reason
                     continue
