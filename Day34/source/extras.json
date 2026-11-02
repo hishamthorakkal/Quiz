@@ -1,0 +1,33 @@
+{
+  "title": "Malabsorption, Coeliac Disease, CMPA, IBD & Chronic Abdominal Pain",
+  "split_h2": "^(Nine clinical cases$|Five data-interpretation stations$|Five calculation drills|Four clinical algorithms$|Active Recall — 25|Rapid revision — 25|Exam traps — 15$)",
+  "retests": {
+    "8": {"stage": "R1", "from": "Day 15 Q61 — Galactokinase versus GALT versus hereditary fructose intolerance"},
+    "16": {"stage": "R1", "from": "Day 14 Q30 — F-75 daily feed volume"},
+    "24": {"stage": "R1", "from": "Day 15 Q77 — MCAD deficiency — C8 acylcarnitine"},
+    "32": {"stage": "R2", "from": "Day 10 Q8 — CPS 72 h vs PES 48 h"},
+    "40": {"stage": "R3", "from": "Day 5 Q34 — DOPE equipment disconnection"},
+    "48": {"stage": "R3", "from": "Day 6 Q60 — G6PD neonatal unconjugated jaundice with DAT-negative hemolysis"},
+    "56": {"stage": "R3", "from": "Day 10 Q47 — GIR to dextrose concentration"},
+    "64": {"stage": "R3", "from": "Day 7 Q34 — aEEG seizure vs artifact"},
+    "72": {"stage": "R2", "from": "Day 11 Q25 — ETROP Type 1 ROP"},
+    "80": {"stage": "R3", "from": "Day 10 Q65 — OTC versus CPS1/NAGS — urinary orotic acid"}
+  },
+  "calc_items": [
+    {"title": "Coeliac serology", "question": "tTG-IgA 168 U/mL; lab ULN 14 U/mL. Calculate the ULN multiple (is the numeric no-biopsy threshold met?).",
+     "working": "168/14 = 12; 12 ≥ 10, so the numerical threshold is met, but second-sample EMA and specialist agreement remain required.", "trap": "",
+     "parts": [{"answer": 12, "unit": "× ULN"}]},
+    {"title": "Stool osmotic gap", "question": "Stool Na 45 mmol/L and K 30 mmol/L. Calculate the gap = 290 − 2(Na+K).",
+     "working": "290 − 2×75 = 140 mOsm/kg; a high gap supports osmotic diarrhoea.", "trap": "",
+     "parts": [{"answer": 140, "unit": "mOsm/kg"}]},
+    {"title": "Enteral nutrition", "question": "A low-risk Crohn patient requires 1,800 kcal/day by EEN; the formula supplies 1.5 kcal/mL. Calculate the daily formula volume.",
+     "working": "1800/1.5 = 1,200 mL/day (if clinically appropriate and dietitian-prescribed).", "trap": "",
+     "parts": [{"answer": 1200, "unit": "mL/day"}]},
+    {"title": "Weight gain", "question": "A child rises from 20.0 kg to 21.2 kg over 30 days. Calculate the average daily weight gain.",
+     "working": "(1.2×1000)/30 = 40 g/day.", "trap": "",
+     "parts": [{"answer": 40, "unit": "g/day"}]},
+    {"title": "Serology threshold", "question": "tTG-IgA 81 U/mL; ULN 9 U/mL. Calculate the ULN multiple (does this alone qualify for the ESPGHAN no-biopsy diagnosis?).",
+     "working": "81/9 = 9, which is <10 — no, below the 10× threshold.", "trap": "",
+     "parts": [{"answer": 9, "unit": "× ULN"}]}
+  ]
+}

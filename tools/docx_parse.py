@@ -165,12 +165,19 @@ def blocks_from(doc, elements):
     return [s for s in sections if s['title'] or s['blocks']]
 
 
+SPLIT_H2 = None     # set by build_day.py from extras "split_h2"
+
+
 def split_h1(doc):
     """Return (title, preface_elements, [(h1_text, elements)])."""
     title, pre, parts, cur = '', [], [], None
     for el in doc.body:
         if el.tag == W + 'p':
             st = doc.style(el)
+            if SPLIT_H2 and st.startswith('heading 2') and SPLIT_H2.search(text(el)):
+                cur = (text(el), [])
+                parts.append(cur)
+                continue
             if st == 'title' and not title:
                 title = ' '.join(x.text or '' for x in el.iter(W + 't') if True)
                 title = re.sub(r'\s+', ' ', ''.join((x.text or '') if x.tag == W + 't' else ' ' for x in el.iter() if x.tag in (W + 't', W + 'br'))).strip()
@@ -336,16 +343,20 @@ def parse_mcqs(doc, parts, aliases=None):
                                                         or re.match(r'^Q\d+\s*[—–-]\s*Spaced revision\b', text(el), re.I)
                                                         or re.match(r'^[QR]\d+\s{2,}[^|\s]', text(el))
                                                         or re.match(r'^[QR]\d+\s*\|', text(el))
-                                                        or re.match(r'^RT\d+\s+\[Retest\]\s*$', text(el)))) >= 5 and \
+                                                        or re.match(r'^RT\d+\s+\[Retest\]\s*$', text(el))
+                                                        or re.match(r'^[BVR]\d{3}\s*\||^D\d+-(?:Q|RT)\d+\s{2,}', text(el)))) >= 5 and \
         any(el.tag == W + 'p' and re.match(r'^[A-D]\.\s', text(el)) for el in els)
     A = next((els for h, els in parts if re.match(r'^SECTION A', h, re.I) and has_q(els)), None)
     B, C = find(r'^SECTION B'), find(r'^SECTION C')
     named = next((els for h, els in parts if re.search(r'question booklet|\bmcqs?\b|questions\b|revision test', h, re.I)
-                  and not re.search(r'explanation|answer(?!s withheld| before)', h, re.I) and has_q(els)), None)
+                  and not re.search(r'explanation|(?<!best )answer(?!s withheld| before)', h, re.I) and has_q(els)), None)   # Day 30: "(single best answer)"
     if A is not None and B is not None and has_q(B) and not any(el.tag == W + 'tbl' for el in B):
         A, B = A + B, None             # Day 18: base MCQs in Section A, notebook retests in Section B
     if A is None and named is not None and (B is None or not has_q(B)):
         A, B = named, None
+        for els in [els for h, els in parts if re.match(r'^\d+\.\s*Part [B-Z]\s*—', h, re.I) and not re.search(r'retest', h, re.I)
+                    and els is not named and has_q(els)]:
+            A = A + els        # Day 32: "11. Part B — 50 mixed nephrology revision MCQs" after Part A
         # Day 19: notebook retests ("R01  stem") in their own part after the base MCQs
         rp = next((els for h, els in parts if re.search(r'notebook (?:mcq )?retests|error-notebook retests', h, re.I) and not re.search(r'answer', h, re.I)
                    and els is not named), None)
@@ -366,9 +377,15 @@ def parse_mcqs(doc, parts, aliases=None):
     if A is None and B is not None and has_q(B) and not any(el.tag == W + 'tbl' for el in B) and \
             any(el.tag == W + 'p' and re.match(r'^Q\d+\.', text(el)) for el in B):
         A, B = B, None                 # questions are in Section B; answer key comes from Section C
+    # Days 30/34: the key and option reasons are printed under each question ("ANSWER: B  |  …" / "KEY C  |  …");
+    # the question part is then also the explanation part
+    inline = any(el.tag == W + 'p' and re.match(r'^(ANSWER:?\s*[A-D]\s*[|:]|KEY [A-D]\s*\|)', text(el)) for el in A or [])
+    if inline:
+        C = A
     problems, qs, cur, fixed = [], [], None, []
     pending_retest = False
     rbase = 0          # Day 19: retest "R01" is numbered after the last base question (R01 -> Q76)
+    ids = {}           # Day 32: booklet IDs "B001" / "V001" / "R001" -> running question number
     for el in A or []:
         if el.tag != W + 'p':
             continue
@@ -376,6 +393,60 @@ def parse_mcqs(doc, parts, aliases=None):
             for src, _ in doc.images(el):          # picture placed with the question in the document
                 cur['doc_img'] = src
         t = text(el)
+        if inline:
+            mi = re.match(r'^Q(\d+)\s{2,}\[([^\]]+)\]\s{2,}(\S.+)$', t)
+            if mi:     # "Q01  [Basic]  stem" / Day 34 "Q001  [D34-R01]  stem" (booklet ID; R = notebook retest)
+                bid = re.match(r'^D\d+-([QR])\d+$', mi[2])
+                cur = {'num': int(mi[1]), 'level': '' if bid else mi[2].strip(), 'question': mi[3].strip(), 'options': [],
+                       'retest': bool(bid) and bid[1] == 'R'}
+                qs.append(cur)
+                continue
+            mi = re.match(r'^RT(\d+)\s+Original:\s*ERR-\S+\s*[—–-]\s*(Day\s*\d+\s*Q\d+\s*[—–-]\s*.+?)\s*\|\s*(.*)$', t)
+            if mi:     # Day 30: "RT01  Original: ERR-D8-Q41 — Day 8 Q41 — name  |  R2 catch-up" (tracked, not shown), stem below
+                rbase = max([rbase] + [q_['num'] for q_ in qs if not q_['retest']])
+                st = re.search(r'\b(R\d)\b', mi[3])
+                cur = {'num': int(mi[1]) + rbase, 'level': '', 'question': '', 'options': [], 'retest': True,
+                       'retest_from': mi[2].strip(), 'stage': st[1] if st else 'R1'}
+                qs.append(cur)
+                continue
+            mi = cur is not None and re.match(r'^Source:.*\bOriginal error:\s*ERR-D(\d+)-Q(\d+)', t)
+            if mi:     # Day 34 retest caption "Source: NB  |  Original error: ERR-D15-Q61  |  Stage: …"
+                cur['retest_from'] = f'Day {mi[1]} Q{mi[2]}'
+                continue
+            mi = cur is not None and re.match(r'^Source:.*\bDifficulty:\s*(.+)$', t)
+            if mi:     # Day 34 caption "Source: CE  |  Domain: Celiac  |  Difficulty: Basic"
+                cur['level'] = mi[1].strip()
+                continue
+            if cur is not None and len(cur['options']) == 4:
+                continue       # key, option reasons, source/status lines: read in the explanation pass
+        m32 = doc.style(el).startswith('heading') and re.match(r'^([BVR])(\d{3})\s*\|\s*([^|]+?)\s*\|\s*(.+)$', t)
+        if m32:    # Day 32: "B001  |  Basic  |  CKD", "V001  |  Integrated revision  |  D29", "R001  |  Clinical  |  Notebook retest"
+            if not any(k[0] == m32[1] for k in ids):
+                ids['base', m32[1]] = len(qs)
+            n_ = ids['base', m32[1]] + int(m32[2])
+            ids[m32[1], int(m32[2])] = n_
+            cur = {'num': n_, 'level': m32[3].strip(), 'question': '', 'options': [], 'retest': m32[1] == 'R'}
+            qs.append(cur)
+            continue
+        m31 = re.match(r'^R(\d+)\s+\[Retest[^\]]*\]\s*•\s*ERR-D(\d+)-Q(\d+)\s*$', t)
+        if m31:    # Day 31: "R01  [Retest | Error notebook]  •  ERR-D15-Q61", stem below
+            rbase = max([rbase] + [q_['num'] for q_ in qs if not q_['retest']])
+            cur = {'num': int(m31[1]) + rbase, 'level': '', 'question': '', 'options': [], 'retest': True,
+                   'retest_from': f'Day {m31[2]} Q{m31[3]}'}
+            qs.append(cur)
+            continue
+        m33 = re.match(r'^D\d+-(Q|RT)(\d+)\s{2,}(\S.+)$', t)
+        if m33:    # Day 33: "D33-Q01  stem" / "D33-RT01  stem"
+            if m33[1] == 'Q':
+                rbase = max(rbase, int(m33[2]))
+            cur = {'num': int(m33[2]) + (rbase if m33[1] == 'RT' else 0), 'level': '', 'question': m33[3].strip(), 'options': [],
+                   'retest': m33[1] == 'RT'}
+            qs.append(cur)
+            continue
+        msi = cur is not None and re.match(r'^Source identity:\s*ERR-D(\d+)-Q(\d+)', t)
+        if msi:    # Day 33: retest identity under the options (tracked, not shown)
+            cur['retest_from'] = f'Day {msi[1]} Q{msi[2]}'
+            continue
         if RETEST.match(t) and not RETEST_LABEL.sub('', t).strip():
             # "EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 120" on its own line: after a stem (no options yet) it
             # belongs to that question; between questions it marks the next one
@@ -440,7 +511,7 @@ def parse_mcqs(doc, parts, aliases=None):
             stem, retest = m[3].strip(), False
             if RETEST.match(stem):     # "Qn. EXTRA NOTEBOOK RETEST — NOT PART OF THE BASE 75 [— stem]": label dropped
                 stem, retest = RETEST_LABEL.sub('', stem).strip(), True
-            lev = m[2].strip()
+            lev = m[2].split('|')[0].strip()      # Day 31: "[Clinical | STEC-HUS]" (topic not shown)
             if re.search(r'retest|spaced revision', lev, re.I):
                 retest, lev = True, ''
             elif re.match(r'^(base|extra[ -]gap[- ]fill|gap[- ]fill|extra)$', lev, re.I):
@@ -490,6 +561,34 @@ def parse_mcqs(doc, parts, aliases=None):
     Q = {q['num']: q for q in qs}
     ex, e, pearl_labels = {}, None, {}
     for el in C or []:
+        if inline:
+            if el.tag != W + 'p':
+                continue
+            t = text(el)
+            mi = re.match(r'^Q(\d+)\s{2,}\[[^\]]+\]\s{2,}\S', t) or re.match(r'^(RT)(\d+)\s+Original:', t)
+            if mi:
+                n_ = int(mi[2]) + rbase if mi[1] == 'RT' else int(mi[1])
+                q_ = Q.get(n_) or {}
+                e = {'ans': None, 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_), 'day29': True,
+                     'retest': bool(q_.get('retest')), 'stage': q_.get('stage')}
+                ex[n_] = e
+                continue
+            if not e:
+                continue
+            mi = re.match(r'^(?:ANSWER:?\s*([A-D])\s*[|:]|KEY\s+([A-D])\s*\|)', t)
+            if mi:     # the reason after the key is repeated on the keyed option's line
+                e['ans'] = mi[1] or mi[2]
+                continue
+            # Day 30 "A — Incorrect: reason" / retests "A: Correct — reason"; Day 34 "Option A: reason" (no label)
+            mi = re.match(r'^([A-D])\s*[—:]\s*(Correct|Incorrect)\s*[:—]\s*(.+)$', t) or re.match(r'^Option ([A-D]):()\s*(.+)$', t)
+            if mi:
+                if mi[2] == 'Correct' or (not mi[2] and mi[1] == e['ans']):
+                    e['marked'].append(mi[1])
+                    e['correct_reason'] = mi[3].strip()
+                else:
+                    e['labelled'] = True
+                    e['why_not'][mi[1]] = mi[3].strip()
+            continue
         if el.tag == W + 'p':
             t = text(el)
             m = re.match(r'^Q(\d+)\.\s*Answer:?\s*([A-D])\s*[—-]\s*(.+)$', t)
@@ -529,17 +628,39 @@ def parse_mcqs(doc, parts, aliases=None):
                 continue
             if e and re.match(r'^Status:\s', t):
                 continue
-            m = re.match(r'^Q(\d+)\s*\|\s*Correct:\s*([A-D])\s*\|\s*(.+)$', t) or re.match(r'^(RT)(\d+)\s*\|\s*Correct:\s*([A-D])\s*\|', t)
-            if m:      # Day 29: "Q01  |  Correct: C  |  Basic" / "RT01  |  Correct: B  |  Retest"
-                rt_ = m[1] == 'RT'
+            m = re.match(r'^Q(\d+)\s*\|\s*Correct:?\s*([A-D])\s*\|\s*(.+)$', t) or re.match(r'^(RT?)(\d{1,2})\s*\|\s*Correct:?\s*([A-D])\s*\|', t)
+            if m:      # Day 29: "Q01  |  Correct: C  |  Basic" / "RT01  |  Correct: B  |  Retest"; Day 31 "Q01  |  Correct B  |  topic" / "R01  |  Correct A  |  …"
+                rt_ = m[1] in ('R', 'RT')
                 n_ = int(m[2]) + rbase if rt_ else int(m[1])
                 e = {'ans': m[3] if rt_ else m[2], 'lev': None if rt_ else m[3].strip(), 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_), 'day29': True}
                 if rt_:
                     e['retest'] = True
                 ex[n_] = e
                 continue
-            if e and e.get('day29') and re.match(r'^(Source anchor\b|Original failed-question identity:)', t):
-                continue       # Day 29: topic-level source pointer / retest identity (already read from the question caption)
+            m = re.match(r'^([BVR])(\d{3})\s*\|\s*Correct\s+([A-D])\s*\|\s*(.+)$', t)
+            if m:      # Day 32: "B001  |  Correct A  |  New Day 32" / "R001  |  Correct D  |  ERR-D15-Q61"
+                n_ = ids.get((m[1], int(m[2])))
+                e = {'ans': m[3], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_), 'day29': True}
+                mr_ = re.match(r'^ERR-D(\d+)-Q(\d+)$', m[4].strip())
+                if m[1] == 'R':
+                    e['retest'], e['retest_from'] = True, f'Day {mr_[1]} Q{mr_[2]}' if mr_ else ''
+                ex[n_] = e
+                continue
+            m = re.match(r'^D\d+-(Q|RT)(\d+)\s*\|\s*([^|]+?)\s*\|\s*Answer\s+([A-D])\s*\|', t)
+            if m:      # Day 33: "D33-Q01  |  Basic  |  Answer A  |  Definition" / "D33-RT01  |  Spaced retest  |  Answer D  |  …"
+                n_ = int(m[2]) + (rbase if m[1] == 'RT' else 0)
+                e = {'ans': m[4], 'lev': None, 'core': [], 'why_not': {}, 'marked': [], 'q': Q.get(n_), 'day29': True}
+                if m[1] == 'RT':
+                    e['retest'] = True
+                elif e['q'] and not e['q']['level']:
+                    e['q']['level'] = m[3].strip()
+                ex[n_] = e
+                continue
+            if doc.style(el).startswith('heading') and re.match(r'^[A-C]\.\s+(New Day|Integrated revision|Notebook retests)', t):
+                e = None       # Day 32: sub-headings of the explanation part
+                continue
+            if e and e.get('day29') and re.match(r'^(Source anchor\b|Original failed-question identity:|Stem:\s|Clinical source map:|Source tag\(s\):)', t):
+                continue       # Day 29+: source pointers / retest identity / the stem repeated
             m = e and e.get('day29') and e['q'] and re.match(r'^([A-D])\s+—\s+(.+)$', t)
             if m:      # Day 29: "A — <option text>: reason" (no Correct/Incorrect label; the header letter is the key)
                 opt = e['q']['options']['ABCD'.index(m[1])]
@@ -752,6 +873,8 @@ def parse_mcqs(doc, parts, aliases=None):
                         problems.append(f"Q{e['q']['num']}: explanation line for {m[1]} does not match option text")
                         continue
                 reason = rest[len(opt) + 3:].strip()
+                if e.get('day29'):
+                    reason = re.sub(r'^Why not:\s*', '', reason)     # Day 31/32: "A. option — Why not: reason"
                 if m[1] == e['ans'] and e.get('para_ok') is None and not re.match(r'^(correct|incorrect|wrong)\b', reason, re.I) and e.get('labelled'):
                     reason = 'Correct. ' + reason      # Day 27: keyed line carries no label while the others say "Incorrect:"
                 if re.match(r'^correct\b', reason, re.I):

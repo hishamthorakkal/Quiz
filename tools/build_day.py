@@ -36,6 +36,21 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
+    (r'^nephrotic syndrome • nephritic syndrome', 'overview'), (r'^part ii(-b)? — (75 base mcqs|error-notebook retests)', 'mcq'), (r'^part iii — nine clinical case', 'cases'), (r'^part iv — five image/data', 'data'),   # Day 30
+    (r'^part v — four clinical algorithms', 'tables'), (r'^part viii — transparent v4 qa|^part ix — post-review validation', 'references'), (r'^exam traps — 15', 'pearls'),
+    (r'^rapid revision — 25', 'revision'), (r'^must-know numbers$', 'numbers'),
+    (r'^part ii — (75 base mcqs|9 notebook retests)|^part vii — examiner answers', 'mcq'), (r'^part iii — 9 clinical cases', 'cases'), (r'^part iv — data / image', 'data'),   # Day 31
+    (r'^part v — clinical algorithms', 'tables'), (r'^part viii — v4 quality|^updated source check|^release-blocking items', 'references'), (r'^release and scoring overview', 'overview'),
+    (r'^25 rapid-revision pearls', 'revision'), (r'^15 examiner traps', 'pearls'), (r'^25 active-recall prompts', 'recall'), (r'^five calculation drills', 'calc'),
+    (r'^\d+\. part [abc] — |^13\. examiner answer key', 'mcq'), (r'^release dashboard|^1\. five-hour plan', 'overview'), (r'^3\. must-know numbers and algorithms', 'tables'),   # Day 32
+    (r'^4\. nine substantial clinical cases', 'cases'), (r'^5\. five data', 'data'), (r'^6\. friday calculation drill', 'calc'), (r'^7\. rapid revision', 'revision'),
+    (r'^8\. fifteen exam traps', 'pearls'), (r'^9\. active recall', 'recall'), (r'^14\. actual error-notebook audit', 'plan'), (r'^1[5-8]\. (source register|full v4|five stages|release decision)', 'references'),
+    (r'^part (ii|iii|xi)  \|  (75 base|10 notebook|examiner key)', 'mcq'), (r'^part iv  \|  nine clinical', 'cases'), (r'^part v  \|  five data', 'data'),   # Day 33
+    (r'^part vi  \|  four clinical algorithms', 'tables'), (r'^part vii  \|  five calculation', 'calc'), (r'^part viii  \|  active recall', 'recall'), (r'^part ix  \|  rapid revision', 'revision'),
+    (r'^part x  \|  examination traps', 'pearls'), (r'^part xii  \|  v4 release', 'references'), (r'^student scoring and notebook log', 'plan'),
+    (r'^part iii  \|  clinical application', 'cases'), (r'^part ii  \|  75 base mcqs', 'mcq'), (r'^five-hour study allocation', 'overview'), (r'^part iv  \|  v4 examiner qa', 'references'), (r'^nine clinical cases$', 'cases'),   # Day 34
+    (r'^five data-interpretation stations$', 'data'), (r'^five calculation drills \(sunday', 'calc'), (r'^four clinical algorithms$', 'tables'), (r'^active recall — 25', 'recall'),
+    (r'^rapid revision — 25 pearls', 'revision'), (r'^exam traps — 15$', 'pearls'),
     (r'four-option explanations and examination pearls|^examiner key\b', 'mcq'), (r'^section [a-z] — examination traps', 'pearls'), (r'^red / amber notebook', 'plan'),   # Day 29
     (r'^exam blueprint and study flow', 'overview'), (r'^clinical reference hierarchy|^five stage and six controls', 'references'),
     (r'^\d+\. questions\b|all-option explanations', 'mcq'), (r'learner route', 'overview'), (r'case stations', 'cases'),   # Day 24
@@ -161,6 +176,11 @@ def build(day, docx, keep_order=False):
     if os.path.abspath(docx) != os.path.abspath(f'{D}/source/{src_name}'):
         shutil.copy2(docx, f'{D}/source/{src_name}')
     doc = dp.Doc(f'{D}/source/{src_name}')
+    xf = f'{D}/source/extras.json'
+    extras = json.load(open(xf, encoding='utf-8')) if os.path.exists(xf) else {}
+    # extras "split_h2": regex of Heading-2 titles that start their own part (a combined part such as
+    # "Rapid revision and examination traps" holding several portal pages)
+    dp.SPLIT_H2 = re.compile(extras['split_h2'], re.I) if extras.get('split_h2') else None
     title, pre, parts = dp.split_h1(doc)
     pages, notes, warnings = {}, [], []
     total_blocks = 0
@@ -171,8 +191,6 @@ def build(day, docx, keep_order=False):
     station_answers = None
     # Optional per-day extras (DayN/source/extras.json): generated images for image-based MCQs and visual stations,
     # and reworded Calculation Drill questions. See NEET_SS_QUIZ_REPO_UPDATE_AGENT_RULES.md.
-    xf = f'{D}/source/extras.json'
-    extras = json.load(open(xf, encoding='utf-8')) if os.path.exists(xf) else {}
 
     def add(pid, h1, sections, as_section=True):
         h1 = re.sub(r'\s*\(restart numbering\)', '', re.sub(r'^\d+[A-Z]?\.\s+', '', h1), flags=re.I)   # numbered parts "16. Error-notebook …": number dropped from the heading
@@ -204,7 +222,7 @@ def build(day, docx, keep_order=False):
             # Day 19: teaching ("Advanced addition — …" headings) placed before Q01 in the MCQ part -> its own notes page
             lead = []
             for el in els:
-                if el.tag == dp.W + 'p' and re.match(r'^(?:[QR]|RT)\d+\s{2,}\S|^Q\d+\s+\[', dp.text(el)):
+                if el.tag == dp.W + 'p' and re.match(r'^(?:[QR]|RT)\d+\s{2,}\S|^Q\d+\s+\[|^[BVR]\d{3}\s*\||^D\d+-(?:Q|RT)\d+\s', dp.text(el)):
                     break
                 lead.append(el)
             hs = [i for i, el in enumerate(lead) if el.tag == dp.W + 'p' and doc.style(el).startswith('heading 2')]
@@ -380,13 +398,36 @@ def build(day, docx, keep_order=False):
     # Day 21: case titles "3 • Incessant long-RP" name the answer -> "Case 3 — …" (the portal hides the topic until the reveal);
     # station titles "S2 — P/QRS dissociation" -> "Visual Station 2 — …" (same)
     for s_ in pages.get('cases', {}).get('sections', []):
-        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title']) or re.match(r'^Case (\d+)\.\s+(.+)$', s_['title']) or re.match(r'^\d+\.\s+Case (\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Case (\d+):\s*(.+)$', s_['title'])   # Day 23: "1. Case 1 — rural clinic"
+        m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title']) or re.match(r'^Case (\d+)\.\s+(.+)$', s_['title']) or re.match(r'^\d+\.\s+Case (\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Case (\d+):\s*(.+)$', s_['title']) or re.match(r'^C(\d+)\s*[|—–-]\s*(.+)$', s_['title']) or re.match(r'^Case 0*(\d+)\s*[—–-]\s*(.+)$', s_['title'], re.I)   # Days 30–34: "C01 | topic", "Case 01 — topic", "CASE 1 — topic"; Day 23: "1. Case 1 — rural clinic"
         if m_:
-            s_['title'] = f'Case {m_[1]} — {m_[2]}'
+            s_['title'] = f'Case {int(m_[1])} — {m_[2]}'
+    # Day 31: stations written as plain paragraphs "Station 1: Peripheral smear" + "Interpretation: <data>: <answer>" —
+    # each becomes its own station with the data visible and the answer hidden
+    if 'data' in pages:
+        secs_, plain = [], False
+        for s_ in pages['data']['sections']:
+            for b in s_['blocks']:
+                tx = html.unescape(re.sub(r'<[^>]+>', '', b.get('html', ''))) if b['t'] == 'p' else ''
+                m_ = re.match(r'^Station (\d+):\s*(.+)$', tx)
+                if m_:
+                    plain = True
+                    secs_.append({'title': f'Station {m_[1]} — {m_[2]}', 'h1': '', 'blocks': []})
+                    continue
+                m_ = plain and re.match(r'^Interpretation:\s*(.+?):\s+(.+)$', tx)
+                if m_:
+                    secs_[-1]['blocks'] += [{'t': 'p', 'html': f'<strong>Data:</strong> {html.escape(m_[1], quote=False)}'},
+                                            {'t': 'p', 'html': f'<strong>Interpretation:</strong> {html.escape(m_[2], quote=False)}'}]
+                    continue
+                if plain:
+                    secs_[-1]['blocks'].append(b)
+            if not plain:
+                secs_.append(s_)
+        if plain:
+            pages['data']['sections'] = [s_ for s_ in secs_ if s_['blocks']]
     for s_ in pages.get('data', {}).get('sections', []):
-        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Station (\d+)\.\s+(.+)$', s_['title']) or (lambda m: m and (m[0], str('ABCDEFGH'.index(m[1]) + 1), m[2]))(re.match(r'^Station ([A-H])\s*[—–-]\s*(.+)$', s_['title'])) or re.match(r'^Station (\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
+        m_ = re.match(r'^S(\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Station (\d+)\.\s+(.+)$', s_['title']) or (lambda m: m and (m[0], str('ABCDEFGH'.index(m[1]) + 1), m[2]))(re.match(r'^Station ([A-H])\s*[—–-]\s*(.+)$', s_['title'])) or re.match(r'^Station 0*(\d+)\s*[—–-]\s*(.+)$', s_['title'], re.I) or re.match(r'^D0*(\d+)\s*\|\s*(.+)$', s_['title']) or re.match(r'^\d+\.\s+Station (\d+)\s*[—–-]\s*(.+)$', s_['title'])
         if m_:
-            s_['title'] = f'Visual Station {m_[1]} — {m_[2]}'
+            s_['title'] = f'Visual Station {int(m_[1])} — {m_[2]}'
     # extras "reveal_images": {"image2.png": "Visual Station 1"} — a document picture above the stations that labels a
     # station's answer moves into that station, hidden with its interpretation
     for name, st_title in extras.get('reveal_images', {}).items():
@@ -513,6 +554,19 @@ def build(day, docx, keep_order=False):
     problems = [pr for pr in problems if not (re.match(r'^Q(\d+): answer key ', pr) and int(re.match(r'^Q(\d+)', pr)[1]) in stale)]
     if problems:
         raise SystemExit('MCQ problems — fix the source or parser first:\n  ' + '\n  '.join(problems))
+
+    def fix_reasons(qs_):
+        # extras "reason_fixes": {"77": {"C": "D", "D": "C"}} — the document printed a wrong option's reason under another
+        # letter (Day 30 retests); the reason written under C (document letters) is moved to option D. Text unchanged.
+        for n, mv in extras.get('reason_fixes', {}).items():
+            q = next(q for q in qs_ if q['num'] == int(n))
+            old = dict(q['why_not'])
+            for a, b in mv.items():
+                if q['answer'] in ('ABCD'.index(a), 'ABCD'.index(b)):
+                    raise SystemExit(f'reason_fixes Q{n}: the keyed option cannot be moved')
+                q['why_not']['ABCD'.index(b)] = old['ABCD'.index(a)]
+            q['explanation'] = dp.compose_explanation(q)
+    fix_reasons(qs)
     # Source answer keys can be patterned (e.g. A-B-C-D repeating), so options are shuffled once —
     # unless the source already carries a randomised key (--keep-order), so site letters match the doc.
     if keep_order:
@@ -521,6 +575,7 @@ def build(day, docx, keep_order=False):
     else:
         dp.shuffle_options(qs, seed=f'Day{day}')
     fresh, _, _ = dp.parse_mcqs(doc, parts, extras.get('explanation_option_text'))   # independent, unshuffled re-parse
+    fix_reasons(fresh)
     for q, f0 in zip(qs, fresh):
         ok = (sorted(q['options']) == sorted(f0['options']) and q['options'][q['answer']] == f0['options'][f0['answer']]
               and all(q['options'][i] == f0['options'][j] and v == f0['why_not'][j] for i, v in q['why_not'].items()

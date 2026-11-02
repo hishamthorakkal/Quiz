@@ -1,0 +1,33 @@
+{
+  "title": "Acute & Chronic Diarrhoea — Dehydration, ORS & Surgical Mimics",
+  "split_h2": "^(Must-know numbers$|Student scoring and notebook log)",
+  "retests": {
+    "76": {"stage": "R1", "from": "Day 19 Q11 — obstructed infracardiac TAPVC"},
+    "77": {"stage": "R1", "from": "Day 19 Q23 — TGA"},
+    "78": {"stage": "R1", "from": "Day 19 Q28 — TAPVC"},
+    "79": {"stage": "R1", "from": "Day 19 Q35 — Single ventricle"},
+    "80": {"stage": "R1", "from": "Day 19 Q56 — Single ventricle"},
+    "81": {"stage": "R1", "from": "Day 19 Q70 — Truncus"},
+    "82": {"stage": "R1", "from": "Day 15 Q31 — Wolf–Hirschhorn syndrome — 4p deletion / Greek-warrior helmet"},
+    "83": {"stage": "R1", "from": "Day 15 Q61 — Galactokinase versus GALT versus hereditary fructose intolerance"},
+    "84": {"stage": "R1", "from": "Day 15 Q77 — MCAD deficiency — C8 acylcarnitine"},
+    "85": {"stage": "R2", "from": "Day 10 Q8 — CPS 72 h vs PES 48 h"}
+  },
+  "calc_items": [
+    {"title": "Plan B", "question": "An 11-kg toddler has some dehydration. Calculate the initial ORS volume over four hours.",
+     "working": "75×11 = 825 mL over 4 h; ongoing losses extra.", "trap": "",
+     "parts": [{"answer": 825, "unit": "mL"}]},
+    {"title": "Plan C infant", "question": "An 8-kg, 9-month-old has severe dehydration without shock. Calculate the 30 mL/kg and 70 mL/kg phase volumes.",
+     "working": "240 mL in the first 1 h, 560 mL over the next 5 h, total 800 mL; monitor.", "trap": "",
+     "parts": [{"label": "First phase", "answer": 240, "unit": "mL"}, {"label": "Second phase", "answer": 560, "unit": "mL"}]},
+    {"title": "Stool osmotic gap", "question": "Stool Na 35 mmol/L and K 25 mmol/L; assume osmolality 290. Calculate the stool osmotic gap.",
+     "working": "290 − 2×(35+25) = 170 mOsm/kg; supports osmotic physiology.", "trap": "",
+     "parts": [{"answer": 170, "unit": "mOsm/kg"}]},
+    {"title": "CALC-D20-C8 repair", "question": "Arterial O₂ content 19 mL/dL; venous O₂ content 14 mL/dL. Calculate C(a−v)O₂.",
+     "working": "19 − 14 = 5 mL O₂/dL blood. Prior failure status Active; do not mark passed.", "trap": "",
+     "parts": [{"answer": 5, "unit": "mL O₂/dL"}]},
+    {"title": "CALC-D21-C6 repair", "question": "A 28-kg child is prescribed a second adenosine dose of 0.2 mg/kg IV rapid push under a protocol with a 12-mg maximum. Calculate the dose.",
+     "working": "0.2×28 = 5.6 mg, below the 12-mg cap; IV rapid push with flush under monitored local protocol. Prior failure Active.", "trap": "",
+     "parts": [{"answer": 5.6, "unit": "mg"}]}
+  ]
+}

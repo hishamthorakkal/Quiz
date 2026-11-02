@@ -1,0 +1,38 @@
+{
+  "title": "Nephrology System Revision — CKD, Dialysis, Hypertension, UTI, CAKUT & VUR",
+  "retests": {
+    "126": {"stage": "R1", "from": "Day 15 Q61 — Galactokinase versus GALT versus hereditary fructose intolerance"},
+    "127": {"stage": "R1", "from": "Day 15 Q77 — MCAD deficiency — C8 acylcarnitine"},
+    "128": {"stage": "R1", "from": "Day 19 Q23 — TGA"},
+    "129": {"stage": "R1", "from": "Day 19 Q28 — TAPVC"},
+    "130": {"stage": "R1", "from": "Day 19 Q35 — Single ventricle"},
+    "131": {"stage": "R1", "from": "Day 19 Q56 — Single ventricle"},
+    "132": {"stage": "R1", "from": "Day 19 Q70 — Truncus"},
+    "133": {"stage": "R1", "from": "Day 10 Q8 — CPS 72 h vs PES 48 h"},
+    "134": {"stage": "R1", "from": "Day 11 Q25 — ETROP Type 1 ROP"},
+    "135": {"stage": "R1", "from": "Day 5 Q53 — Jensen BPD grade"}
+  },
+  "calc_items": [
+    {"title": "Bedside Schwartz", "question": "Height 105 cm, creatinine 0.70 mg/dL, constant 0.413. Estimate the eGFR.",
+     "working": "0.413×105/0.70 = 61.95 ≈ 62 mL/min/1.73 m².", "trap": "Formula applies when stated; interpret age, assay and clinical chronicity.",
+     "parts": [{"answer": 62, "unit": "mL/min/1.73 m²"}]},
+    {"title": "Corrected sodium", "question": "Measured Na 130 mmol/L and glucose 500 mg/dL. Using the specified correction of +1.6 mmol/L per 100 mg/dL glucose above 100, compute the corrected Na.",
+     "working": "130 + 1.6×(500−100)/100 = 136.4 mmol/L.", "trap": "The factor is stipulated for this arithmetic exercise; alternative factors may be used at marked hyperglycemia.",
+     "parts": [{"answer": 136.4, "unit": "mmol/L"}]},
+    {"title": "Anion gap", "question": "Na 142, Cl 111, HCO₃ 15 mmol/L. Calculate the uncorrected anion gap.",
+     "working": "142−(111+15) = 16 mmol/L.", "trap": "Correct for low albumin when clinically needed.",
+     "parts": [{"answer": 16, "unit": "mmol/L"}]},
+    {"title": "Winter formula", "question": "HCO₃ 14 mmol/L. What is the expected respiratory PCO₂ in metabolic acidosis?",
+     "working": "1.5×14 + 8 = 29 ±2 mmHg.", "trap": "Measured PCO₂ above the range indicates additional respiratory acidosis.",
+     "parts": [{"answer": 29, "unit": "mmHg", "tol": 2}]},
+    {"title": "D10 mass repair", "question": "A 6.8-kg child is prescribed 5 mL/kg of 10% dextrose in a defined arithmetic scenario. Give the volume and the glucose mass.",
+     "working": "6.8×5 = 34 mL; D10 = 0.1 g/mL; 34×0.1 = 3.4 g.", "trap": "Arithmetic only; the 5 mL/kg prescription is scenario-specific, not universal hypoglycemia guidance.",
+     "parts": [{"label": "Volume", "answer": 34, "unit": "mL"}, {"label": "Glucose", "answer": 3.4, "unit": "g"}]},
+    {"title": "Adenosine dose repair", "question": "A stable child with regular narrow-complex SVT weighs 28 kg. Under a specified second-dose protocol of 0.2 mg/kg rapid IV/IO bolus, maximum 12 mg, calculate the dose.",
+     "working": "28×0.2 = 5.6 mg, below the 12 mg maximum.", "trap": "Rapid IV/IO push followed by flush under ECG monitoring; avoid inappropriate use in irregular wide-complex/pre-excited AF; follow local PALS protocol.",
+     "parts": [{"answer": 5.6, "unit": "mg"}]},
+    {"title": "Arteriovenous O₂ difference", "question": "Arterial oxygen content 18.2 mL/dL; mixed venous content 13.4 mL/dL. Calculate C(a−v)O₂.",
+     "working": "18.2 − 13.4 = 4.8 mL O₂/dL blood.", "trap": "The difference is not the same as arterial oxygen content; preserve units.",
+     "parts": [{"answer": 4.8, "unit": "mL O₂/dL"}]}
+  ]
+}
