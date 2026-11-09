@@ -1,0 +1,202 @@
+{
+ "title": "GI + Hepatology Integrated Revision",
+ "split_h2": "^C1 — WHO Plan B$",
+ "retests": {
+  "101": {
+   "stage": "R1",
+   "from": "Day 17 Q44 — Krichenko PDA classification"
+  },
+  "102": {
+   "stage": "R1",
+   "from": "Day 15 Q61 — Galactokinase versus GALT versus hereditary fructose intolerance"
+  },
+  "103": {
+   "stage": "R1",
+   "from": "Day 14 Q30 — F-75 daily feed volume"
+  },
+  "104": {
+   "stage": "R1",
+   "from": "Day 15 Q31 — Wolf–Hirschhorn syndrome — 4p deletion / Greek-warrior helmet"
+  },
+  "105": {
+   "stage": "R2",
+   "from": "Day 10 Q8 — CPS 72 h vs PES 48 h"
+  },
+  "106": {
+   "stage": "R3",
+   "from": "Day 5 Q53 — Jensen BPD grade"
+  },
+  "107": {
+   "stage": "R2",
+   "from": "Day 11 Q55 — ROP screening timing"
+  },
+  "108": {
+   "stage": "R3",
+   "from": "Day 10 Q47 — GIR to dextrose concentration"
+  },
+  "109": {
+   "stage": "R3",
+   "from": "Day 10 Q50 — Hyperinsulinism — glucagon response"
+  },
+  "110": {
+   "stage": "R2",
+   "from": "Day 19 Q11 — obstructed infracardiac TAPVC"
+  }
+ },
+ "calc_items": [
+  {
+   "title": "WHO Plan B",
+   "question": "An 11-kg child with some dehydration is prescribed WHO Plan B ORS 75 mL/kg over 4 hours. Calculate the total ORS volume.",
+   "working": "75 × 11 = 825 mL over 4 hours.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 825,
+     "unit": "mL"
+    }
+   ]
+  },
+  {
+   "title": "WHO Plan C",
+   "question": "An 8-kg infant with severe dehydration, without shock, receives WHO Plan C: 100 mL/kg in total, first 30 mL/kg then 70 mL/kg. Calculate the volume of each phase.",
+   "working": "8 × 30 = 240 mL; 8 × 70 = 560 mL; total 8 × 100 = 800 mL.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 240,
+     "unit": "mL",
+     "label": "First phase (30 mL/kg)"
+    },
+    {
+     "answer": 560,
+     "unit": "mL",
+     "label": "Second phase (70 mL/kg)"
+    }
+   ]
+  },
+  {
+   "title": "ORS for ongoing losses",
+   "question": "A 2-year-old has four additional watery stools and is prescribed 150 mL ORS after each. Calculate the replacement volume.",
+   "working": "4 × 150 = 600 mL, in addition to the baseline/rehydration plan.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 600,
+     "unit": "mL"
+    }
+   ]
+  },
+  {
+   "title": "Weight loss",
+   "question": "Pre-illness weight was 10.2 kg; current weight is 9.5 kg. Calculate the percentage weight loss from the baseline weight.",
+   "working": "(10.2 − 9.5)/10.2 × 100 = 6.86% ≈ 6.9%.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 6.9,
+     "unit": "%"
+    }
+   ]
+  },
+  {
+   "title": "Fractionated bilirubin",
+   "question": "Total bilirubin is 5 mg/dL and direct bilirubin 1.4 mg/dL. Calculate the direct fraction as a percentage (does a fraction below 20% exclude cholestasis?).",
+   "working": "1.4/5 × 100 = 28%. No — an absolute direct bilirubin ≥1 mg/dL is concerning whatever the fraction.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 28,
+     "unit": "%"
+    }
+   ]
+  },
+  {
+   "title": "Maintenance fluid",
+   "question": "Using Holliday–Segar 100/50/20, calculate the 24-hour maintenance fluid estimate for a 24-kg child (before clinical adjustment).",
+   "working": "First 10 kg 1000 mL; next 10 kg 500 mL; final 4 kg 80 mL = 1580 mL/day.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 1580,
+     "unit": "mL/day"
+    }
+   ]
+  },
+  {
+   "title": "Stool osmotic gap",
+   "question": "Stool sodium is 40 mmol/L and potassium 30 mmol/L. Calculate the stool osmotic gap = 290 − 2(Na + K).",
+   "working": "290 − 2(40 + 30) = 150 mOsm/kg; a high gap suggests an osmotic mechanism.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 150,
+     "unit": "mOsm/kg"
+    }
+   ]
+  },
+  {
+   "title": "Adenosine second dose (notebook repair)",
+   "question": "A stable 32-kg child with SVT: a named local protocol specifies second-dose adenosine 0.2 mg/kg rapid IV/IO push, maximum 12 mg. Calculate the dose.",
+   "working": "0.2 × 32 = 6.4 mg, below the 12 mg maximum. Rapid IV/IO with flush and monitoring; check rhythm, contraindications and the current local protocol.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 6.4,
+     "unit": "mg"
+    }
+   ]
+  }
+ ],
+ "added_why_not": {
+  "101": {
+   "A": "Type C is tubular, a duct without constriction; a cone narrowing at the pulmonary end is type A.",
+   "C": "Type E is elongated with a constriction remote from the trachea edge, not a simple cone.",
+   "D": "Type B is a short window-like duct with aortic-end narrowing, not a conical duct."
+  },
+  "102": {
+   "A": "Classic GALT deficiency causes cataracts but with hepatic failure, coagulopathy and E. coli sepsis; their absence favours galactokinase deficiency.",
+   "B": "ALDOB deficiency (hereditary fructose intolerance) presents after fructose or sucrose exposure with hypoglycaemia and liver dysfunction, not milk-related cataracts.",
+   "D": "ATP7B deficiency is Wilson disease, presenting later in childhood with liver or neuropsychiatric disease, not neonatal cataracts."
+  },
+  "103": {
+   "A": "700 mL corresponds to 100 mL/kg/day, not the prescribed 130 mL/kg/day.",
+   "C": "1,300 mL comes from multiplying 130 by 10 kg instead of 7 kg.",
+   "D": "1,820 mL is double the correct product (130 x 7 x 2), a doubling error."
+  },
+  "104": {
+   "B": "Cri-du-chat (5p deletion) causes a high-pitched cat-like cry and microcephaly but not the Greek-warrior helmet facies.",
+   "C": "22q11.2 deletion causes conotruncal heart disease, hypocalcaemia and thymic hypoplasia, not Greek-warrior helmet facies.",
+   "D": "7q11.23 deletion (Williams) causes elfin facies, supravalvar aortic stenosis and hypercalcaemia."
+  },
+  "105": {
+   "A": "PES allows evaluation after 48 hours when hypoglycaemia persists; insisting on 72 hours misapplies the transitional window.",
+   "C": "Hypoglycaemia persisting beyond 48 hours with low ketones is not physiological and needs evaluation.",
+   "D": "Insulin may be undetectable in hyperinsulinism; suppressed ketones and FFA with a glucagon response indicate insulin action."
+  },
+  "106": {
+   "A": "Jensen grade 1 is nasal cannula at or below 2 L/min; 3 L/min exceeds this.",
+   "B": "Any qualifying respiratory support at 36 weeks PMA defines BPD; 3 L/min cannula is not no BPD.",
+   "C": "Grade 3 requires invasive mechanical ventilation; nasal cannula is non-invasive support."
+  },
+  "107": {
+   "B": "24 weeks PMA is the age at birth; the first exam is deferred because treatable ROP does not develop that early.",
+   "C": "36 weeks PMA is far too late for a 24-week infant and risks missing treatment-requiring ROP.",
+   "D": "40 weeks PMA is term-equivalent age and would miss the window for timely treatment."
+  },
+  "108": {
+   "A": "5.2 is what 12.5 x 60 / 144 gives, i.e. using 60 instead of 90 mL/kg/day.",
+   "C": "10.4 is what 12.5 x 120 / 144 gives, i.e. using 120 instead of 90 mL/kg/day.",
+   "D": "12.5 simply restates the dextrose percentage instead of calculating the GIR."
+  },
+  "109": {
+   "A": "Ketotic hypoglycaemia shows high ketones and a poor glucagon response, the opposite of these findings.",
+   "B": "Fatty-acid oxidation defects show elevated FFA with low ketones; here FFA are suppressed.",
+   "D": "Renal glucosuria does not cause hypoglycaemia with suppressed ketones and a brisk glucagon response."
+  },
+  "110": {
+   "B": "Obstructed TAPVC causes progressive pulmonary oedema and death within hours to days; elective follow-up is lethal.",
+   "C": "The duct is not the problem; obstructed pulmonary venous return needs surgical repair.",
+   "D": "Oral iron is irrelevant to an obstructed TAPVC surgical emergency."
+  }
+ }
+}

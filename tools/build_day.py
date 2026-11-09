@@ -36,6 +36,15 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
+    (r'^five-hour study workflow$|^five-hour study flow$|^study flow \(5 hours\)$|^study plan \(5 hours\)$|^scope and study schedule$', 'overview'),   # Days 36–41
+    (r'^part [bcg]  \|  |^notebook retest answer and stage audit$|^75 mcqs — |^practice questions$|^original mcqs — 30|^30 distinct provisional mcqs', 'mcq'),
+    (r'^part d  \|  nine clinical cases|^clinical application — 8 cases$|^eight clinical mini-cases|^clinical mini-cases \(8\)$|^clinical case discussion$', 'cases'),
+    (r'^part e  \|  five data|^five interpretation stations$|^data interpretation \(5\)$', 'data'), (r'^part f  \|  four algorithms', 'tables'),
+    (r'^c1 — who plan b$|^calculation answer register$|^five numerical drills|^numerical answer key$|^calculation practice \(5', 'calc'),
+    (r'^clinical case examiner interpretations$', 'caseanswers'), (r'^data interpretation station keys$', 'stationanswers'),
+    (r'^25 active[ -]recall prompts$|^active recall \(25\)$|^active recall — 1?5 prompts$|^active recall — 25 prompts$', 'recall'),
+    (r'^25 rapid revision pearls$|^rapid revision pearls \(25\)$', 'revision'), (r'^fifteen examination traps$|^15 examination traps$|^exam traps \(15\)$', 'pearls'),
+    (r'^source-access and safety register$|^source access register$|^v4 |^question-level v4 ledger|^per-section qa totals$|^per-stage reviewed|^unresolved requirements$|^source and (guideline|retest) register$|^source register \(truthful', 'references'),
     (r'^6\s+•\s+rapid revision pearls', 'revision'), (r'^4\s+•\s+data and schematic', 'data'), (r'^9\s+•\s+mcq practice', 'mcq'),   # Day 35 ("N  •  title" parts)
     (r'^9a\s+•\s+active recall answer key', 'recall'), (r'^1[345]\s+•\s+|^independent critical review and remediation', 'references'),
     (r'^nephrotic syndrome • nephritic syndrome', 'overview'), (r'^part ii(-b)? — (75 base mcqs|error-notebook retests)', 'mcq'), (r'^part iii — nine clinical case', 'cases'), (r'^part iv — five image/data', 'data'),   # Day 30
@@ -191,6 +200,7 @@ def build(day, docx, keep_order=False):
     calc = None
     doc_mcq_imgs = set()
     station_answers = None
+    case_answers = None
     # Optional per-day extras (DayN/source/extras.json): generated images for image-based MCQs and visual stations,
     # and reworded Calculation Drill questions. See NEET_SS_QUIZ_REPO_UPDATE_AGENT_RULES.md.
 
@@ -238,6 +248,10 @@ def build(day, docx, keep_order=False):
         if kind == 'recallkey':                # Day 19: answers for the overdue Day 13 recall prompts, paired below
             recall_key = secs
             continue
+        if kind == 'caseanswers':             # Day 36: "Case N: answer" lines -> hidden examiner interpretation of case N
+            case_answers = secs
+            total_blocks += sum(len(s['blocks']) for s in secs)
+            continue
         if kind == 'stationanswers':          # "Station N: answer" lines -> hidden interpretation of station N
             station_answers = secs
             total_blocks += sum(len(s['blocks']) for s in secs)
@@ -250,7 +264,7 @@ def build(day, docx, keep_order=False):
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
-            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—|-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1) or re.match(r'^([A-Z])\.\s+(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\s+•\s+(.+)$', h1)   # Day 35 "1  •  High-yield clinical notes"
+            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—|-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1) or re.match(r'^([A-Z])\.\s+(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\s+•\s+(.+)$', h1) or re.match(r'^Part ([A-Z])\s+\|\s+(.+)$', h1)   # Day 36 "Part A  |  …"; Day 35 "1  •  High-yield clinical notes"
             mm = re.match(r'^Module (\d+)\s*[—–-]\s*(.+)$', h1)          # Day 19: "Module 2 — d-TGA: the mixing problem"
             pid = f'part-{len(notes) + 1}'
             if mm:
@@ -271,7 +285,21 @@ def build(day, docx, keep_order=False):
         if kind == 'pearls':
             pages.setdefault('pearls', {'id': 'pearls', 'title': PAGES['pearls'][0], 'group': PAGES['pearls'][1], 'kind': 'pearls', 'sections': []})['h1'] = h1
         add(kind, h1, secs, as_section=kind in ('overview', 'tables', 'plan', 'references'))
+    if case_answers and 'cases' in pages:
+        for s_ in case_answers:
+            for b in s_['blocks']:
+                t_ = re.sub(r'<[^>]+>', '', b.get('html', '')) if b['t'] == 'p' else ''
+                m_ = re.match(r'^Case (\d+)\s*:\s*(.+)$', t_)
+                tgt = m_ and next((s for s in pages['cases']['sections'] if re.match(rf'^Case {m_[1]}\b', s['title'])), None)
+                if not tgt:
+                    raise SystemExit(f'Case answer without a matching case: {t_[:60]}')
+                tgt['blocks'].append({'t': 'p', 'html': '<strong>Examiner interpretation:</strong> ' + re.sub(r'^(<[^>]+>)*\s*Case \d+\s*:\s*', '', b['html'])})
     if station_answers and 'data' in pages:
+        # Day 36: stations print an empty "Interpretation: ______" line for the learner; the key replaces it
+        for s_ in pages['data']['sections']:
+            blank = [b for b in s_['blocks'] if b['t'] == 'p' and re.match(r'^(<[^>]+>)*\s*Interpretation:\s*_+\s*(<[^>]+>)*$', b['html'])]
+            s_['blocks'] = [b for b in s_['blocks'] if b not in blank]
+            total_blocks -= len(blank)
         for s_ in station_answers:
             for b in s_['blocks']:
                 t_ = re.sub(r'<[^>]+>', '', b.get('html', '')) if b['t'] == 'p' else ''
@@ -403,6 +431,39 @@ def build(day, docx, keep_order=False):
         m_ = re.match(r'^(\d+)\s*•\s*(.+)$', s_['title']) or re.match(r'^Case (\d+)\.\s+(.+)$', s_['title']) or re.match(r'^\d+\.\s+Case (\d+)\s*[—–-]\s*(.+)$', s_['title']) or re.match(r'^Case (\d+):\s*(.+)$', s_['title']) or re.match(r'^C(\d+)\s*[|—–-]\s*(.+)$', s_['title']) or re.match(r'^Case 0*(\d+)\s*[—–-]\s*(.+)$', s_['title'], re.I)   # Days 30–34: "C01 | topic", "Case 01 — topic", "CASE 1 — topic"; Day 23: "1. Case 1 — rural clinic"
         if m_:
             s_['title'] = f'Case {int(m_[1])} — {m_[2]}'
+    # Days 37/38/40: cases written as plain paragraphs "Case 1. task" / "Case ALL: task" -> one section each ("Case N");
+    # a label that is not a number names the diagnosis (Day 38), so it moves behind the reveal as the answer
+    if 'cases' in pages:
+        secs_, moved = [], 0
+        for s_ in pages['cases']['sections']:
+            ps_ = [b['t'] == 'p' and re.match(r'^(?:<[^>]+>)*Case ([^:.<]{1,30}?)(?:</[^>]+>)*\s*[:.]\s+(.+)$', b['html']) for b in s_['blocks']]
+            if s_['title'] or sum(1 for x in ps_ if x) < 3:
+                secs_.append(s_)
+                continue
+            for b, x in zip(s_['blocks'], ps_):
+                if not x:
+                    (secs_[-1]['blocks'] if secs_ else s_['blocks']).append(b)
+                    continue
+                k = len([s for s in secs_ if re.match(r'^Case \d+$', s['title'])]) + 1
+                blocks = [{'t': 'p', 'html': x[2]}]
+                if not x[1].strip().isdigit():
+                    blocks.append({'t': 'p', 'html': f'<strong>Answer:</strong> {x[1].strip()}'})
+                    moved += 1
+                secs_.append({'title': f'Case {k}', 'h1': '', 'blocks': blocks})
+        pages['cases']['sections'] = secs_
+        total_blocks += moved
+        # Day 41: case sections titled only by their topic ("Febrile neutropenia") -> "Case N — topic" (topic hidden)
+        if pages['cases']['sections'] and not any(re.match(r'^Case\b', s['title']) for s in pages['cases']['sections']):
+            for k, s_ in enumerate(pages['cases']['sections'], 1):
+                s_['title'] = f'Case {k} — {s_["title"]}' if s_['title'] else f'Case {k}'
+    if 'recall' in pages and len(pages['recall']['sections']) == 1:      # Day 41: "AR01: prompt" paragraphs (no answers) -> one card list
+        for s_ in pages['recall']['sections']:
+            ms_ = [b['t'] == 'p' and re.match(r'^(?:<[^>]+>)*AR\d+\s*[:.]\s*(.+)$', b['html']) for b in s_['blocks']]
+            if sum(1 for x in ms_ if x) >= 5 and not any(x and re.search(r'(?i)answer:', x[1]) for x in ms_):
+                items = [x[1].strip() for x in ms_ if x]
+                rest_ = [b for b, x in zip(s_['blocks'], ms_) if not x]
+                total_blocks -= len(items) - 1
+                s_['blocks'] = [{'t': 'list', 'ordered': True, 'items': items}] + rest_
     # Day 31: stations written as plain paragraphs "Station 1: Peripheral smear" + "Interpretation: <data>: <answer>" —
     # each becomes its own station with the data visible and the answer hidden
     if 'data' in pages:

@@ -1,0 +1,65 @@
+{
+ "title": "Paediatric Solid Tumours & Oncologic Emergencies",
+ "calc_items": [
+  {
+   "title": "Body surface area",
+   "question": "A child weighs 20 kg and is 110 cm tall. Calculate the body surface area by the Mosteller formula √(height × weight / 3600).",
+   "working": "√(110 × 20 / 3600) = √0.611 = 0.78 m².",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 0.78,
+     "unit": "m²"
+    }
+   ]
+  },
+  {
+   "title": "Absolute neutrophil count",
+   "question": "WBC 1,000/µL with neutrophils 12% and bands 3%. Calculate the absolute neutrophil count.",
+   "working": "1000 × 0.15 = 150/µL.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 150,
+     "unit": "/µL"
+    }
+   ]
+  },
+  {
+   "title": "Corrected calcium",
+   "question": "Measured calcium 7.2 mg/dL, albumin 2.0 g/dL. Using the conventional Ca + 0.8 × (4 − albumin), calculate the corrected calcium.",
+   "working": "7.2 + 0.8 × (4 − 2) = 8.8 mg/dL; the correction is unreliable in critical illness and ionised calcium is preferred.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 8.8,
+     "unit": "mg/dL"
+    }
+   ]
+  },
+  {
+   "title": "Maintenance fluid",
+   "question": "Calculate the 24-hour Holliday–Segar maintenance fluid for a 22-kg child (not a tumour-lysis hyperhydration order).",
+   "working": "1000 + 500 + 40 = 1540 mL/day.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 1540,
+     "unit": "mL/day"
+    }
+   ]
+  },
+  {
+   "title": "Tumour volume",
+   "question": "A mass measures 6 × 4 × 3 cm. Estimate its ellipsoid volume = π/6 × length × width × height.",
+   "working": "π/6 × 72 ≈ 37.7 cm³.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 37.7,
+     "unit": "cm³"
+    }
+   ]
+  }
+ ]
+}

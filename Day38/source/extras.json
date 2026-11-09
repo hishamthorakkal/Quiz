@@ -1,0 +1,442 @@
+{
+ "title": "Haematology & Oncology",
+ "calc_items": [
+  {
+   "title": "Absolute neutrophil count",
+   "question": "WBC 2,000/µL with neutrophils 10% and bands 5%. Calculate the absolute neutrophil count.",
+   "working": "2000 × (10 + 5)/100 = 300/µL.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 300,
+     "unit": "/µL"
+    }
+   ]
+  },
+  {
+   "title": "Corrected reticulocyte count",
+   "question": "Reticulocytes 8%, haematocrit 20%, normal haematocrit taken as 40%. Calculate the corrected reticulocyte percentage.",
+   "working": "8% × 20/40 = 4%.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 4,
+     "unit": "%"
+    }
+   ]
+  },
+  {
+   "title": "Absolute reticulocyte count",
+   "question": "RBC 2.5 million/µL with reticulocytes 6%. Calculate the absolute reticulocyte count.",
+   "working": "2,500,000 × 0.06 = 150,000/µL.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 150000,
+     "unit": "/µL"
+    }
+   ]
+  },
+  {
+   "title": "Transfusion volume (arithmetic only)",
+   "question": "Calculate a 10 mL/kg volume for a 17-kg child.",
+   "working": "10 × 17 = 170 mL (arithmetic only, not a prescription).",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 170,
+     "unit": "mL"
+    }
+   ]
+  },
+  {
+   "title": "Corrected calcium",
+   "question": "Measured calcium 7.2 mg/dL, albumin 2.0 g/dL. Using the conventional Ca + 0.8 × (4 − albumin), calculate the corrected calcium.",
+   "working": "7.2 + 0.8 × (4 − 2) = 8.8 mg/dL; the correction is unreliable in critical illness — measure ionised calcium.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 8.8,
+     "unit": "mg/dL"
+    }
+   ]
+  }
+ ],
+ "added_why_not": {
+  "1": {
+   "B": "ITP causes isolated thrombocytopenia with bruising in a well child; it does not cause pallor, bone pain or circulating lymphoblasts.",
+   "C": "Iron deficiency gives microcytic pallor only; it does not cause bruising, bone pain or blasts in the peripheral smear.",
+   "D": "TEC is an isolated, self-limiting red cell aplasia; platelets and white cells are preserved and there is no bone pain or circulating blasts."
+  },
+  "2": {
+   "A": "TEC is an isolated, self-limiting red cell aplasia; platelets and white cells are preserved and there is no bone pain or circulating blasts.",
+   "C": "ITP causes isolated thrombocytopenia with bruising in a well child; it does not cause pallor, bone pain or circulating lymphoblasts.",
+   "D": "Iron deficiency gives microcytic pallor only; it does not cause bruising, bone pain or blasts in the peripheral smear."
+  },
+  "3": {
+   "A": "Iron deficiency gives microcytic pallor only; it does not cause bruising, bone pain or blasts in the peripheral smear.",
+   "B": "TEC is an isolated, self-limiting red cell aplasia; platelets and white cells are preserved and there is no bone pain or circulating blasts.",
+   "D": "ITP causes isolated thrombocytopenia with bruising in a well child; it does not cause pallor, bone pain or circulating lymphoblasts."
+  },
+  "4": {
+   "A": "Closest competitor, but lymphoblasts never contain Auer rods; Auer rods prove myeloid lineage, and gum infiltration points to monocytic AML (M4/M5).",
+   "B": "ITP causes isolated thrombocytopenia with normal white cells; it produces no blasts, Auer rods or gingival infiltration.",
+   "C": "CML shows leucocytosis with a full spectrum of maturing myeloid cells and splenomegaly in chronic phase; blasts with Auer rods and gum infiltration indicate AML."
+  },
+  "5": {
+   "B": "Closest competitor, but lymphoblasts never contain Auer rods; Auer rods prove myeloid lineage, and gum infiltration points to monocytic AML (M4/M5).",
+   "C": "ITP causes isolated thrombocytopenia with normal white cells; it produces no blasts, Auer rods or gingival infiltration.",
+   "D": "CML shows leucocytosis with a full spectrum of maturing myeloid cells and splenomegaly in chronic phase; blasts with Auer rods and gum infiltration indicate AML."
+  },
+  "6": {
+   "A": "CML shows leucocytosis with a full spectrum of maturing myeloid cells and splenomegaly in chronic phase; blasts with Auer rods and gum infiltration indicate AML.",
+   "C": "Closest competitor, but lymphoblasts never contain Auer rods; Auer rods prove myeloid lineage, and gum infiltration points to monocytic AML (M4/M5).",
+   "D": "ITP causes isolated thrombocytopenia with normal white cells; it produces no blasts, Auer rods or gingival infiltration."
+  },
+  "7": {
+   "A": "Burkitt is a mature B-cell neoplasm with vacuolated blasts and a starry-sky pattern; it lacks abnormal promyelocytes and Auer rod bundles (faggot cells).",
+   "B": "Aplastic anaemia is a hypocellular marrow with pancytopenia and no abnormal cells; it does not produce promyelocytes with Auer rods or primary DIC.",
+   "D": "Lymphoblasts never contain Auer rods; bundles of Auer rods (faggot cells) in promyelocytes with florid DIC define APL, t(15;17) PML-RARA."
+  },
+  "8": {
+   "A": "Lymphoblasts never contain Auer rods; bundles of Auer rods (faggot cells) in promyelocytes with florid DIC define APL, t(15;17) PML-RARA.",
+   "B": "Burkitt is a mature B-cell neoplasm with vacuolated blasts and a starry-sky pattern; it lacks abnormal promyelocytes and Auer rod bundles (faggot cells).",
+   "C": "Aplastic anaemia is a hypocellular marrow with pancytopenia and no abnormal cells; it does not produce promyelocytes with Auer rods or primary DIC."
+  },
+  "9": {
+   "B": "Lymphoblasts never contain Auer rods; bundles of Auer rods (faggot cells) in promyelocytes with florid DIC define APL, t(15;17) PML-RARA.",
+   "C": "Burkitt is a mature B-cell neoplasm with vacuolated blasts and a starry-sky pattern; it lacks abnormal promyelocytes and Auer rod bundles (faggot cells).",
+   "D": "Aplastic anaemia is a hypocellular marrow with pancytopenia and no abnormal cells; it does not produce promyelocytes with Auer rods or primary DIC."
+  },
+  "10": {
+   "A": "Neuroblastoma can give a posterior mediastinal mass, but in younger children and with small round tumour cells, not circulating lymphoblasts.",
+   "C": "CLL is a disease of older adults with mature small lymphocytes, essentially absent in children, and does not cause a mediastinal mass with lymphoblasts.",
+   "D": "Hodgkin lymphoma also causes an anterior mediastinal mass in adolescents, but it does not produce circulating lymphoblasts; that combination indicates T-ALL of thymic origin."
+  },
+  "11": {
+   "A": "Hodgkin lymphoma also causes an anterior mediastinal mass in adolescents, but it does not produce circulating lymphoblasts; that combination indicates T-ALL of thymic origin.",
+   "B": "Neuroblastoma can give a posterior mediastinal mass, but in younger children and with small round tumour cells, not circulating lymphoblasts.",
+   "D": "CLL is a disease of older adults with mature small lymphocytes, essentially absent in children, and does not cause a mediastinal mass with lymphoblasts."
+  },
+  "12": {
+   "A": "CLL is a disease of older adults with mature small lymphocytes, essentially absent in children, and does not cause a mediastinal mass with lymphoblasts.",
+   "B": "Hodgkin lymphoma also causes an anterior mediastinal mass in adolescents, but it does not produce circulating lymphoblasts; that combination indicates T-ALL of thymic origin.",
+   "C": "Neuroblastoma can give a posterior mediastinal mass, but in younger children and with small round tumour cells, not circulating lymphoblasts."
+  },
+  "13": {
+   "B": "Hodgkin lymphoma grows relatively slowly, usually in cervical or mediastinal nodes, with Reed-Sternberg cells; the starry-sky pattern belongs to Burkitt.",
+   "C": "Wilms tumour is a renal mass with triphasic (blastemal, stromal, epithelial) histology, not a starry-sky lymphoma pattern.",
+   "D": "Neuroblastoma shows small round cells with Homer Wright rosettes and raised catecholamines, not the starry-sky pattern of tingible-body macrophages."
+  },
+  "14": {
+   "A": "Neuroblastoma shows small round cells with Homer Wright rosettes and raised catecholamines, not the starry-sky pattern of tingible-body macrophages.",
+   "C": "Hodgkin lymphoma grows relatively slowly, usually in cervical or mediastinal nodes, with Reed-Sternberg cells; the starry-sky pattern belongs to Burkitt.",
+   "D": "Wilms tumour is a renal mass with triphasic (blastemal, stromal, epithelial) histology, not a starry-sky lymphoma pattern."
+  },
+  "15": {
+   "A": "Wilms tumour is a renal mass with triphasic (blastemal, stromal, epithelial) histology, not a starry-sky lymphoma pattern.",
+   "B": "Neuroblastoma shows small round cells with Homer Wright rosettes and raised catecholamines, not the starry-sky pattern of tingible-body macrophages.",
+   "D": "Hodgkin lymphoma grows relatively slowly, usually in cervical or mediastinal nodes, with Reed-Sternberg cells; the starry-sky pattern belongs to Burkitt."
+  },
+  "16": {
+   "A": "Burkitt shows a starry-sky pattern of monotonous B cells and usually presents as a rapidly growing abdominal or jaw mass, not with Reed-Sternberg cells.",
+   "B": "ALL is a marrow disease with cytopenias and circulating lymphoblasts; Reed-Sternberg cells are not a feature.",
+   "C": "Reactive nodes may be enlarged, but true Reed-Sternberg cells in the right background are diagnostic of classical Hodgkin lymphoma; reactive immunoblasts are only mimics."
+  },
+  "17": {
+   "B": "Burkitt shows a starry-sky pattern of monotonous B cells and usually presents as a rapidly growing abdominal or jaw mass, not with Reed-Sternberg cells.",
+   "C": "ALL is a marrow disease with cytopenias and circulating lymphoblasts; Reed-Sternberg cells are not a feature.",
+   "D": "Reactive nodes may be enlarged, but true Reed-Sternberg cells in the right background are diagnostic of classical Hodgkin lymphoma; reactive immunoblasts are only mimics."
+  },
+  "18": {
+   "A": "Reactive nodes may be enlarged, but true Reed-Sternberg cells in the right background are diagnostic of classical Hodgkin lymphoma; reactive immunoblasts are only mimics.",
+   "C": "Burkitt shows a starry-sky pattern of monotonous B cells and usually presents as a rapidly growing abdominal or jaw mass, not with Reed-Sternberg cells.",
+   "D": "ALL is a marrow disease with cytopenias and circulating lymphoblasts; Reed-Sternberg cells are not a feature."
+  },
+  "19": {
+   "A": "Hepatoblastoma is a hepatic mass with high AFP, not an adrenal mass with raised urinary VMA/HVA.",
+   "B": "Rhabdomyosarcoma is a soft-tissue sarcoma (head-neck, genitourinary) with myogenin/desmin positivity; it does not secrete catecholamines.",
+   "D": "Closest competitor, but Wilms is intrarenal, usually does not cross the midline and does not raise urinary catecholamine metabolites."
+  },
+  "20": {
+   "A": "Closest competitor, but Wilms is intrarenal, usually does not cross the midline and does not raise urinary catecholamine metabolites.",
+   "B": "Hepatoblastoma is a hepatic mass with high AFP, not an adrenal mass with raised urinary VMA/HVA.",
+   "C": "Rhabdomyosarcoma is a soft-tissue sarcoma (head-neck, genitourinary) with myogenin/desmin positivity; it does not secrete catecholamines."
+  },
+  "21": {
+   "B": "Closest competitor, but Wilms is intrarenal, usually does not cross the midline and does not raise urinary catecholamine metabolites.",
+   "C": "Hepatoblastoma is a hepatic mass with high AFP, not an adrenal mass with raised urinary VMA/HVA.",
+   "D": "Rhabdomyosarcoma is a soft-tissue sarcoma (head-neck, genitourinary) with myogenin/desmin positivity; it does not secrete catecholamines."
+  },
+  "22": {
+   "A": "Renal lymphoma is rare, usually bilateral or part of systemic disease with nodal or marrow involvement, not an isolated unilateral mass in a well preschooler.",
+   "C": "Neuroblastoma is suprarenal, often crosses the midline, calcifies and raises catecholamines, and the child is usually unwell; a painless intrarenal mass fits Wilms.",
+   "D": "Rhabdomyosarcoma arises in soft tissue (head-neck, bladder/prostate, paratesticular), not as a primary unilateral renal mass."
+  },
+  "23": {
+   "A": "Rhabdomyosarcoma arises in soft tissue (head-neck, bladder/prostate, paratesticular), not as a primary unilateral renal mass.",
+   "B": "Renal lymphoma is rare, usually bilateral or part of systemic disease with nodal or marrow involvement, not an isolated unilateral mass in a well preschooler.",
+   "D": "Neuroblastoma is suprarenal, often crosses the midline, calcifies and raises catecholamines, and the child is usually unwell; a painless intrarenal mass fits Wilms."
+  },
+  "24": {
+   "A": "Neuroblastoma is suprarenal, often crosses the midline, calcifies and raises catecholamines, and the child is usually unwell; a painless intrarenal mass fits Wilms.",
+   "B": "Rhabdomyosarcoma arises in soft tissue (head-neck, bladder/prostate, paratesticular), not as a primary unilateral renal mass.",
+   "C": "Renal lymphoma is rare, usually bilateral or part of systemic disease with nodal or marrow involvement, not an isolated unilateral mass in a well preschooler."
+  },
+  "25": {
+   "B": "Cataract causes leukocoria from a lens opacity, but there is no intraocular mass or calcification.",
+   "C": "Coats disease causes leukocoria from exudative retinal telangiectasia, typically in older boys, and characteristically lacks intraocular calcification.",
+   "D": "PFV causes leukocoria in a microphthalmic eye with a retrolental stalk, but without calcification; calcification on imaging points to retinoblastoma."
+  },
+  "26": {
+   "A": "PFV causes leukocoria in a microphthalmic eye with a retrolental stalk, but without calcification; calcification on imaging points to retinoblastoma.",
+   "C": "Cataract causes leukocoria from a lens opacity, but there is no intraocular mass or calcification.",
+   "D": "Coats disease causes leukocoria from exudative retinal telangiectasia, typically in older boys, and characteristically lacks intraocular calcification."
+  },
+  "27": {
+   "A": "Coats disease causes leukocoria from exudative retinal telangiectasia, typically in older boys, and characteristically lacks intraocular calcification.",
+   "B": "PFV causes leukocoria in a microphthalmic eye with a retrolental stalk, but without calcification; calcification on imaging points to retinoblastoma.",
+   "D": "Cataract causes leukocoria from a lens opacity, but there is no intraocular mass or calcification."
+  },
+  "28": {
+   "A": "SIADH causes euvolaemic hyponatraemia with concentrated urine, not hyperkalaemia, hyperphosphataemia and hyperuricaemia.",
+   "B": "Refeeding causes hypophosphataemia, hypokalaemia and hypomagnesaemia from intracellular shifts, the opposite of this pattern.",
+   "C": "Adrenal crisis gives hyponatraemia, hyperkalaemia and hypoglycaemia with shock, but not hyperphosphataemia, hypocalcaemia and hyperuricaemia after chemotherapy."
+  },
+  "29": {
+   "B": "SIADH causes euvolaemic hyponatraemia with concentrated urine, not hyperkalaemia, hyperphosphataemia and hyperuricaemia.",
+   "C": "Refeeding causes hypophosphataemia, hypokalaemia and hypomagnesaemia from intracellular shifts, the opposite of this pattern.",
+   "D": "Adrenal crisis gives hyponatraemia, hyperkalaemia and hypoglycaemia with shock, but not hyperphosphataemia, hypocalcaemia and hyperuricaemia after chemotherapy."
+  },
+  "30": {
+   "A": "Adrenal crisis gives hyponatraemia, hyperkalaemia and hypoglycaemia with shock, but not hyperphosphataemia, hypocalcaemia and hyperuricaemia after chemotherapy.",
+   "C": "SIADH causes euvolaemic hyponatraemia with concentrated urine, not hyperkalaemia, hyperphosphataemia and hyperuricaemia.",
+   "D": "Refeeding causes hypophosphataemia, hypokalaemia and hypomagnesaemia from intracellular shifts, the opposite of this pattern."
+  },
+  "31": {
+   "A": "Desmopressin raises factor VIII/vWF for bleeding disorders; it does not lower urate, and its antidiuretic effect works against the hyperhydration TLS needs.",
+   "B": "Vitamin K corrects coagulation factor deficiency; it does nothing for hyperuricaemia or tumour lysis.",
+   "D": "Oral iron treats iron deficiency and has no role in tumour lysis; established hyperuricaemia needs rasburicase, as allopurinol only prevents new urate formation."
+  },
+  "32": {
+   "A": "Oral iron treats iron deficiency and has no role in tumour lysis; established hyperuricaemia needs rasburicase, as allopurinol only prevents new urate formation.",
+   "B": "Desmopressin raises factor VIII/vWF for bleeding disorders; it does not lower urate, and its antidiuretic effect works against the hyperhydration TLS needs.",
+   "C": "Vitamin K corrects coagulation factor deficiency; it does nothing for hyperuricaemia or tumour lysis."
+  },
+  "33": {
+   "B": "Oral iron treats iron deficiency and has no role in tumour lysis; established hyperuricaemia needs rasburicase, as allopurinol only prevents new urate formation.",
+   "C": "Desmopressin raises factor VIII/vWF for bleeding disorders; it does not lower urate, and its antidiuretic effect works against the hyperhydration TLS needs.",
+   "D": "Vitamin K corrects coagulation factor deficiency; it does nothing for hyperuricaemia or tumour lysis."
+  },
+  "34": {
+   "A": "Waiting for cultures risks rapid progression to septic shock; empiric antibiotics must start within about an hour, after cultures are drawn.",
+   "C": "Observation is unsafe: ANC 200/uL is profound neutropenia, signs of infection are blunted, and empiric IV therapy is needed immediately.",
+   "D": "Oral iron is irrelevant to febrile neutropenia; the emergency is infection needing immediate IV antipseudomonal cover."
+  },
+  "35": {
+   "A": "Oral iron is irrelevant to febrile neutropenia; the emergency is infection needing immediate IV antipseudomonal cover.",
+   "B": "Waiting for cultures risks rapid progression to septic shock; empiric antibiotics must start within about an hour, after cultures are drawn.",
+   "D": "Observation is unsafe: ANC 200/uL is profound neutropenia, signs of infection are blunted, and empiric IV therapy is needed immediately."
+  },
+  "36": {
+   "A": "Observation is unsafe: ANC 200/uL is profound neutropenia, signs of infection are blunted, and empiric IV therapy is needed immediately.",
+   "B": "Oral iron is irrelevant to febrile neutropenia; the emergency is infection needing immediate IV antipseudomonal cover.",
+   "C": "Waiting for cultures risks rapid progression to septic shock; empiric antibiotics must start within about an hour, after cultures are drawn."
+  },
+  "37": {
+   "B": "Haemophilia A prolongs the aPTT and causes deep muscle and joint bleeds, not petechiae with low platelets and normal clotting tests.",
+   "C": "Haemophilia B prolongs the aPTT and causes haemarthroses and deep bleeds; it does not lower the platelet count.",
+   "D": "Vitamin K deficiency prolongs the PT (and later aPTT) with a normal platelet count; this child has thrombocytopenia with normal clotting times."
+  },
+  "38": {
+   "A": "Vitamin K deficiency prolongs the PT (and later aPTT) with a normal platelet count; this child has thrombocytopenia with normal clotting times.",
+   "C": "Haemophilia A prolongs the aPTT and causes deep muscle and joint bleeds, not petechiae with low platelets and normal clotting tests.",
+   "D": "Haemophilia B prolongs the aPTT and causes haemarthroses and deep bleeds; it does not lower the platelet count."
+  },
+  "39": {
+   "A": "Haemophilia B is a secondary haemostasis defect: it prolongs the aPTT and causes deep joint/muscle bleeds, whereas here the PT/aPTT are normal and only platelets are low.",
+   "B": "Vitamin K deficiency lowers factors II, VII, IX and X, so the PT (and later aPTT) would be prolonged; platelet count is unaffected.",
+   "D": "Haemophilia A prolongs the aPTT with a normal platelet count and causes deep tissue bleeding; this child has normal coagulation times and thrombocytopenia with mucocutaneous bleeding."
+  },
+  "40": {
+   "A": "Isolated factor VII deficiency prolongs the PT (extrinsic pathway) with a normal aPTT, the opposite of this pattern.",
+   "B": "ITP causes mucocutaneous bleeding with a low platelet count and normal aPTT; here platelets are normal, the aPTT is prolonged and the bleeding is into joints.",
+   "C": "Type 1 VWD causes mucocutaneous bleeding (epistaxis, menorrhagia); FVIII is only mildly reduced, so recurrent spontaneous haemarthroses with a prolonged aPTT point instead to haemophilia."
+  },
+  "41": {
+   "B": "Isolated factor VII deficiency prolongs the PT (extrinsic pathway) with a normal aPTT, the opposite of this pattern.",
+   "C": "ITP causes mucocutaneous bleeding with a low platelet count and normal aPTT; here platelets are normal, the aPTT is prolonged and the bleeding is into joints.",
+   "D": "Type 1 VWD causes mucocutaneous bleeding (epistaxis, menorrhagia); FVIII is only mildly reduced, so recurrent spontaneous haemarthroses with a prolonged aPTT point instead to haemophilia."
+  },
+  "42": {
+   "A": "Type 1 VWD causes mucocutaneous bleeding (epistaxis, menorrhagia); FVIII is only mildly reduced, so recurrent spontaneous haemarthroses with a prolonged aPTT point instead to haemophilia.",
+   "C": "Isolated factor VII deficiency prolongs the PT (extrinsic pathway) with a normal aPTT, the opposite of this pattern.",
+   "D": "ITP causes mucocutaneous bleeding with a low platelet count and normal aPTT; here platelets are normal, the aPTT is prolonged and the bleeding is into joints."
+  },
+  "43": {
+   "A": "ITP lowers platelets and causes mucocutaneous bleeding, not haemarthrosis, and factor IX activity is normal.",
+   "B": "DIC occurs in a sick child with consumption of platelets, fibrinogen and multiple factors (prolonged PT and aPTT), not an isolated factor IX deficiency.",
+   "D": "Haemophilia A is factor VIII deficiency; it presents identically clinically, but the assay here shows deficient factor IX, which defines haemophilia B."
+  },
+  "44": {
+   "A": "Haemophilia A is factor VIII deficiency; it presents identically clinically, but the assay here shows deficient factor IX, which defines haemophilia B.",
+   "B": "ITP lowers platelets and causes mucocutaneous bleeding, not haemarthrosis, and factor IX activity is normal.",
+   "C": "DIC occurs in a sick child with consumption of platelets, fibrinogen and multiple factors (prolonged PT and aPTT), not an isolated factor IX deficiency."
+  },
+  "45": {
+   "B": "Haemophilia A is factor VIII deficiency; it presents identically clinically, but the assay here shows deficient factor IX, which defines haemophilia B.",
+   "C": "ITP lowers platelets and causes mucocutaneous bleeding, not haemarthrosis, and factor IX activity is normal.",
+   "D": "DIC occurs in a sick child with consumption of platelets, fibrinogen and multiple factors (prolonged PT and aPTT), not an isolated factor IX deficiency."
+  },
+  "46": {
+   "A": "Acquired haemophilia is due to an autoantibody against factor VIII, mostly in older adults, with sudden soft-tissue bleeding and a non-correcting aPTT mixing study; vWF tests would be normal.",
+   "C": "Factor XIII deficiency gives delayed bleeding and umbilical stump or intracranial haemorrhage with normal PT, aPTT and vWF studies.",
+   "D": "ITP can cause epistaxis and menorrhagia but is defined by thrombocytopenia; abnormal vWF testing points to von Willebrand disease."
+  },
+  "47": {
+   "A": "ITP can cause epistaxis and menorrhagia but is defined by thrombocytopenia; abnormal vWF testing points to von Willebrand disease.",
+   "B": "Acquired haemophilia is due to an autoantibody against factor VIII, mostly in older adults, with sudden soft-tissue bleeding and a non-correcting aPTT mixing study; vWF tests would be normal.",
+   "D": "Factor XIII deficiency gives delayed bleeding and umbilical stump or intracranial haemorrhage with normal PT, aPTT and vWF studies."
+  },
+  "48": {
+   "A": "Factor XIII deficiency gives delayed bleeding and umbilical stump or intracranial haemorrhage with normal PT, aPTT and vWF studies.",
+   "B": "ITP can cause epistaxis and menorrhagia but is defined by thrombocytopenia; abnormal vWF testing points to von Willebrand disease.",
+   "C": "Acquired haemophilia is due to an autoantibody against factor VIII, mostly in older adults, with sudden soft-tissue bleeding and a non-correcting aPTT mixing study; vWF tests would be normal."
+  },
+  "49": {
+   "B": "ITP causes isolated thrombocytopenia with normal PT, aPTT and fibrinogen; prolonged clotting times and low fibrinogen in sepsis indicate consumption.",
+   "C": "Haemophilia A prolongs only the aPTT with normal platelets, PT and fibrinogen; it does not explain multiple consumptive abnormalities in sepsis.",
+   "D": "Factor XII deficiency prolongs the aPTT but causes no bleeding, and does not lower platelets or fibrinogen or prolong the PT."
+  },
+  "50": {
+   "A": "Factor XII deficiency prolongs the aPTT but causes no bleeding, and does not lower platelets or fibrinogen or prolong the PT.",
+   "C": "ITP causes isolated thrombocytopenia with normal PT, aPTT and fibrinogen; prolonged clotting times and low fibrinogen in sepsis indicate consumption.",
+   "D": "Haemophilia A prolongs only the aPTT with normal platelets, PT and fibrinogen; it does not explain multiple consumptive abnormalities in sepsis."
+  },
+  "51": {
+   "A": "Haemophilia A prolongs only the aPTT with normal platelets, PT and fibrinogen; it does not explain multiple consumptive abnormalities in sepsis.",
+   "B": "Factor XII deficiency prolongs the aPTT but causes no bleeding, and does not lower platelets or fibrinogen or prolong the PT.",
+   "D": "ITP causes isolated thrombocytopenia with normal PT, aPTT and fibrinogen; prolonged clotting times and low fibrinogen in sepsis indicate consumption."
+  },
+  "52": {
+   "A": "Leukaemia usually affects more than one cell line and causes pallor, bone pain, lymphadenopathy or organomegaly; an otherwise well child with isolated thrombocytopenia fits ITP.",
+   "B": "Aplastic anaemia causes pancytopenia (anaemia, neutropenia and thrombocytopenia), not isolated thrombocytopenia in a well child.",
+   "C": "DIC occurs in an acutely ill (septic, shocked) child with prolonged PT/aPTT and low fibrinogen, not a well child after a viral illness."
+  },
+  "53": {
+   "B": "Leukaemia usually affects more than one cell line and causes pallor, bone pain, lymphadenopathy or organomegaly; an otherwise well child with isolated thrombocytopenia fits ITP.",
+   "C": "Aplastic anaemia causes pancytopenia (anaemia, neutropenia and thrombocytopenia), not isolated thrombocytopenia in a well child.",
+   "D": "DIC occurs in an acutely ill (septic, shocked) child with prolonged PT/aPTT and low fibrinogen, not a well child after a viral illness."
+  },
+  "54": {
+   "A": "DIC occurs in an acutely ill (septic, shocked) child with prolonged PT/aPTT and low fibrinogen, not a well child after a viral illness.",
+   "C": "Leukaemia usually affects more than one cell line and causes pallor, bone pain, lymphadenopathy or organomegaly; an otherwise well child with isolated thrombocytopenia fits ITP.",
+   "D": "Aplastic anaemia causes pancytopenia (anaemia, neutropenia and thrombocytopenia), not isolated thrombocytopenia in a well child."
+  },
+  "55": {
+   "A": "Iron deficiency causes microcytic anaemia with a normal or raised platelet count and a cellular marrow, not pancytopenia with hypocellularity.",
+   "B": "ITP is isolated thrombocytopenia with a normal, megakaryocyte-rich marrow, not pancytopenia with a hypocellular marrow.",
+   "D": "ALL causes cytopenias through marrow infiltration by lymphoblasts; the stem explicitly excludes malignant infiltration and the marrow is hypocellular, not packed."
+  },
+  "56": {
+   "A": "ALL causes cytopenias through marrow infiltration by lymphoblasts; the stem explicitly excludes malignant infiltration and the marrow is hypocellular, not packed.",
+   "B": "Iron deficiency causes microcytic anaemia with a normal or raised platelet count and a cellular marrow, not pancytopenia with hypocellularity.",
+   "C": "ITP is isolated thrombocytopenia with a normal, megakaryocyte-rich marrow, not pancytopenia with a hypocellular marrow."
+  },
+  "57": {
+   "B": "ALL causes cytopenias through marrow infiltration by lymphoblasts; the stem explicitly excludes malignant infiltration and the marrow is hypocellular, not packed.",
+   "C": "Iron deficiency causes microcytic anaemia with a normal or raised platelet count and a cellular marrow, not pancytopenia with hypocellularity.",
+   "D": "ITP is isolated thrombocytopenia with a normal, megakaryocyte-rich marrow, not pancytopenia with a hypocellular marrow."
+  },
+  "58": {
+   "A": "ITP is isolated thrombocytopenia in a well child; persistent fever, splenomegaly, very high ferritin and low fibrinogen fit HLH criteria.",
+   "C": "A viral URTI is self-limiting and does not produce persistent fever, splenomegaly, cytopenias, extreme hyperferritinaemia and hypofibrinogenaemia.",
+   "D": "Iron deficiency has a low ferritin; a very high ferritin with fever, splenomegaly and low fibrinogen indicates HLH."
+  },
+  "59": {
+   "A": "Iron deficiency has a low ferritin; a very high ferritin with fever, splenomegaly and low fibrinogen indicates HLH.",
+   "B": "ITP is isolated thrombocytopenia in a well child; persistent fever, splenomegaly, very high ferritin and low fibrinogen fit HLH criteria.",
+   "D": "A viral URTI is self-limiting and does not produce persistent fever, splenomegaly, cytopenias, extreme hyperferritinaemia and hypofibrinogenaemia."
+  },
+  "60": {
+   "A": "A viral URTI is self-limiting and does not produce persistent fever, splenomegaly, cytopenias, extreme hyperferritinaemia and hypofibrinogenaemia.",
+   "B": "Iron deficiency has a low ferritin; a very high ferritin with fever, splenomegaly and low fibrinogen indicates HLH.",
+   "C": "ITP is isolated thrombocytopenia in a well child; persistent fever, splenomegaly, very high ferritin and low fibrinogen fit HLH criteria."
+  },
+  "61": {
+   "B": "Hereditary elliptocytosis is a chronic membrane disorder with elliptocytes on smear, not acute haemolysis with bite cells after oxidant exposure.",
+   "C": "ITP causes thrombocytopenia and bleeding, not jaundice, dark urine (haemoglobinuria) or bite cells.",
+   "D": "Beta-thalassaemia trait gives mild asymptomatic microcytosis with raised HbA2, not acute oxidant-triggered haemolysis with bite cells."
+  },
+  "62": {
+   "A": "Beta-thalassaemia trait gives mild asymptomatic microcytosis with raised HbA2, not acute oxidant-triggered haemolysis with bite cells.",
+   "C": "Hereditary elliptocytosis is a chronic membrane disorder with elliptocytes on smear, not acute haemolysis with bite cells after oxidant exposure.",
+   "D": "ITP causes thrombocytopenia and bleeding, not jaundice, dark urine (haemoglobinuria) or bite cells."
+  },
+  "63": {
+   "A": "ITP causes thrombocytopenia and bleeding, not jaundice, dark urine (haemoglobinuria) or bite cells.",
+   "B": "Beta-thalassaemia trait gives mild asymptomatic microcytosis with raised HbA2, not acute oxidant-triggered haemolysis with bite cells.",
+   "D": "Hereditary elliptocytosis is a chronic membrane disorder with elliptocytes on smear, not acute haemolysis with bite cells after oxidant exposure."
+  },
+  "64": {
+   "A": "Warm AIHA also causes spherocytes and haemolysis, but the DAT is positive; a negative DAT with splenomegaly favours hereditary spherocytosis.",
+   "B": "ITP causes isolated thrombocytopenia, not anaemia, jaundice, splenomegaly or spherocytes.",
+   "C": "G6PD deficiency causes episodic oxidant-triggered haemolysis with bite/blister cells and Heinz bodies, not chronic spherocytosis with splenomegaly."
+  },
+  "65": {
+   "B": "Warm AIHA also causes spherocytes and haemolysis, but the DAT is positive; a negative DAT with splenomegaly favours hereditary spherocytosis.",
+   "C": "ITP causes isolated thrombocytopenia, not anaemia, jaundice, splenomegaly or spherocytes.",
+   "D": "G6PD deficiency causes episodic oxidant-triggered haemolysis with bite/blister cells and Heinz bodies, not chronic spherocytosis with splenomegaly."
+  },
+  "66": {
+   "A": "G6PD deficiency causes episodic oxidant-triggered haemolysis with bite/blister cells and Heinz bodies, not chronic spherocytosis with splenomegaly.",
+   "C": "Warm AIHA also causes spherocytes and haemolysis, but the DAT is positive; a negative DAT with splenomegaly favours hereditary spherocytosis.",
+   "D": "ITP causes isolated thrombocytopenia, not anaemia, jaundice, splenomegaly or spherocytes."
+  },
+  "67": {
+   "A": "ITP is an immune platelet disorder and does not explain fever, hypoxaemia and a new lung infiltrate in sickle cell disease.",
+   "B": "Nephrotic syndrome (a recognised sickle nephropathy) presents with proteinuria, oedema and hypoalbuminaemia, not fever, hypoxaemia and a new pulmonary infiltrate.",
+   "D": "A limb crisis causes bone pain without a new pulmonary infiltrate or hypoxaemia; those features define acute chest syndrome, which may follow a painful crisis."
+  },
+  "68": {
+   "A": "A limb crisis causes bone pain without a new pulmonary infiltrate or hypoxaemia; those features define acute chest syndrome, which may follow a painful crisis.",
+   "B": "ITP is an immune platelet disorder and does not explain fever, hypoxaemia and a new lung infiltrate in sickle cell disease.",
+   "C": "Nephrotic syndrome (a recognised sickle nephropathy) presents with proteinuria, oedema and hypoalbuminaemia, not fever, hypoxaemia and a new pulmonary infiltrate."
+  },
+  "69": {
+   "B": "A limb crisis causes bone pain without a new pulmonary infiltrate or hypoxaemia; those features define acute chest syndrome, which may follow a painful crisis.",
+   "C": "ITP is an immune platelet disorder and does not explain fever, hypoxaemia and a new lung infiltrate in sickle cell disease.",
+   "D": "Nephrotic syndrome (a recognised sickle nephropathy) presents with proteinuria, oedema and hypoalbuminaemia, not fever, hypoxaemia and a new pulmonary infiltrate."
+  },
+  "70": {
+   "A": "Chronic hypersplenism causes stable splenomegaly with mild cytopenias, not rapid splenic enlargement with an acute Hb fall and risk of shock.",
+   "C": "Aplastic crisis (parvovirus B19) causes an Hb fall with reticulocytopenia but no acute splenic enlargement; the rapidly enlarging spleen indicates sequestration.",
+   "D": "Iron deficiency causes a gradual microcytic anaemia, not an acute Hb fall with rapid splenic enlargement."
+  },
+  "71": {
+   "A": "Iron deficiency causes a gradual microcytic anaemia, not an acute Hb fall with rapid splenic enlargement.",
+   "B": "Chronic hypersplenism causes stable splenomegaly with mild cytopenias, not rapid splenic enlargement with an acute Hb fall and risk of shock.",
+   "D": "Aplastic crisis (parvovirus B19) causes an Hb fall with reticulocytopenia but no acute splenic enlargement; the rapidly enlarging spleen indicates sequestration."
+  },
+  "72": {
+   "A": "Aplastic crisis (parvovirus B19) causes an Hb fall with reticulocytopenia but no acute splenic enlargement; the rapidly enlarging spleen indicates sequestration.",
+   "B": "Iron deficiency causes a gradual microcytic anaemia, not an acute Hb fall with rapid splenic enlargement.",
+   "C": "Chronic hypersplenism causes stable splenomegaly with mild cytopenias, not rapid splenic enlargement with an acute Hb fall and risk of shock."
+  },
+  "73": {
+   "B": "Sequestration causes an acute Hb fall with a rapidly enlarging spleen and a raised, not low, reticulocyte count; reticulocytopenia points to aplastic crisis.",
+   "C": "Acute chest syndrome presents with fever, chest signs, hypoxaemia and a new infiltrate; it does not cause an abrupt Hb fall with reticulocytopenia.",
+   "D": "Iron overload is a chronic complication of repeated transfusion affecting liver, heart and endocrine organs; it does not cause an abrupt Hb fall with reticulocytopenia."
+  },
+  "74": {
+   "A": "Iron overload is a chronic complication of repeated transfusion affecting liver, heart and endocrine organs; it does not cause an abrupt Hb fall with reticulocytopenia.",
+   "C": "Sequestration causes an acute Hb fall with a rapidly enlarging spleen and a raised, not low, reticulocyte count; reticulocytopenia points to aplastic crisis.",
+   "D": "Acute chest syndrome presents with fever, chest signs, hypoxaemia and a new infiltrate; it does not cause an abrupt Hb fall with reticulocytopenia."
+  },
+  "75": {
+   "A": "Acute chest syndrome presents with fever, chest signs, hypoxaemia and a new infiltrate; it does not cause an abrupt Hb fall with reticulocytopenia.",
+   "B": "Iron overload is a chronic complication of repeated transfusion affecting liver, heart and endocrine organs; it does not cause an abrupt Hb fall with reticulocytopenia.",
+   "D": "Sequestration causes an acute Hb fall with a rapidly enlarging spleen and a raised, not low, reticulocyte count; reticulocytopenia points to aplastic crisis."
+  }
+ }
+}

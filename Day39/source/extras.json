@@ -1,0 +1,205 @@
+{
+ "title": "ALL, AML & Lymphoma",
+ "added_why_not": {
+  "1": {
+   "B": "Mature B-cell (Burkitt-type) neoplasms are TdT-negative and express surface immunoglobulin; TdT positivity marks an immature precursor blast.",
+   "C": "Myeloid blasts express MPO, CD13, CD33 and CD117, not the B-lineage antigens CD19 and CD10.",
+   "D": "T-lymphoblasts are defined by cytoplasmic CD3 (with CD7, CD5), not CD19 and CD10, which indicate B lineage."
+  },
+  "2": {
+   "A": "B-ALL is defined by CD19, CD79a and CD22; cytoplasmic CD3 is the T-lineage-defining marker, and a mediastinal mass is typical of T-lineage disease.",
+   "C": "AML blasts express myeloid markers such as MPO, CD13 and CD33; TdT with cytoplasmic CD3 indicates T-lymphoblasts.",
+   "D": "Hodgkin lymphoma can cause a mediastinal mass but its Reed-Sternberg cells are CD30/CD15 positive, not TdT and cytoplasmic CD3 positive lymphoblasts."
+  },
+  "3": {
+   "A": "BCR::ABL1 (Philadelphia chromosome) is a high-risk lesion in childhood ALL, managed with added tyrosine kinase inhibitor.",
+   "B": "KMT2A rearrangement, typical of infant ALL, is an adverse-risk finding.",
+   "D": "Hypodiploidy (especially fewer than 44 chromosomes) is adverse; it is high hyperdiploidy, not hypodiploidy, that is favourable."
+  },
+  "4": {
+   "A": "Anti-CD20 therapy (rituximab) is used in mature B-cell lymphoma; it does not target the BCR::ABL1 kinase and is not used alone in Ph+ ALL.",
+   "B": "FLT3 inhibitors target FLT3-mutated AML; BCR::ABL1 is inhibited by ABL tyrosine kinase inhibitors such as imatinib or dasatinib.",
+   "C": "Proteasome inhibitors (bortezomib) are used mainly in myeloma and some relapsed ALL protocols; they do not target the BCR::ABL1 fusion kinase."
+  },
+  "5": {
+   "B": "Presenting leucocyte count is an initial NCI risk factor but not a response measure; treatment response is assessed by MRD.",
+   "C": "Platelet count at diagnosis is not used for risk stratification and says nothing about response to therapy.",
+   "D": "Liver span reflects organ infiltration at presentation and is not a quantitative response measure used for risk adaptation."
+  },
+  "6": {
+   "A": "Renal infiltration may cause nephromegaly but does not explain headache and cranial nerve palsy.",
+   "C": "Thyroid involvement is not a recognised sanctuary site and would not produce cranial nerve palsy.",
+   "D": "Pericardial involvement causes effusion or tamponade, not headache and cranial neuropathy, which point to CNS leukaemia."
+  },
+  "7": {
+   "A": "Ototoxicity is characteristic of platinum agents such as cisplatin, not asparaginase.",
+   "B": "Haemorrhagic cystitis is caused by cyclophosphamide and ifosfamide (acrolein), prevented with mesna.",
+   "D": "Pulmonary fibrosis is classically linked to bleomycin and busulfan, not asparaginase."
+  },
+  "8": {
+   "A": "Cardiomyopathy is the dose-related toxicity of anthracyclines such as doxorubicin and daunorubicin.",
+   "B": "Nephrogenic diabetes insipidus is associated with ifosfamide tubulopathy (and lithium), not vincristine.",
+   "C": "Pulmonary fibrosis is linked to bleomycin and busulfan; vincristine causes neuropathy, jaw pain, constipation and SIADH."
+  },
+  "9": {
+   "B": "Peripheral neuropathy is the dose-limiting toxicity of vincristine, not anthracyclines.",
+   "C": "Nephrolithiasis relates to urate in tumour lysis, not to cumulative anthracycline exposure.",
+   "D": "Hypothyroidism follows neck or cranial irradiation; anthracycline surveillance targets cardiac function by echocardiography."
+  },
+  "10": {
+   "A": "Mesna protects the bladder from cyclophosphamide/ifosfamide metabolites; it does not rescue methotrexate toxicity.",
+   "C": "Dexrazoxane is a cardioprotectant used with anthracyclines and has no role in methotrexate rescue.",
+   "D": "Allopurinol prevents uric acid formation in tumour lysis and does not reverse methotrexate antifolate toxicity."
+  },
+  "11": {
+   "A": "B-ALL lymphoblasts lack Auer rods, which are fused MPO-positive primary granules found only in myeloid blasts.",
+   "B": "T-ALL blasts are lymphoid and do not contain Auer rods.",
+   "D": "CLL consists of mature small lymphocytes with smudge cells, not Auer rods, and is virtually absent in children."
+  },
+  "12": {
+   "A": "Imatinib targets BCR::ABL1 in CML or Ph+ ALL; it has no activity against PML::RARA.",
+   "B": "Rituximab is an anti-CD20 antibody for B-cell lymphomas and plays no role in APL.",
+   "C": "Hydroxyurea only lowers counts; APL needs ATRA, which differentiates promyelocytes and rapidly corrects the coagulopathy."
+  },
+  "13": {
+   "B": "Waiting for PML::RARA confirmation is dangerous; ATRA is started on morphological suspicion because early haemorrhagic death is the main risk.",
+   "C": "Lumbar puncture is avoided during active APL coagulopathy because of bleeding risk and is not an initial priority.",
+   "D": "Observation allows fatal bleeding; platelets, cryoprecipitate and FFP are given immediately with ATRA."
+  },
+  "14": {
+   "A": "ETV6::RUNX1 is a favourable B-ALL fusion and is not a targeted-therapy marker in AML.",
+   "C": "SMN1 deletion causes spinal muscular atrophy, not AML.",
+   "D": "FMR1 CGG expansion causes fragile X syndrome and has no role in AML treatment."
+  },
+  "15": {
+   "A": "RB1 mutations cause retinoblastoma, not Down-syndrome myeloid proliferation.",
+   "B": "WT1 is linked to Wilms tumour and WAGR/Denys-Drash syndromes; TAM in trisomy 21 is driven by GATA1 mutation.",
+   "D": "NF1 predisposes to JMML and other tumours but is not the defining lesion of transient abnormal myelopoiesis."
+  },
+  "16": {
+   "A": "CD3 is a T-lineage marker and does not indicate megakaryoblasts.",
+   "B": "CD19 and CD10 indicate precursor B-lymphoblasts.",
+   "C": "CD30 and CD15 characterise Hodgkin Reed-Sternberg cells; megakaryoblasts express CD41 and CD61."
+  },
+  "17": {
+   "B": "ESR is a nonspecific inflammatory marker and cannot assign lineage.",
+   "C": "Serum ferritin reflects iron stores or inflammation and gives no lineage information.",
+   "D": "Reticulocyte count reflects marrow erythroid output and cannot characterise blast lineage."
+  },
+  "18": {
+   "A": "The Widal test is a serological test for typhoid and cannot classify leukaemia.",
+   "C": "Serum IgE relates to atopy or parasitic infection and has no role in leukaemia classification.",
+   "D": "Stool occult blood looks for GI blood loss and does not characterise blasts."
+  },
+  "19": {
+   "A": "Classical Hodgkin lymphoma shows Reed-Sternberg cells in an inflammatory background, not a starry-sky pattern with MYC rearrangement.",
+   "B": "Follicular lymphoma is rare in children and is linked to BCL2 t(14;18) with a follicular pattern, not MYC.",
+   "D": "Lymphoblastic lymphoma may look starry-sky but is TdT-positive precursor disease without the defining MYC rearrangement."
+  },
+  "20": {
+   "A": "Nodular sclerosis Hodgkin lymphoma usually presents with cervical or mediastinal nodes, not a rapidly growing jaw mass.",
+   "B": "Langerhans cell histiocytosis causes lytic jaw lesions or floating teeth but grows slowly and has no endemic geography.",
+   "C": "ALL without tissue disease presents with cytopenias and blasts, not a rapidly enlarging jaw mass."
+  },
+  "21": {
+   "B": "Burkitt lymphoma presents with rapidly growing abdominal or jaw masses and starry-sky histology, not Reed-Sternberg cells.",
+   "C": "AML presents with cytopenias and marrow blasts; Reed-Sternberg cells are not seen.",
+   "D": "Lymphoblastic leukaemia shows marrow lymphoblasts and cytopenias, not Reed-Sternberg cells in a painless node."
+  },
+  "22": {
+   "A": "CD3 and TdT mark T-lymphoblasts; Reed-Sternberg cells are TdT-negative and usually CD3-negative.",
+   "C": "CD41 and CD61 are megakaryocytic markers used in acute megakaryoblastic leukaemia.",
+   "D": "MPO and CD33 are myeloid markers for AML, not Hodgkin cells."
+  },
+  "23": {
+   "A": "A mediastinal mass does not cause insulin deficiency; the anaesthetic risk is airway and vascular compression.",
+   "B": "Acute liver failure is not a recognised biopsy risk here; the danger is loss of airway or venous return under sedation.",
+   "D": "Contrast does not cause hypercalcaemia; the specific risk is cardiorespiratory collapse when sedation removes muscle tone."
+  },
+  "24": {
+   "A": "Pruritus may occur in Hodgkin lymphoma but is not one of the staging B symptoms (fever, drenching night sweats, weight loss over 10%).",
+   "B": "Mild rhinorrhoea is a trivial nonspecific symptom and not a B symptom.",
+   "C": "Isolated constipation is not a B symptom; only fever, drenching night sweats and significant weight loss count."
+  },
+  "25": {
+   "B": "LDH is released from any proliferating or dying cells and does not indicate B lineage.",
+   "C": "LDH is not specific for CNS disease; CNS spread is shown by CSF cytology and imaging.",
+   "D": "Raised LDH reflects disease burden; it signals more disease, not cure."
+  },
+  "26": {
+   "A": "FNA alone loses tissue architecture and often gives too little material, so it is not adequate for every case.",
+   "C": "Blood culture detects bacteraemia and cannot classify lymphoma.",
+   "D": "Urine cytology has no role in lymphoma subclassification."
+  },
+  "27": {
+   "A": "Waiting for a repeat blood count delays treatment of ECG-changing hyperkalaemia, which can cause arrhythmia at any moment.",
+   "B": "Oral iron is irrelevant and adds nothing; the emergency is hyperkalaemia with ECG change.",
+   "D": "Outpatient follow-up is unsafe; potassium 6.7 with QRS widening needs immediate calcium and potassium-lowering treatment."
+  },
+  "28": {
+   "A": "SIADH causes hyponatraemia with concentrated urine, not high urate, phosphate and potassium with low calcium.",
+   "B": "DKA causes hyperglycaemia, ketosis and metabolic acidosis; it does not produce hyperuricaemia and hyperphosphataemia after chemotherapy.",
+   "C": "HUS causes microangiopathic haemolysis, thrombocytopenia and renal injury; this post-chemotherapy electrolyte pattern is tumour lysis."
+  },
+  "29": {
+   "B": "Rasburicase (urate oxidase) rapidly breaks down existing uric acid to allantoin, which is the opposite of what the stem describes.",
+   "C": "Calcium gluconate stabilises the myocardium in hyperkalaemia and has no effect on uric acid.",
+   "D": "Sodium bicarbonate alkalinisation is no longer recommended in TLS, and it does not reduce uric acid production."
+  },
+  "30": {
+   "A": "Iron deficiency does not contraindicate rasburicase; the risk comes from the hydrogen peroxide it produces in G6PD deficiency.",
+   "C": "Beta-thalassaemia trait does not impair the response to oxidant stress and is not a contraindication.",
+   "D": "Mild eczema is not a contraindication to rasburicase."
+  },
+  "31": {
+   "A": "Waiting for culture growth delays treatment; empiric antibiotics are given within about an hour of presentation.",
+   "B": "Antihistamines do nothing for febrile neutropenia, which can progress quickly to sepsis.",
+   "D": "Observing for 24 hours is unsafe with ANC 200/µL; febrile neutropenia needs immediate empiric antibiotics."
+  },
+  "32": {
+   "A": "Iron deficiency anaemia causes microcytic anaemia without leucocytosis, hypoxia or neurological signs.",
+   "B": "Viral lymphadenopathy does not cause hyperleukocytosis with hypoxia and neurological symptoms.",
+   "C": "ITP causes isolated thrombocytopenia and bleeding, not leucocytosis with microvascular occlusion."
+  },
+  "33": {
+   "B": "Mild splenomegaly has no effect on the airway or anaesthetic safety.",
+   "C": "A small reactive neck node does not threaten the airway.",
+   "D": "A renal cyst is incidental and irrelevant to anaesthetic risk."
+  },
+  "34": {
+   "A": "Vincristine is neurotoxic and not ototoxic, and it does not raise lipase; ototoxicity belongs to platinum agents.",
+   "C": "Anthracyclines cause cardiotoxicity, not cystitis, and neither explains acute pancreatitis.",
+   "D": "Methotrexate causes mucositis, hepatotoxicity and crystal nephropathy, not acute pancreatitis with high lipase."
+  },
+  "35": {
+   "A": "CD3 is expressed in both T-LBL and T-ALL, so it cannot separate them.",
+   "B": "TdT is positive in both, as both are precursor lymphoblastic neoplasms.",
+   "D": "Mediastinal masses occur in both; the conventional cut-off is marrow blasts of at least 25% for T-ALL."
+  },
+  "36": {
+   "A": "ETV6::RUNX1 is a favourable-risk B-ALL lesion.",
+   "B": "High hyperdiploidy (51-67 chromosomes) is favourable; it is low hypodiploidy that is adverse.",
+   "C": "Rapid MRD clearance is a favourable response feature, not high-risk biology."
+  },
+  "37": {
+   "B": "Prophylactic antibiotics prevent infection but have no anti-leukaemic effect in the CNS sanctuary.",
+   "C": "Platelet transfusion is supportive and does not reduce CNS relapse.",
+   "D": "G-CSF speeds neutrophil recovery but does not treat CNS leukaemia."
+  },
+  "38": {
+   "A": "BCR::ABL1 defines CML and Ph+ ALL, not APL.",
+   "C": "ETV6::RUNX1 is a favourable fusion in B-ALL.",
+   "D": "MYC::IGH t(8;14) is the hallmark of Burkitt lymphoma."
+  },
+  "39": {
+   "A": "Classical Hodgkin lymphoma usually presents with cervical or mediastinal nodes in adolescents, not bulky abdominal disease with a very high proliferative index.",
+   "B": "CML presents with marked leucocytosis and splenomegaly, not a bulky high-proliferation abdominal mass.",
+   "D": "Follicular lymphoma is rare in children and is indolent rather than very highly proliferative."
+  },
+  "40": {
+   "A": "Pneumothorax is an acute line-insertion complication with respiratory symptoms, not limb swelling.",
+   "B": "Tumour lysis is a metabolic syndrome early in therapy and does not cause unilateral limb swelling.",
+   "C": "Nephrotic syndrome causes generalised oedema; new limb swelling with a catheter and asparaginase points to venous thrombosis."
+  }
+ }
+}

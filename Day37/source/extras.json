@@ -1,0 +1,442 @@
+{
+ "split_h2": "^(25 Active Recall prompts|25 rapid revision pearls|15 examination traps)$",
+ "calc_items": [
+  {
+   "title": "Absolute neutrophil count",
+   "question": "WBC 2,000/µL with neutrophils 12% and bands 3%. Calculate the absolute neutrophil count.",
+   "working": "2000 × (12 + 3)/100 = 300/µL.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 300,
+     "unit": "/µL"
+    }
+   ]
+  },
+  {
+   "title": "Corrected reticulocyte count",
+   "question": "Reticulocytes 6%, patient haematocrit 24%, reference haematocrit 36%. Calculate the corrected reticulocyte percentage.",
+   "working": "6 × 24/36 = 4% (this is not the reticulocyte production index).",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 4,
+     "unit": "%"
+    }
+   ]
+  },
+  {
+   "title": "Mentzer index",
+   "question": "MCV 60 fL and RBC 5.0 million/µL. Calculate the Mentzer index.",
+   "working": "60/5 = 12; a screening aid only, not diagnostic.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 12,
+     "unit": ""
+    }
+   ]
+  },
+  {
+   "title": "Absolute reticulocyte count",
+   "question": "RBC 3.0 million/µL with reticulocytes 4%. Calculate the absolute reticulocyte count.",
+   "working": "3,000,000 × 0.04 = 120,000/µL.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 120000,
+     "unit": "/µL"
+    }
+   ]
+  },
+  {
+   "title": "Corrected calcium",
+   "question": "Measured calcium 7.5 mg/dL, albumin 2.5 g/dL. Using Ca + 0.8 × (4 − albumin), calculate the corrected calcium.",
+   "working": "7.5 + 0.8 × 1.5 = 8.7 mg/dL; the correction is unreliable in critical illness.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 8.7,
+     "unit": "mg/dL"
+    }
+   ]
+  }
+ ],
+ "added_why_not": {
+  "1": {
+   "B": "Anaemia of inflammation is usually normocytic or mildly microcytic with a normal RDW, needs a chronic inflammatory illness, and does not explain pica.",
+   "C": "Thalassaemia trait gives uniform microcytosis with a normal RDW and a relatively high RBC count; pica points to iron deficiency.",
+   "D": "Hereditary spherocytosis is a haemolytic anaemia with spherocytes, raised MCHC, jaundice and splenomegaly, not microcytosis with pica."
+  },
+  "2": {
+   "A": "Serum iron reflects circulating iron, varies diurnally and with recent intake or inflammation, and does not measure body stores.",
+   "C": "The reticulocyte count reflects marrow red-cell output, not iron stores.",
+   "D": "Transferrin saturation reflects iron available for erythropoiesis; on its own it is less specific for stores than ferritin in a child without inflammation."
+  },
+  "3": {
+   "A": "Acute blood loss gives a normocytic anaemia with a reduced, not raised, RBC count; microcytosis takes time to develop.",
+   "C": "Autoimmune haemolysis is normocytic or macrocytic from reticulocytosis, with spherocytes and a positive DAT, not microcytosis with a high RBC count.",
+   "D": "Severe iron deficiency produces marked anaemia, a high RDW and a low RBC count; microcytosis is proportionate to the anaemia."
+  },
+  "4": {
+   "A": "MCV changes only as new red cells replace old ones over weeks; it cannot normalise within 24 hours.",
+   "C": "Ferritin (stores) is replenished last, after haemoglobin recovers; erythropoiesis takes priority for absorbed iron.",
+   "D": "Haemoglobin rises gradually over weeks (roughly 1-2 g/dL every 1-2 weeks); it cannot double in 48 hours."
+  },
+  "5": {
+   "A": "Aplastic anaemia causes pancytopenia with reticulocytopenia, without jaundice, splenomegaly or spherocytes.",
+   "C": "Beta-thalassaemia minor gives mild microcytic hypochromic anaemia with target cells and low MCHC, not spherocytes with raised MCHC.",
+   "D": "G6PD deficiency causes episodic oxidant-triggered haemolysis with bite and blister cells; chronic spherocytosis with high MCHC fits a membrane defect."
+  },
+  "6": {
+   "B": "HbA2 quantification screens for beta-thalassaemia trait and says nothing about red-cell membrane proteins.",
+   "C": "Bleeding time tests primary haemostasis (platelet function), not red-cell membrane integrity.",
+   "D": "A DAT distinguishes immune spherocytosis from HS but cannot confirm HS; a negative DAT only excludes autoimmune haemolysis."
+  },
+  "7": {
+   "A": "Reduced globin-chain synthesis is thalassaemia, a chronic microcytic anaemia not triggered by oxidant drugs and without bite cells.",
+   "B": "Spectrin deficiency causes hereditary spherocytosis with spherocytes, not drug-induced oxidative haemolysis with bite cells.",
+   "D": "Factor VIII deficiency is haemophilia A, a bleeding disorder with no haemolysis."
+  },
+  "8": {
+   "A": "G6PD deficiency is a fixed X-linked mutation; the gene is not transiently silenced during haemolysis.",
+   "C": "Ferritin does not interfere with G6PD enzyme assays.",
+   "D": "Platelets do not release G6PD into the sample; the false normal comes from a young red-cell population with higher enzyme activity."
+  },
+  "9": {
+   "A": "Iron deficiency is a production defect with no red-cell-bound antibody; DAT is negative.",
+   "B": "Beta-thalassaemia trait is a globin synthesis defect; DAT is negative.",
+   "D": "Folate deficiency causes megaloblastic anaemia from impaired DNA synthesis, not antibody-coated red cells."
+  },
+  "10": {
+   "B": "Haptoglobin falls, not rises, in haemolysis and LDH typically rises; this pattern argues against haemolysis.",
+   "C": "Reticulocytes are usually raised in haemolysis as the marrow compensates; low counts occur only in specific settings such as parvovirus.",
+   "D": "Haemolysis raises unconjugated bilirubin from haem breakdown; a low level argues against it."
+  },
+  "11": {
+   "A": "Acute blood loss gives a normocytic anaemia; hypersegmented neutrophils are not a feature.",
+   "C": "Thalassaemia trait is microcytic, not macrocytic, and does not cause neutrophil hypersegmentation.",
+   "D": "Iron deficiency alone is microcytic; hypersegmentation with macrocytosis indicates B12 or folate deficiency."
+  },
+  "12": {
+   "A": "Folate deficiency gives an identical megaloblastic anaemia but does not cause the subacute combined degeneration seen with B12 deficiency.",
+   "B": "Iron deficiency is microcytic, not macrocytic, and does not cause the neurologic picture described.",
+   "D": "Vitamin K deficiency causes coagulopathy (prolonged PT), not macrocytosis or neurologic degeneration."
+  },
+  "13": {
+   "A": "Iron deficiency causes an isolated anaemia, often with reactive thrombocytosis, and a cellular marrow.",
+   "C": "G6PD deficiency causes episodic haemolysis with a normal or hypercellular marrow, not pancytopenia.",
+   "D": "ITP causes isolated thrombocytopenia with normal or increased marrow megakaryocytes, not pancytopenia with a hypocellular marrow."
+  },
+  "14": {
+   "A": "Hereditary spherocytosis is a haemolytic anaemia without pancytopenia, short stature or radial-ray anomalies.",
+   "B": "Isolated ITP affects only platelets and has no congenital anomalies.",
+   "D": "Haemophilia A is a coagulation factor deficiency with normal blood counts and no skeletal anomalies."
+  },
+  "15": {
+   "A": "G6PD deficiency causes haemolysis with a reticulocytosis, not a hypoproliferative anaemia with reticulocytopenia.",
+   "B": "Haemophilia B is a factor IX bleeding disorder; it does not cause isolated reticulocytopenic anaemia.",
+   "C": "ITP causes isolated thrombocytopenia; here platelets are preserved and the red-cell line has failed."
+  },
+  "16": {
+   "A": "Rheumatic fever causes migratory large-joint arthritis in school-age children, not symmetrical hand-foot swelling in an HbSS toddler.",
+   "C": "Osteomyelitis or septic arthritis must be considered, but hand-foot swelling in an HbSS toddler is usually vaso-occlusive dactylitis, not sepsis in every case.",
+   "D": "ALL can cause bone pain, but painful hand and foot swelling in a toddler with HbSS is the classic early vaso-occlusive event."
+  },
+  "17": {
+   "A": "Functional asplenia puts these children at risk of fulminant pneumococcal sepsis; observation without cultures is unsafe.",
+   "C": "Delaying review risks rapid progression of invasive bacterial infection; fever is a medical emergency in SCD.",
+   "D": "Iron is not indicated for fever, and iron deficiency is not the issue in SCD; infection must be addressed urgently."
+  },
+  "18": {
+   "A": "A pain crisis alone does not produce a new pulmonary infiltrate with fever and respiratory symptoms.",
+   "C": "Iron overload is a chronic transfusion complication affecting liver, heart and endocrine glands, not an acute febrile infiltrate.",
+   "D": "Splenic sequestration presents with acute splenomegaly and falling haemoglobin, not a pulmonary infiltrate."
+  },
+  "19": {
+   "A": "ITP causes isolated thrombocytopenia with bleeding, not acute splenic enlargement with shock.",
+   "B": "Mild iron deficiency develops slowly and does not cause shock or acute splenomegaly.",
+   "C": "Folate deficiency can worsen anaemia gradually but does not cause sudden splenomegaly and hypovolaemic shock."
+  },
+  "20": {
+   "A": "Oral iron has no role in stroke prevention and may worsen iron loading in transfused patients.",
+   "C": "Vaccination is essential in SCD for infection protection and does not affect stroke risk.",
+   "D": "Splenectomy is reserved for recurrent sequestration and does not reduce stroke risk; most HbSS children already have functional asplenia."
+  },
+  "21": {
+   "A": "Isolated neutropenia is not the expected major complication of chronic red-cell transfusion.",
+   "C": "Transfusion does not cause congenital platelet dysfunction; congenital disorders are inherited, not acquired.",
+   "D": "Vitamin K deficiency is not the main concern; cumulative iron deposition in heart, liver and endocrine organs is."
+  },
+  "22": {
+   "A": "A silent alpha-thalassaemia carrier has normal or low-normal HbA2, not elevated.",
+   "B": "G6PD deficiency is an enzymopathy with a normal haemoglobin electrophoresis.",
+   "D": "Iron deficiency lowers HbA2 and can mask beta-thalassaemia trait; it does not raise it."
+  },
+  "23": {
+   "A": "Aplastic anaemia causes pancytopenia, not isolated thrombocytopenia.",
+   "B": "Haemophilia A has a normal platelet count with prolonged aPTT and deep bleeding.",
+   "D": "B12 deficiency causes macrocytic anaemia, often with pancytopenia, not isolated post-viral thrombocytopenia."
+  },
+  "24": {
+   "A": "Splenectomy is reserved for chronic refractory ITP and is not used for newly diagnosed disease with mild bleeding.",
+   "C": "Current ASH guidance bases treatment on bleeding severity; children with skin-only bleeding are usually observed even with very low counts.",
+   "D": "Platelet transfusion is reserved for life-threatening bleeding, since transfused platelets are rapidly destroyed."
+  },
+  "25": {
+   "A": "Intracranial haemorrhage is life-threatening; observation is appropriate only for minor skin bleeding.",
+   "B": "Oral iron has no role in acute haemostasis.",
+   "D": "Delay is dangerous; ICH needs immediate platelet transfusion, IVIG and steroids with specialist input."
+  },
+  "26": {
+   "B": "Vitamin K deficiency prolongs PT first (factor VII has the shortest half-life) and does not cause recurrent haemarthrosis.",
+   "C": "Factor VII deficiency prolongs PT with a normal aPTT, the opposite of this pattern.",
+   "D": "ITP causes mucocutaneous bleeding with low platelets and normal PT/aPTT, not haemarthrosis."
+  },
+  "27": {
+   "A": "Platelet disorders do not prolong the aPTT.",
+   "C": "Raised fibrinogen does not prolong the aPTT or correct on mixing.",
+   "D": "An inhibitor (e.g. factor VIII antibody or lupus anticoagulant) fails to correct on mixing because it also acts on normal plasma."
+  },
+  "28": {
+   "B": "Haemophilia A causes deep-tissue and joint bleeding, mainly in males, rather than mucocutaneous bleeding and menorrhagia.",
+   "C": "Sickle cell disease causes vaso-occlusion and haemolysis, not a bleeding diathesis.",
+   "D": "Thalassaemia major is a transfusion-dependent anaemia without a primary bleeding tendency."
+  },
+  "29": {
+   "B": "ITP lowers platelets only; PT, aPTT and fibrinogen are normal.",
+   "C": "Hereditary spherocytosis is a haemolytic anaemia without coagulopathy or thrombocytopenia.",
+   "D": "Factor XII deficiency prolongs aPTT alone, causes no bleeding, and does not lower platelets or fibrinogen."
+  },
+  "30": {
+   "B": "Blasts on the smear demand urgent bone marrow examination; deferring delays diagnosis and treatment.",
+   "C": "Fever, bone pain and blasts are red flags that exclude a diagnosis of uncomplicated ITP.",
+   "D": "Oral iron does not address a possible leukaemia and delays urgent assessment."
+  },
+  "31": {
+   "A": "CML is rare in childhood, accounting for only a small fraction of paediatric leukaemias, and is chronic, not acute.",
+   "C": "APL is a subtype of AML, which itself is much less common than ALL in children.",
+   "D": "Hairy-cell leukaemia is a chronic B-cell disease of adults and essentially absent in children."
+  },
+  "32": {
+   "A": "Cell breakdown raises urate and potassium; both are low in this option.",
+   "B": "TLS causes hyperkalaemia and hyperphosphataemia, not hypokalaemia and hypophosphataemia.",
+   "D": "Isolated hypernatraemia is not a feature of TLS; the defining changes are high potassium, phosphate and urate with low calcium."
+  },
+  "33": {
+   "A": "Albumin does not rise acutely in TLS; a rise would increase, not lower, total calcium.",
+   "B": "Hyperphosphataemia actually suppresses calcitriol formation; increased vitamin D would raise calcium.",
+   "D": "Urate does not bind iron, and iron has no role in TLS hypocalcaemia."
+  },
+  "34": {
+   "A": "Haemophilia A causes bleeding with prolonged aPTT, not fever, organomegaly, cytopenias and hyperferritinaemia.",
+   "B": "Iron deficiency gives a low, not very high, ferritin and causes no fever or splenomegaly.",
+   "D": "Mild ITP causes isolated thrombocytopenia without fever, hepatosplenomegaly or raised ferritin."
+  },
+  "35": {
+   "B": "Ceruloplasmin is used to evaluate Wilson disease, not HLH.",
+   "C": "HbA2 is used to screen for beta-thalassaemia trait, not HLH.",
+   "D": "Bleeding time is a test of platelet function and is not an HLH criterion; hypofibrinogenaemia is the coagulation criterion."
+  },
+  "36": {
+   "A": "Hypersegmented neutrophils indicate megaloblastic anaemia, not red-cell fragmentation.",
+   "B": "Howell-Jolly bodies indicate hyposplenism or asplenia, not microangiopathy.",
+   "D": "Target cells are seen in thalassaemia, liver disease and haemoglobinopathies, not mechanical red-cell injury."
+  },
+  "37": {
+   "A": "Iron deficiency does not cause thrombocytopenia or AKI, and is not a post-diarrhoeal acute illness.",
+   "B": "Haemophilia A causes bleeding with normal platelets and no haemolysis or renal failure.",
+   "C": "ITP lacks microangiopathic haemolysis and AKI; the triad after bloody diarrhoea indicates HUS."
+  },
+  "38": {
+   "A": "Oral rehydration is core supportive care in STEC diarrhoea and helps protect renal perfusion.",
+   "C": "Hydration assessment is essential; volume expansion may reduce the risk of severe HUS.",
+   "D": "Electrolyte and renal monitoring is needed to detect evolving HUS and should not be avoided."
+  },
+  "39": {
+   "A": "ITP causes isolated thrombocytopenia with petechiae, not pallor with severe jaundice; neonatal immune thrombocytopenia would not explain haemolysis.",
+   "B": "Fanconi anaemia is an inherited marrow failure syndrome presenting with cytopenias later in childhood, not neonatal haemolytic jaundice linked to maternal antibodies.",
+   "C": "Thalassaemia trait causes mild microcytosis without significant neonatal haemolysis, and it has no link to a positive maternal antibody screen."
+  },
+  "40": {
+   "A": "Haemolysis with a functioning marrow produces reticulocytosis; a low count argues against compensated haemolysis unless there is a superimposed aplastic crisis.",
+   "C": "Acute haemorrhage is followed by a reticulocyte rise within days; reticulocytopenia does not point to bleeding, and 'always' is wrong.",
+   "D": "Normal compensation to profound anaemia is an elevated reticulocyte count; a low count means the marrow is failing to respond."
+  },
+  "41": {
+   "A": "Factor V deficiency is a rare bleeding disorder and does not cause fever, pharyngitis, lymphadenopathy or atypical lymphocytes.",
+   "C": "Iron deficiency causes microcytic anaemia, not an acute febrile illness with sore throat, cervical nodes and reactive atypical lymphocytes.",
+   "D": "Haemophilia is an inherited coagulation defect presenting with deep bleeding; it does not produce an infectious-mononucleosis picture."
+  },
+  "42": {
+   "A": "Dehydration causes haemoconcentration, not massive splenomegaly or circulating nucleated red cells and immature myeloid precursors.",
+   "B": "Uncomplicated ITP has a normal spleen and an isolated low platelet count; massive splenomegaly and a leucoerythroblastic film exclude it.",
+   "C": "Scurvy causes gum bleeding, perifollicular haemorrhage and bone pain, not massive splenomegaly with a leucoerythroblastic picture."
+  },
+  "43": {
+   "A": "Factor VIII is in the intrinsic pathway; its deficiency prolongs aPTT with a normal PT, the opposite pattern.",
+   "B": "Factor XI deficiency prolongs aPTT, not PT, since factor XI belongs to the intrinsic pathway.",
+   "C": "Factor IX deficiency (haemophilia B) prolongs aPTT with normal PT; only factor VII deficiency isolates the PT."
+  },
+  "44": {
+   "A": "Factor IX deficiency (haemophilia B) prolongs aPTT and causes significant deep-tissue and joint bleeding.",
+   "B": "Factor VIII deficiency (haemophilia A) prolongs aPTT and causes clinically important haemarthroses and muscle bleeds.",
+   "C": "Factor XI deficiency prolongs aPTT and causes variable bleeding, especially after surgery or trauma, unlike factor XII deficiency which causes none."
+  },
+  "45": {
+   "A": "3000/uL is a normal ANC, not a neutropenia threshold at all.",
+   "B": "5000/uL is a normal ANC; neutropenia is defined as ANC below 1500/uL beyond infancy.",
+   "C": "Below 1500/uL defines neutropenia generally (mild is 1000-1500/uL), not severe neutropenia, which is below 500/uL."
+  },
+  "46": {
+   "A": "Febrile neutropenia can progress rapidly to septic shock; observation without assessment is unsafe in an oncologic emergency.",
+   "B": "Oral iron has no role in febrile neutropenia and does nothing for the infection risk.",
+   "C": "Waiting for final cultures delays treatment; antibiotics should be started promptly, ideally within an hour, once cultures are drawn."
+  },
+  "47": {
+   "B": "Vitamin K deficiency causes bleeding from low factors II, VII, IX and X, not persistent neutropenia with bacterial infections.",
+   "C": "Haemophilia B causes deep bleeding from factor IX deficiency, with normal neutrophil counts and no infection predisposition.",
+   "D": "Thalassaemia trait causes mild microcytosis and does not lower the ANC or cause recurrent bacterial infections."
+  },
+  "48": {
+   "A": "Spherocytes suggest hereditary spherocytosis or immune haemolysis, not lead poisoning; 'only' is also wrong.",
+   "C": "Auer rods are found in myeloblasts of AML, not in lead poisoning.",
+   "D": "Sickle cells occur in sickle cell disease due to HbS polymerisation, not in lead poisoning."
+  },
+  "49": {
+   "A": "Cow milk is poor in iron, with negligible haem iron and low bioavailability; it does not provide high iron.",
+   "C": "Folate intake is unrelated to microcytosis; folate deficiency would cause macrocytic anaemia, and cow milk is itself folate-poor.",
+   "D": "Excess vitamin B12 does not cause anaemia, and B12 deficiency would produce macrocytosis, not microcytosis."
+  },
+  "50": {
+   "A": "Ferritin is an iron-storage protein, not a clotting factor.",
+   "C": "Ferritin is not a platelet enzyme; its rise in inflammation reflects acute-phase synthesis.",
+   "D": "Ferritin is not a renal hormone; erythropoietin is the renal hormone driving erythropoiesis."
+  },
+  "51": {
+   "B": "Zinc levels are not the key hydroxyurea safety monitor; dose-dependent marrow suppression is.",
+   "C": "Hydroxyurea does not induce factor VII inhibitors; coagulation inhibitors are not part of its monitoring.",
+   "D": "Hypercalcaemia is not a recognised hydroxyurea toxicity; blood counts are monitored for cytopenias."
+  },
+  "52": {
+   "A": "More free plasma haemoglobin would mean more haemolysis and nitric oxide scavenging, which hydroxyurea actually reduces.",
+   "B": "HbA2 is not the protective haemoglobin raised by hydroxyurea; HbF induction is the main mechanism.",
+   "C": "Methaemoglobin is not therapeutically increased and would impair oxygen delivery; the benefit comes from HbF."
+  },
+  "53": {
+   "B": "Pigment stones are calcium bilirubinate from bilirubin excess, not from increased urinary calcium.",
+   "C": "Uric acid may rise with cell turnover but causes urate stones or gout, not biliary pigment gallstones.",
+   "D": "Albumin synthesis is unrelated to gallstone formation; the driver is excess haem breakdown to bilirubin."
+  },
+  "54": {
+   "A": "5-40% factor VIII activity defines mild haemophilia, not severe.",
+   "C": "Above 50% factor VIII activity is in the normal range, not haemophilia.",
+   "D": "100% is normal factor VIII activity; severe haemophilia is below 1%."
+  },
+  "55": {
+   "A": "Haemarthroses are typical of coagulation factor deficiencies such as haemophilia, not platelet disorders.",
+   "C": "Deep-muscle haematomas reflect secondary haemostasis (factor) defects; platelet disorders cause superficial mucocutaneous bleeding.",
+   "D": "Platelet disorders characteristically cause skin bleeding such as petechiae and purpura, so 'no skin bleeding' is the opposite."
+  },
+  "56": {
+   "A": "Pinpoint petechiae are characteristic of platelet or vascular disorders, not coagulation factor deficiency.",
+   "B": "Injection-site bruising may occur but is not the defining pattern; factor deficiencies are classically marked by deep and joint bleeding.",
+   "C": "Gingival bleeding from gingivitis is a local mucosal problem, not the hallmark of factor deficiency."
+  },
+  "57": {
+   "A": "Iron deficiency does not cause persistent lymphadenopathy, night sweats and weight loss; these B symptoms demand exclusion of lymphoma and TB.",
+   "C": "Teething does not cause persistent lymphadenopathy, night sweats or weight loss.",
+   "D": "Physiological anaemia of infancy occurs at 2-3 months and has no lymphadenopathy or constitutional symptoms."
+  },
+  "58": {
+   "A": "Transferrin saturation falls in iron deficiency; it is not always normal.",
+   "B": "High transferrin saturation suggests iron overload such as haemochromatosis or transfusional overload, the opposite of iron deficiency.",
+   "C": "Transferrin saturation directly reflects circulating iron availability, so it is not unrelated."
+  },
+  "59": {
+   "B": "Platelet count is not a discriminator; reactive thrombocytosis can occur in iron deficiency but does not exclude thalassaemia trait.",
+   "C": "Serum sodium has no role in differentiating microcytic anaemias.",
+   "D": "Blood group is irrelevant to distinguishing thalassaemia trait from iron deficiency."
+  },
+  "60": {
+   "A": "Delayed cord clamping does not cause thrombocytopenia; it increases blood volume and red-cell mass.",
+   "B": "It reduces, rather than causes, early iron deficiency by transferring placental blood and iron to the infant.",
+   "C": "Delayed clamping increases neonatal blood volume through placental transfusion."
+  },
+  "61": {
+   "A": "Being otherwise well is typical of ITP and supports, not argues against, the diagnosis.",
+   "B": "A preceding viral infection is a common trigger of childhood ITP and is consistent with it.",
+   "C": "Isolated petechiae with isolated thrombocytopenia are the expected presentation of ITP."
+  },
+  "62": {
+   "A": "Iron deficiency more often causes reactive thrombocytosis and has no link to heparin exposure or new thrombosis.",
+   "B": "Hereditary spherocytosis causes haemolytic anaemia, not heparin-associated thrombocytopenia with thrombosis.",
+   "C": "B12 deficiency may cause pancytopenia but has no relation to heparin exposure or new thrombosis."
+  },
+  "63": {
+   "A": "Fibrinogen is typically increased, not decreased, in nephrotic syndrome, contributing to hypercoagulability.",
+   "B": "Factor VIII is usually raised in nephrotic syndrome; deficiency would cause bleeding, not thrombosis.",
+   "C": "Platelet destruction is not the mechanism; platelets are often increased and hyperaggregable, and urinary antithrombin loss is key."
+  },
+  "64": {
+   "B": "Anaemia of inflammation is hypoproliferative with low reticulocytes, not always high.",
+   "C": "High serum iron with low ferritin is the reverse of the inflammatory pattern, where serum iron is low and ferritin normal or high.",
+   "D": "Raised HbA2 suggests beta-thalassaemia trait, not anaemia of chronic inflammation."
+  },
+  "65": {
+   "A": "Iron stores do not rise abruptly at a few months; symptom onset reflects the fall in HbF.",
+   "B": "HbA2 does not disappear at birth; it is low at birth and rises, and it does not explain symptom timing.",
+   "C": "Thalassaemia major is not immune haemolysis; maternal antibodies are irrelevant to its onset."
+  },
+  "66": {
+   "A": "Factor XII deficiency prolongs only the aPTT, leaves PT normal and causes no bleeding.",
+   "C": "Thalassaemia trait causes mild microcytosis, not bruising or prolonged PT and aPTT.",
+   "D": "G6PD deficiency causes episodic haemolysis, not a coagulopathy with prolonged PT and aPTT."
+  },
+  "67": {
+   "A": "Folate supplementation does nothing for acute haemorrhagic shock.",
+   "B": "Haemodynamic assessment must be immediate in massive haemorrhage; deferring it risks death.",
+   "C": "Ferritin is irrelevant to acute haemorrhage management, and waiting for it delays resuscitation."
+  },
+  "68": {
+   "A": "Tumour lysis risk assessment is an appropriate early step in suspected leukaemia with high WBC, not something to avoid.",
+   "B": "Urgent oncology referral is required for suspected leukaemia and should not be avoided.",
+   "C": "A peripheral smear is a key, simple test to look for blasts and should be done, not avoided."
+  },
+  "69": {
+   "A": "Aspirin has no role in anaemic heart failure and adds bleeding risk.",
+   "B": "Heart failure from severe anaemia is an emergency; outpatient follow-up alone is unsafe.",
+   "D": "Cardiorespiratory compromise needs close monitoring, especially during transfusion because of volume overload risk."
+  },
+  "70": {
+   "A": "Bleeding time assesses platelet-vessel interaction, not haemoglobin fractions.",
+   "C": "The direct Coombs test detects red-cell-bound antibody, not HbF levels.",
+   "D": "Ferritin reflects iron stores and does not quantify HbF or haemoglobin variants."
+  },
+  "71": {
+   "A": "Physiological anaemia does not cause prolonged fever, splenomegaly and pancytopenia.",
+   "B": "ITP causes isolated thrombocytopenia without fever or splenomegaly; pancytopenia excludes it.",
+   "C": "Haemophilia A is a coagulation factor deficiency and does not cause fever, splenomegaly or pancytopenia."
+  },
+  "72": {
+   "A": "Iron deficiency and thalassaemia trait commonly coexist, and iron deficiency can lower HbA2 and mask beta-thalassaemia trait.",
+   "B": "Lifelong iron without testing risks iron overload, especially in thalassaemia carriers; treat only confirmed deficiency.",
+   "C": "Chelation is for iron overload, not for a child who is iron deficient."
+  },
+  "73": {
+   "A": "Untreated iron deficiency typically has an inappropriately low reticulocyte response, so 'always' is wrong.",
+   "B": "Marrow aplasia causes reticulocytopenia, the opposite of an increased corrected count.",
+   "D": "Vitamin K deficiency causes a coagulopathy; any reticulocyte rise would only reflect resulting blood loss."
+  },
+  "74": {
+   "B": "HbA2 quantification is used for beta-thalassaemia trait, not detection of red-cell-bound antibodies.",
+   "C": "PT assesses the extrinsic coagulation pathway, not immune haemolysis.",
+   "D": "Ferritin measures iron stores and does not identify antibodies on red cells."
+  },
+  "75": {
+   "B": "Ferritin may show iron deficiency from chronic bleeding but does not diagnose the underlying bleeding disorder.",
+   "C": "G6PD assay evaluates haemolysis, not mucocutaneous bleeding with abnormal platelet-function testing.",
+   "D": "Haemoglobin electrophoresis assesses haemoglobinopathies and has no role in investigating VWD."
+  }
+ }
+}

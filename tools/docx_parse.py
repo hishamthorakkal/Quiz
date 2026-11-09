@@ -337,7 +337,139 @@ def parse_calc(sections):
                     'trap': f.get('trap', ''), 'answer': float(nums[-1][0]), 'unit': nums[-1][1]})
     return out
 
+LEVELS = {'basic', 'clinical', 'conceptual', 'high', 'integrated', 'applied', 'advanced', 'recall', 'application', 'analysis', 'retest'}
+
+
+def parse_inline_v5(doc, parts):
+    """Days 36–41 (Nov 2026 "Examiner REVIEW EDITION" family). Returns (qs, problems, stats) or None.
+
+    Questions: "Q001  [D33-Q57]  stem" (Day 36, booklet ID), "Q001 [Basic] stem" (Days 37–39; a tag that is not a
+    difficulty level — "[ALL]", "[Wilms]" — names the topic and is dropped), "D40-Q01 [Topic] stem" / "D41-P01 [Topic] stem";
+    notebook retests "RT01  [ERR-D17-Q44]  stem" (numbered after the base questions). Keys and reasons:
+      "Key: A — core" / "Key: A | core" (37/38), "Provisional key: A. core | Other options: …" (39), "Provisional key: B. core"
+      + "A audit: reason" (40), "Provisional key: A — core" (41); Day 36 keeps them in a separate part:
+      "Q001  D33-Q57  |  Clinical  |  KEY A", "Stem: …", "A (correct): …" / "B (not best): …", and
+      "RT01 [ERR-D17-Q44] — KEY B. core".
+    Generic distractor lines ("Distractor audit:", "Option audit:", "Distractor review:", "Other options: …") are dropped.
+    """
+    paras = [(h, el) for h, els in parts for el in els if el.tag == W + 'p']
+    keyrx = re.compile(r'^(?:Key:\s*[A-D]\s*[—–|-]|Provisional key:\s*[A-D]\s*[.—–-]|Q\d+\s+D\d+-[QR]\d+\s*\|.*\|\s*KEY [A-D]\s*$)')
+    if not any(keyrx.match(text(el)) for _, el in paras):
+        return None
+    qs, by, problems, fixed = [], {}, [], []
+    cur, tgt, part = None, None, None
+    nbase = 0
+    for h, el in paras:
+        t = text(el)
+        if h is not part:
+            part, cur, tgt = h, None, None
+        m = (re.match(r'^Q(\d+)\s+\[(D\d+-[QR]\d+)\]\s+(\S.+)$', t) or re.match(r'^Q(\d+)\s+\[([^\]]+)\]\s+(\S.+)$', t)
+             or re.match(r'^D\d+-[QP](\d+)\s+\[([^\]]+)\]\s+(\S.+)$', t))
+        rt = re.match(r'^RT(\d+)\s+\[ERR-D(\d+)-Q(\d+)\]\s+(?![—–-]\s*KEY\b)(\S.+)$', t)
+        if m or rt:
+            if m:
+                tag = m[2].strip()
+                lev = 'High' if tag.lower() == 'high-difficulty' else tag if tag.lower() in LEVELS else ''
+                cur = {'num': int(m[1]), 'level': lev, 'question': m[3].strip(), 'options': [], 'ans': None, 'core': '', 'why_not': {}}
+                nbase = max(nbase, cur['num'])
+            else:
+                cur = {'num': nbase + int(rt[1]), 'level': '', 'question': rt[4].strip(), 'options': [], 'ans': None, 'core': '',
+                       'why_not': {}, 'retest_from': f'Day {rt[2]} Q{rt[3]}', 'rt': int(rt[1])}
+            if cur['num'] in by:
+                problems.append(f"Q{cur['num']}: numbered twice")
+            by[cur['num']] = cur
+            qs.append(cur)
+            tgt = cur
+            continue
+        mo = cur is not None and len(cur['options']) < 4 and re.match(r'^([A-D])\.\s+(.+)$', t)
+        if mo:
+            if 'ABCD'[len(cur['options'])] != mo[1]:
+                problems.append(f"Q{cur['num']}: option {mo[1]} out of order")
+            cur['options'].append(mo[2].strip())
+            continue
+        # Day 36 key part: "Q001  D33-Q57  |  Clinical  |  KEY A" / "RT01 [ERR-D17-Q44] — KEY B. core"
+        mk = re.match(r'^Q(\d+)\s+D\d+-[QR]\d+\s*\|\s*([^|]+?)\s*\|\s*KEY ([A-D])\s*$', t)
+        if mk:
+            tgt = by.get(int(mk[1]))
+            if not tgt:
+                problems.append(f'key for unknown Q{mk[1]}')
+                continue
+            tgt['ans'] = mk[3]
+            lev = mk[2].strip()
+            tgt['level'] = tgt['level'] or ('High' if lev.lower() == 'high-difficulty' else lev if lev.lower() in LEVELS else '')
+            continue
+        mk = re.match(r'^RT(\d+)\s*\[ERR-D\d+-Q\d+\]\s*[—–-]\s*KEY ([A-D])\.\s*(.+)$', t)
+        if mk:
+            tgt = next((q for q in qs if q.get('rt') == int(mk[1])), None)
+            if not tgt:
+                problems.append(f'key for unknown RT{mk[1]}')
+                continue
+            tgt['ans'], tgt['core'] = mk[2], mk[3].strip()
+            continue
+        if tgt is None:
+            continue
+        if re.match(r'^Stem:\s*', t):
+            if re.sub(r'\s+', ' ', t[5:].strip()) != re.sub(r'\s+', ' ', tgt['question']):
+                fixed.append(f"Q{tgt['num']}: key-part stem differs from the question wording")
+            continue
+        mk = re.match(r'^([A-D]) \((correct|not best)\):\s*(.+)$', t)
+        if mk:
+            if mk[2] == 'correct':
+                if mk[1] != tgt['ans']:
+                    problems.append(f"Q{tgt['num']}: option marked correct {mk[1]} != KEY {tgt['ans']}")
+                tgt['core'] = mk[3].strip()
+            elif not any(b in mk[3] for b in BOILERPLATE):
+                tgt['why_not'][mk[1]] = mk[3].strip()
+            continue
+        mk = re.match(r'^(?:Provisional key|Key):\s*([A-D])\s*[.—–|-]\s*(.+)$', t)
+        if mk:
+            tgt['ans'] = mk[1]
+            tgt['core'] = re.split(r'\s*\|\s*Other options:', mk[2])[0].strip()
+            continue
+        mk = re.match(r'^([A-D]) audit:\s*(.+)$', t)
+        if mk:          # Day 40: one line per option; the keyed one starts "Correct:"
+            if re.match(r'^Correct\b', mk[2]):
+                if mk[1] != tgt['ans']:
+                    problems.append(f"Q{tgt['num']}: audit marks {mk[1]} correct, key {tgt['ans']}")
+            else:
+                tgt['why_not'][mk[1]] = mk[2].strip()
+            continue
+        if re.match(r'^(Distractor audit|Option audit|Distractor review|Original source|Notebook status before)\b', t):
+            continue
+    out = []
+    for q in sorted(qs, key=lambda q: q['num']):
+        n = q['num']
+        if len(q['options']) != 4:
+            problems.append(f"Q{n}: {len(q['options'])} options")
+            continue
+        if not q['ans']:
+            problems.append(f'Q{n}: no key')
+            continue
+        if not q['core']:
+            problems.append(f'Q{n}: no explanation')
+        a = 'ABCD'.index(q['ans'])
+        if q['ans'] in q['why_not']:
+            problems.append(f'Q{n}: a why-not reason is given for the keyed option')
+        item = {'num': n, 'level': q['level'], 'question': q['question'], 'options': q['options'], 'answer': a, 'core': q['core'],
+                'why_not': {'ABCD'.index(k): v for k, v in q['why_not'].items()}, 'pearl': ''}
+        if 'rt' in q:
+            item['retest'] = {'stage': 'R1', 'from': q['retest_from']}
+        item['explanation'] = compose_explanation(item)
+        out.append(item)
+    nums = [q['num'] for q in out]
+    if nums != list(range(1, len(nums) + 1)):
+        problems.append('question numbering not contiguous')
+    if len(set(q['question'] for q in out)) != len(out):
+        problems.append('duplicate question stems')
+    stats = {'mcq': len(qs), 'key': sum(1 for q in qs if q['ans']), 'explanations': sum(1 for q in qs if q['core']), 'built': len(out),
+             'source_fixes': fixed, 'pearls_relabelled': [], 'why_not_kept': sum(1 for q in out if q['why_not'])}
+    return out, problems, stats
+
+
 def parse_mcqs(doc, parts, aliases=None):
+    v5 = parse_inline_v5(doc, parts)
+    if v5 is not None:
+        return v5
     find = lambda pat: next((els for h, els in parts if re.match(pat, h, re.I)), None)
     # Questions: the first "SECTION A/B" part that really holds "1. [Level] …" / "Qn. …" lines (some documents
     # also name study-note parts "SECTION A — …"); explanations: SECTION C.

@@ -1,0 +1,155 @@
+{
+ "title": "Oncology Consolidation",
+ "added_why_not": {
+  "1": {
+   "B": "Wilms tumour arises within the kidney, rarely calcifies and rarely crosses the midline; it does not raise urinary catecholamine metabolites.",
+   "C": "Adrenocortical carcinoma is adrenal but presents with virilisation or Cushing features from steroid excess, not raised VMA/HVA with calcification crossing the midline.",
+   "D": "Hepatoblastoma is a liver mass marked by raised AFP, not an adrenal mass with urinary catecholamine metabolites."
+  },
+  "2": {
+   "A": "Neuroblastoma is usually suprarenal, often crosses the midline, calcifies and makes the child look unwell; a painless intrarenal mass in a well 3-year-old favours Wilms.",
+   "B": "Renal cell carcinoma is a tumour of adolescents and adults; in a 3-year-old a renal mass is far more likely to be Wilms.",
+   "C": "Rhabdomyosarcoma usually arises in the head and neck, genitourinary tract or extremities, not as a primary renal mass with hypertension."
+  },
+  "3": {
+   "A": "Leukocoria is not conjunctivitis; antibiotic drops only delay diagnosis of retinoblastoma or another sight-threatening cause.",
+   "B": "Observation risks loss of the eye, extraocular spread and death from retinoblastoma; leukocoria needs urgent assessment.",
+   "D": "A six-month routine review is far too late; leukocoria with strabismus needs urgent dilated fundus examination."
+  },
+  "4": {
+   "A": "Biliary atresia presents with cholestatic jaundice and pale stools in early infancy, not a large liver mass with markedly raised AFP.",
+   "C": "Infantile hepatic haemangioma is a vascular lesion of early infancy without marked AFP elevation beyond the age-expected range.",
+   "D": "Focal nodular hyperplasia is a benign lesion, usually in older children, with normal AFP."
+  },
+  "5": {
+   "B": "Ewing sarcoma favours the diaphysis with an onion-skin reaction and soft-tissue mass; a metaphyseal distal femur lesion with sunburst reaction favours osteosarcoma.",
+   "C": "Osteomyelitis gives fever and periosteal new bone but not a destructive sunburst pattern of tumour osteoid in a teenager with progressive pain.",
+   "D": "Chondroblastoma is a benign epiphyseal lesion, not an aggressive metaphyseal tumour with sunburst periosteal reaction."
+  },
+  "6": {
+   "A": "Osteosarcoma typically involves the metaphysis with a sunburst reaction; a diaphyseal onion-skin lesion with fever is classic for Ewing.",
+   "B": "Giant cell tumour is an epiphyseal lesion of skeletally mature young adults, without fever or onion-skin periosteal reaction.",
+   "C": "Osteochondroma is a benign exostosis projecting from the metaphysis, not a painful febrile diaphyseal lesion."
+  },
+  "7": {
+   "A": "Wilms tumour is a renal tumour and does not present as a primary orbital mass.",
+   "B": "Hepatoblastoma is a liver tumour; it is not an orbital soft-tissue sarcoma.",
+   "D": "Osteosarcoma is a bone tumour of long-bone metaphyses, not a rapidly growing orbital soft-tissue mass."
+  },
+  "8": {
+   "A": "Fanconi syndrome causes hypokalaemia and hypophosphataemia from proximal tubular losses, the opposite of this pattern.",
+   "C": "SIADH causes hyponatraemia with concentrated urine, not hyperkalaemia, hyperphosphataemia and hypocalcaemia.",
+   "D": "Diabetes insipidus causes polyuria and hypernatraemia, not the potassium, phosphate and calcium pattern of cell lysis."
+  },
+  "9": {
+   "B": "Waiting for culture positivity delays treatment by hours to days; febrile neutropenia mortality rises with every hour without antibiotics.",
+   "C": "Antipyretic alone with discharge ignores a potentially fatal bacteraemia; febrile neutropenia needs assessment and empiric IV antibiotics.",
+   "D": "Deferring assessment until morning breaches the time-to-antibiotic standard, usually within about an hour of presentation."
+  },
+  "10": {
+   "A": "Physiotherapy without imaging misses cord compression, where delay causes permanent paralysis and sphincter loss.",
+   "B": "New weakness and urinary retention in a child with cancer are red flags; reassurance and discharge is unsafe.",
+   "C": "Neurological outcome depends on function when treatment starts; imaging must be urgent (MRI spine), not delayed for two weeks."
+  },
+  "11": {
+   "A": "Supine positioning lets the mass compress the trachea and great vessels, precipitating airway or cardiovascular collapse.",
+   "B": "Sedation reduces airway tone and spontaneous effort and can cause collapse; it is unsafe in clinic with stridor and orthopnoea.",
+   "D": "General anaesthesia with loss of spontaneous ventilation can cause complete obstruction; it needs expert multidisciplinary planning, never an unplanned elective approach."
+  },
+  "12": {
+   "A": "Favourable histology (INPC/Shimada) is a good prognostic feature, not an adverse one.",
+   "C": "Age under 18 months is a favourable factor in neuroblastoma, not adverse.",
+   "D": "Localised disease is favourable; extent alone does not denote high risk the way MYCN amplification does."
+  },
+  "13": {
+   "B": "Turner syndrome is associated with horseshoe kidney but is not a classic Wilms predisposition syndrome like WAGR.",
+   "C": "Marfan syndrome is a fibrillin-1 connective tissue disorder without Wilms tumour predisposition.",
+   "D": "Noonan syndrome predisposes to JMML and some other tumours, not specifically Wilms tumour as WAGR (WT1 deletion) does."
+  },
+  "14": {
+   "A": "Infection does not produce multifocal bilateral retinal tumours; bilaterality reflects a germline RB1 mutation.",
+   "B": "Trauma does not cause retinoblastoma; bilateral multifocal tumours indicate heritable disease.",
+   "C": "Vitamin A deficiency causes xerophthalmia and keratomalacia, not retinoblastoma."
+  },
+  "15": {
+   "A": "Turner syndrome is not a recognised hepatoblastoma predisposition; the classic associations are BWS, FAP and extreme prematurity.",
+   "B": "Achondroplasia (FGFR3) does not carry an increased hepatoblastoma risk.",
+   "D": "Cystic fibrosis causes liver disease but is not a hepatoblastoma predisposition; overgrowth syndromes such as BWS are."
+  },
+  "16": {
+   "A": "Radiotherapy before histology risks treating the wrong disease and is not standard; tissue diagnosis comes first.",
+   "C": "Excision without staging or diagnosis contaminates margins and compromises limb-salvage and curative surgery.",
+   "D": "A poorly placed biopsy tract seeds tumour and may force amputation; the tract must be excisable at definitive surgery."
+  },
+  "17": {
+   "B": "5-HIAA is a serotonin metabolite used for carcinoid tumours, not neuroblastoma.",
+   "C": "Urinary cortisol assesses Cushing syndrome or adrenocortical tumours, not catecholamine-secreting neural crest tumours.",
+   "D": "Urinary glucose has no role in diagnosing neuroblastoma."
+  },
+  "18": {
+   "A": "Neuroblastoma typically arises outside the kidney and encases rather than displaces major vessels.",
+   "B": "Adrenal lymphoma is rare in children and is suprarenal, not an intrarenal mass displacing vessels.",
+   "C": "Phaeochromocytoma is an adrenal medullary tumour, not intrarenal, and presents with paroxysmal catecholamine symptoms."
+  },
+  "19": {
+   "A": "Fundus examination uses no radiation and is essential for diagnosis and follow-up.",
+   "B": "Ocular ultrasound uses no ionising radiation and helps show calcification, so it need not be avoided.",
+   "D": "MRI is the preferred cross-sectional modality precisely because it avoids radiation in germline RB1 carriers."
+  },
+  "20": {
+   "A": "High-risk patients need close laboratory monitoring to detect TLS early; omitting it is unsafe.",
+   "C": "Potassium supplementation worsens TLS hyperkalaemia; potassium is withheld from hydration fluids.",
+   "D": "Routine calcium loading can precipitate calcium-phosphate deposition; calcium is reserved for symptomatic hypocalcaemia or arrhythmia."
+  },
+  "21": {
+   "B": "Oral iron has no role in hyperkalaemia and does not stabilise the myocardium.",
+   "C": "IV phosphate would worsen TLS hyperphosphataemia and hypocalcaemia.",
+   "D": "Oral bicarbonate shifts potassium slowly and modestly, does not stabilise the myocardium, and alkalinisation may worsen calcium-phosphate precipitation."
+  },
+  "22": {
+   "A": "Temperature alone does not separate low from high risk; ANC, clinical stability, comorbidities and treatment context matter.",
+   "B": "Child preference may inform outpatient options but cannot determine safe disposition.",
+   "C": "A single normal blood pressure does not exclude early sepsis; validated risk stratification is needed."
+  },
+  "23": {
+   "A": "AFP is a germ-cell tumour and hepatoblastoma marker, not diagnostic of lymphoma.",
+   "B": "A chest radiograph helps assess mediastinal involvement but cannot give a histological diagnosis.",
+   "D": "Empiric treatment without tissue risks missing the subtype and can obscure the diagnosis, especially with steroids."
+  },
+  "24": {
+   "A": "Cutaneous T-cell lymphoma is rare in children and presents with skin lesions, not a rapidly enlarging abdominal mass.",
+   "C": "Follicular lymphoma is indolent with slow growth, the opposite of very high cell turnover.",
+   "D": "Hodgkin lymphoma usually presents with cervical or mediastinal nodes and is not a rapidly enlarging high-turnover abdominal mass."
+  },
+  "25": {
+   "B": "Urinary catecholamines are a neuroblastoma test with no role in ALL CNS staging.",
+   "C": "Serum AFP is a marker for hepatoblastoma and germ-cell tumours, not CNS leukaemia.",
+   "D": "Skull radiographs cannot detect leptomeningeal leukaemia; CNS status is defined by CSF cell count and cytology."
+  },
+  "26": {
+   "A": "Chronic-phase CML presents with splenomegaly and leucocytosis with maturing myeloid cells, not gum and skin infiltration by blasts.",
+   "B": "Hairy cell leukaemia is an adult disease with pancytopenia and splenomegaly, not paediatric gingival infiltration.",
+   "C": "Pure red cell aplasia is isolated erythroid failure without blasts or tissue infiltration."
+  },
+  "27": {
+   "A": "Platelets are not contraindicated in APL; aggressive platelet, plasma and cryoprecipitate support is given to correct the coagulopathy.",
+   "B": "APL with coagulopathy is a haemorrhagic emergency needing admission, not outpatient follow-up.",
+   "D": "Early haemorrhagic deaths occur in the first days; ATRA should start on suspicion without waiting for PML-RARA confirmation."
+  },
+  "28": {
+   "A": "Bone age is assessed on a hand radiograph and has no relation to MRD.",
+   "C": "Blood group compatibility is a transfusion test, not a measure of leukaemic response.",
+   "D": "Renal function is assessed with creatinine and electrolytes; MRD measures residual leukaemic cells."
+  },
+  "29": {
+   "B": "Constipation does not explain fever and bowel-wall thickening in a neutropenic child.",
+   "C": "Lactose intolerance causes bloating and diarrhoea without fever or bowel-wall thickening.",
+   "D": "Intussusception shows a target sign and is not present in all cases; neutropenic fever with bowel-wall thickening fits typhlitis."
+  },
+  "30": {
+   "A": "Avoiding cultures loses the chance to identify the organism and a catheter-related bloodstream infection.",
+   "B": "Stool culture alone misses bacteraemia, the main concern with a central line and neutropenic fever.",
+   "C": "Urine dipstick alone is insufficient; neutropenic children may lack pyuria, and blood cultures are essential."
+  }
+ }
+}
