@@ -44,6 +44,7 @@ RULES = [
     (r'^clinical case examiner interpretations$', 'caseanswers'), (r'^data interpretation station keys$', 'stationanswers'),
     (r'^25 active[ -]recall prompts$|^active recall \(25\)$|^active recall — 1?5 prompts$|^active recall — 25 prompts$', 'recall'),
     (r'^25 rapid revision pearls$|^rapid revision pearls \(25\)$', 'revision'), (r'^fifteen examination traps$|^15 examination traps$|^exam traps \(15\)$', 'pearls'),
+    (r'^75 original mcqs$', 'mcq'), (r'^data interpretation — 5$', 'data'), (r'^qa report and source transparency$', 'references'),   # Day 42
     (r'^source-access and safety register$|^source access register$|^v4 |^question-level v4 ledger|^per-section qa totals$|^per-stage reviewed|^unresolved requirements$|^source and (guideline|retest) register$|^source register \(truthful', 'references'),
     (r'^6\s+•\s+rapid revision pearls', 'revision'), (r'^4\s+•\s+data and schematic', 'data'), (r'^9\s+•\s+mcq practice', 'mcq'),   # Day 35 ("N  •  title" parts)
     (r'^9a\s+•\s+active recall answer key', 'recall'), (r'^1[345]\s+•\s+|^independent critical review and remediation', 'references'),

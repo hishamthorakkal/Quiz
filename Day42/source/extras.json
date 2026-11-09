@@ -1,0 +1,442 @@
+{
+ "title": "Growth, GH & Thyroid Disorders",
+ "calc_items": [
+  {
+   "title": "Mid-parental target height (boy)",
+   "question": "A boy's mother is 158 cm and his father 174 cm tall. Calculate his mid-parental target height = (mother + father + 13)/2.",
+   "working": "(158 + 174 + 13)/2 = 172.5 cm.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 172.5,
+     "unit": "cm"
+    }
+   ]
+  },
+  {
+   "title": "Mid-parental target height (girl)",
+   "question": "A girl's mother is 160 cm and her father 174 cm tall. Calculate her mid-parental target height = (mother + father − 13)/2.",
+   "working": "(160 + 174 − 13)/2 = 160.5 cm.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 160.5,
+     "unit": "cm"
+    }
+   ]
+  },
+  {
+   "title": "Height velocity (12 months)",
+   "question": "Height rises from 110 cm to 115 cm over 12 months. Calculate the annualised height velocity.",
+   "working": "(115 − 110)/1 year = 5 cm/year.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 5,
+     "unit": "cm/year"
+    }
+   ]
+  },
+  {
+   "title": "Height velocity (6 months)",
+   "question": "Height rises from 120 cm to 123 cm over 6 months. Calculate the annualised height velocity.",
+   "working": "3 cm × 12/6 = 6 cm/year.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 6,
+     "unit": "cm/year"
+    }
+   ]
+  },
+  {
+   "title": "Height velocity (9 months)",
+   "question": "Height rises from 102 cm to 105 cm over 9 months. Calculate the annualised height velocity.",
+   "working": "3 cm × 12/9 = 4 cm/year.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 4,
+     "unit": "cm/year"
+    }
+   ]
+  }
+ ],
+ "added_why_not": {
+  "1": {
+   "A": "GH is secreted in pulses, so a random level is usually low even in normal children and cannot separate variant from pathology; auxology must come first.",
+   "C": "A single weight percentile says nothing about the linear growth pattern; serial height and growth velocity define whether growth is failing.",
+   "D": "A single cortisol is not a screen for short stature and is only relevant when a specific adrenal or Cushing picture is suspected."
+  },
+  "2": {
+   "B": "Turner syndrome shows progressive growth decline with falling velocity and no family history of late puberty; karyotype is reserved when the pattern is not reassuring.",
+   "C": "Acquired hypothyroidism causes markedly reduced growth velocity with weight gain, not normal velocity with a familial late-maturation pattern.",
+   "D": "Skeletal dysplasia causes disproportionate short stature, not proportionate growth with delayed bone age and familial late puberty."
+  },
+  "3": {
+   "A": "Untreated coeliac disease causes poor weight gain, slowed growth velocity and delayed bone age, unlike this normal-velocity, normal-bone-age child of short parents.",
+   "B": "GH deficiency causes subnormal growth velocity and delayed bone age, whereas here both are normal.",
+   "D": "Cushing syndrome causes growth arrest with weight gain, not normal growth velocity in a child of short parents."
+  },
+  "4": {
+   "A": "Trisomy 21 is almost always clinically obvious from dysmorphism and developmental delay, so it is not the hidden cause in a non-dysmorphic short girl.",
+   "C": "Klinefelter syndrome (47,XXY) occurs in males and is associated with tall rather than short stature.",
+   "D": "Fragile X mainly presents with intellectual disability and behavioural features, not isolated short stature in girls."
+  },
+  "5": {
+   "B": "Total T3 alone is often maintained until late hypothyroidism and is affected by binding proteins, so it misses most hypothyroid children.",
+   "C": "Thyroglobulin is not a test of thyroid function; it is used in dysgenesis work-up and thyroid cancer follow-up.",
+   "D": "Random GH is pulsatile and non-diagnostic, and constipation with fatigue points to the thyroid axis first."
+  },
+  "6": {
+   "A": "Low height with low weight-for-height suggests undernutrition or systemic disease, where weight falls before or with height.",
+   "C": "Chronic diarrhoea with wasting points to a gastrointestinal or malabsorptive cause such as coeliac disease, not an endocrine one.",
+   "D": "Severe undernutrition reduces weight more than height and is a systemic, not endocrine, cause of growth failure."
+  },
+  "7": {
+   "A": "Recalled heights are unreliable and cannot substitute for an accurate standardised measurement.",
+   "B": "Supine length is used under 2 years; a 10-year-old should be measured standing on a stadiometer.",
+   "D": "Arm span is a proportion check or a height surrogate only when standing height cannot be measured, not a correction for poor technique."
+  },
+  "8": {
+   "A": "GH stimulation does not address disproportion or bowing; skeletal dysplasia or rickets must be assessed first.",
+   "B": "Thyroid antibodies do not explain disproportionate stature with bowed legs and would miss rickets or dysplasia.",
+   "C": "Constitutional delay produces proportionate short stature without limb deformity, so excluding it is not the priority here."
+  },
+  "9": {
+   "B": "A height on the 25th percentile with a stable trajectory is normal growth and needs no investigation.",
+   "C": "A single inconsistent measurement should be repeated, not investigated, as it may be measurement error.",
+   "D": "Tall parents alone are not a finding needing work-up, though they make a falling trajectory more concerning in context."
+  },
+  "10": {
+   "A": "GH is not secreted continuously; its pulsatile release is exactly why random levels mislead.",
+   "C": "GH is measured in serum; urinary GH is not a standard diagnostic test.",
+   "D": "GH drives hepatic IGF-1 production, which is why IGF-1 is used as a screening marker."
+  },
+  "11": {
+   "A": "Malnutrition itself lowers IGF-1, so a low value cannot define isolated GH deficiency without stimulation testing and auxology.",
+   "B": "Acromegaly or GH excess raises IGF-1, the opposite of this finding.",
+   "D": "A low IGF-1 is non-specific and is not evidence of a pituitary tumour, which needs imaging and endocrine assessment."
+  },
+  "12": {
+   "B": "Familial tall stature is the opposite of severe growth failure and lacks hypoglycaemia or micropenis.",
+   "C": "Iron deficiency does not cause neonatal hypoglycaemia or micropenis.",
+   "D": "Simple obesity is associated with normal or accelerated linear growth, not severe growth failure with hypopituitary clues."
+  },
+  "13": {
+   "A": "Low height alone does not establish GH deficiency; other causes and pituitary axes must be evaluated before treatment.",
+   "C": "Bone age is part of the standard evaluation and helps assess growth potential, so it should not be avoided.",
+   "D": "Random GH is pulsatile and cannot be a diagnostic criterion."
+  },
+  "14": {
+   "A": "Appendicitis does not explain headache with visual symptoms and is not a GH-related adverse effect.",
+   "B": "Iron deficiency does not produce headache, vomiting and visual disturbance as a GH complication.",
+   "D": "Rhinitis does not cause vomiting and visual symptoms; attributing these to a viral illness risks missing raised intracranial pressure."
+  },
+  "15": {
+   "A": "Otitis media does not cause limp or hip pain.",
+   "C": "Nephrotic syndrome presents with oedema and proteinuria, not hip pain, and is not a GH complication.",
+   "D": "Lactose intolerance causes gastrointestinal symptoms, not limp or hip pain."
+  },
+  "16": {
+   "A": "A single test has a high false-positive rate; usually two different stimuli are needed for diagnosis.",
+   "B": "Results vary with pubertal status (hence sex-steroid priming) and with the assay used.",
+   "C": "Testing is needed in many children with suspected GH deficiency, though not every GH-treated condition requires it."
+  },
+  "17": {
+   "B": "Central hypothyroidism has low free T4 with low or inappropriately normal TSH, not a high TSH.",
+   "C": "A euthyroid state has normal TSH and free T4.",
+   "D": "Thyrotoxicosis has suppressed TSH with high thyroid hormones."
+  },
+  "18": {
+   "A": "Graves disease gives suppressed TSH with high free T4.",
+   "C": "Iodine excess typically causes primary hypothyroidism with raised TSH, not low free T4 with normal TSH.",
+   "D": "Subclinical hyperthyroidism has low TSH with normal free T4."
+  },
+  "19": {
+   "A": "Ferritin is unrelated to the risk of starting thyroxine in hypopituitarism.",
+   "B": "Calcium does not address the key danger of precipitating adrenal crisis.",
+   "D": "Urinary catecholamines screen for phaeochromocytoma or neuroblastoma, not pituitary-adrenal insufficiency."
+  },
+  "20": {
+   "A": "Delaying to 6 months risks irreversible neurodevelopmental damage; treatment should start within the first weeks of life.",
+   "B": "School age is far too late; the brain-critical window is infancy.",
+   "C": "Most affected newborns are asymptomatic; waiting for symptoms defeats the purpose of screening."
+  },
+  "21": {
+   "B": "Congenital GH deficiency does not cause goitre, anti-TPO antibodies or raised TSH.",
+   "C": "Central diabetes insipidus causes polyuria and polydipsia and has no link to goitre or TPO antibodies.",
+   "D": "Hyperparathyroidism causes hypercalcaemia, not goitre with raised TSH and anti-TPO positivity."
+  },
+  "22": {
+   "A": "Primary hypothyroidism has high TSH and low free T4 with bradycardia and weight gain.",
+   "C": "GH deficiency does not cause tachycardia, tremor or abnormal thyroid tests.",
+   "D": "Central hypothyroidism has low free T4, not high, and causes hypometabolic features."
+  },
+  "23": {
+   "A": "Anti-dsDNA is a marker of systemic lupus erythematosus.",
+   "B": "Anti-mitochondrial antibody is a marker of primary biliary cholangitis.",
+   "D": "Anti-CCP is a marker of rheumatoid arthritis."
+  },
+  "24": {
+   "A": "Mild hunger reflects thyrotoxicosis or its recovery and is not a drug toxicity warning.",
+   "B": "Improved sleep indicates clinical improvement, not an adverse effect.",
+   "C": "A growth spurt is not a recognised toxicity of antithyroid drugs."
+  },
+  "25": {
+   "A": "Overt hypothyroidism requires a low free T4, which is normal here.",
+   "C": "Central hyperthyroidism (TSH-secreting adenoma) has high free T4 with non-suppressed TSH, not a normal free T4.",
+   "D": "Thyroid storm is a severe thyrotoxic crisis with suppressed TSH and high thyroid hormones."
+  },
+  "26": {
+   "B": "Familial short stature shows normal height velocity parallel to the centiles within the parental target; a falling height velocity is not expected.",
+   "C": "Constitutional delay shows normal prepubertal height velocity with delayed bone age and a family history of late puberty, not progressive velocity decline with relative weight gain.",
+   "D": "Nutritional deprivation lowers weight before height, giving a low BMI; the preserved-to-high BMI here points to an endocrine cause."
+  },
+  "27": {
+   "A": "Spot cortisol assesses adrenal function and gives no information about body proportions or skeletal disproportion.",
+   "C": "Random GH is pulsatile and uninformative, and GH deficiency causes proportionate short stature, so it does not characterize disproportion.",
+   "D": "Serum ferritin reflects iron stores; it is irrelevant to measuring limb-versus-trunk proportions."
+  },
+  "28": {
+   "A": "Subtracting 13 cm is the correction used for girls, which would underestimate a boy's target height.",
+   "B": "This is not an averaging formula; subtracting maternal from paternal height gives no meaningful target height.",
+   "C": "A simple parental mean ignores the average 13 cm adult sex difference, so it underestimates target height for a boy."
+  },
+  "29": {
+   "B": "167 cm is the simple parental mean without the 13 cm female correction.",
+   "C": "173.5 cm is obtained by adding 13 cm, the formula for boys, not girls.",
+   "D": "154 cm does not correspond to any standard midparental calculation; (160 + 174 − 13)/2 gives 160.5 cm."
+  },
+  "30": {
+   "B": "A single height with weight gives a point-in-time status, not a rate of growth over time.",
+   "C": "Bone age estimates skeletal maturity and growth potential but cannot measure how fast the child is growing.",
+   "D": "A random GH level is pulsatile and says nothing about the rate of linear growth."
+  },
+  "31": {
+   "A": "Disproportionate limb shortening suggests skeletal dysplasia, not nutritional growth failure.",
+   "C": "Height faltering with preserved weight gain is the endocrine pattern (e.g. GH deficiency, hypothyroidism, glucocorticoid excess).",
+   "D": "Undernutrition slows rather than accelerates linear growth."
+  },
+  "32": {
+   "A": "Urinary catecholamines screen for neuroblastoma or phaeochromocytoma, which do not explain cubitus valgus and recurrent otitis.",
+   "B": "Sweat chloride tests for cystic fibrosis, which causes growth failure through malabsorption but not cubitus valgus.",
+   "D": "Serum ammonia evaluates urea cycle or liver disorders and has no role in this Turner-like phenotype."
+  },
+  "33": {
+   "A": "Adult BMI cut-offs are not valid in young children, whose BMI varies with age.",
+   "B": "Tanner adult centiles are not used for term infants aged 0–5 years in WHO-based practice.",
+   "C": "Bone-age tables assess skeletal maturity and are not growth charts for monitoring infants."
+  },
+  "34": {
+   "A": "Using uncorrected age makes a preterm infant appear smaller, so it underestimates rather than overestimates the percentile.",
+   "C": "Lack of correction distorts the percentile but does not cause all endocrine disease to be missed.",
+   "D": "Bone age is read from radiographs and is not affected by how weight or length is plotted."
+  },
+  "35": {
+   "A": "Simple obesity does not cause short length or body disproportion; obese children are usually tall for age.",
+   "C": "Constitutional delay produces proportionate short stature, not marked disproportion in infancy.",
+   "D": "Graves disease is rare in infancy and accelerates growth; it does not cause disproportionate short length."
+  },
+  "36": {
+   "A": "Lumbar spine imaging may help in skeletal dysplasia but does not identify the cause of GH deficiency.",
+   "B": "Abdominal aorta imaging has no role in evaluating the GH axis.",
+   "D": "Temporal lobe imaging alone misses the sella, pituitary stalk and hypothalamus, where relevant anomalies lie."
+  },
+  "37": {
+   "A": "Vitamin D excess is not a feature of hypopituitarism and does not explain hypoglycaemia.",
+   "B": "Primary hyperparathyroidism is a parathyroid disorder unrelated to midline defects or pituitary deficiency.",
+   "C": "Calcitonin excess suggests medullary thyroid carcinoma, not combined pituitary hormone deficiency."
+  },
+  "38": {
+   "B": "Hypothyroidism blunts rather than raises GH secretion, so falsely high GH is not the concern.",
+   "C": "Hypothyroidism does not cause pituitary calcification; long-standing primary hypothyroidism may cause pituitary hyperplasia instead.",
+   "D": "Hypothyroidism does not affect the accuracy of stadiometry; the issue is a falsely low GH response."
+  },
+  "39": {
+   "A": "Growth chart trajectory with serial measurements is a cornerstone of screening for GH deficiency.",
+   "C": "Reduced height velocity is a key clinical criterion that prompts GH axis evaluation.",
+   "D": "Age- and puberty-referenced IGF-1 is a useful integrated screen of GH status, though not definitive."
+  },
+  "40": {
+   "A": "Thyroidectomy is an inappropriate intervention; nothing suggests thyroid disease requiring surgery.",
+   "B": "Pituitary surgery has no role without a demonstrated pituitary lesion, and the features point to malabsorption.",
+   "D": "Starting GH without investigation would miss a treatable cause such as coeliac disease."
+  },
+  "41": {
+   "A": "Low IGF-1 alone cannot prove GH deficiency, especially when undernutrition may lower it.",
+   "B": "Acromegaly causes high, not low, IGF-1.",
+   "C": "A low IGF-1 does not rule out chronic disease; chronic illness and malnutrition commonly lower it."
+  },
+  "42": {
+   "B": "Appendicitis causes abdominal pain and fever; visual symptoms with headache suggest raised intracranial pressure.",
+   "C": "Hyperparathyroidism is not a recognised complication of GH therapy and does not cause visual symptoms.",
+   "D": "Iron overload is unrelated to GH therapy and does not present with acute headache and visual disturbance."
+  },
+  "43": {
+   "A": "Scoliosis progression can occur on GH but causes back deformity, not limp with hip pain.",
+   "C": "Clubfoot is a congenital foot deformity, not an acquired complication of GH therapy.",
+   "D": "Osgood–Schlatter causes tibial tubercle (knee) pain; hip pain with limp on GH requires exclusion of SCFE."
+  },
+  "44": {
+   "A": "Glucocorticoids do not cause GH excess, and the stem describes growth failure rather than accelerated maturation.",
+   "B": "Chronic glucocorticoid exposure does not cause thyrotoxicosis; if anything it suppresses TSH.",
+   "D": "Glucocorticoids reduce, not increase, growth velocity."
+  },
+  "45": {
+   "A": "GH deficiency causes short stature and slow growth, the opposite of this presentation.",
+   "B": "Congenital hypothyroidism causes short stature and coarse features but not tall stature with rapid growth.",
+   "C": "Familial short stature is a normal variant with short height, not tall stature or coarse features."
+  },
+  "46": {
+   "B": "Random insulin does not assess GH secretion and is not a screen for GH excess.",
+   "C": "Urine glucose may reflect secondary diabetes but is neither sensitive nor specific for GH excess.",
+   "D": "Serum calcium is not a screening test for GH excess."
+  },
+  "47": {
+   "A": "TSH-receptor antibodies are an adjunct for suspected maternal autoimmune transient hypothyroidism, not the primary confirmation.",
+   "C": "Total T3 is often maintained in hypothyroidism and does not confirm the diagnosis; free T4 with TSH is needed.",
+   "D": "Thyroglobulin helps classify aetiology (e.g. athyreosis) but does not confirm thyroid dysfunction."
+  },
+  "48": {
+   "A": "Diabetes insipidus presents with polyuria, dehydration and hypernatraemia, not macroglossia or a large fontanelle.",
+   "B": "Cushing syndrome is very rare in neonates and does not cause macroglossia or a large posterior fontanelle.",
+   "D": "Neonatal Graves disease causes tachycardia, irritability and goitre, not prolonged jaundice with macroglossia."
+  },
+  "49": {
+   "A": "Waiting for speech delay means irreversible neurodevelopmental damage has already occurred.",
+   "B": "Iodine alone does not treat dysgenesis or dyshormonogenesis; levothyroxine is standard therapy.",
+   "C": "Delaying treatment until age 2 years would cause permanent intellectual impairment; therapy should start within the first two weeks."
+  },
+  "50": {
+   "B": "Primary hypothyroidism produces an elevated TSH; a non-elevated TSH with low FT4 argues against it.",
+   "C": "Graves disease causes high FT4 with suppressed TSH, not low FT4.",
+   "D": "Iodine excess can cause hypothyroidism, usually with raised TSH, and the word always makes this option incorrect."
+  },
+  "51": {
+   "A": "Radioiodine is a definitive treatment for hyperthyroidism and has no role in a child about to start levothyroxine for central hypothyroidism.",
+   "C": "Cortisol status must be assessed, not avoided; missed central adrenal insufficiency can be unmasked into adrenal crisis once levothyroxine accelerates cortisol clearance.",
+   "D": "Methimazole blocks thyroid hormone synthesis and treats hyperthyroidism; it would worsen a child who needs thyroid replacement."
+  },
+  "52": {
+   "A": "Normal TSH with high FT4 suggests assay interference, TSH-secreting adenoma or thyroid hormone resistance, not primary hypothyroidism.",
+   "B": "Low TSH with normal FT4 indicates subclinical hyperthyroidism or non-thyroidal illness, the opposite direction of primary thyroid failure.",
+   "D": "Suppressed TSH with high FT4 is the pattern of primary thyrotoxicosis, not hypothyroidism."
+  },
+  "53": {
+   "A": "High TSH with low FT4 is the pattern of primary hypothyroidism, the opposite of thyrotoxicosis.",
+   "B": "Low FT4 with an inappropriately normal TSH suggests central hypothyroidism, not thyroid hormone excess.",
+   "C": "Raised TSH with normal FT4 defines subclinical hypothyroidism; in primary thyrotoxicosis TSH is suppressed."
+  },
+  "54": {
+   "B": "Thyroid storm is an acute decompensated thyrotoxic state with fever and tachycardia, and TSH would be suppressed, not high.",
+   "C": "A pituitary adenoma would cause low or inappropriately normal TSH with central hypothyroidism, or TSH-driven hyperthyroidism, and does not explain anti-TPO positivity.",
+   "D": "A thyroglossal duct cyst is a midline neck swelling that moves on tongue protrusion; it does not cause diffuse goitre, raised TSH or anti-TPO antibodies."
+  },
+  "55": {
+   "A": "Delayed relaxation of deep-tendon reflexes is a classical hypothyroid sign; Graves disease causes brisk reflexes.",
+   "C": "Bradycardia reflects hypothyroidism; thyroid hormone excess in Graves disease causes tachycardia.",
+   "D": "Constipation is typical of hypothyroidism; Graves disease more often causes increased stool frequency."
+  },
+  "56": {
+   "A": "Fever and sore throat on methimazole suggest agranulocytosis; increasing the dose could worsen a potentially fatal marrow toxicity.",
+   "B": "Iodine is only a short-term adjunct, and switching without review ignores the urgent need to exclude agranulocytosis with a blood count.",
+   "D": "Reassurance without a CBC risks missing agranulocytosis, which can progress rapidly to life-threatening sepsis."
+  },
+  "57": {
+   "A": "PTU is an effective antithyroid drug; it is avoided because of hepatotoxicity, not lack of efficacy.",
+   "B": "PTU does not cause congenital hypothyroidism in all exposed infants; it is even preferred in the first trimester of pregnancy.",
+   "C": "PTU inhibits thyroid peroxidase and peripheral T4-to-T3 conversion, so it clearly has antithyroid action."
+  },
+  "58": {
+   "B": "Overt primary hypothyroidism requires a low FT4; here FT4 is normal and the TSH rise is mild.",
+   "C": "Central hypothyroidism shows low FT4 with low or inappropriately normal TSH, not a raised TSH with normal FT4.",
+   "D": "Thyroid storm is severe decompensated thyrotoxicosis with suppressed TSH; this child is asymptomatic with a mildly raised TSH."
+  },
+  "59": {
+   "A": "Urinary ketones do not assess slowing growth or constipation and ignore the high risk of hypothyroidism in Down syndrome.",
+   "C": "A random GH level is uninformative because GH is pulsatile, and thyroid dysfunction is the more likely and treatable cause here.",
+   "D": "Serum copper is relevant to Wilson disease or copper deficiency, not to the hypothyroid-like picture common in Down syndrome."
+  },
+  "60": {
+   "A": "No programme detects every case; TSH-based screens miss central hypothyroidism and delayed TSH rise can be missed in preterm or sick infants.",
+   "B": "A normal newborn screen never overrides clinical suspicion; symptomatic infants still need serum TSH and FT4.",
+   "D": "Many programmes, including most Indian ones, use primary TSH screening; FT4 or T4 is not measured universally."
+  },
+  "61": {
+   "A": "Graves disease causes suppressed TSH and high FT4, the opposite of this profile.",
+   "B": "GH excess does not raise TSH or lower FT4; the history of poor adherence explains the biochemistry.",
+   "C": "High TSH with low FT4 is clearly abnormal and indicates under-replacement, not euthyroidism."
+  },
+  "62": {
+   "B": "Levothyroxine is ideally taken with water alone, which does not impair absorption.",
+   "C": "Fasting administration is the recommended way to maximise levothyroxine absorption.",
+   "D": "Separating calcium by several hours is the correct strategy to avoid binding and preserve absorption."
+  },
+  "63": {
+   "A": "Dermatoglyphics form in early fetal life and are not affected by postnatal thyroid treatment timing.",
+   "C": "Eye colour is genetically determined and unrelated to thyroid hormone exposure.",
+   "D": "ABO blood group is genetically fixed and unaffected by congenital hypothyroidism or its treatment."
+  },
+  "64": {
+   "A": "Thyroid agenesis causes congenital hypothyroidism with no thyroid tissue, not thyrotoxicosis with a vascular goitre.",
+   "B": "Central hypothyroidism causes low thyroid hormone, not thyrotoxicosis, and produces no goitre or orbitopathy.",
+   "D": "Hashimoto thyroiditis may have a transient thyrotoxic phase but lacks orbitopathy and a vascular goitre with bruit, which point to Graves disease."
+  },
+  "65": {
+   "A": "In central hypothyroidism TSH is low or inappropriately normal and does not reflect replacement adequacy, so it cannot guide titration.",
+   "B": "Anti-TPO titre indicates autoimmune aetiology and plays no role in dosing for pituitary-stalk-related central hypothyroidism.",
+   "C": "Thyroglobulin reflects thyroid tissue presence or injury and is not used to titrate levothyroxine."
+  },
+  "66": {
+   "B": "Mild TSH elevation with normal FT4 is not severe hypothyroidism and is often a consequence rather than a cause of obesity.",
+   "C": "Hypothyroidism is a rare cause of obesity; most childhood obesity is exogenous with preserved or accelerated linear growth.",
+   "D": "Thyroidectomy has no role in mild hyperthyrotropinaemia with normal FT4."
+  },
+  "67": {
+   "A": "Warm moist skin is a thyrotoxic sign; hypothyroidism causes cool, dry, rough skin.",
+   "C": "Hyperreflexia with tremor reflects thyroid hormone excess, not hypothyroidism.",
+   "D": "Persistent tachycardia suggests thyrotoxicosis; longstanding hypothyroidism causes bradycardia."
+  },
+  "68": {
+   "A": "Urine osmolality assesses water balance and diabetes insipidus, not skeletal maturation.",
+   "B": "Random blood glucose screens for hypoglycaemia or diabetes and cannot estimate bone age.",
+   "D": "Serum sodium is an electrolyte measure with no bearing on skeletal maturity."
+  },
+  "69": {
+   "A": "Normal velocity with short parents is the defining pattern of familial short stature, not a red flag.",
+   "B": "A normal examination is reassuring and favours a normal variant rather than pathology.",
+   "C": "A stable centile over years indicates normal growth velocity, typical of familial short stature."
+  },
+  "70": {
+   "B": "Headaches and visual-field symptoms are not features of familial short stature and mandate neuro-imaging.",
+   "C": "Neurological red flags exclude a normal variant; craniopharyngioma or another sellar mass must be sought.",
+   "D": "Primary thyroiditis can slow growth but does not explain headaches and visual-field defects, which point to a sellar lesion."
+  },
+  "71": {
+   "A": "Treatment does not mandate precocious puberty; untreated severe hypothyroidism itself may rarely cause precocity (Van Wyk-Grumbach syndrome).",
+   "C": "Replacement produces catch-up growth, not gigantism; overly rapid correction may even advance bone age and limit final height.",
+   "D": "Growth velocity usually improves with adequate replacement, so claiming no change ever is incorrect."
+  },
+  "72": {
+   "A": "Delaying assessment leaves untreated cortisol deficiency and hypoglycaemia, which can be fatal in childhood.",
+   "B": "Genetic testing may define aetiology later but does nothing for the immediate risk of adrenal crisis.",
+   "D": "GH is not urgent and is not given at high dose; glucocorticoid replacement must come first for safety."
+  },
+  "73": {
+   "A": "FT4 directly measures thyroid function but does not establish autoimmune aetiology.",
+   "B": "TSH defines thyroid functional status rather than indicating autoimmunity.",
+   "C": "Paired TSH and FT4 are the tests that define thyroid function, the opposite of what the stem asks."
+  },
+  "74": {
+   "B": "Thyroxine would add to thyroid hormone excess and worsen palpitations and tremor.",
+   "C": "Growth hormone has no role in hyperthyroidism and would not control adrenergic symptoms.",
+   "D": "Glucocorticoids are used only short term in thyroid storm or orbitopathy, never as sole long-term therapy for symptoms."
+  },
+  "75": {
+   "A": "High FT4 with suppressed TSH reflects thyroid hormone excess and says nothing about GH status.",
+   "C": "Undertreatment produces high TSH and low or low-normal FT4, the opposite of this profile.",
+   "D": "Coeliac disease impairs levothyroxine absorption, causing under- rather than over-replacement, and needs serology to confirm."
+  }
+ }
+}

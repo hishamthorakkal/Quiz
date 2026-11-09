@@ -353,7 +353,7 @@ def parse_inline_v5(doc, parts):
     Generic distractor lines ("Distractor audit:", "Option audit:", "Distractor review:", "Other options: …") are dropped.
     """
     paras = [(h, el) for h, els in parts for el in els if el.tag == W + 'p']
-    keyrx = re.compile(r'^(?:Key:\s*[A-D]\s*[—–|-]|Provisional key:\s*[A-D]\s*[.—–-]|Q\d+\s+D\d+-[QR]\d+\s*\|.*\|\s*KEY [A-D]\s*$)')
+    keyrx = re.compile(r'^(?:Key:\s*[A-D]\s*[—–|-]|Provisional (?:key|answer):\s*[A-D]\s*[.—–-]|Q\d+\s+D\d+-[QR]\d+\s*\|.*\|\s*KEY [A-D]\s*$)')
     if not any(keyrx.match(text(el)) for _, el in paras):
         return None
     qs, by, problems, fixed = [], {}, [], []
@@ -421,10 +421,11 @@ def parse_inline_v5(doc, parts):
             elif not any(b in mk[3] for b in BOILERPLATE):
                 tgt['why_not'][mk[1]] = mk[3].strip()
             continue
-        mk = re.match(r'^(?:Provisional key|Key):\s*([A-D])\s*[.—–|-]\s*(.+)$', t)
-        if mk:
+        mk = re.match(r'^(?:Provisional key|Provisional answer|Key):\s*([A-D])\s*[.—–|-]\s*(.+)$', t)
+        if mk:     # Day 42 "Provisional answer: B. core. Four-option second-best audit … remain pending." (status tail dropped)
             tgt['ans'] = mk[1]
-            tgt['core'] = re.split(r'\s*\|\s*Other options:', mk[2])[0].strip()
+            core = re.split(r'\s*\|\s*Other options:', mk[2])[0].strip()
+            tgt['core'] = re.sub(r'\s*Four-option second-best audit[^.]*pending\.?\s*$', '', core).strip()
             continue
         mk = re.match(r'^([A-D]) audit:\s*(.+)$', t)
         if mk:          # Day 40: one line per option; the keyed one starts "Correct:"
