@@ -36,6 +36,8 @@ def nice(title):
 
 # h1 text -> (page id, kind, group, title)
 RULES = [
+    (r'^6\s+•\s+rapid revision pearls', 'revision'), (r'^4\s+•\s+data and schematic', 'data'), (r'^9\s+•\s+mcq practice', 'mcq'),   # Day 35 ("N  •  title" parts)
+    (r'^9a\s+•\s+active recall answer key', 'recall'), (r'^1[345]\s+•\s+|^independent critical review and remediation', 'references'),
     (r'^nephrotic syndrome • nephritic syndrome', 'overview'), (r'^part ii(-b)? — (75 base mcqs|error-notebook retests)', 'mcq'), (r'^part iii — nine clinical case', 'cases'), (r'^part iv — five image/data', 'data'),   # Day 30
     (r'^part v — four clinical algorithms', 'tables'), (r'^part viii — transparent v4 qa|^part ix — post-review validation', 'references'), (r'^exam traps — 15', 'pearls'),
     (r'^rapid revision — 25', 'revision'), (r'^must-know numbers$', 'numbers'),
@@ -193,7 +195,7 @@ def build(day, docx, keep_order=False):
     # and reworded Calculation Drill questions. See NEET_SS_QUIZ_REPO_UPDATE_AGENT_RULES.md.
 
     def add(pid, h1, sections, as_section=True):
-        h1 = re.sub(r'\s*\(restart numbering\)', '', re.sub(r'^\d+[A-Z]?\.\s+', '', h1), flags=re.I)   # numbered parts "16. Error-notebook …": number dropped from the heading
+        h1 = re.sub(r'\s*\(restart numbering\)', '', re.sub(r'^\d+[A-Z]?(?:\.|\s+•)\s+', '', h1), flags=re.I)   # Day 35 "11  •  …"   # numbered parts "16. Error-notebook …": number dropped from the heading
         p = pages.setdefault(pid, {'id': pid, 'title': PAGES[pid][0], 'group': PAGES[pid][1], 'kind': PAGES[pid][2], 'sections': []})
         if as_section:
             # merge: an h1 becomes a section heading; its h2s become sub-sections
@@ -248,7 +250,7 @@ def build(day, docx, keep_order=False):
             recall_answers = secs          # separate "ACTIVE RECALL — ANSWERS" section: merged into the prompts below
             continue
         if kind is None:
-            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—|-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1) or re.match(r'^([A-Z])\.\s+(.+)$', h1)
+            m = re.match(r'^(?:PART|SECTION) ([IVXLC]+|[A-Z])\s*[—|-]\s*(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\.\s+(.+)$', h1) or re.match(r'^([A-Z])\.\s+(.+)$', h1) or re.match(r'^(\d+[A-Z]?)\s+•\s+(.+)$', h1)   # Day 35 "1  •  High-yield clinical notes"
             mm = re.match(r'^Module (\d+)\s*[—–-]\s*(.+)$', h1)          # Day 19: "Module 2 — d-TGA: the mixing problem"
             pid = f'part-{len(notes) + 1}'
             if mm:
@@ -463,12 +465,20 @@ def build(day, docx, keep_order=False):
             pages['revision']['sections'] += rr
     if 'recall' in pages:      # Day 27: "AR01. prompt?Answer: answer" as plain paragraphs -> one card list
         for s_ in pages['recall']['sections']:
-            ms_ = [b['t'] == 'p' and re.match(r'^(?:<[^>]+>)*AR\d+\.\s*(.+?)\s*Answer:\s*(.+)$', b['html']) for b in s_['blocks']]
+            ms_ = [b['t'] == 'p' and re.match(r'^(?:<[^>]+>)*AR\d+\.\s*(.+?)\s*(?i:Answer):\s*(.+)$', b['html']) for b in s_['blocks']]   # Day 35 "ANSWER:"
             if sum(1 for x in ms_ if x) >= 5:
                 items = [re.sub(r'(<br>\s*)+$', '', x[1].strip()) + f'<br>Answer: {x[2].strip()}' for x in ms_ if x]
                 rest_ = [b for b, x in zip(s_['blocks'], ms_) if not x]
                 total_blocks -= len(items) - 1
                 s_['blocks'] = [{'t': 'list', 'ordered': True, 'items': items}] + rest_
+        # Day 35: the prompts part ("AR01. prompt", no answers) is repeated with answers in "9A  •  Active Recall answer
+        # key": the prompts-only section is dropped when every prompt opens one of the answered cards
+        cards_ = [it for s_ in pages['recall']['sections'] for b in s_['blocks'] if b['t'] == 'list' for it in b['items']]
+        for s_ in list(pages['recall']['sections']):
+            ps_ = [b['t'] == 'p' and re.match(r'^(?:<[^>]+>)*AR\d+\.\s*(.+)$', b['html']) for b in s_['blocks']]
+            if len(ps_) >= 5 and all(ps_) and len(cards_) == len(ps_) and all(c.startswith(p_[1].strip()) for c, p_ in zip(cards_, ps_)):
+                pages['recall']['sections'].remove(s_)
+                total_blocks -= len(ps_)
     if 'recall' in pages and not recall_answers:
         rs = pages['recall']['sections']
         ak = [s_ for s_ in rs if re.search(r'answer key|answers?\b.*separate|^active recall answers$', s_['title'], re.I)]
@@ -601,10 +611,17 @@ def build(day, docx, keep_order=False):
     # extras "added_why_not": {"<option text>": "reason"} — the document's wrong-option explanations are placeholders
     # ("EXPLANATION INCOMPLETE"); reasons written for the site, keyed by option text (shared by repeated questions)
     # and shown as "Why not the others (added — not from source)"
+    # Day 35: also {"<question number>": {"<source letter>": "reason"}} (source letters, so it survives the shuffle)
     awn = extras.get('added_why_not', {})
     if awn:
         for q in qs:
-            wn = {i: awn[o] for i, o in enumerate(q['options']) if i != q['answer'] and o in awn and i not in q['why_not']}
+            per_q = awn.get(str(q['num'])) if isinstance(awn.get(str(q['num'])), dict) else {}
+            src_order = q.get('srcOptions', q['options'])
+            if any(L not in 'ABCD' or 'ABCD'.index(L) == src_order.index(q['options'][q['answer']]) for L in per_q):
+                raise SystemExit(f"extras.json added_why_not: Q{q['num']} gives a reason for the keyed option or a bad letter")
+            by_text = {src_order['ABCD'.index(L)]: r for L, r in per_q.items()}
+            wn = {i: by_text.get(o) or awn.get(o) for i, o in enumerate(q['options'])
+                  if i != q['answer'] and (o in by_text or isinstance(awn.get(o), str)) and i not in q['why_not']}
             if wn:
                 q['why_not'].update(wn)
                 q['why_not_added'] = True

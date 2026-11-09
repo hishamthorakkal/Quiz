@@ -243,6 +243,7 @@ def shuffle_options(qs, seed):
         rng.shuffle(others)
         order = others[:t] + [q['answer']] + others[t:]          # order[new_index] = old_index
         q['srcAnswer'] = 'ABCD'[q['answer']]
+        q['srcOptions'] = list(q['options'])          # document order (extras keyed by source letter); not written to the quiz data
         correct_text = q['options'][q['answer']]
         q['options'] = [q['options'][i] for i in order]
         q['why_not'] = {order.index(i): v for i, v in q['why_not'].items()}
@@ -260,7 +261,8 @@ BOILERPLATE = ('represents a different diagnosis or intervention', 'Not the sing
                'Although superficially plausible, this choice conflicts', 'This would fit a different clinical setting',
                'Distractor revised to be closer to the tested concept',
                'Does not best fit the required localization', 'Less appropriate in the specified vignette',   # Day 25 placeholders
-               'Supported by decisive stem findings')
+               'Supported by decisive stem findings',
+               'full adversarial second-best review pending')                                                  # Day 35 placeholder
 RETEST = re.compile(r'^EXTRA NOTEBOOK RETEST\b', re.I)
 RETEST_LABEL = re.compile(r'^EXTRA NOTEBOOK RETEST\s*[—–-]\s*NOT PART OF (?:THE )?(?:BASE )?\d+(?: MCQS)?\s*[.:]?\s*(?:[—–-]\s*)?', re.I)
 
@@ -379,7 +381,7 @@ def parse_mcqs(doc, parts, aliases=None):
         A, B = B, None                 # questions are in Section B; answer key comes from Section C
     # Days 30/34: the key and option reasons are printed under each question ("ANSWER: B  |  …" / "KEY C  |  …");
     # the question part is then also the explanation part
-    inline = any(el.tag == W + 'p' and re.match(r'^(ANSWER:?\s*[A-D]\s*[|:]|KEY [A-D]\s*\|)', text(el)) for el in A or [])
+    inline = any(el.tag == W + 'p' and re.match(r'^(ANSWER:?\s*[A-D]\s*[|:]|KEY [A-D]\s*\||Answer:\s*[A-D]\.\s)', text(el)) for el in A or [])   # Day 35 "Answer: C. <option>"
     if inline:
         C = A
     problems, qs, cur, fixed = [], [], None, []
@@ -554,7 +556,9 @@ def parse_mcqs(doc, parts, aliases=None):
                     key[int(n_)] = a_
                 for l_, n_, a_ in re.findall(r'\b([QR])(\d+)\s*:\s*([A-D])\b', t_):    # Day 19: "Q01:C", "R01:B"
                     key[int(n_) + (rbase if l_ == 'R' else 0)] = a_
-                for n_, a_ in re.findall(r'\bRT?(\d+)\s+([A-D])\b', t_):                    # Day 23: "R01 D"
+                for n_, a_ in re.findall(r'\bQ(\d+)\s+D\d+-[QR]\d+\s+([A-D])\b', t_):        # Day 35: "Q008 | D35-R01 | D | Retest" table
+                    key[int(n_)] = a_
+                for n_, a_ in re.findall(r'(?<![-\w])RT?(\d+)\s+([A-D])\b', t_):              # Day 23: "R01 D" (not a booklet ID "D35-R01")
                     key[int(n_) + rbase] = a_
                 for n_, a_ in re.findall(r'(?:^|\|)\s*(\d+)\s+([A-D])\s*(?=\||$)', t_):     # Day 24: "1 C  |  2 A  |  …"
                     key[int(n_)] = a_
@@ -578,6 +582,25 @@ def parse_mcqs(doc, parts, aliases=None):
             mi = re.match(r'^(?:ANSWER:?\s*([A-D])\s*[|:]|KEY\s+([A-D])\s*\|)', t)
             if mi:     # the reason after the key is repeated on the keyed option's line
                 e['ans'] = mi[1] or mi[2]
+                continue
+            mi = re.match(r'^Answer:\s*([A-D])\.\s*(.+)$', t)
+            if mi:     # Day 35: "Answer: C. <option text>" (checked against the option)
+                e['ans'], e['restated'] = mi[1], (mi[1], mi[2].strip())
+                continue
+            mi = re.match(r'^Reason:\s*(.+)$', t)
+            if mi:     # Day 35: core reason (repeated word for word on the "Option X — best:" line)
+                e['core'].append(mi[1].strip())
+                continue
+            mi = re.match(r'^Option ([A-D])\s*[—–-]\s*(best|not best):\s*(.+)$', t)
+            if mi:     # Day 35: "Option A — not best: …" (placeholder dropped) / "Option C — best: …"
+                if mi[2] == 'best':
+                    e['marked'].append(mi[1])
+                    if mi[3].strip() not in e['core']:
+                        e['correct_reason'] = mi[3].strip()
+                else:
+                    e['labelled'] = True
+                    if not any(b in mi[3] for b in BOILERPLATE):
+                        e['why_not'][mi[1]] = mi[3].strip()
                 continue
             # Day 30 "A — Incorrect: reason" / retests "A: Correct — reason"; Day 34 "Option A: reason" (no label)
             mi = re.match(r'^([A-D])\s*[—:]\s*(Correct|Incorrect)\s*[:—]\s*(.+)$', t) or re.match(r'^Option ([A-D]):()\s*(.+)$', t)

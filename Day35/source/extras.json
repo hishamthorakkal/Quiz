@@ -1,0 +1,522 @@
+{
+ "title": "Liver Continuum — Neonatal Cholestasis, Biliary Atresia, PALF, Portal Hypertension, Wilson & Metabolic Liver Disease",
+ "retests": {
+  "8": {
+   "stage": "R1",
+   "from": "Day 15 Q61 — Galactokinase versus GALT versus hereditary fructose intolerance"
+  },
+  "16": {
+   "stage": "R1",
+   "from": "Day 14 Q30 — F-75 daily feed volume"
+  },
+  "24": {
+   "stage": "R2",
+   "from": "Day 10 Q8 — CPS 72 h vs PES 48 h"
+  },
+  "32": {
+   "stage": "R3",
+   "from": "Day 10 Q65 — OTC versus CPS1/NAGS — urinary orotic acid"
+  },
+  "40": {
+   "stage": "R3",
+   "from": "Day 11 Q25 — ETROP Type 1 ROP"
+  },
+  "48": {
+   "stage": "R1",
+   "from": "Day 19 Q35 — Single ventricle — Fontan protein-losing enteropathy"
+  },
+  "56": {
+   "stage": "R1",
+   "from": "Day 19 Q28 — TAPVC — post-repair pulmonary venous stenosis"
+  },
+  "64": {
+   "stage": "R1",
+   "from": "Day 21 C6 — second-dose adenosine 0.2 mg/kg (max 12 mg) calculation"
+  },
+  "72": {
+   "stage": "R2",
+   "from": "Day 15 Q77 — MCAD deficiency — C8 acylcarnitine"
+  },
+  "80": {
+   "stage": "R3",
+   "from": "Day 5 Q34 — DOPE equipment disconnection"
+  }
+ },
+ "calc_items": [
+  {
+   "title": "Direct bilirubin fraction",
+   "question": "A 17-day-old has total bilirubin 6.0 mg/dL and direct bilirubin 1.8 mg/dL. Calculate the direct fraction as a percentage of total bilirubin.",
+   "working": "1.8/6.0 × 100 = 30%. Clinical point: direct >1 mg/dL warrants evaluation irrespective of an arbitrary 20% rule.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 30,
+     "unit": "%"
+    }
+   ]
+  },
+  {
+   "title": "Leipzig score",
+   "question": "A child with suspected Wilson disease has KF rings (2 points), ceruloplasmin <10 mg/dL (2 points) and two pathogenic ATP7B alleles (4 points). Calculate the total Leipzig score.",
+   "working": "2 + 2 + 4 = 8; ≥4 strongly supports Wilson disease. Values are illustrative, not a full clinical diagnosis.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 8,
+     "unit": "points"
+    }
+   ]
+  },
+  {
+   "title": "Urine copper units",
+   "question": "A 24-hour urine copper is reported as 80 μg/day. Convert it to mg/day.",
+   "working": "80 ÷ 1000 = 0.08 mg/day; unit awareness prevents a 1000-fold error.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 0.08,
+     "unit": "mg/day"
+    }
+   ]
+  },
+  {
+   "title": "F-75 volume (notebook repair)",
+   "question": "A 7-kg child with complicated SAM is ordered F-75 at 130 mL/kg/day. Calculate the total daily feed volume.",
+   "working": "130 × 7 = 910 mL/day; this is arithmetic based on the stated order, not a universal clinical prescription.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 910,
+     "unit": "mL/day"
+    }
+   ]
+  }
+ ],
+ "added_why_not": {
+  "1": {
+   "A": "A Coombs test looks for immune haemolysis; it does not tell whether the bilirubin is conjugated, so it cannot screen for cholestasis.",
+   "B": "Reticulocytosis points to haemolysis, a cause of unconjugated jaundice; it gives no information about the conjugated fraction.",
+   "D": "Measuring only the unconjugated fraction misses the key question; jaundice beyond 2 weeks needs total plus direct/conjugated bilirubin to detect cholestasis."
+  },
+  "2": {
+   "A": "Breast-milk jaundice is an unconjugated hyperbilirubinaemia; a direct bilirubin above 1.0 mg/dL is never explained by it and must be evaluated.",
+   "B": "There is no normal maturation of conjugated bilirubin; a direct level above 1.0 mg/dL at 3 weeks is abnormal whatever the age.",
+   "D": "The NASPGHAN/ESPGHAN 2017 guideline dropped the 20% rule; any direct/conjugated bilirubin above 1.0 mg/dL is abnormal regardless of the proportion of total."
+  },
+  "3": {
+   "B": "Dietary fat causes pale, bulky, greasy stools from malabsorption, not loss of pigment; it does not explain putty stools with dark urine.",
+   "C": "Unconjugated bilirubin is not excreted into stool to any useful degree; stool pigment comes from conjugated bilirubin delivered in bile.",
+   "D": "Faster conversion to stercobilin would make stools darker; acholic stools mean little bilirubin reaches the gut in the first place."
+  },
+  "4": {
+   "A": "Phototherapy acts on unconjugated bilirubin and does nothing for conjugated cholestasis; waiting 2 weeks loses time before a Kasai operation.",
+   "B": "Waiting until 8 weeks delays diagnosis of biliary atresia, and Kasai outcomes worsen with age at surgery.",
+   "D": "Many infants with biliary atresia gain weight normally early on; thriving does not exclude it in an infant with pale stools and high direct bilirubin."
+  },
+  "5": {
+   "B": "Green stools contain bile pigment and are normal; they argue against biliary obstruction.",
+   "C": "Loose mustard-yellow stools are typical of breastfed infants and show that bile is reaching the gut.",
+   "D": "Frequent yellow stools after feeds are pigmented and normal; they are not a red flag for biliary atresia."
+  },
+  "6": {
+   "A": "Haemolysis without liver injury causes unconjugated jaundice with a normal GGT; it does not explain a high GGT.",
+   "B": "Breast-milk jaundice is unconjugated with normal liver enzymes, so a high GGT should not be put down to it.",
+   "D": "PFIC type 1 (ATP8B1) typically has a low or normal GGT, so it does not fit a high GGT and is never the only possibility."
+  },
+  "7": {
+   "B": "ABO haemolysis causes unconjugated jaundice, not severe cholestasis, so the GGT pattern is irrelevant to it.",
+   "C": "Pyloric stenosis can be linked with unconjugated jaundice, not cholestatic liver disease with a low GGT.",
+   "D": "Biliary atresia usually raises the GGT; a low or normal GGT with severe cholestasis points away from it, towards canalicular transport defects."
+  },
+  "8": {
+   "A": "Aldolase B deficiency (hereditary fructose intolerance) causes hypoglycaemia, vomiting and liver disease after fructose exposure, not isolated cataracts from milk.",
+   "B": "Classic GALT deficiency is systemic, with jaundice, hepatomegaly, E. coli sepsis and failure to thrive; isolated cataracts in a well infant favour GALK1.",
+   "C": "OTC deficiency is a urea cycle defect that presents with hyperammonaemic encephalopathy, not cataracts."
+  },
+  "9": {
+   "A": "Hereditary fructose intolerance needs fructose or sucrose exposure and does not cause cataracts; the triggering link here is milk (galactose).",
+   "B": "Galactokinase deficiency causes isolated cataracts without systemic illness; cholestasis and recurrent infection fit classic GALT deficiency.",
+   "C": "Wilson disease does not present in the neonatal period and is not a common cause of infant cholestasis."
+  },
+  "10": {
+   "A": "Vitamin C deficiency (scurvy) causes gum and subperiosteal bleeding but is not a fat-soluble vitamin lost through cholestatic malabsorption.",
+   "C": "Vitamin B12 deficiency causes megaloblastic anaemia and neurological signs, not the coagulopathy of cholestasis.",
+   "D": "Thiamine deficiency causes beriberi or encephalopathy, not bleeding; it is water-soluble and not the vitamin cholestasis depletes."
+  },
+  "11": {
+   "A": "A clear-liquid diet gives too few calories and too little protein, and makes the poor growth of cholestasis worse.",
+   "B": "Cholestasis causes early deficiency of vitamins A, D, E and K; supplements are needed now, not deferred.",
+   "C": "Indefinite fat restriction reduces energy intake; the usual approach is adequate calories, often with MCT-rich formula, not cutting out fat."
+  },
+  "12": {
+   "B": "Urinary catecholamines screen for neuroblastoma or phaeochromocytoma, not cystic fibrosis.",
+   "C": "Troponin is a marker of heart muscle injury and has no role in diagnosing cystic fibrosis.",
+   "D": "ANA is used for autoimmune disease such as autoimmune hepatitis; it cannot suggest cystic fibrosis."
+  },
+  "13": {
+   "A": "Breast-milk jaundice is unconjugated and does not cause hypoglycaemia or micropenis.",
+   "C": "Gilbert syndrome causes a mild unconjugated rise, usually after infancy, with no hypoglycaemia or genital findings.",
+   "D": "G6PD deficiency causes haemolytic unconjugated jaundice; it does not explain cholestasis, hypoglycaemia and micropenis."
+  },
+  "14": {
+   "B": "PN exposure is a risk factor for cholestasis but does not exclude biliary atresia, which must still be actively ruled out.",
+   "C": "Conjugated jaundice needs prompt evaluation at any age; waiting 6 months would miss the time-critical window for Kasai.",
+   "D": "Direct hyperbilirubinaemia is never physiological, including in preterm infants; it always needs evaluation."
+  },
+  "15": {
+   "A": "Dubin-Johnson syndrome is a benign conjugated hyperbilirubinaemia with no facial, cardiac or eye features.",
+   "B": "Gilbert syndrome is a mild unconjugated hyperbilirubinaemia with no syndromic features.",
+   "C": "Crigler-Najjar type I causes severe unconjugated hyperbilirubinaemia, without bile duct paucity, PPS or posterior embryotoxon."
+  },
+  "16": {
+   "A": "468 mL comes from using 78 mL/kg (or the wrong factor); 130 mL/kg x 6 kg = 780 mL/day.",
+   "C": "130 mL is the per-kilogram rate, not the total; it must be multiplied by the 6 kg body weight.",
+   "D": "975 mL matches about 7.5 kg or 162.5 mL/kg; the stated figures give 130 x 6 = 780 mL/day."
+  },
+  "17": {
+   "A": "An enlarged echogenic liver with renal cysts is not physiological; stopping tests would miss a syndromic or fibrocystic cause.",
+   "B": "Phototherapy does not treat conjugated cholestasis, and skipping fractionation hides the key finding.",
+   "C": "Ultrasound findings are only supportive; biliary atresia cannot be diagnosed on ultrasound alone, and renal cysts suggest other syndromic causes."
+  },
+  "18": {
+   "A": "AAP 2025 targets detection at 2-4 weeks with direct bilirubin; total bilirubin at 6 months is far too late and the wrong test.",
+   "B": "Ascites is a late sign of cirrhosis; direct bilirubin is meant to find biliary atresia early, well before decompensation.",
+   "D": "Jaundice can be hard to see, and normal-looking skin does not exclude biliary atresia; pale stools alone justify direct bilirubin testing."
+  },
+  "19": {
+   "A": "A normal ALT says nothing about biliary patency; transaminases are often only mildly raised in biliary atresia.",
+   "C": "Chest CT does not show the biliary tree and has no role in confirming biliary atresia.",
+   "D": "A plain abdominal X-ray cannot show bile duct anatomy or patency."
+  },
+  "20": {
+   "A": "A small or absent gallbladder supports biliary atresia rather than excluding it.",
+   "C": "An abnormal gallbladder with acholic stools is the opposite of physiological jaundice, which is unconjugated.",
+   "D": "Gallbladder findings do not confirm CMV; congenital CMV needs virological testing such as urine CMV PCR."
+  },
+  "21": {
+   "A": "Phototherapy does not lower conjugated bilirubin and does not relieve biliary obstruction.",
+   "C": "Biliary atresia obliterates the extrahepatic ducts, so endoscopic sphincterotomy cannot restore drainage.",
+   "D": "Waiting until 1 year allows progression to biliary cirrhosis; Kasai works best when done early."
+  },
+  "22": {
+   "A": "Biliary atresia causes conjugated, not isolated unconjugated, hyperbilirubinaemia.",
+   "B": "Biliary atresia is progressive and does not resolve on its own; untreated it leads to cirrhosis.",
+   "C": "Delay increases the need for transplantation rather than preventing it."
+  },
+  "23": {
+   "B": "Isolated macrovesicular steatosis suggests metabolic or fatty liver disease, not biliary obstruction, which mainly affects the portal tracts.",
+   "C": "Granulomatous inflammation suggests infection or other granulomatous disease, not extrahepatic obstruction.",
+   "D": "Centrilobular necrosis after shock is ischaemic hepatitis and lacks the portal ductular reaction of obstruction."
+  },
+  "24": {
+   "A": "A single low glucose in the first hour is usually part of normal transition and is not the trigger for a persistent-hypoglycaemia work-up.",
+   "C": "Waiting until 6 months would leave hyperinsulinism or hypopituitarism untreated and risk brain injury.",
+   "D": "PES advises evaluation once hypoglycaemia persists past the roughly 48-hour transition, not after 14 days."
+  },
+  "25": {
+   "A": "Intussusception does not usually cause recurrent jaundice and pale stools; fever with cholestasis after Kasai suggests cholangitis.",
+   "C": "Recurrent jaundice with fever after Kasai is pathological and should not be called physiological.",
+   "D": "Lactose intolerance causes loose stools and bloating, not fever with returning cholestasis."
+  },
+  "26": {
+   "B": "Lifelong surveillance is needed after Kasai because cholangitis, portal hypertension and progressive fibrosis can develop.",
+   "C": "Portal hypertension commonly develops even after a successful Kasai because fibrosis continues.",
+   "D": "Even with good bile drainage, many children eventually need a transplant because the liver disease progresses."
+  },
+  "27": {
+   "A": "Conjugated jaundice is not caused by haemolysis, and a normal ultrasound does not narrow the cause to haemolysis.",
+   "B": "Liver biopsy is a standard part of evaluating infant cholestasis and is not contraindicated by a normal ultrasound.",
+   "C": "A normal gallbladder can be seen in biliary atresia, so ultrasound cannot exclude it."
+  },
+  "28": {
+   "B": "Pulse oximetry screens for critical congenital heart disease, not biliary atresia.",
+   "C": "Head circumference monitors brain growth and has no role in detecting acholic stools.",
+   "D": "An ECG has no role in screening for biliary atresia."
+  },
+  "29": {
+   "B": "Stopping nutritional support would worsen malnutrition, which is already common in decompensated cirrhosis and affects transplant outcomes.",
+   "C": "Oral iron does not treat decompensated cirrhosis; at most it corrects a deficiency.",
+   "D": "Phototherapy does not affect conjugated hyperbilirubinaemia or the course of cirrhosis."
+  },
+  "30": {
+   "A": "Biliary atresia causes conjugated, not unconjugated, hyperbilirubinaemia; screening by unconjugated levels would miss it entirely.",
+   "C": "Infants with biliary atresia often thrive initially; restricting evaluation to failure to thrive delays diagnosis past the window for a timely Kasai.",
+   "D": "Waiting until 6 months is far too late; Kasai outcomes fall sharply after about 60 days, which is why AAP 2025 targets 2–4 weeks."
+  },
+  "31": {
+   "A": "Encephalopathy is not mandatory: PALF accepts a vitamin-K-unresponsive INR of about ≥2.0 without encephalopathy, and 2.3 meets this.",
+   "B": "The stem describes acute hepatitis, not established chronic disease; a vitamin-K-refractory INR of 2.3 indicates acute synthetic failure, not compensated disease.",
+   "C": "Vitamin K deficiency would correct after vitamin K; persistence of INR 2.3 after vitamin K points to hepatic synthetic failure."
+  },
+  "32": {
+   "B": "CPS1 deficiency also gives low citrulline, but orotic acid is low/normal because carbamoyl phosphate is not formed to spill into pyrimidine synthesis.",
+   "C": "NAGS deficiency mimics CPS1 deficiency (no carbamoyl phosphate formed), so urinary orotic acid is not raised.",
+   "D": "Arginase deficiency usually presents later with progressive spastic diplegia, high plasma arginine and only mild hyperammonaemia, not a neonatal crisis with low citrulline."
+  },
+  "33": {
+   "A": "Hepatic encephalopathy is a defining feature of liver failure, not an exclusion; with a vitamin-K-unresponsive INR ≥1.5 it fulfils PALF criteria.",
+   "C": "No PALF criterion requires INR >3; the thresholds are ≥1.5 with encephalopathy and about ≥2.0 without.",
+   "D": "PALF is defined by vitamin-K-unresponsive coagulopathy with or without encephalopathy; bilirubin is not part of the definition."
+  },
+  "34": {
+   "A": "Alkaline phosphatase reflects cholestasis and bone turnover (high in growing children), not hepatic synthetic capacity.",
+   "C": "ALT reflects hepatocyte injury, not synthesis; it can fall as viable liver mass is lost, so magnitude alone misleads.",
+   "D": "Urine bilirubin indicates conjugated hyperbilirubinaemia only and gives no measure of clotting-factor synthesis."
+  },
+  "35": {
+   "B": "ALT does not track severity; drowsiness and hypoglycaemia signal evolving PALF needing immediate care, not waiting.",
+   "C": "Sedatives mask and worsen hepatic encephalopathy, impair neurological assessment and may be poorly metabolised by the failing liver.",
+   "D": "Oral iron has no role here; hypoglycaemia and encephalopathy require urgent glucose correction, monitoring and transplant-centre referral."
+  },
+  "36": {
+   "A": "D-penicillamine is a copper chelator for Wilson disease; it does not replenish glutathione or treat paracetamol toxicity.",
+   "C": "Ursodeoxycholic acid is used for cholestasis; it is not an antidote and does not neutralise NAPQI.",
+   "D": "Lactulose lowers ammonia in hepatic encephalopathy but does not prevent paracetamol hepatotoxicity; NAC is the antidote."
+  },
+  "37": {
+   "A": "The scenario contrasts ALT with INR; bilirubin fraction alone is not a validated sole predictor of transplant need.",
+   "B": "A falling ALT with worsening INR can reflect massive hepatocyte loss, an ominous sign rather than recovery.",
+   "D": "Encephalopathy grade is a clinical assessment; ALT level does not determine it."
+  },
+  "38": {
+   "A": "The INR must be rechecked serially, since synthetic failure can evolve even after initial vitamin K correction.",
+   "B": "PALF requires coagulopathy not corrected by vitamin K; an INR that corrects cannot establish PALF from the initial value.",
+   "C": "Correction only shows the coagulopathy was vitamin-K-responsive; cholestatic malabsorption or other hepatobiliary disease may still be present."
+  },
+  "39": {
+   "B": "Peripheral neuropathy is not the characteristic threat; cerebral oedema with raised ICP is the leading neurological cause of death in ALF.",
+   "C": "Positional vertigo is irrelevant; the life-threatening concern is cerebral oedema and herniation.",
+   "D": "Seizures in ALF are not simple febrile seizures; they may signal cerebral oedema or metabolic derangement needing urgent evaluation."
+  },
+  "40": {
+   "B": "Stage 4A is partial extrafoveal retinal detachment; the stem describes stage 2, so detachment is not implied.",
+   "C": "ROP is present at stage 2; stage 3 is not required, and ETROP Type 1 includes zone II stage 2 with plus disease.",
+   "D": "Type 2 ROP lacks plus disease (zone I stage 1–2 or zone II stage 3 without plus); definite plus makes this Type 1."
+  },
+  "41": {
+   "A": "Breath-holding spells occur in toddlers with a provoking trigger; a new seizure in ALF suggests cerebral oedema or metabolic derangement.",
+   "B": "Waiting for an outpatient EEG delays care; neurological deterioration in ALF is an emergency needing immediate ABC stabilisation.",
+   "C": "Hypotonic fluids worsen hyponatraemia and cerebral oedema; fluids and sodium must be closely monitored in ALF."
+  },
+  "42": {
+   "A": "Asymptomatic CMV shedding is common and not a usual cause of ALF in an immunocompetent child.",
+   "B": "Hepatitis C causes chronic, not acute fulminant, hepatitis in children and is not a major Indian ALF cause.",
+   "D": "Latent EBV seropositivity indicates past infection and cannot explain acute hepatitis; hepatitis A/E dominate in India."
+  },
+  "43": {
+   "A": "Metabolic testing must be done early, ideally on a critical sample; waiting for neurological signs loses diagnostic and therapeutic time.",
+   "B": "Young age makes inherited metabolic and mitochondrial disease more, not less, likely as a cause of PALF.",
+   "C": "Hepatitis E is not a typical cause in a 3-month-old; hypoglycaemia with lactic acidosis points to metabolic/mitochondrial disease."
+  },
+  "44": {
+   "A": "Unrestricted boluses risk fluid overload and worsened cerebral oedema; fluids must be individualised and monitored.",
+   "B": "Renal impairment and encephalopathy commonly coexist as multi-organ failure; one does not exclude the other.",
+   "D": "Renal dysfunction is a marker of severity and poorer prognosis in ALF; creatinine is clinically important."
+  },
+  "45": {
+   "A": "Ammonia is not a marker of bacterial meningitis; it points to liver failure or urea-cycle/metabolic disease.",
+   "C": "Ammonia says nothing about INR; coagulation must be measured separately.",
+   "D": "Hyperammonaemia is nonspecific; Wilson disease is one possible cause but needs specific tests (ceruloplasmin, urine copper, ATP7B)."
+  },
+  "46": {
+   "A": "INR remains a key prognostic marker; it should still be monitored, but plasma temporarily distorts its interpretation.",
+   "C": "Correcting INR purely for the number is unnecessary without bleeding or a procedure and obscures the prognostic trend.",
+   "D": "Plasma has no proven effect on cerebral oedema and the added volume may worsen it."
+  },
+  "47": {
+   "A": "Gilbert syndrome causes mild unconjugated hyperbilirubinaemia without liver failure or haemolysis.",
+   "B": "Lactase deficiency is an intestinal disaccharidase disorder with no hepatic or haemolytic features.",
+   "D": "G6PD haemolysis does not cause acute liver failure; ALF with Coombs-negative haemolysis demands evaluation for fulminant Wilson disease."
+  },
+  "48": {
+   "A": "Chylothorax is defined by chylous pleural effusion and would not raise stool alpha-1 antitrypsin clearance.",
+   "B": "Neoaortic regurgitation causes volume load and a murmur, not protein loss with raised stool alpha-1 antitrypsin.",
+   "C": "Plastic bronchitis presents with expectorated airway casts and respiratory distress, not enteric protein loss."
+  },
+  "49": {
+   "A": "Waiting for refractory ascites delays referral until complications are established; transplant evaluation should start early.",
+   "B": "Prolonged coma signals advanced disease with risk of irreversible cerebral injury that may preclude transplant; referral must precede this.",
+   "C": "There is no bilirubin cut-off for referral; INR, encephalopathy and trajectory drive early discussion."
+  },
+  "50": {
+   "A": "A single INR without context cannot distinguish vitamin K deficiency from synthetic failure or show the trajectory.",
+   "B": "The PALF definition depends on failure to correct after vitamin K, so its administration must be documented, not ignored.",
+   "D": "Albumin has a long half-life and does not define ALF; vitamin-K-unresponsive INR is the criterion."
+  },
+  "51": {
+   "B": "B12 deficiency causes megaloblastic cytopenias but not splenomegaly with ascites in chronic liver disease.",
+   "C": "Acute haemolysis causes anaemia and jaundice, not thrombocytopenia with ascites; it does not explain the portal hypertensive picture.",
+   "D": "Renal sodium wasting causes hyponatraemia and volume depletion, not splenomegaly or thrombocytopenia."
+  },
+  "52": {
+   "B": "A mildly raised ALT reflects hepatocyte injury, not raised portal pressure.",
+   "C": "A single episode of constipation is nonspecific and unrelated to portal hypertension.",
+   "D": "Absence of stigmata argues against, rather than for, portal hypertension."
+  },
+  "53": {
+   "A": "Haematemesis with shock is a life-threatening variceal bleed; discharge on iron ignores the need for resuscitation.",
+   "B": "Oral fluids are inappropriate in active upper GI bleeding with shock; IV access, cautious volume and blood resuscitation are needed.",
+   "D": "Endoscopy is needed urgently after stabilisation, typically within 12–24 hours, not electively weeks later."
+  },
+  "54": {
+   "A": "EEG assesses encephalopathy, not the oesophagus.",
+   "C": "Sweat chloride tests for cystic fibrosis, a possible cause of liver disease, but cannot detect varices.",
+   "D": "A plain radiograph cannot visualise oesophageal varices."
+  },
+  "55": {
+   "A": "EHPVO is a classic noncirrhotic cause of portal hypertension with normal liver parenchyma.",
+   "B": "With preserved liver function, encephalopathy is uncommon in EHPVO; presentation is usually variceal bleeding or splenomegaly.",
+   "C": "Synthetic function is preserved in EHPVO, so INR is typically normal; no INR threshold defines portal hypertension."
+  },
+  "56": {
+   "A": "Peripheral pulmonary artery stenosis raises RV pressure but does not cause pulmonary venous congestion.",
+   "B": "Coarctation causes upper-limb hypertension and LV pressure load, not post-capillary pulmonary venous obstruction after TAPVC repair.",
+   "D": "Isolated pulmonary regurgitation causes RV volume load, not pulmonary venous congestion or recurrent pulmonary hypertension."
+  },
+  "57": {
+   "A": "A single high AST reflects hepatocellular injury, not cholestasis, and does not explain pruritus.",
+   "C": "Hypercalcaemia is not a feature of cholestatic liver disease and is not the mechanism of cholestatic pruritus.",
+   "D": "Uncomplicated haemolysis causes unconjugated hyperbilirubinaemia without bile-acid retention, so it does not cause pruritus."
+  },
+  "58": {
+   "A": "Splenomegaly reflects portal hypertension and hypersplenism; it does not explain a prolonged INR or low albumin, which are hepatic synthetic markers.",
+   "B": "Hepatocyte necrosis is shown by transaminase rise; INR and albumin specifically reflect synthetic capacity, so 'without synthetic effect' contradicts these findings.",
+   "C": "A prolonged INR with hypoalbuminaemia signals reduced hepatic reserve, the opposite of guaranteed adequate reserve."
+  },
+  "59": {
+   "A": "Routine protein restriction worsens malnutrition and growth in chronic liver disease; adequate protein is needed, with restriction reserved only for specific situations under specialist advice.",
+   "B": "Appetite is unreliable in chronic liver disease; growth needs objective anthropometry, and weight can be falsely reassuring with organomegaly or ascites.",
+   "D": "Cholestatic liver disease causes fat-soluble vitamin malabsorption, so A, D, E and K need monitoring and supplementation, not withholding."
+  },
+  "60": {
+   "B": "Infant colic is a benign crying pattern in well infants; it does not explain fever and abdominal pain in a child with ascites.",
+   "C": "Reflux does not cause fever; fever with abdominal pain in a child with ascites must prompt diagnostic paracentesis for SBP.",
+   "D": "Lactose intolerance causes bloating and diarrhoea without fever; it ignores the high-risk setting of ascites where SBP must be excluded."
+  },
+  "61": {
+   "B": "Folate is not overproduced in cholestasis; reduced bile flow impairs fat and fat-soluble vitamin absorption, not water-soluble vitamin excess.",
+   "C": "B12 absorption depends on intrinsic factor and the terminal ileum, not bile; cholestasis does not cause universal B12 excess.",
+   "D": "Vitamin C is water-soluble and its absorption is not bile-dependent; cholestasis causes deficiency of fat-soluble vitamins, not vitamin C toxicity."
+  },
+  "62": {
+   "B": "Mild eczema is not a recognised precipitant of hepatic encephalopathy; bleeding, infection, constipation, electrolyte upset and sedatives are.",
+   "C": "Normal sleep is not a precipitant; an altered sleep-wake cycle can itself be an early sign of encephalopathy rather than a cause.",
+   "D": "A growth spurt does not precipitate encephalopathy; an increased nitrogen load from GI bleeding or catabolism from infection does."
+  },
+  "63": {
+   "A": "Renal length gives no information about the portal circulation; Doppler of portal venous flow and patency is what assesses portal hypertension.",
+   "B": "Cranial ventricular width is unrelated to portal hypertension and does not evaluate portal vein patency or flow.",
+   "C": "Gallbladder wall thickness without Doppler cannot show portal venous flow direction, thrombosis (e.g. EHPVO) or collaterals."
+  },
+  "64": {
+   "B": "2.4 mg is 0.1 mg/kg, the usual first dose; the stem specifies the second dose of 0.2 mg/kg, giving 4.8 mg.",
+   "C": "24 mg is a tenfold decimal error (1 mg/kg) and exceeds the 12 mg maximum.",
+   "D": "12 mg is the ceiling, not the calculated dose; 0.2 mg/kg x 24 kg is 4.8 mg, below the maximum."
+  },
+  "65": {
+   "A": "Worsening ascites and renal function demand closer electrolyte monitoring, as hyponatraemia and AKI/hepatorenal physiology are likely.",
+   "B": "Nephrotoxic drugs (e.g. NSAIDs, aminoglycosides) worsen AKI in cirrhosis and should be avoided; the cause of decompensation must be sought.",
+   "D": "Puberty does not cause ascites or renal impairment; sudden decompensation suggests infection such as SBP, bleeding, hypovolaemia or AKI."
+  },
+  "66": {
+   "A": "A normal abdominal examination is consistent with compensated disease; decompensation is defined by events such as ascites or variceal bleeding.",
+   "B": "Stable mild transaminase elevation can occur in compensated disease and does not mark decompensation.",
+   "C": "Normal coagulation indicates preserved synthetic function, which favours compensated rather than decompensated disease."
+  },
+  "67": {
+   "A": "ABCB11 encodes the bile salt export pump; mutations cause PFIC2, not Wilson disease.",
+   "B": "ATP8B1 encodes FIC1; mutations cause PFIC1/BRIC, not copper accumulation.",
+   "D": "UGT1A1 encodes bilirubin glucuronyltransferase; variants cause Gilbert and Crigler-Najjar syndromes, not Wilson disease."
+  },
+  "68": {
+   "A": "Alagille syndrome causes cholestasis with bile duct paucity, cardiac, vertebral and ocular (posterior embryotoxon) features, not KF rings with dysarthria.",
+   "C": "Lactase deficiency causes carbohydrate malabsorption only; it has no hepatic, neurological or corneal copper features.",
+   "D": "Gilbert syndrome causes benign unconjugated hyperbilirubinaemia without liver disease, neurological signs or KF rings."
+  },
+  "69": {
+   "A": "Low ceruloplasmin does not indicate autoimmune hepatitis; it raises possible Wilson disease, though AIH can mimic it and is assessed separately.",
+   "B": "Ceruloplasmin is imperfect: it can be low in heterozygotes, protein-losing states or liver failure, so it is not diagnostic alone.",
+   "C": "Normal ceruloplasmin does not exclude Wilson disease, as it is an acute-phase reactant; also 18 mg/dL is below the usual normal range, not normal."
+  },
+  "70": {
+   "A": "500 μg/24h is far above even the classic >100 μg/24h symptomatic threshold; using it would miss many children with Wilson disease.",
+   "B": "Zero urinary copper is not a physiological finding or a Wilson threshold; normal children excrete small measurable amounts.",
+   "C": "Almost all children excrete more than 1 μg/24h, so this cutoff has no discriminating value; >40 μg/24h is the informative paediatric level."
+  },
+  "71": {
+   "B": "A negative score does not support Wilson disease; scores of 0-1 make the diagnosis unlikely.",
+   "C": "Requiring a score above 12 is far stricter than the Leipzig scale; a total of 4 or more already makes the diagnosis highly likely.",
+   "D": "A score of 1 makes Wilson disease unlikely; 2-3 is probable and needs more tests, and 4 or more is supportive."
+  },
+  "72": {
+   "A": "Propionic acidaemia raises C3, typically with ketoacidosis and hyperammonaemia, not hypoketotic hypoglycaemia with raised C8.",
+   "C": "VLCAD deficiency is a fatty acid oxidation defect but its marker is C14:1, often with cardiomyopathy or rhabdomyolysis, not raised C8.",
+   "D": "MSUD shows raised branched-chain amino acids and alloisoleucine with encephalopathy and maple odour, not hypoketotic hypoglycaemia with C8."
+  },
+  "73": {
+   "B": "Phototherapy treats unconjugated neonatal hyperbilirubinaemia; it has no role in removing copper in Wilson disease.",
+   "C": "Antibiotics do not address copper overload; symptomatic Wilson disease needs chelation such as penicillamine or trientine.",
+   "D": "Dietary copper restriction alone is insufficient for symptomatic disease; it is only an adjunct to chelation, which is the initial treatment."
+  },
+  "74": {
+   "A": "Routine biopsy for every relative is unnecessarily invasive; biochemical tests and targeted ATP7B testing for the known variants usually suffice.",
+   "C": "A vision chart cannot detect KF rings (slit-lamp needed) or presymptomatic liver disease; siblings need biochemical and genetic evaluation.",
+   "D": "Waiting for neurological symptoms forfeits the benefit of presymptomatic treatment; siblings have a 25% risk and should be screened now."
+  },
+  "75": {
+   "A": "KF rings are strongly suggestive but not absolute; they also occur in some chronic cholestatic diseases, and diagnosis integrates copper studies, ceruloplasmin and genetics.",
+   "B": "KF rings are frequently absent in children with liver-predominant Wilson disease; they are present in most neurological cases.",
+   "D": "KF rings reflect corneal copper deposition in Wilson disease; they are not a feature of neonatal biliary atresia."
+  },
+  "76": {
+   "A": "Dietary copper restriction does nothing in acute fulminant Wilson disease with haemolysis, which carries high mortality without transplantation.",
+   "B": "Fulminant Wilson disease rarely responds to chelation alone; delaying transplant referral is dangerous.",
+   "D": "Spontaneous recovery is unlikely in Wilsonian ALF with haemolysis; prognosis is poor without transplantation, so urgent referral is needed."
+  },
+  "77": {
+   "A": "Penicillamine has significant toxicity, so blood counts, urinalysis and copper indices need regular monitoring.",
+   "C": "Hyperthyroidism is not a recognised universal adverse effect of penicillamine; marrow suppression and proteinuria are.",
+   "D": "Irreversible hearing loss is not a characteristic penicillamine toxicity (it fits aminoglycosides or cisplatin); cytopenias and proteinuria are."
+  },
+  "78": {
+   "A": "An IAP ALF consensus addresses acute liver failure, not European Wilson disease management, and is not a 2025 guideline.",
+   "B": "The 2025 AAP report concerns biliary atresia detection at 2-4 weeks, not Wilson disease.",
+   "D": "The 2017 NASPGHAN/ESPGHAN guideline covers neonatal cholestasis evaluation, not Wilson disease, and predates 2025."
+  },
+  "79": {
+   "A": "HFI (aldolase B) presents after fructose or sucrose exposure at weaning, not after lactose-containing milk in the neonate.",
+   "C": "GSD I causes fasting hypoglycaemia, hepatomegaly and lactic acidosis without feed-triggered liver failure or E. coli sepsis.",
+   "D": "Galactokinase deficiency causes isolated cataracts without liver failure or sepsis; the multisystem picture fits GALT deficiency."
+  },
+  "80": {
+   "A": "Pneumothorax is possible in sudden desaturation, but a visibly disconnected circuit identifies equipment failure as the immediate cause.",
+   "B": "Tube obstruction is considered when the circuit is intact; here the visible disconnection is the obvious equipment problem.",
+   "D": "Displacement causes unilateral breath sounds or loss of chest rise, but the immediate visible problem here is circuit disconnection (equipment)."
+  },
+  "81": {
+   "A": "ATP7B (Wilson disease) causes copper accumulation, rarely presenting before 3-5 years, and is not triggered by fruit juice.",
+   "B": "Galactokinase deficiency causes cataracts after galactose exposure, not hypoglycaemia or liver dysfunction after fruit juice.",
+   "C": "GALT deficiency is triggered by galactose from milk in the neonatal period, not by fructose from fruit juice."
+  },
+  "82": {
+   "B": "Methylmalonic acidaemia presents with metabolic acidosis and hyperammonaemia; its markers are methylmalonic acid and C3, not succinylacetone.",
+   "C": "MSUD shows raised leucine and alloisoleucine with encephalopathy, not cholestasis with succinylacetone.",
+   "D": "PKU raises phenylalanine causing neurodevelopmental impairment; it does not cause liver disease or succinylacetone."
+  },
+  "83": {
+   "A": "G6PD carrier status may cause haemolysis but not neonatal liver failure with extrahepatic siderosis.",
+   "B": "Wilson disease does not present in neonates, and it causes copper, not iron, accumulation.",
+   "D": "Physiological jaundice is mild unconjugated hyperbilirubinaemia without liver dysfunction, hyperferritinaemia or extrahepatic iron deposition."
+  },
+  "84": {
+   "A": "Hereditary spherocytosis causes haemolysis, splenomegaly and jaundice, not fasting hypoglycaemia with lactic acidosis.",
+   "B": "Vitamin D deficiency causes rickets and hypocalcaemia, not fasting hypoglycaemia, lactic acidosis and hepatomegaly.",
+   "D": "Gilbert syndrome causes mild unconjugated hyperbilirubinaemia only, without hepatomegaly, hypoglycaemia or lactic acidosis."
+  },
+  "85": {
+   "A": "Mitochondrial hepatopathies can progress rapidly to liver failure; delaying evaluation risks death and misses transplant-candidacy decisions.",
+   "C": "Phototherapy treats unconjugated hyperbilirubinaemia; it does not address cholestasis, tubulopathy or the underlying metabolic disorder.",
+   "D": "Biliary atresia does not cause renal Fanconi syndrome; multisystem liver-renal disease points to metabolic or mitochondrial causes, though BA still needs exclusion."
+  }
+ }
+}
