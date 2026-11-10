@@ -44,6 +44,9 @@ RULES = [
     (r'^clinical case examiner interpretations$', 'caseanswers'), (r'^data interpretation station keys$', 'stationanswers'),
     (r'^25 active[ -]recall prompts$|^active recall \(25\)$|^active recall — 1?5 prompts$|^active recall — 25 prompts$', 'recall'),
     (r'^25 rapid revision pearls$|^rapid revision pearls \(25\)$', 'revision'), (r'^fifteen examination traps$|^15 examination traps$|^exam traps \(15\)$', 'pearls'),
+    (r'^blueprint and five-hour schedule$', 'overview'), (r'^original mcqs$|^individual distractor critiques', 'mcq'), (r'^error notebook integrity$', 'plan'),   # Day 43
+    (r'^answer distribution and qa ledger$|^v4 qa stage|^truthful consulted-source register$|^critical-review amendment|^changes made in this revision$|^source evidence register|^full 75-item source|^mandatory v4 stage', 'references'),
+    (r'^five calculation drills$', 'calc'), (r'^four decision algorithms$', 'tables'), (r'^fifteen examination traps$', 'pearls'),
     (r'^75 original mcqs$', 'mcq'), (r'^data interpretation — 5$', 'data'), (r'^qa report and source transparency$', 'references'),   # Day 42
     (r'^source-access and safety register$|^source access register$|^v4 |^question-level v4 ledger|^per-section qa totals$|^per-stage reviewed|^unresolved requirements$|^source and (guideline|retest) register$|^source register \(truthful', 'references'),
     (r'^6\s+•\s+rapid revision pearls', 'revision'), (r'^4\s+•\s+data and schematic', 'data'), (r'^9\s+•\s+mcq practice', 'mcq'),   # Day 35 ("N  •  title" parts)
@@ -475,7 +478,10 @@ def build(day, docx, keep_order=False):
                 m_ = re.match(r'^Station (\d+):\s*(.+)$', tx)
                 if m_:
                     plain = True
-                    secs_.append({'title': f'Station {m_[1]} — {m_[2]}', 'h1': '', 'blocks': []})
+                    if len(m_[2]) > 45:   # Day 43: "Station 1: <data + task>" — the line is the visible station, not a topic title
+                        secs_.append({'title': f'Station {m_[1]}', 'h1': '', 'blocks': [{'t': 'p', 'html': html.escape(m_[2], quote=False)}]})
+                    else:
+                        secs_.append({'title': f'Station {m_[1]} — {m_[2]}', 'h1': '', 'blocks': []})
                     continue
                 m_ = plain and re.match(r'^Interpretation:\s*(.+?):\s+(.+)$', tx)
                 if m_:
@@ -737,7 +743,8 @@ def build(day, docx, keep_order=False):
         order += notes if o == 'NOTES' else ([o] if o in pages else [])
     placed = sum(len(s['blocks']) for p in pages.values() for s in p['sections'])
     if placed != total_blocks:
-        raise SystemExit(f'Block integrity failed: {placed} placed vs {total_blocks} in source')
+        raise SystemExit(f'Block integrity failed: {placed} placed vs {total_blocks} in source; per page: '
+                         + ', '.join(f"{p['id']}={sum(len(s['blocks']) for s in p['sections'])}" for p in pages.values()))
     # Pictures placed in the document are copied to DayN/img/ (unused/orphan media in the docx are ignored).
     imgs = [b for p in pages.values() for s in p['sections'] for b in s['blocks'] if b['t'] == 'img']
     if imgs:

@@ -406,6 +406,24 @@ def parse_inline_v5(doc, parts):
                 continue
             tgt['ans'], tgt['core'] = mk[2], mk[3].strip()
             continue
+        mc = re.search(r'distractor critiques', h or '', re.I) and re.match(r'^D\d+-Q(\d+)\s*[—–]\s*(.+)$', t)
+        if mc:     # Day 43 "D43-Q08 — A reason; B reason; D reason" (keyed letter's remark, e.g. "so D is correct", skipped)
+            q_ = by.get(int(mc[1]))
+            if not q_:
+                problems.append(f'critique for unknown Q{mc[1]}')
+                continue
+            for seg in re.split(r'(?:;|\.)\s+(?=[A-D]\s)', mc[2]):
+                mj = re.match(r'^([A-D])\s+(.+?)\s+and\s+([A-D])\s+(.+)$', seg.strip())
+                if mj and mj[1] != q_['ans'] and mj[3] != q_['ans']:   # "B TSH and D renin are not indicators of …" — one remark for both
+                    r_ = f'{mj[2]} and {mj[4]}'.rstrip('.;') + '.'
+                    q_['why_not'][mj[1]] = q_['why_not'][mj[3]] = r_[0].upper() + r_[1:]
+                    continue
+                ms = re.match(r'^([A-D])\s+(.+)$', seg.strip())
+                if not ms or ms[1] == q_['ans']:
+                    continue
+                r_ = re.sub(r'\.?\s*[^.;]*\bso [A-D] is correct\.?$', '', ms[2]).strip().rstrip('.;') + '.'
+                q_['why_not'][ms[1]] = r_[0].upper() + r_[1:]
+            continue
         if tgt is None:
             continue
         if re.match(r'^Stem:\s*', t):
@@ -424,7 +442,7 @@ def parse_inline_v5(doc, parts):
         mk = re.match(r'^(?:Provisional key|Provisional answer|Key):\s*([A-D])\s*[.—–|-]\s*(.+)$', t)
         if mk:     # Day 42 "Provisional answer: B. core. Four-option second-best audit … remain pending." (status tail dropped)
             tgt['ans'] = mk[1]
-            core = re.split(r'\s*\|\s*Other options:', mk[2])[0].strip()
+            core = re.split(r'\s*\|\s*(?:Other options|Source):', mk[2])[0].strip()   # Day 43 "| Source: … PENDING." dropped
             tgt['core'] = re.sub(r'\s*Four-option second-best audit[^.]*pending\.?\s*$', '', core).strip()
             continue
         mk = re.match(r'^([A-D]) audit:\s*(.+)$', t)

@@ -1,0 +1,342 @@
+{
+ "title": "Endocrinology — Adrenal Disorders, CAH, Puberty & DSD",
+ "calc_items": [
+  {
+   "title": "Height velocity",
+   "question": "Height is 117.2 cm and 8 months later 121.6 cm. Calculate the annualised height velocity.",
+   "working": "(121.6 − 117.2)/8 × 12 = 6.6 cm/year.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 6.6,
+     "unit": "cm/year"
+    }
+   ]
+  },
+  {
+   "title": "Corrected age",
+   "question": "An infant born at 30 weeks' gestation is now 20 weeks old (chronological age). Calculate the corrected age.",
+   "working": "20 − (40 − 30) = 10 weeks.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 10,
+     "unit": "weeks"
+    }
+   ]
+  },
+  {
+   "title": "Body surface area",
+   "question": "Height 120 cm, weight 25 kg. Calculate the Mosteller body surface area √(height × weight / 3600).",
+   "working": "√(120 × 25 / 3600) = 0.913 m².",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 0.913,
+     "unit": "m²"
+    }
+   ]
+  },
+  {
+   "title": "Glucose-corrected sodium",
+   "question": "Measured sodium 128 mmol/L with glucose 500 mg/dL. Using +1.6 mmol/L per 100 mg/dL of glucose above 100, estimate the corrected sodium.",
+   "working": "128 + 1.6 × (500 − 100)/100 = 134.4 mmol/L. An exam arithmetic exercise with the stated convention; clinical protocols use different factors, and effective osmolality and trends guide decisions.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 134.4,
+     "unit": "mmol/L"
+    }
+   ]
+  },
+  {
+   "title": "BMI",
+   "question": "Height 1.35 m, weight 32 kg. Calculate the BMI.",
+   "working": "32/1.35² = 17.56 kg/m²; interpret on the age/sex percentile chart.",
+   "trap": "",
+   "parts": [
+    {
+     "answer": 17.56,
+     "unit": "kg/m²"
+    }
+   ]
+  }
+ ],
+ "added_why_not": {
+  "2": {
+   "B": "11-deoxycortisol rises in 11-beta-hydroxylase deficiency; in 21-hydroxylase deficiency the block lies before it, so 11-deoxycortisol is low.",
+   "C": "Cortisol is the deficient end product in classic 21-hydroxylase deficiency, not an accumulating precursor.",
+   "D": "Adrenal androgens such as DHEAS and androstenedione may rise from shunting, but 17-OHP is the characteristic diagnostic marker; DHEAS alone is not."
+  },
+  "3": {
+   "A": "High sodium with low potassium suggests mineralocorticoid excess (e.g. 11-beta-hydroxylase deficiency), the opposite of aldosterone deficiency in salt-wasting CAH.",
+   "B": "Aldosterone deficiency causes renal sodium loss, so sodium falls; hypernatraemia with hyperkalaemia does not fit salt wasting.",
+   "C": "Hypokalaemia indicates mineralocorticoid excess; salt-wasting CAH impairs potassium excretion and causes hyperkalaemia with hyponatraemia."
+  },
+  "4": {
+   "A": "21-hydroxylase deficiency causes virilisation but with salt wasting or normal blood pressure, since mineralocorticoid synthesis is impaired rather than excessive.",
+   "B": "17-alpha-hydroxylase deficiency causes hypertension but with sex-steroid deficiency, i.e. sexual infantilism or undervirilised 46,XY, not virilisation.",
+   "D": "Aromatase deficiency causes maternal and 46,XX virilisation from unconverted androgens but does not produce mineralocorticoid excess or hypertension."
+  },
+  "5": {
+   "A": "21-hydroxylase deficiency causes androgen excess and salt wasting, not hypertension with low sex steroids.",
+   "C": "5-alpha-reductase deficiency impairs DHT formation, causing 46,XY undervirilisation, but adrenal steroidogenesis and blood pressure are normal.",
+   "D": "Androgen insensitivity has normal or high androgen production with receptor resistance and no hypertension."
+  },
+  "6": {
+   "B": "Testes develop only with a Y chromosome/SRY; a 46,XX infant with CAH has ovaries, and the uterus persists without testicular AMH.",
+   "C": "Testes are not present in 46,XX CAH; virilisation is from adrenal androgens acting on external genitalia, while gonads remain ovaries.",
+   "D": "Gonads and Mullerian structures are normal in 46,XX CAH; only the external genitalia are virilised by adrenal androgen."
+  },
+  "7": {
+   "A": "11-beta-hydroxylase deficiency is the second most common form, accounting for roughly 5-8% of CAH.",
+   "B": "17-alpha-hydroxylase deficiency is a rare form of CAH.",
+   "C": "3-beta-HSD deficiency is a rare form of CAH, far less frequent than 21-hydroxylase deficiency."
+  },
+  "10": {
+   "B": "Secondary adrenal insufficiency results from ACTH deficiency, so ACTH would be low or inappropriately normal, not high.",
+   "C": "Cushing syndrome features cortisol excess, not low morning cortisol.",
+   "D": "Exogenous glucocorticoids suppress ACTH; measured endogenous cortisol may be low but ACTH is low, not high."
+  },
+  "11": {
+   "A": "Primary adrenal failure removes cortisol feedback, so ACTH is high, not low.",
+   "B": "Primary hyperaldosteronism is autonomous aldosterone excess with suppressed renin; it does not cause low ACTH and low cortisol.",
+   "C": "21-hydroxylase excess is not a recognised entity; 21-hydroxylase deficiency causes low cortisol with high ACTH."
+  },
+  "12": {
+   "A": "Aldosterone regulates sodium and potassium handling and has no melanocortin effect on skin pigmentation.",
+   "B": "Insulin excess is linked to acanthosis nigricans, not the diffuse hyperpigmentation of Addison disease.",
+   "D": "Growth hormone does not cause hyperpigmentation; Addison pigmentation reflects high ACTH/POMC peptides acting on MC1R."
+  },
+  "13": {
+   "A": "Exogenous glucocorticoids suppress, rather than increase, ACTH secretion; high ACTH would protect against adrenal atrophy.",
+   "C": "Renin is regulated mainly by volume and sodium, and the renin-aldosterone axis is largely preserved in glucocorticoid-induced suppression.",
+   "D": "Adrenal androgen excess is not the mechanism; suppression arises from feedback inhibition of CRH and ACTH causing adrenal atrophy."
+  },
+  "14": {
+   "B": "Bedside glucose is appropriate because hypoglycaemia is common in adrenal crisis, especially in children.",
+   "C": "Restoring intravascular volume with isotonic fluid is a core step in managing the shock of adrenal crisis.",
+   "D": "Hypoglycaemia must be corrected promptly with dextrose alongside parenteral hydrocortisone."
+  },
+  "16": {
+   "A": "A random daytime cortisol is unreliable because of diurnal variation and stress; screening uses late-night salivary cortisol, urinary free cortisol or dexamethasone suppression.",
+   "B": "Sodium is neither sensitive nor specific for hypercortisolism and cannot screen for Cushing syndrome.",
+   "D": "ACTH is used after hypercortisolism is confirmed to distinguish ACTH-dependent from independent causes, not as a screening test."
+  },
+  "17": {
+   "A": "Constitutional tall stature involves normal or high height velocity, not growth deceleration.",
+   "C": "Exogenous obesity usually accompanies normal or increased height velocity and often advanced bone age; deceleration with weight gain points to cortisol excess.",
+   "D": "Familial short stature shows short but normal-velocity growth parallel to centiles, without disproportionate weight gain."
+  },
+  "18": {
+   "B": "Exogenous glucocorticoids feed back to suppress ACTH; markedly elevated ACTH suggests ACTH-dependent Cushing disease or ectopic ACTH.",
+   "C": "Primary aldosterone excess is a separate mineralocorticoid disorder and is not caused by exogenous glucocorticoids.",
+   "D": "Endogenous cortisol is usually suppressed in iatrogenic Cushing syndrome, because the HPA axis is inhibited."
+  },
+  "20": {
+   "A": "Levothyroxine treats hypothyroidism and has no mineralocorticoid activity.",
+   "B": "Desmopressin is a vasopressin analogue for central diabetes insipidus; it does not promote renal sodium retention or potassium excretion.",
+   "D": "Somatropin is recombinant growth hormone and has no role in mineralocorticoid replacement."
+  },
+  "21": {
+   "A": "Salt-wasting CAH tends to cause hyperkalaemia, so routine potassium supplementation is inappropriate.",
+   "C": "Potassium-sparing diuretics worsen sodium loss and hyperkalaemia, the very problem in aldosterone deficiency.",
+   "D": "Electrolytes, with renin, are needed to titrate fludrocortisone and salt supplements; omitting monitoring is unsafe."
+  },
+  "22": {
+   "B": "HbA1c reflects glycaemic control and does not gauge mineralocorticoid adequacy.",
+   "C": "TSH assesses thyroid function and is unrelated to fludrocortisone dosing.",
+   "D": "IGF-1 reflects growth hormone status, not mineralocorticoid replacement."
+  },
+  "23": {
+   "A": "Glucocorticoid excess suppresses growth; accelerated height velocity suggests under-treatment with androgen excess.",
+   "B": "CAH is a lifelong genetic enzyme defect; no glucocorticoid dose cures it, and excess only adds iatrogenic harm.",
+   "C": "Excess glucocorticoid suppresses ACTH; high ACTH indicates under-replacement."
+  },
+  "24": {
+   "A": "Low blood pressure points to mineralocorticoid or salt deficiency, not to inadequate suppression of adrenal androgens.",
+   "B": "Hypoglycaemia reflects cortisol deficiency or intercurrent stress and is not a marker of androgen excess.",
+   "D": "Suppressed ACTH with Cushingoid features indicates glucocorticoid over-treatment, the opposite of under-treatment."
+  },
+  "25": {
+   "A": "Ovarian oestrogen feminises rather than virilises, and the androgen excess in 21-hydroxylase deficiency arises in the adrenal cortex, present even in 46,XY infants.",
+   "C": "Prolactin excess causes galactorrhoea and hypogonadism, not virilisation; it plays no role in the steroidogenic block of 21-hydroxylase deficiency.",
+   "D": "Thyroid hormone is not part of adrenal steroidogenesis and its excess causes thyrotoxicosis, not genital virilisation."
+  },
+  "27": {
+   "A": "Wolffian ducts are maintained by testosterone in 46,XY fetuses; they regress in the absence of testosterone, not because of AMH.",
+   "B": "AMH has no role in adrenal cortex development; the fetal adrenal zone involutes postnatally independent of AMH.",
+   "C": "AMH is a testicular product in 46,XY development and causes Müllerian regression; it does not drive ovarian follicle development."
+  },
+  "28": {
+   "A": "Müllerian derivatives (uterus, tubes, upper vagina) regress under Sertoli-cell AMH; testosterone does not support them.",
+   "B": "A 46,XY fetus with testes has no ovarian follicles; follicle development is unrelated to fetal testosterone.",
+   "D": "The adrenal medulla derives from neural crest and develops independently of fetal testosterone."
+  },
+  "29": {
+   "A": "Müllerian duct regression is mediated by AMH from Sertoli cells, not by DHT.",
+   "C": "Thyroid development depends on transcription factors such as PAX8, NKX2-1 and FOXE1, not on dihydrotestosterone.",
+   "D": "Aldosterone synthesis is regulated by the renin-angiotensin system and potassium via aldosterone synthase (CYP11B2), not by DHT."
+  },
+  "30": {
+   "B": "Complete androgen insensitivity causes a female phenotype at birth and breast development, not virilisation, at puberty because androgen receptors are non-functional.",
+   "C": "Classic 21-hydroxylase CAH in 46,XX causes virilisation of a 46,XX infant at birth; the stem describes a 46,XY individual undervirilised at birth.",
+   "D": "Turner syndrome is 45,X (or variants) with female phenotype and gonadal failure, so neither 46,XY karyotype nor pubertal virilisation fits."
+  },
+  "32": {
+   "A": "Complete androgen insensitivity does not virilise, and AMH from the testes causes Müllerian regression, so there is no uterus.",
+   "B": "Menorrhagia requires a uterus and menstruation; in complete androgen insensitivity the uterus is absent and patients present with primary amenorrhoea.",
+   "D": "Without a uterus, menarche cannot occur in complete androgen insensitivity; primary amenorrhoea is the typical presentation."
+  },
+  "33": {
+   "A": "Complete androgen insensitivity occurs in 46,XY individuals with testes and causes undervirilisation, not virilisation of a 46,XX child.",
+   "C": "5-alpha-reductase deficiency causes undervirilisation of 46,XY individuals; it does not virilise a 46,XX child with ovaries.",
+   "D": "Swyer syndrome is 46,XY complete gonadal dysgenesis with streak gonads and female external genitalia, not a virilised 46,XX child with normal ovaries."
+  },
+  "35": {
+   "A": "TSH assesses thyroid axis function and gives no information about testicular Sertoli-cell tissue.",
+   "B": "Aldosterone reflects mineralocorticoid status (relevant to salt-wasting CAH) but not Sertoli-cell function.",
+   "C": "HbA1c reflects average glycaemia over months and has no role in assessing gonadal function."
+  },
+  "36": {
+   "A": "Electrolytes should be checked early in suspected DSD to detect salt-wasting CAH, which can be life-threatening.",
+   "B": "Karyotype (and rapid sex-chromosome testing) is a core first-line investigation in DSD and should not be avoided.",
+   "D": "Psychosocial support for the family is an essential part of DSD care from the outset, not something to avoid."
+  },
+  "37": {
+   "A": "Delayed puberty in girls is absence of breast development by about 13 years, the opposite of early onset before 8.",
+   "C": "Puberty is not normal at every age; onset before 8 years in girls warrants evaluation for precocious puberty.",
+   "D": "Primary amenorrhoea refers to absent menarche by about 15 years, not early pubertal onset."
+  },
+  "38": {
+   "B": "Delayed puberty in boys is lack of testicular enlargement by about 14 years, the opposite of onset before 9.",
+   "C": "Puberty is not normal at every age; onset before 9 years in boys warrants evaluation for precocious puberty.",
+   "D": "Primary hypogonadism is testicular failure causing absent or arrested puberty, not early pubertal onset."
+  },
+  "39": {
+   "A": "Menarche is a late event, typically about 2–2.5 years after thelarche, so it is not the first sign.",
+   "B": "Axillary hair is usually a later pubertal feature and reflects adrenal androgens rather than central (gonadotropin-driven) puberty.",
+   "C": "Voice deepening is an androgen-driven male pubertal feature, not the first sign of central puberty in girls."
+  },
+  "40": {
+   "A": "Facial hair appears late in male puberty, well after testicular enlargement.",
+   "B": "Voice breaking occurs in mid-to-late puberty, after testicular enlargement and growth acceleration have begun.",
+   "D": "Pubic hair alone may reflect adrenarche; in central puberty testicular enlargement usually precedes or accompanies pubarche."
+  },
+  "41": {
+   "A": "About 1–3 mL is prepubertal testicular volume, not the threshold marking onset of puberty.",
+   "C": "15 mL is a mid-to-late pubertal volume, well beyond the onset threshold.",
+   "D": "25 mL represents adult testicular volume, not the onset of gonadarche."
+  },
+  "42": {
+   "B": "Central puberty causes gonadal activation (testicular enlargement or breast development); prepubertal gonads argue against it.",
+   "C": "A testicular tumour would usually enlarge or create asymmetry of the testis, and not every case of early pubic hair is tumour-related.",
+   "D": "Delayed puberty involves absent or late pubertal signs, not early pubic hair."
+  },
+  "46": {
+   "B": "Fludrocortisone is a mineralocorticoid for salt-wasting adrenal insufficiency and does not suppress the hypothalamic-pituitary-gonadal axis.",
+   "C": "Levothyroxine treats hypothyroidism; it does not suppress gonadotropin-driven central puberty.",
+   "D": "Androgen replacement is used to induce puberty in hypogonadal boys and would worsen, not treat, precocious puberty."
+  },
+  "47": {
+   "A": "Central precocious puberty is gonadotropin-dependent with pubertal LH levels; suppressed gonadotropins indicate a peripheral source.",
+   "B": "Constitutional delay causes late, not early, puberty and does not involve oestrogen excess.",
+   "C": "Primary ovarian insufficiency causes low oestrogen with elevated gonadotropins, the reverse of this picture."
+  },
+  "48": {
+   "A": "McCune-Albright syndrome typically causes early, gonadotropin-independent puberty, not hypogonadotropic delayed puberty.",
+   "B": "Complete androgen insensitivity results from androgen-receptor mutations, whereas McCune-Albright is due to activating GNAS mosaic mutations.",
+   "D": "Salt-wasting CAH is caused by 21-hydroxylase deficiency (CYP21A2), not by GNAS mutations; McCune-Albright may cause Cushing syndrome but not salt-wasting."
+  },
+  "49": {
+   "A": "Hypoglycaemia, hyperkalaemia and acholic stools are not a recognised triad; hyperkalaemia points to adrenal/mineralocorticoid failure and acholic stools to cholestasis, neither a feature of McCune-Albright syndrome.",
+   "C": "Aniridia with Wilms tumour (nephroblastoma) belongs to WAGR (11p13 deletion), and hemihypertrophy to Beckwith-Wiedemann; these are tumour-predisposition syndromes, not GNAS mosaicism.",
+   "D": "Short stature, webbed neck and coarctation of the aorta describe Turner syndrome (or Noonan), which causes gonadal failure rather than autonomous endocrine hyperfunction."
+  },
+  "52": {
+   "A": "Complete androgen insensitivity occurs in 46,XY individuals with a female phenotype who present with primary amenorrhoea, not as delayed puberty in a phenotypic boy.",
+   "B": "Classic salt-wasting CAH presents with neonatal adrenal crisis and, if undertreated, causes androgen excess with early virilisation rather than delayed puberty in a healthy adolescent.",
+   "D": "Congenital hyperthyroidism is a rare, transient neonatal condition from maternal TRAb; it is not a common cause of pubertal delay, and it is hypothyroidism that classically delays puberty."
+  },
+  "53": {
+   "A": "Hypothalamic suppression reduces GnRH drive, giving low or inappropriately normal LH and FSH, the opposite of the raised gonadotropins in this stem.",
+   "C": "Constitutional delay is a temporary central (hypogonadotropic) state with prepubertal-range, low LH and FSH; raised gonadotropins exclude it and indicate gonadal failure.",
+   "D": "Prolactin deficiency does not delay puberty or raise gonadotropins; it is hyperprolactinaemia that suppresses GnRH and lowers LH/FSH."
+  },
+  "54": {
+   "B": "Primary gonadal failure removes negative feedback and raises LH and FSH; low or inappropriately normal gonadotropins argue against it, so 'in every case' is wrong.",
+   "C": "Androgen excess (e.g. CAH, tumours) causes early virilisation or precocity, not delayed puberty; any gonadotropin suppression it causes is secondary, not a cause of pubertal delay.",
+   "D": "Hyperaldosteronism causes hypertension and hypokalaemia and has no role in the hypothalamic-pituitary-gonadal axis or delayed puberty."
+  },
+  "55": {
+   "A": "Turner syndrome causes hypergonadotropic hypogonadism from gonadal dysgenesis with high FSH, and anosmia is not a feature.",
+   "B": "Cushing syndrome may suppress gonadotropins and delay puberty, but it presents with weight gain, growth failure and cushingoid features, not congenital anosmia.",
+   "C": "McCune-Albright syndrome causes gonadotropin-independent precocious puberty from GNAS activation, the opposite of congenital hypogonadotropic hypogonadism, and is unrelated to anosmia."
+  },
+  "56": {
+   "A": "Complete androgen insensitivity presents with primary amenorrhoea in a girl of normal or tall stature with breast development from aromatised testosterone, not short stature with high FSH.",
+   "B": "5-alpha-reductase deficiency affects 46,XY individuals with atypical genitalia who virilise at puberty; it does not explain short stature and ovarian failure in a girl.",
+   "D": "21-hydroxylase CAH causes androgen excess with advanced bone age and early virilisation; gonadotropins are not raised from gonadal failure."
+  },
+  "57": {
+   "A": "46,XX complete gonadal dysgenesis gives a female phenotype with streak gonads and primary amenorrhoea, not a boy with testes.",
+   "C": "Salt-wasting CAH in boys presents with neonatal adrenal crisis or later androgen excess with suppressed gonadotropins, not small testes with high FSH/LH.",
+   "D": "Central precocious puberty causes early pubertal testicular enlargement with pubertal LH, not small firm testes from primary testicular failure."
+  },
+  "59": {
+   "A": "Primary hyperaldosteronism causes hypertension and hypokalaemia and does not explain pubertal delay linked to low energy availability.",
+   "B": "Complete androgen insensitivity is a congenital 46,XY condition presenting with primary amenorrhoea; it is unrelated to weight loss or training.",
+   "C": "Isolated premature adrenarche is early adrenal androgen production in young children and does not cause delayed puberty."
+  },
+  "60": {
+   "A": "Advanced bone age suggests sex-steroid or androgen excess (precocity, CAH, obesity), not constitutional delay, and 'always' is incorrect.",
+   "B": "In constitutional delay bone age typically lags chronological age by about 2 years; equality with chronological age argues against it.",
+   "D": "Bone age is useful: a delayed bone age supports constitutional delay and helps predict remaining growth potential, though it is not diagnostic alone."
+  },
+  "61": {
+   "A": "A family history of late puberty is common in constitutional delay and supports rather than undermines the diagnosis.",
+   "C": "Delayed bone age is a typical finding in constitutional delay and supports the diagnosis, though it can also occur in organic causes.",
+   "D": "A normal examination supports constitutional delay; it is abnormal findings such as neurologic signs or systemic illness that make the diagnosis insecure."
+  },
+  "64": {
+   "A": "TSH alone misses central hypothyroidism, where TSH may be low, normal or mildly raised despite low free T4.",
+   "B": "Serum sodium may be low in hypothyroidism but is non-specific and cannot localise the defect to the thyroid or pituitary.",
+   "D": "Random cortisol assesses the adrenal axis (relevant to check before thyroxine in hypopituitarism) but does not distinguish primary from central hypothyroidism."
+  },
+  "65": {
+   "A": "Central precocious puberty accelerates growth and advances bone age; it does not cause high TSH with low free T4.",
+   "C": "Adrenal androgen excess increases growth velocity and bone age and does not alter TSH or free T4.",
+   "D": "Primary hyperaldosteronism causes hypertension and hypokalaemia, not poor growth with raised TSH and low free T4."
+  },
+  "66": {
+   "B": "Primary hypothyroidism produces a raised TSH as the failing thyroid loses feedback; a non-elevated TSH with low free T4 points centrally.",
+   "C": "Hyperthyroidism gives high free T4 with suppressed TSH, not low free T4.",
+   "D": "Low free T4 is abnormal; a non-elevated TSH is inappropriate here and must not be assumed normal, though non-thyroidal illness should be considered."
+  },
+  "68": {
+   "A": "Peripheral precocious puberty raises sex steroids, accelerating growth and advancing bone age.",
+   "B": "Cushing syndrome causes growth failure with weight gain, not weight loss; the option as worded describes no recognised entity.",
+   "D": "Isolated premature adrenarche causes mild growth acceleration with normal or mildly advanced bone age, not poor growth with delayed bone age."
+  },
+  "70": {
+   "B": "Isolated premature adrenarche causes early pubic hair or body odour only and does not cause central hypothyroidism or hypoglycaemia.",
+   "C": "Primary aldosteronism causes hypertension and hypokalaemia and does not affect TSH, GH or ACTH axes.",
+   "D": "Simple obesity is associated with normal or increased height velocity, not central hypothyroidism and hypoglycaemia."
+  },
+  "71": {
+   "A": "Hyperthyroidism does not cause micropenis or hypoglycaemia; in hypopituitarism central hypothyroidism is the expected thyroid finding.",
+   "B": "Physiological jaundice is unconjugated and benign; prolonged jaundice in hypopituitarism is often cholestatic, and jaundice alone does not explain micropenis with hypoglycaemia.",
+   "C": "Premature adrenarche occurs in mid-childhood with early pubic hair and is not a neonatal cause of micropenis or hypoglycaemia."
+  },
+  "72": {
+   "A": "A chest X-ray is not standardised for skeletal maturity and does not estimate bone age.",
+   "B": "A urine dipstick screens for glycosuria or proteinuria and gives no information on skeletal maturation.",
+   "D": "An ECG assesses cardiac rhythm and conduction and has no role in estimating skeletal maturity."
+  },
+  "73": {
+   "A": "Axillary odour results from adrenal androgens and occurs in adrenarche without HPG-axis activation.",
+   "C": "Acne is androgen-driven and can occur with adrenal androgens alone, so it does not distinguish gonadarche from adrenarche.",
+   "D": "Pubic hair can result from adrenal androgens alone in adrenarche; testicular enlargement (4 mL or more) marks true gonadarche."
+  }
+ }
+}
